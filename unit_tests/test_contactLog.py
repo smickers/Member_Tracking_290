@@ -76,32 +76,20 @@ class TestContactLog(TestCase):
 
         '''
         Input:
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque commodo viverra lacinia. Proin id sollicitudin
-        urna. Cras a massa eleifend, interdum mi nec, tempus enim. Donec eget ligula nec leo fermentum imperdiet vel
-        et turpis. Donec dapibus nec enim ut rhoncus. Donec dictum est eleifend sollicitudin maximus. Morbi viverra
-        volutpat ullamcorper. Nulla interdum ornare elementum. Nullam orci leo, faucibus at semper id, malesuada ac mi.
-        Quisque facilisis sem arcu, in ultricies erat lobortis vitae. Vestibulum pellentesque tempus ex, ac fringilla
-        erat euismod sit amet. Etiam vel nisi euismod, malesuada nisi id, vulputate nisi. Quisque nec interdum tortor.
 
-        Suspendisse varius nisl metus, in rutrum tellus pharetra et. In nulla ligula, maximus quis sodales ac, semper
-        nec neque. Etiam porttitor tortor in luctus rutrum. In elementum magna sed augue consectetur iaculis. Donec
-        ornare, diam in accumsan eleifend, tortor odio suscipit dui, nec auctor orci lacus ut urna. Cras ac purus nec dui.
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+        Aenean massa. Cum sociis natoque penatibus et magnis dis p
 
+        Above is 150 characters.
         Expected Result: true
 
 
         Input
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque commodo viverra lacinia. Proin id sollicitudin
-        urna. Cras a massa eleifend, interdum mi nec, tempus enim. Donec eget ligula nec leo fermentum imperdiet vel
-        et turpis. Donec dapibus nec enim ut rhoncus. Donec dictum est eleifend sollicitudin maximus. Morbi viverra
-        volutpat ullamcorper. Nulla interdum ornare elementum. Nullam orci leo, faucibus at semper id, malesuada ac mi.
-        Quisque facilisis sem arcu, in ultricies erat lobortis vitae. Vestibulum pellentesque tempus ex, ac fringilla
-        erat euismod sit amet. Etiam vel nisi euismod, malesuada nisi id, vulputate nisi. Quisque nec interdum tortor.
 
-        Suspendisse varius nisl metus, in rutrum tellus pharetra et. In nulla ligula, maximus quis sodales ac, semper
-        nec neque. Etiam porttitor tortor in luctus rutrum. In elementum magna sed augue consectetur iaculis. Donec
-        ornare, diam in accumsan eleifend, tortor odio suscipit dui, nec auctor orci lacus ut urna. Cras ac purus nec dui. Lorem
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis pa
 
+        Above is 151 characters.
         Expected Result: False
         '''
 
