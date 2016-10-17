@@ -1,11 +1,12 @@
 from __future__ import unicode_literals
-from django.core.urlresolvers import  reverse
+from django.core.urlresolvers import reverse
 from django.db import models
+
 
 # Create your models here.
 
 class Person(models.Model):
-    GENDER_CHOICE  = (
+    GENDER_CHOICE = (
         ('MALE', 'Male'),
         ('FEMALE', 'Female'),
         ('UNDEFINED', 'Undefined'),
@@ -38,10 +39,11 @@ class Person(models.Model):
     hPhone = models.CharField(max_length=13, null=True, blank=True)
     cPhone = models.CharField(max_length=13, null=True, blank=True)
     hEmail = models.EmailField()
-    campus = models.CharField(max_length= 20, choices=CAMPUS_CHOICE)
+    campus = models.CharField(max_length=20, choices=CAMPUS_CHOICE)
     jobType = models.CharField(max_length=30, choices=POSITION_CLASS_CHOICE)
     committee = models.CharField(max_length=30)
     memberImage = models.CharField(max_length=30, blank=True, null=True)
 
+
     def get_absolute_url(self):
-        return reverse('addmember:member-add', kwargs={'pk':self.pk})
+        return reverse(viewname='add_member:member_add')
