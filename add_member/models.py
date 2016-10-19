@@ -26,7 +26,7 @@ class Person(models.Model):
         ('PTED', 'Part-time end dated'),
     )
 
-    memberID = models.IntegerField()
+    memberID = models.IntegerField(max_length=9)
     firstName = models.CharField(max_length=30)
     middleName = models.CharField(max_length=30)
     socNum = models.IntegerField()
