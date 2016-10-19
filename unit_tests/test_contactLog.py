@@ -95,19 +95,20 @@ class TestContactLog(TestCase):
 
         self.fail()
 
-    def test_validateMemberID(self):
+    def test_boundsMemberID(self):
         # Unit Test Information
-        # Test: Test that a memberID is exactly nine digits
-        # Input: 123456789
+        # Test: Test that a memberID can be a value up to
+        # 2147483647
+        # Input: 2147483647
         # Expected return: true
 
-        #Input: 000000000
-        #Expected return: true
-
-        #Input: 999999999
-        #Expected return: true
-
         #Input: 0
+        #Expected return: true
+
+        #Input: -1
+        #Expected return: true
+
+        #Input: 2147483648 - one above the maximum Int32 value
         #Expected return: false
 
         #Input helloWorld
