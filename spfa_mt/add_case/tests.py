@@ -83,4 +83,25 @@ his will prevent someone from changing the select box to a textbox and entering 
 #Test 10 - Case created with correct attributes
 
 
+#Test 11 - Campus writes to database when string length is 255 characters
 
+
+#Test 12 - Campus writes to database when string length is 8 characters
+
+
+#Test 13 - Campus doesnt' write to database when length is 256 characters
+
+
+#Test 14 - Campus doesn't write to database when length is 1000 characters
+
+
+#Test 15 - Campus writes to database when string length is 255 characters
+
+
+#Test 12 - Campus writes to database when string length is 8 characters
+
+
+#Test 13 - Campus doesnt' write to database when length is 256 characters
+
+
+#Test 14 - Campus doesn't write to database when length is 1000 characters
