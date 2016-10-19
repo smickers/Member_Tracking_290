@@ -7,6 +7,14 @@ class TestAddmember(TestCase):
         Case.objects.create(caseID=111111111)
         Member.objects.create(memberID=000111111, firstName='Homer', lastName='Simpson')
         Member.objects.create(memberID=000222222, firstName='Marge', lastName='Simpson')
+        Member.objects.create(memberID=000000001, firstName="Larry", lastName="LowBoundary")
+        Member.objects.create(memberID=999999999, firstName="Hilary",lastName="HighBoundary")
+        Member.objects.create(memberID=123,
+                              firstName="Toonie",
+                              lastName="Low")
+        Member.objects.create(memberID=12345678910,
+                              firstName="Henry",
+                              lastName="HighBoundary")
 
     def test_can_add_member(self):
         """Can add a Member to the Case"""
@@ -23,23 +31,15 @@ class TestAddmember(TestCase):
 
     def test_can_add_boundary_members(self):
         """Can add Members at the memberID boundary to the Case"""
-        larlow = Member.objects.create(memberID=000000001,
-                              firstName="Larry",
-                              lastName="LowBoundary")
-        hilhig = Member.objects.create(memberID=999999999,
-                              firstName="Hilary",
-                              lastName="HighBoundary")
+        larlow = Member.objects.get(memberID=000000001)
+        hilhig = Member.objects.get(memberID=999999999)
         case1 = Case.objects.get(caseID=111111111)
         self.assertContains(case1.members.addmember(larlow.memberID, hilhig.memberID))
 
     def test_cannot_add_outside_boundary_members(self):
         """Cannot add Members exceeding the memberID boundary to the Case"""
-        toolow = Member.objects.create(memberID=123,
-                                       firstName="Toonie",
-                                       lastName="Low")
-        toohig = Member.objects.create(memberID=12345678910,
-                                       firstName = "Henry",
-                                       lastName="HighBoundary")
+        toolow = Member.objects.get(memberID=123)
+        toohig = Member.objects.get(memberID=12345678910)
         case1 = Case.objects.get(caseID=111111111)
         self.assertFalse(self.assertContains(
             case1.members.addmember(toolow.memberID, toohig.memberID )))
@@ -67,3 +67,8 @@ class TestAddmember(TestCase):
         self.assertFalse(self.assertContains(
             case1.members.addmember(barsim.memberID, homsim.memberID)
         ))
+
+
+    def tearDown(self):
+        self.Member.objects.dispose()
+        self.Case.objects.dispose()
