@@ -115,7 +115,7 @@ class TestContactLog(TestCase):
         #Expected return: false
 
         #Input "" (N/A)
-        #Expected return: false
+        #Expected return: true
         self.fail()
 
     def test_setContactLogID(self):
