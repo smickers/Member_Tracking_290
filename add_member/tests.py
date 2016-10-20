@@ -1,7 +1,29 @@
 from django.test import TestCase
 from django.db import IntegrityError
 from .models import Person
+from django.db import DataError
 # Create your tests here.
+
+#Base Person Object
+    # tempPerson = Person()
+    # tempPerson.memberID = 123456789
+    # tempPerson.firstName = 'First'
+    # tempPerson.middleName = 'Middle'
+    # tempPerson.lastName = 'Last'
+    # tempPerson.socNum = 123456789
+    # tempPerson.city = 'Sample City'
+    # tempPerson.mailAddress = 'Sample address'
+    # tempPerson.mailAddress2 = 'Sample Address 2'
+    # tempPerson.hPhone = 3061111234
+    # tempPerson.cPhone = 3061111234
+    # tempPerson.hEmail = 'sample@sample.com'
+    # tempPerson.campus = 'SASKATOON'
+    # tempPerson.jobType = 'FTO'
+    # tempPerson.committee = 'Sample Commitee'
+    # tempPerson.memberImage = 'image.img'
+    # tempPerson.bDay = '2012-03-03'
+    # tempPerson.save()
+
 
 class PersonTestCase(TestCase):
     #Test 1 - check to see if the database accepts 9 digit id number
@@ -26,9 +48,29 @@ class PersonTestCase(TestCase):
         tempPerson.save()
         self.assertTrue(Person.objects.count() == 1)
     #Test 2- check to see if the database throws error if user tries to insert id number that's greater than 9 digits
+    def test9digitIdnumber_less(self):
+        with self.assertRaises(ValueError):
+            tempPerson = Person()
+            tempPerson.memberID = 1234567899
+            tempPerson.firstName = 'First'
+            tempPerson.middleName = 'Middle'
+            tempPerson.lastName = 'Last'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'Sample City'
+            tempPerson.mailAddress = 'Sample address'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone= 3061111234
+            tempPerson.cPhone = 3061111234
+            tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'FTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-03'
+            tempPerson.clean()
+            tempPerson.save()
 
-
-    #Test 3 - check to see if the database throws error if user tries to insert id number that's less than 9 digits
+    #Test 3 - check to see if the database throws error if user tries to insert id number that's empty
     def test9digitIdnumbererror(self):
         with self.assertRaises(IntegrityError):
             tempPerson = Person()

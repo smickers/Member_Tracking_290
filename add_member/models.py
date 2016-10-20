@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.core.validators import MaxValueValidator
 
 
 # Create your models here.
@@ -26,7 +27,7 @@ class Person(models.Model):
         ('PTED', 'Part-time end dated'),
     )
 
-    memberID = models.IntegerField(max_length=9)
+    memberID = models.IntegerField()
     firstName = models.CharField(max_length=30)
     middleName = models.CharField(max_length=30)
     lastName = models.CharField(max_length=30)
@@ -45,6 +46,10 @@ class Person(models.Model):
     committee = models.CharField(max_length=30)
     memberImage = models.CharField(max_length=30, blank=True, null=True)
 
+    def clean(self):
+        if self.memberID > 999999999:
+            raise ValueError("error here")
 
     def get_absolute_url(self):
         return reverse(viewname='add_member:member_add')
+
