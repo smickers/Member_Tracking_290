@@ -47,6 +47,7 @@ class PersonTestCase(TestCase):
         tempPerson.bDay = '2012-03-03'
         tempPerson.save()
         self.assertTrue(Person.objects.count() == 1)
+
     #Test 2- check to see if the database throws error if user tries to insert id number that's greater than 9 digits
     def test9digitIdnumber_less(self):
         with self.assertRaises(ValueError):
@@ -184,53 +185,57 @@ class PersonTestCase(TestCase):
         tempPerson.save()
         self.assertTrue(Person.objects.count() == 1)
 
+
     #Test 8 - Check to see if the database throws an error if the first name is empty
     def testIfFirstNameFieldIfFirstNameIsEmpty(self):
-        person = Person()
-        person.memberID = 123456789
-        person.middleName = 'Middle'
-        person.socNum = 123456789
-        person.city = 'Sample City'
-        person.mailAddress = 'Sample address'
-        person.mailAddress2 = 'Sample Address 2'
-        person.hPhone = 3061111234
-        person.cPhone = 3061111234
-        person.hEmail = 'sample@sample.com'
-        person.campus = 'SASKATOON'
-        person.jobType = 'FTO'
-        person.committee = 'Sample Commitee'
-        person.memberImage = 'image.img'
-        person.bDay = '2012-03-03'
-        person.save()
-
+        with self.assertRaises(IntegrityError):
+            tempPerson = Person()
+            tempPerson.memberID = 123456789
+            tempPerson.middleName = 'Middle'
+            tempPerson.lastName = 'Last'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'Sample City'
+            tempPerson.mailAddress = 'Sample address'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone = 3061111234
+            tempPerson.cPhone = 3061111234
+            tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'FTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-03'
+            tempPerson.clean()
+            tempPerson.save()
 
 
     #Test 9- Check to see if the database throws an error if the first name is greater than 30
     def testIfDatabaseThrowsErrorifFirstNameisGreaterthan30characters(self):
-        tempPerson = Person()
-        tempPerson.memberID = 1234567899
-        tempPerson.middleName = 'Middle'
-        tempPerson.firstName = 'abcdefghijklmnopqrstuvabcdeeee'
-        tempPerson.lastName = 'Last'
-        tempPerson.socNum = 123456789
-        tempPerson.city = 'Sample City'
-        tempPerson.mailAddress = 'Sample address'
-        tempPerson.mailAddress2 = 'Sample Address 2'
-        tempPerson.hPhone = 3061111234
-        tempPerson.cPhone = 3061111234
-        tempPerson.hEmail = 'sample@sample.com'
-        tempPerson.campus = 'SASKATOON'
-        tempPerson.jobType = 'FTO'
-        tempPerson.committee = 'Sample Commitee'
-        tempPerson.memberImage = 'image.img'
-        tempPerson.bDay = '2012-03-03'
-        tempPerson.save()
-
+        with self.assertRaises(ValueError):
+            tempPerson = Person()
+            tempPerson.memberID = 1234567899
+            tempPerson.middleName = 'Middle'
+            tempPerson.firstName = 'abcdefghijklmnopqrstuvabcdeeeeaaaaaaaa'
+            tempPerson.lastName = 'Last'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'Sample City'
+            tempPerson.mailAddress = 'Sample address'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone = 3061111234
+            tempPerson.cPhone = 3061111234
+            tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'FTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-03'
+            tempPerson.clean()
+            tempPerson.save()
 
     # Test 10- check to see if the middle name field accepts first with less than or equal to 30 characters in length
     def testIfMiddleNameFieldAcceptsMiddleNameLessThanOREqual30Chars(self):
         tempPerson = Person()
-        tempPerson.memberID = 1234567899
+        tempPerson.memberID = 123456789
         tempPerson.middleName = 'Middle'
         tempPerson.firstName = 'First'
         tempPerson.lastName = 'Last'
@@ -246,13 +251,63 @@ class PersonTestCase(TestCase):
         tempPerson.committee = 'Sample Commitee'
         tempPerson.memberImage = 'image.img'
         tempPerson.bDay = '2012-03-03'
+        tempPerson.clean()
         tempPerson.save()
-
+        self.assertTrue(Person.objects.count() == 1)
+        #
     # Test 11 - Check to see if the database throws an error if the middle name is empty
     def testIfDatabaseThrowsErrorifMiddleNameIsEmpty(self):
+        with self.assertRaises(IntegrityError):
+            tempPerson = Person()
+            tempPerson.memberID = 123456789
+            tempPerson.firstName = 'First'
+            tempPerson.lastName = 'Last'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'Sample City'
+            tempPerson.mailAddress = 'Sample address'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone = 3061111234
+            tempPerson.cPhone = 3061111234
+            tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'FTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-03'
+            tempPerson.clean()
+            tempPerson.save()
+
+    # Test 12- Check to see if the database throws an error if the middle name is greater than 30
+    def testIfDatabaseThrowsErrorifMiddleNameIsEmpty(self):
+        with self.assertRaises(ValueError):
+            tempPerson = Person()
+            tempPerson.memberID = 123456789
+            tempPerson.firstName = 'First'
+            tempPerson.lastName = 'Last'
+            tempPerson.middleName = 'abcdefghijklmnopqrstuvabcdeeeeaaaaaaaa'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'Sample City'
+            tempPerson.mailAddress = 'Sample address'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone = 3061111234
+            tempPerson.cPhone = 3061111234
+            tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'FTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-03'
+            tempPerson.clean()
+            tempPerson.save()
+
+
+    # Test 13 - check to see if the last name field accepts first with less than or equal to 30 characters in length
+    def testIfDatabaseacceptsPersonIfitsLastNameisLessthanOrEqual30(self):
         tempPerson = Person()
+        tempPerson.memberID = 123456789
         tempPerson.firstName = 'First'
         tempPerson.lastName = 'Last'
+        tempPerson.middleName = 'middle'
         tempPerson.socNum = 123456789
         tempPerson.city = 'Sample City'
         tempPerson.mailAddress = 'Sample address'
@@ -265,34 +320,172 @@ class PersonTestCase(TestCase):
         tempPerson.committee = 'Sample Commitee'
         tempPerson.memberImage = 'image.img'
         tempPerson.bDay = '2012-03-03'
+        tempPerson.clean()
         tempPerson.save()
-
-    # Test 12- Check to see if the database throws an error if the middle name is greater than 30
-
-
-    # Test 13 - check to see if the last name field accepts first with less than or equal to 30 characters in length
-
+        self.assertTrue(Person.objects.count() == 1)
 
     # Test 14- Check to see if the database throws an error if the last name is empty
+    def testIfDatabaseThrowsErroriflastNameIsEmpty(self):
+        with self.assertRaises(IntegrityError):
+            tempPerson = Person()
+            tempPerson.memberID = 123456789
+            tempPerson.firstName = 'First'
+            tempPerson.middleName = 'mid'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'Sample City'
+            tempPerson.mailAddress = 'Sample address'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone = 3061111234
+            tempPerson.cPhone = 3061111234
+            tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'FTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-03'
+            tempPerson.clean()
+            tempPerson.save()
 
 
     # Test 15 Check to see if the database throws an error if the last name is greater than 30
-
+    def testIfDatabaseThrowsErroriflastNameIsEmpty(self):
+        with self.assertRaises(ValueError):
+            tempPerson = Person()
+            tempPerson.memberID = 123456789
+            tempPerson.firstName = 'First'
+            tempPerson.middleName = 'mid'
+            tempPerson.lastName = 'abcdefghijklmnopqrstuvabcdeeeeaaaaaaaa'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'Sample City'
+            tempPerson.mailAddress = 'Sample address'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone = 3061111234
+            tempPerson.cPhone = 3061111234
+            tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'FTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-03'
+            tempPerson.clean()
+            tempPerson.save()
 
     # Test 16 - check to see if the mailing address field accepts first with less than or equal to 50 characters in length
-
+    def testIfDatabaseAcceptsMailingAddressWithLessThan50Characters(self):
+        tempPerson = Person()
+        tempPerson.memberID = 123456789
+        tempPerson.firstName = 'First'
+        tempPerson.middleName = 'mid'
+        tempPerson.lastName = 'last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'Sample City'
+        tempPerson.mailAddress = 'Sample address'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = 3061111234
+        tempPerson.cPhone = 3061111234
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'FTO'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-03'
+        tempPerson.clean()
+        tempPerson.save()
+        self.assertTrue(Person.objects.count() == 1)
 
     # Test 17- Check to see if the database throws an error if the mailing address is empty
+    def testIfDatabaseThrowsErrorIFMailAddressIsEmpty(self):
+        with self.assertRaises(IntegrityError):
+            tempPerson = Person()
+            tempPerson.memberID = 123456789
+            tempPerson.firstName = 'First'
+            tempPerson.middleName = 'mid'
+            tempPerson.lastName = 'last'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'Sample City'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone = 3061111234
+            tempPerson.cPhone = 3061111234
+            tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'FTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-03'
+            tempPerson.clean()
+            tempPerson.save()
 
 
     # Test 18 Check to see if the database throws an error if the mailing address is greater than 50
+    def testIfDatabaseAcceptsMailingAddressWithLessThan50Characters(self):
+        with self.assertRaises(ValueError):
+            tempPerson = Person()
+            tempPerson.memberID = 123456789
+            tempPerson.firstName = 'First'
+            tempPerson.middleName = 'mid'
+            tempPerson.lastName = 'last'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'Sample City'
+            tempPerson.mailAddress = 'asdffasdfgasdffasdfgasdffasdfgasdffasdfgasdffasdfgasdffasdfg'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone = 3061111234
+            tempPerson.cPhone = 3061111234
+            tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'FTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-03'
+            tempPerson.clean()
+            tempPerson.save()
+
 
 
     # Test 19 - check to see if the mailing address field accepts first with less than or equal to 50 characters in length
+    def testIfDatabaseAcceptsMailingAddressWithLessThan50Characters(self):
+        tempPerson = Person()
+        tempPerson.memberID = 123456789
+        tempPerson.firstName = 'First'
+        tempPerson.middleName = 'mid'
+        tempPerson.lastName = 'last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'Sample City'
+        tempPerson.mailAddress = 'Sample Address 1'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = 3061111234
+        tempPerson.cPhone = 3061111234
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'FTO'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-03'
+        tempPerson.clean()
+        tempPerson.save()
+        self.assertTrue(Person.objects.count() == 1)
 
 
     # Test 20- Check to see if the database throws an error if the mailing address is empty
-
+    def testIfDatabaseAcceptsMailingAddressWithLessThan50Characters(self):
+        with self.assertRaises(IntegrityError):
+            tempPerson = Person()
+            tempPerson.memberID = 123456789
+            tempPerson.firstName = 'First'
+            tempPerson.middleName = 'mid'
+            tempPerson.lastName = 'last'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'Sample City'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone = 3061111234
+            tempPerson.cPhone = 3061111234
+            tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'FTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-03'
+            tempPerson.clean()
+            tempPerson.save()
 
     # Test 21 Check to see if the database throws an error if the mailing address is greater than 50
 

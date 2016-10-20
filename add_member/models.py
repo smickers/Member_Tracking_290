@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db import IntegrityError
 from django.core.validators import MaxValueValidator
 
 
@@ -53,12 +54,29 @@ class Person(models.Model):
         if self.socNum > 999999999:
             raise ValueError("SIN should be less than 9 digits")
 
-        if self.first is not None:
-            raise ValueError("No firstname")
+        if len(self.firstName) == 0:
+            raise IntegrityError("First name is required")
 
         if len(self.firstName) > 30:
             raise ValueError("First Name should be lesser than 30 characters")
 
+        if len(self.middleName) == 0:
+            raise IntegrityError("Middle name is required")
+
+        if len(self.middleName) > 30:
+            raise ValueError("Middle Name should be lesser than 30 characters")
+
+        if len(self.lastName) == 0:
+            raise IntegrityError("Last name name is required")
+
+        if len(self.lastName) > 30:
+            raise ValueError("Last Name should be lesser than 30 characters")
+
+        if len(self.mailAddress) == 0:
+            raise IntegrityError("Mail Address is required")
+
+        if len(self.mailAddress) > 50:
+            raise ValueError("Mail Address must be less than 50 characters")
 
     def get_absolute_url(self):
         return reverse(viewname='add_member:member_add')
