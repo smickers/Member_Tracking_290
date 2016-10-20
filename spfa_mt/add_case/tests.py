@@ -136,3 +136,17 @@ his will prevent someone from changing the select box to a textbox and entering 
 
 #Test 28 - Date doesn't write to database when an incorrect format is entered
 
+
+#Test 29 - Campus field is not filled out, error thrown
+
+
+#Test 30 - School field is not filled out, error thrown
+
+
+#Test 31 - Case type field is not filled out, error thrown
+
+
+#Test 32 - Status field is not filled out, defaults to OPEN
+
+
+#Test 33 - Date field is not filled out, defaults to current date
