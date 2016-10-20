@@ -1,18 +1,9 @@
-class ContactLog:
-    def createContactLog(self, description, contactDate, memberID):
-        5 * 2
-    #
+from django.db  import models
 
-    def validateDate(self, toCheck):
-        5 * 2
+class ContactLog(models.Model):
+    memberID = models.IntegerField(),
+    date = models.DateTimeField(),
+    description = models.TextField(max_length=150)
 
-    def validateDescription(self, toCheck):
-        5 * 2
-
-    def validateMemberID(self, toCheck):
-        5 * 2
-
-    def setContactLogID(self, newID):
-        5 * 2
 
 
