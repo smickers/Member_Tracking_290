@@ -37,6 +37,7 @@ class PersonTestCase(TestCase):
         tempPerson.city = 'Sample City'
         tempPerson.mailAddress = 'Sample address'
         tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.pCode = 's7k5j8'
         tempPerson.hPhone= 3061111234
         tempPerson.cPhone = 3061111234
         tempPerson.hEmail = 'sample@sample.com'
@@ -417,7 +418,7 @@ class PersonTestCase(TestCase):
 
 
     # Test 18 Check to see if the database throws an error if the mailing address is greater than 50
-    def testIfDatabaseAcceptsMailingAddressWithLessThan50Characters(self):
+    def testIfDatabaseThrowsErrorIfMailingAddressIsGreaterThan50(self):
         with self.assertRaises(ValueError):
             tempPerson = Person()
             tempPerson.memberID = 123456789
@@ -466,7 +467,7 @@ class PersonTestCase(TestCase):
 
 
     # Test 20- Check to see if the database throws an error if the mailing address is empty
-    def testIfDatabaseAcceptsMailingAddressWithLessThan50Characters(self):
+    def testIfDatabaseThrowsErrorIfMailingAddressIsEmpty(self):
         with self.assertRaises(IntegrityError):
             tempPerson = Person()
             tempPerson.memberID = 123456789
@@ -487,17 +488,96 @@ class PersonTestCase(TestCase):
             tempPerson.clean()
             tempPerson.save()
 
-    # Test 21 Check to see if the database throws an error if the mailing address is greater than 50
-
+    # Test 21 Check to see if the database throws an error if the mailing address 2 is greater than 50
+    def testIfDatabaseThrowsErrorIfMailingAddress2IsGreaterThan50(self):
+        with self.assertRaises(ValueError):
+            tempPerson = Person()
+            tempPerson.memberID = 123456789
+            tempPerson.firstName = 'First'
+            tempPerson.middleName = 'mid'
+            tempPerson.lastName = 'last'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'Sample City'
+            tempPerson.mailAddress = 'Sample Address 1'
+            tempPerson.mailAddress2 = 'asdffasdfgasdffasdfgasdffasdfgasdffasdfgasdffasdfgasdffasdfg'
+            tempPerson.hPhone = 3061111234
+            tempPerson.cPhone = 3061111234
+            tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'FTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-03'
+            tempPerson.clean()
+            tempPerson.save()
 
     # Test 22 - check to see if the city field accepts first with less than or equal to 20 characters in length
-
+    def testIfDatabaseAcceptsCityFieldIfLessThan20Characters(self):
+        tempPerson = Person()
+        tempPerson.memberID = 123456789
+        tempPerson.firstName = 'First'
+        tempPerson.middleName = 'mid'
+        tempPerson.lastName = 'last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'Sample City'
+        tempPerson.mailAddress = 'Sample Address 1'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = 3061111234
+        tempPerson.cPhone = 3061111234
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'FTO'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-03'
+        tempPerson.clean()
+        tempPerson.save()
+        self.assertTrue(Person.objects.count() == 1)
 
     # Test 23- Check to see if the database throws an error if the city is empty
-
+    def testIfDatabaseThrowsAnErrorIfCityIsEmpty(self):
+        with self.assertRaises(IntegrityError):
+            tempPerson = Person()
+            tempPerson.memberID = 123456789
+            tempPerson.firstName = 'First'
+            tempPerson.middleName = 'mid'
+            tempPerson.lastName = 'last'
+            tempPerson.socNum = 123456789
+            tempPerson.mailAddress = 'Sample Address 1'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone = 3061111234
+            tempPerson.cPhone = 3061111234
+            tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'FTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-03'
+            tempPerson.clean()
+            tempPerson.save()
 
     # Test 24 Check to see if the database throws an error if the city is greater than 20
-
+    def testIfDatabaseThrowsErrorIfCityIsGreaterThan20(self):
+        with self.assertRaises(ValueError):
+            tempPerson = Person()
+            tempPerson.memberID = 123456789
+            tempPerson.firstName = 'First'
+            tempPerson.middleName = 'mid'
+            tempPerson.lastName = 'last'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'abcdeabcdeabcdeabcdeabcde'
+            tempPerson.mailAddress = 'Sample Address 1'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone = 3061111234
+            tempPerson.cPhone = 3061111234
+            tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'FTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-03'
+            tempPerson.clean()
+            tempPerson.save()
 
     # Test 25 - check to see if the postal code field is in the format: L#L_#L#
 

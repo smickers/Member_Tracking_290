@@ -36,7 +36,7 @@ class Person(models.Model):
     city = models.CharField(max_length=20)
     mailAddress = models.CharField(max_length=30)
     mailAddress2 = models.CharField(max_length=30, null=True, blank=True)
-    pCode = models.CharField(max_length=6)
+    pCode = models.CharField(max_length=7)
     bDay = models.DateField()
     gender = models.CharField(choices=GENDER_CHOICE, max_length=10)
     hPhone = models.CharField(max_length=13, null=True, blank=True)
@@ -77,6 +77,18 @@ class Person(models.Model):
 
         if len(self.mailAddress) > 50:
             raise ValueError("Mail Address must be less than 50 characters")
+
+        if len(self.mailAddress2) == 0:
+            raise IntegrityError("Mail Address is required")
+
+        if len(self.mailAddress2) > 50:
+            raise ValueError("Mail Address must be less than 50 characters")
+
+        if len(self.city) == 0:
+            raise IntegrityError("City is required")
+
+        if len(self.city) > 20:
+            raise ValueError("City Field must be less than 20 characters")
 
     def get_absolute_url(self):
         return reverse(viewname='add_member:member_add')
