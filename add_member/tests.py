@@ -5,6 +5,7 @@ from .models import Person
 class PersonTestCase(TestCase):
     #Test 1 - check to see if the database accepts 9 digit id number
     def test9digitIdnumber(self):
+
         self.assertTrue(True)
 
 
