@@ -95,13 +95,44 @@ his will prevent someone from changing the select box to a textbox and entering 
 #Test 14 - Campus doesn't write to database when length is 1000 characters
 
 
-#Test 15 - Campus writes to database when string length is 255 characters
+#Test 15 - School writes to database when string length is 255 characters
 
 
-#Test 12 - Campus writes to database when string length is 8 characters
+#Test 16 - School writes to database when string length is 8 characters
 
 
-#Test 13 - Campus doesnt' write to database when length is 256 characters
+#Test 17 - School doesnt' write to database when length is 256 characters
 
 
-#Test 14 - Campus doesn't write to database when length is 1000 characters
+#Test 18 - School doesn't write to database when length is 1000 characters
+
+
+#Test 19 - Case type writes to database when string length is 255 characters
+
+
+#Test 20 - Case type writes to database when string length is 8 characters
+
+
+#Test 21 - Case type doesnt' write to database when length is 256 characters
+
+
+#Test 22 - Case type doesn't write to database when length is 1000 characters
+
+
+#Test 23 - Status writes to database when string length is 255 characters
+
+
+#Test 24 - Status writes to database when string length is 8 characters
+
+
+#Test 25 - Status doesnt' write to database when length is 256 characters
+
+
+#Test 26 - Status doesn't write to database when length is 1000 characters
+
+
+#Test 27 - Date writes to database when correct format is entered (mm/dd/yyyy)
+
+
+#Test 28 - Date doesn't write to database when an incorrect format is entered
+
