@@ -29,6 +29,7 @@ class Person(models.Model):
     memberID = models.IntegerField(max_length=9)
     firstName = models.CharField(max_length=30)
     middleName = models.CharField(max_length=30)
+    lastName = models.CharField(max_length=30)
     socNum = models.IntegerField()
     city = models.CharField(max_length=20)
     mailAddress = models.CharField(max_length=30)
