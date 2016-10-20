@@ -116,7 +116,7 @@ class PersonTestCase(TestCase):
 
     #Test 5- check to see if the database throws error if user tries to create a person with no SIN number
 
-    def testIfDbAcceepts9DigitSINNumber(self):
+    def testIfDbThrowsErrorIfNoSINNumber(self):
         with self.assertRaises(IntegrityError):
             tempPerson = Person()
             tempPerson.memberID = 1234567899
@@ -140,54 +140,13 @@ class PersonTestCase(TestCase):
     #Test 5- check to see if the database throws error if user tries to insert SIN number that's greater than 9 digits
 
     def testIfDbthrowserrorifusertriesToSaveSINnumbermorethan9(self):
-        tempPerson = Person()
-        tempPerson.memberID = 1234567899
-        tempPerson.firstName = 'First'
-        tempPerson.middleName = 'Middle'
-        tempPerson.lastName = 'Last'
-        tempPerson.socNum = 123456789
-        tempPerson.city = 'Sample City'
-        tempPerson.mailAddress = 'Sample address'
-        tempPerson.mailAddress2 = 'Sample Address 2'
-        tempPerson.hPhone = 3061111234
-        tempPerson.cPhone = 3061111234
-        tempPerson.hEmail = 'sample@sample.com'
-        tempPerson.campus = 'SASKATOON'
-        tempPerson.jobType = 'FTO'
-        tempPerson.committee = 'Sample Commitee'
-        tempPerson.memberImage = 'image.img'
-        tempPerson.bDay = '2012-03-03'
-        tempPerson.save()
-
-    #Test 7 - check to see if the first name field accepts first with less than or equal to 30 characters in length
-    def testIfFirstNameFieldAcdeptsFirstNameLessThanOREqual30Chars(selfs):
-        tempPerson = Person()
-        tempPerson.memberID = 1234567899
-        tempPerson.firstName = 'First'
-        tempPerson.middleName = 'Middle'
-        tempPerson.lastName = 'Last'
-        tempPerson.socNum = 123456789
-        tempPerson.city = 'Sample City'
-        tempPerson.mailAddress = 'Sample address'
-        tempPerson.mailAddress2 = 'Sample Address 2'
-        tempPerson.hPhone = 3061111234
-        tempPerson.cPhone = 3061111234
-        tempPerson.hEmail = 'sample@sample.com'
-        tempPerson.campus = 'SASKATOON'
-        tempPerson.jobType = 'FTO'
-        tempPerson.committee = 'Sample Commitee'
-        tempPerson.memberImage = 'image.img'
-        tempPerson.bDay = '2012-03-03'
-        tempPerson.save()
-
-    #Test 8 - Check to see if the database throws an error if the first name is empty
-    def testIfFirstNameFieldIfFirstNameIsEmpty(self):
-        with self.assertRaises(IntegrityError):
+        with self.assertRaises(ValueError):
             tempPerson = Person()
-            tempPerson.memberID = 1234567899
+            tempPerson.memberID = 123456789
+            tempPerson.firstName = 'First'
             tempPerson.middleName = 'Middle'
             tempPerson.lastName = 'Last'
-            tempPerson.socNum = 123456789
+            tempPerson.socNum = 1234567899
             tempPerson.city = 'Sample City'
             tempPerson.mailAddress = 'Sample address'
             tempPerson.mailAddress2 = 'Sample Address 2'
@@ -199,7 +158,51 @@ class PersonTestCase(TestCase):
             tempPerson.committee = 'Sample Commitee'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-03'
+            tempPerson.clean()
             tempPerson.save()
+
+    #Test 7 - check to see if the first name field accepts first with less than or equal to 30 characters in length
+    def testIfFirstNameFieldAcceptsFirstNameLessThanOREqual30Chars(self):
+        tempPerson = Person()
+        tempPerson.memberID = 123456789
+        tempPerson.firstName = 'First'
+        tempPerson.middleName = 'Middle'
+        tempPerson.lastName = 'Last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'Sample City'
+        tempPerson.mailAddress = 'Sample address'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = 3061111234
+        tempPerson.cPhone = 3061111234
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'FTO'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-03'
+        tempPerson.clean()
+        tempPerson.save()
+        self.assertTrue(Person.objects.count() == 1)
+
+    #Test 8 - Check to see if the database throws an error if the first name is empty
+    def testIfFirstNameFieldIfFirstNameIsEmpty(self):
+        person = Person()
+        person.memberID = 123456789
+        person.middleName = 'Middle'
+        person.socNum = 123456789
+        person.city = 'Sample City'
+        person.mailAddress = 'Sample address'
+        person.mailAddress2 = 'Sample Address 2'
+        person.hPhone = 3061111234
+        person.cPhone = 3061111234
+        person.hEmail = 'sample@sample.com'
+        person.campus = 'SASKATOON'
+        person.jobType = 'FTO'
+        person.committee = 'Sample Commitee'
+        person.memberImage = 'image.img'
+        person.bDay = '2012-03-03'
+        person.save()
+
 
 
     #Test 9- Check to see if the database throws an error if the first name is greater than 30
@@ -225,10 +228,44 @@ class PersonTestCase(TestCase):
 
 
     # Test 10- check to see if the middle name field accepts first with less than or equal to 30 characters in length
-
+    def testIfMiddleNameFieldAcceptsMiddleNameLessThanOREqual30Chars(self):
+        tempPerson = Person()
+        tempPerson.memberID = 1234567899
+        tempPerson.middleName = 'Middle'
+        tempPerson.firstName = 'First'
+        tempPerson.lastName = 'Last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'Sample City'
+        tempPerson.mailAddress = 'Sample address'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = 3061111234
+        tempPerson.cPhone = 3061111234
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'FTO'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-03'
+        tempPerson.save()
 
     # Test 11 - Check to see if the database throws an error if the middle name is empty
-
+    def testIfDatabaseThrowsErrorifMiddleNameIsEmpty(self):
+        tempPerson = Person()
+        tempPerson.firstName = 'First'
+        tempPerson.lastName = 'Last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'Sample City'
+        tempPerson.mailAddress = 'Sample address'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = 3061111234
+        tempPerson.cPhone = 3061111234
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'FTO'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-03'
+        tempPerson.save()
 
     # Test 12- Check to see if the database throws an error if the middle name is greater than 30
 
