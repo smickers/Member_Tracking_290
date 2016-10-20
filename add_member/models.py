@@ -48,7 +48,9 @@ class Person(models.Model):
 
     def clean(self):
         if self.memberID > 999999999:
-            raise ValueError("error here")
+            raise ValueError("Member ID should be less than 9 digits")
+        if self.socNum > 999999999:
+            raise ValueError("SIN should be less than 9 digits")
 
     def get_absolute_url(self):
         return reverse(viewname='add_member:member_add')
