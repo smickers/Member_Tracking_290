@@ -1,6 +1,8 @@
 from django.test import TestCase
-#from add_case.models import Case
+from models import Case
 
+
+#TODO Put the class up top when starting the validation test methods
 #Test 1 - Campus validation
 '''
 The campus entered must match a campus from the DB.
@@ -82,29 +84,65 @@ his will prevent someone from changing the select box to a textbox and entering 
 
 #Test 10 - Case created with correct attributes
 
+class CaseTests(TestCase):
+    # Test 11 - Campus writes to database when string length is 255 characters
+    def testThatCampusIsWrittenToDBWhenStringLengthIs255Characters(self):
+        tempCase = Case()
+        tempCase.lead = 123456789
+        tempCase.complainant = 987654321
+        tempCase.campus = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                          "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                          "natoque penatibus et magnis dis parturient montes, nascetur " \
+                          "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,"
+        tempCase.school = "School of Business"
+        tempCase.status = "OPEN"
+        tempCase.additionalMembers = 0
+        tempCase.additionalNonMembers = ""
+        tempCase.docs = None
+        tempCase.logs = None
 
-#Test 11 - Campus writes to database when string length is 255 characters
+    # Test 12 - Campus writes to database when string length is 8 characters
+    def testThatCampusIsWrittenToDBWhenStringLengthIs8Characters(self):
+        tempCase = Case()
+        tempCase.lead = 123456789
+        tempCase.complainant = 987654321
+        tempCase.campus = "Saskatoon"
+        tempCase.school = "School of Business"
+        tempCase.status = "OPEN"
+        tempCase.additionalMembers = 0
+        tempCase.additionalNonMembers = ""
+        tempCase.docs = None
+        tempCase.logs = None
+
+    # Test 13 - Campus doesnt' write to database when length is 256 characters
+    def testThatCampusIsNotWrittenWhenLengthIs256Characters(self):
+        tempCase = Case()
+        tempCase.lead = 123456789
+        tempCase.complainant = 987654321
+        tempCase.campus = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                          "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                          "natoque penatibus et magnis dis parturient montes, nascetur " \
+                          "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
+        tempCase.school = "School of Business"
+        tempCase.status = "OPEN"
+        tempCase.additionalMembers = 0
+        tempCase.additionalNonMembers = ""
+        tempCase.docs = None
+        tempCase.logs = None
+
+    # Test 14 - Campus doesn't write to database when length is 1000 characters
 
 
-#Test 12 - Campus writes to database when string length is 8 characters
+    # Test 15 - School writes to database when string length is 255 characters
 
 
-#Test 13 - Campus doesnt' write to database when length is 256 characters
+    # Test 16 - School writes to database when string length is 8 characters
 
 
-#Test 14 - Campus doesn't write to database when length is 1000 characters
+    # Test 17 - School doesnt' write to database when length is 256 characters
 
 
-#Test 15 - School writes to database when string length is 255 characters
-
-
-#Test 16 - School writes to database when string length is 8 characters
-
-
-#Test 17 - School doesnt' write to database when length is 256 characters
-
-
-#Test 18 - School doesn't write to database when length is 1000 characters
+    # Test 18 - School doesn't write to database when length is 1000 characters
 
 
 #Test 19 - Case type writes to database when string length is 255 characters
