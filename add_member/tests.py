@@ -521,7 +521,7 @@ class PersonTestCase(TestCase):
         tempPerson.socNum = 123456789
         tempPerson.city = 'Sample City'
         tempPerson.mailAddress = 'Sample Address 1'
-        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.mailAddres = 'Sample Address 2'
         tempPerson.hPhone = 3061111234
         tempPerson.cPhone = 3061111234
         tempPerson.hEmail = 'sample@sample.com'

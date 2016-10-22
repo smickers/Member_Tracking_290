@@ -49,10 +49,12 @@ class Person(models.Model):
 
     def clean(self):
         if self.memberID > 999999999:
-            raise ValueError("Member ID should be less than 9 digits")
+            raise ValueError("Member ID should be equal than 9 digits")
 
         if self.socNum > 999999999:
             raise ValueError("SIN should be less than 9 digits")
+
+
 
         if len(self.firstName) == 0:
             raise IntegrityError("First name is required")

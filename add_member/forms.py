@@ -1,13 +1,11 @@
-from django import forms
+from django.forms import ModelForm, NumberInput, TextInput, SelectDateWidget
 from .models import Person
 
-class PersonForm(forms.ModelForm):
+class PersonForm(ModelForm):
     class Meta:
         model = Person
-        fields = ['memberID', 'firstName', 'middleName', 'socNum',
-                  'city', 'mailAddress', 'mailAddress2', 'pCode',
-                  'bDay', 'gender', 'hPhone', 'cPhone', 'hEmail',
-                  'campus', 'jobType', 'committee', 'memberImage']
+
+        fields = '__all__'
         labels = {
             'memberID': 'Member ID/Saskpoly ID',
             'firstName': 'First Name',
@@ -27,10 +25,12 @@ class PersonForm(forms.ModelForm):
             'committee': 'Committee',
             'memberImage': 'Member Image',
             }
-        error_messages = {
-            'name':
-                {
-                    'max_length': 'Member ID should be less than 9 digits',
-                },
-        }
+
+        widgets = {
+            'memberID': NumberInput(attrs={'min':0,'max':999999999}),
+            'socNum': NumberInput(attrs={'min': 0, 'max': 999999999}),
+            'bDay': SelectDateWidget()
+            }
+
+
 
