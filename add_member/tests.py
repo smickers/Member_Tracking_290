@@ -575,7 +575,7 @@ class PersonTestCase(TestCase):
             tempPerson.jobType = 'FTO'
             tempPerson.committee = 'Sample Commitee'
             tempPerson.memberImage = 'image.img'
-            tempPerson.bDay = '2012-03-03'
+            tempPerson.bDay = '2012-03-04'
             tempPerson.clean()
             tempPerson.save()
 
