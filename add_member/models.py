@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db import IntegrityError
+from .validators import *
 from django.core.validators import MaxValueValidator
 
 
@@ -34,9 +35,9 @@ class Person(models.Model):
     lastName = models.CharField(max_length=30)
     socNum = models.IntegerField()
     city = models.CharField(max_length=20)
-    mailAddress = models.CharField(max_length=30)
-    mailAddress2 = models.CharField(max_length=30, null=True, blank=True)
-    pCode = models.CharField(max_length=7)
+    mailAddress = models.CharField(max_length=50)
+    mailAddress2 = models.CharField(max_length=50, null=True, blank=True)
+    pCode = models.CharField(max_length=7, validators=[validate_pCode])
     bDay = models.DateField()
     gender = models.CharField(choices=GENDER_CHOICE, max_length=10)
     hPhone = models.CharField(max_length=13, null=True, blank=True)
@@ -53,8 +54,6 @@ class Person(models.Model):
 
         if self.socNum > 999999999:
             raise ValueError("SIN should be less than 9 digits")
-
-
 
         if len(self.firstName) == 0:
             raise IntegrityError("First name is required")
