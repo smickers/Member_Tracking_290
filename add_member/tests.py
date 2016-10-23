@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 from .models import Person
 from django.db import DataError
 # Create your tests here.
@@ -22,6 +23,8 @@ from django.db import DataError
     # tempPerson.committee = 'Sample Commitee'
     # tempPerson.memberImage = 'image.img'
     # tempPerson.bDay = '2012-03-03'
+    # tempPerson.pCode = 's7k5j8'
+    # tempPerson.gender = 'MALE'
     # tempPerson.save()
 
 
@@ -38,14 +41,16 @@ class PersonTestCase(TestCase):
         tempPerson.mailAddress = 'Sample address'
         tempPerson.mailAddress2 = 'Sample Address 2'
         tempPerson.pCode = 's7k5j8'
-        tempPerson.hPhone= 3061111234
-        tempPerson.cPhone = 3061111234
+        tempPerson.hPhone = '(306)812-1234'
+        tempPerson.cPhone = '(306)812-1234'
         tempPerson.hEmail = 'sample@sample.com'
         tempPerson.campus = 'SASKATOON'
         tempPerson.jobType = 'FTO'
         tempPerson.committee = 'Sample Commitee'
         tempPerson.memberImage = 'image.img'
         tempPerson.bDay = '2012-03-03'
+        tempPerson.gender = 'MALE'
+        tempPerson.full_clean()
         tempPerson.save()
         self.assertTrue(Person.objects.count() == 1)
 
@@ -69,7 +74,8 @@ class PersonTestCase(TestCase):
             tempPerson.committee = 'Sample Commitee'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-03'
-            tempPerson.clean()
+            tempPerson.gender = 'MALE'
+            tempPerson.full_clean()
             tempPerson.save()
 
     #Test 3 - check to see if the database throws error if user tries to insert id number that's empty
@@ -91,6 +97,7 @@ class PersonTestCase(TestCase):
             tempPerson.committee = 'Sample Commitee'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-03'
+            tempPerson.gender = 'MALE'
             tempPerson.save()
 
 
@@ -105,14 +112,17 @@ class PersonTestCase(TestCase):
         tempPerson.city = 'Sample City'
         tempPerson.mailAddress = 'Sample address'
         tempPerson.mailAddress2 = 'Sample Address 2'
-        tempPerson.hPhone = 3061111234
-        tempPerson.cPhone = 3061111234
+        tempPerson.hPhone = '(306)812-1234'
+        tempPerson.cPhone = '(306)812-1234'
         tempPerson.hEmail = 'sample@sample.com'
         tempPerson.campus = 'SASKATOON'
         tempPerson.jobType = 'FTO'
         tempPerson.committee = 'Sample Commitee'
         tempPerson.memberImage = 'image.img'
         tempPerson.bDay = '2012-03-03'
+        tempPerson.gender = 'MALE'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.full_clean()
         tempPerson.save()
         self.assertTrue(tempPerson.socNum <= 999999999)
 
@@ -136,6 +146,8 @@ class PersonTestCase(TestCase):
             tempPerson.committee = 'Sample Commitee'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-03'
+            tempPerson.gender = 'MALE'
+            tempPerson.pCode = 's7k5j8'
             tempPerson.save()
 
 
@@ -160,7 +172,9 @@ class PersonTestCase(TestCase):
             tempPerson.committee = 'Sample Commitee'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-03'
-            tempPerson.clean()
+            tempPerson.gender = 'MALE'
+            tempPerson.pCode = 's7k5j8'
+            tempPerson.full_clean()
             tempPerson.save()
 
     #Test 7 - check to see if the first name field accepts first with less than or equal to 30 characters in length
@@ -174,15 +188,17 @@ class PersonTestCase(TestCase):
         tempPerson.city = 'Sample City'
         tempPerson.mailAddress = 'Sample address'
         tempPerson.mailAddress2 = 'Sample Address 2'
-        tempPerson.hPhone = 3061111234
-        tempPerson.cPhone = 3061111234
+        tempPerson.hPhone = '(306)812-1234'
+        tempPerson.cPhone = '(306)812-1234'
         tempPerson.hEmail = 'sample@sample.com'
         tempPerson.campus = 'SASKATOON'
         tempPerson.jobType = 'FTO'
         tempPerson.committee = 'Sample Commitee'
         tempPerson.memberImage = 'image.img'
         tempPerson.bDay = '2012-03-03'
-        tempPerson.clean()
+        tempPerson.gender = 'MALE'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.full_clean()
         tempPerson.save()
         self.assertTrue(Person.objects.count() == 1)
 
@@ -206,7 +222,9 @@ class PersonTestCase(TestCase):
             tempPerson.committee = 'Sample Commitee'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-03'
-            tempPerson.clean()
+            tempPerson.gender = 'MALE'
+            tempPerson.pCode = 's7k5j8'
+            tempPerson.full_clean()
             tempPerson.save()
 
 
@@ -230,7 +248,9 @@ class PersonTestCase(TestCase):
             tempPerson.committee = 'Sample Commitee'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-03'
-            tempPerson.clean()
+            tempPerson.gender = 'MALE'
+            tempPerson.pCode = 's7k5j8'
+            tempPerson.full_clean()
             tempPerson.save()
 
     # Test 10- check to see if the middle name field accepts first with less than or equal to 30 characters in length
@@ -244,15 +264,17 @@ class PersonTestCase(TestCase):
         tempPerson.city = 'Sample City'
         tempPerson.mailAddress = 'Sample address'
         tempPerson.mailAddress2 = 'Sample Address 2'
-        tempPerson.hPhone = 3061111234
-        tempPerson.cPhone = 3061111234
+        tempPerson.hPhone = '(306)812-1234'
+        tempPerson.cPhone = '(306)812-1234'
         tempPerson.hEmail = 'sample@sample.com'
         tempPerson.campus = 'SASKATOON'
         tempPerson.jobType = 'FTO'
         tempPerson.committee = 'Sample Commitee'
         tempPerson.memberImage = 'image.img'
         tempPerson.bDay = '2012-03-03'
-        tempPerson.clean()
+        tempPerson.gender = 'MALE'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.full_clean()
         tempPerson.save()
         self.assertTrue(Person.objects.count() == 1)
         #
@@ -275,7 +297,9 @@ class PersonTestCase(TestCase):
             tempPerson.committee = 'Sample Commitee'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-03'
-            tempPerson.clean()
+            tempPerson.gender = 'MALE'
+            tempPerson.pCode = 's7k5j8'
+            tempPerson.full_clean()
             tempPerson.save()
 
     # Test 12- Check to see if the database throws an error if the middle name is greater than 30
@@ -298,7 +322,9 @@ class PersonTestCase(TestCase):
             tempPerson.committee = 'Sample Commitee'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-03'
-            tempPerson.clean()
+            tempPerson.gender = 'MALE'
+            tempPerson.pCode = 's7k5j8'
+            tempPerson.full_clean()
             tempPerson.save()
 
 
@@ -313,15 +339,17 @@ class PersonTestCase(TestCase):
         tempPerson.city = 'Sample City'
         tempPerson.mailAddress = 'Sample address'
         tempPerson.mailAddress2 = 'Sample Address 2'
-        tempPerson.hPhone = 3061111234
-        tempPerson.cPhone = 3061111234
+        tempPerson.hPhone = '(306)812-1234'
+        tempPerson.cPhone = '(306)812-1234'
         tempPerson.hEmail = 'sample@sample.com'
         tempPerson.campus = 'SASKATOON'
         tempPerson.jobType = 'FTO'
         tempPerson.committee = 'Sample Commitee'
         tempPerson.memberImage = 'image.img'
         tempPerson.bDay = '2012-03-03'
-        tempPerson.clean()
+        tempPerson.gender = 'MALE'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.full_clean()
         tempPerson.save()
         self.assertTrue(Person.objects.count() == 1)
 
@@ -344,7 +372,9 @@ class PersonTestCase(TestCase):
             tempPerson.committee = 'Sample Commitee'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-03'
-            tempPerson.clean()
+            tempPerson.gender = 'MALE'
+            tempPerson.pCode = 's7k5j8'
+            tempPerson.full_clean()
             tempPerson.save()
 
 
@@ -368,29 +398,33 @@ class PersonTestCase(TestCase):
             tempPerson.committee = 'Sample Commitee'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-03'
-            tempPerson.clean()
+            tempPerson.gender = 'MALE'
+            tempPerson.pCode = 's7k5j8'
+            tempPerson.full_clean()
             tempPerson.save()
 
     # Test 16 - check to see if the mailing address field accepts first with less than or equal to 50 characters in length
     def testIfDatabaseAcceptsMailingAddressWithLessThan50Characters(self):
         tempPerson = Person()
         tempPerson.memberID = 123456789
+        tempPerson.middleName = 'Middle'
         tempPerson.firstName = 'First'
-        tempPerson.middleName = 'mid'
-        tempPerson.lastName = 'last'
+        tempPerson.lastName = 'Last'
         tempPerson.socNum = 123456789
         tempPerson.city = 'Sample City'
         tempPerson.mailAddress = 'Sample address'
         tempPerson.mailAddress2 = 'Sample Address 2'
-        tempPerson.hPhone = 3061111234
-        tempPerson.cPhone = 3061111234
+        tempPerson.hPhone = '(306)812-1234'
+        tempPerson.cPhone = '(306)812-1234'
         tempPerson.hEmail = 'sample@sample.com'
         tempPerson.campus = 'SASKATOON'
         tempPerson.jobType = 'FTO'
         tempPerson.committee = 'Sample Commitee'
         tempPerson.memberImage = 'image.img'
         tempPerson.bDay = '2012-03-03'
-        tempPerson.clean()
+        tempPerson.gender = 'MALE'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.full_clean()
         tempPerson.save()
         self.assertTrue(Person.objects.count() == 1)
 
@@ -413,7 +447,9 @@ class PersonTestCase(TestCase):
             tempPerson.committee = 'Sample Commitee'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-03'
-            tempPerson.clean()
+            tempPerson.gender = 'MALE'
+            tempPerson.pCode = 's7k5j8'
+            tempPerson.full_clean()
             tempPerson.save()
 
 
@@ -437,7 +473,9 @@ class PersonTestCase(TestCase):
             tempPerson.committee = 'Sample Commitee'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-03'
-            tempPerson.clean()
+            tempPerson.gender = 'MALE'
+            tempPerson.pCode = 's7k5j8'
+            tempPerson.full_clean()
             tempPerson.save()
 
 
@@ -453,15 +491,17 @@ class PersonTestCase(TestCase):
         tempPerson.city = 'Sample City'
         tempPerson.mailAddress = 'Sample Address 1'
         tempPerson.mailAddress2 = 'Sample Address 2'
-        tempPerson.hPhone = 3061111234
-        tempPerson.cPhone = 3061111234
+        tempPerson.hPhone = '(306)111-1234'
+        tempPerson.cPhone = '(306)111-1234'
         tempPerson.hEmail = 'sample@sample.com'
         tempPerson.campus = 'SASKATOON'
         tempPerson.jobType = 'FTO'
         tempPerson.committee = 'Sample Commitee'
         tempPerson.memberImage = 'image.img'
         tempPerson.bDay = '2012-03-03'
-        tempPerson.clean()
+        tempPerson.gender = 'MALE'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.full_clean()
         tempPerson.save()
         self.assertTrue(Person.objects.count() == 1)
 
@@ -485,7 +525,9 @@ class PersonTestCase(TestCase):
             tempPerson.committee = 'Sample Commitee'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-03'
-            tempPerson.clean()
+            tempPerson.gender = 'MALE'
+            tempPerson.pCode = 's7k5j8'
+            tempPerson.full_clean()
             tempPerson.save()
 
     # Test 21 Check to see if the database throws an error if the mailing address 2 is greater than 50
@@ -508,7 +550,9 @@ class PersonTestCase(TestCase):
             tempPerson.committee = 'Sample Commitee'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-03'
-            tempPerson.clean()
+            tempPerson.gender = 'MALE'
+            tempPerson.pCode = 's7k5j8'
+            tempPerson.full_clean()
             tempPerson.save()
 
     # Test 22 - check to see if the city field accepts first with less than or equal to 20 characters in length
@@ -521,16 +565,18 @@ class PersonTestCase(TestCase):
         tempPerson.socNum = 123456789
         tempPerson.city = 'Sample City'
         tempPerson.mailAddress = 'Sample Address 1'
-        tempPerson.mailAddres = 'Sample Address 2'
-        tempPerson.hPhone = 3061111234
-        tempPerson.cPhone = 3061111234
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = '(306)812-1234'
+        tempPerson.cPhone = '(306)812-1234'
         tempPerson.hEmail = 'sample@sample.com'
         tempPerson.campus = 'SASKATOON'
         tempPerson.jobType = 'FTO'
         tempPerson.committee = 'Sample Commitee'
         tempPerson.memberImage = 'image.img'
         tempPerson.bDay = '2012-03-03'
-        tempPerson.clean()
+        tempPerson.gender = 'MALE'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.full_clean()
         tempPerson.save()
         self.assertTrue(Person.objects.count() == 1)
 
@@ -553,7 +599,9 @@ class PersonTestCase(TestCase):
             tempPerson.committee = 'Sample Commitee'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-03'
-            tempPerson.clean()
+            tempPerson.gender = 'MALE'
+            tempPerson.pCode = 's7k5j8'
+            tempPerson.full_clean()
             tempPerson.save()
 
     # Test 24 Check to see if the database throws an error if the city is greater than 20
@@ -576,16 +624,134 @@ class PersonTestCase(TestCase):
             tempPerson.committee = 'Sample Commitee'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-04'
-            tempPerson.clean()
+            tempPerson.gender = 'MALE'
+            tempPerson.pCode = 's7k5j8'
+            tempPerson.full_clean()
             tempPerson.save()
 
     # Test 25 - check to see if the postal code field is in the format: L#L_#L#
-
+    def testIfDatabaseThrowsErrorIfPCodeIsInvalid(self):
+        with self.assertRaises(ValidationError):
+            tempPerson = Person()
+            tempPerson.memberID = 123456789
+            tempPerson.firstName = 'First'
+            tempPerson.middleName = 'mid'
+            tempPerson.lastName = 'last'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'city'
+            tempPerson.mailAddress = 'Sample Address 1'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone = 3061111234
+            tempPerson.cPhone = 3061111234
+            tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'FTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-04'
+            tempPerson.gender = 'MALE'
+            tempPerson.pCode = 'AAAA'
+            tempPerson.full_clean()
+            tempPerson.save()
+    #Test 25.b - check to see if the Database accepts valid postal code
+    def testIfDatabaseAcceptsValidPostalCode(self):
+        tempPerson = Person()
+        tempPerson.memberID = 123456789
+        tempPerson.firstName = 'First'
+        tempPerson.middleName = 'mid'
+        tempPerson.lastName = 'last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'city'
+        tempPerson.mailAddress = 'Sample Address 1'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = '(306)812-1234'
+        tempPerson.cPhone = '(306)812-1234'
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'FTO'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-04'
+        tempPerson.gender = 'MALE'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.full_clean()
+        tempPerson.save()
+        self.assertTrue(Person.objects.count() == 1)
 
     # Test 26- Check to see if the database throws an error if the postal code field is empty
+    def testIfDatabaseThrowsAnErrorIfPCodeIsEmpty(self):
+        with self.assertRaises(ValidationError):
+            tempPerson = Person()
+            tempPerson.memberID = 123456789
+            tempPerson.firstName = 'First'
+            tempPerson.middleName = 'mid'
+            tempPerson.lastName = 'last'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'city'
+            tempPerson.mailAddress = 'Sample Address 1'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone = 3061111234
+            tempPerson.cPhone = 3061111234
+            tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'FTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-04'
+            tempPerson.gender = 'MALE'
+            tempPerson.full_clean()
+            tempPerson.save()
 
 
-    # Test 27- Check to see if the Gender field value is only : 'Male', 'Female', 'Unspecified'
+    # Test 27- Check to see if the Gender field value is only : 'MALE', 'FEMALE', 'UNSPECIFIED'
+    def testIfDatabaseAcceptsMALEasGender(self):
+        tempPerson = Person()
+        tempPerson.memberID = 123456789
+        tempPerson.firstName = 'First'
+        tempPerson.middleName = 'Middle'
+        tempPerson.lastName = 'Last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'Sample City'
+        tempPerson.mailAddress = 'Sample address'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.hPhone = '(306)812-1234'
+        tempPerson.cPhone = '(306)812-1234'
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'FTO'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-03'
+        tempPerson.gender = 'MALE'
+        tempPerson.full_clean()
+        tempPerson.save()
+        self.assertTrue(Person.objects.count() == 1)
+
+    # Test 27- Check to see if the Gender field value is only : 'MALE', 'FEMALE', 'UNSPECIFIED'
+    def testIfDatabaseAcceptsMALEasGender(self):
+        tempPerson = Person()
+        tempPerson.memberID = 123456789
+        tempPerson.firstName = 'First'
+        tempPerson.middleName = 'mid'
+        tempPerson.lastName = 'last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'city'
+        tempPerson.mailAddress = 'Sample Address 1'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = '(306)111-1234'
+        tempPerson.cPhone = '(306)111-1234'
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'FTO'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-04'
+        tempPerson.gender = 'FEMALE'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.full_clean()
+        tempPerson.save()
+        self.assertTrue(Person.objects.count() == 1)
 
 
     # Test 28- Check to see if the Home phone field is in the format: (###) ### - ####
