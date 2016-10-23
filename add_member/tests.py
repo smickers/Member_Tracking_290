@@ -754,16 +754,110 @@ class PersonTestCase(TestCase):
         self.assertTrue(Person.objects.count() == 1)
 
 
-    # Test 28- Check to see if the Home phone field is in the format: (###) ### - ####
+    # Test 28- Check to see if the Home phone field is in the format: (###)###-####
+    def testIfDatabaseAcceptsMALEasGender(self):
+        tempPerson = Person()
+        tempPerson.memberID = 123456789
+        tempPerson.firstName = 'First'
+        tempPerson.middleName = 'mid'
+        tempPerson.lastName = 'last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'city'
+        tempPerson.mailAddress = 'Sample Address 1'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = '(306)111-1234'
+        tempPerson.cPhone = '(306)111-1234'
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'FTO'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-04'
+        tempPerson.gender = 'FEMALE'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.full_clean()
+        tempPerson.save()
+        self.assertTrue(Person.objects.count() == 1)
 
-
-    # Test 29- Check to see if the cell phone field is in the format: (###) ### - ####
+    # Test 29- Check to see if the cell phone field is in the format: (###)###-####
+    def testIfDatabaseAcceptsMALEasGender(self):
+        tempPerson = Person()
+        tempPerson.memberID = 123456789
+        tempPerson.firstName = 'First'
+        tempPerson.middleName = 'mid'
+        tempPerson.lastName = 'last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'city'
+        tempPerson.mailAddress = 'Sample Address 1'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = '(306)111-1234'
+        tempPerson.cPhone = '(306)111-1234'
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'FTO'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-04'
+        tempPerson.gender = 'FEMALE'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.full_clean()
+        tempPerson.save()
+        self.assertTrue(Person.objects.count() == 1)
 
 
     # Test 30- Check to see if the email field is in a valid email format
+    def testIfDatabaseThrowsAnErrorIfEmailGivenIsInvalid(self):
+        with self.assertRaises(ValidationError):
+            tempPerson = Person()
+            tempPerson.memberID = 123456789
+            tempPerson.firstName = 'First'
+            tempPerson.middleName = 'mid'
+            tempPerson.lastName = 'last'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'city'
+            tempPerson.mailAddress = 'Sample Address 1'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone = '(306)111-1234'
+            tempPerson.cPhone = '(306)111-1234'
+            tempPerson.hEmail = 'sample@.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'FTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-04'
+            tempPerson.gender = 'FEMALE'
+            tempPerson.pCode = 's7k5j8'
+            tempPerson.full_clean()
+            tempPerson.save()
+            self.assertTrue(Person.objects.count() == 1)
+
 
 
     # Test 31- Check to see if the database throws an error if the email field is empty
+    def testIfDatabaseThrowsAnErrorIfEmailFieldIsEmpty(self):
+        with self.assertRaises(ValidationError):
+            tempPerson = Person()
+            tempPerson.memberID = 123456789
+            tempPerson.firstName = 'First'
+            tempPerson.middleName = 'mid'
+            tempPerson.lastName = 'last'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'city'
+            tempPerson.mailAddress = 'Sample Address 1'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone = '(306)111-1234'
+            tempPerson.cPhone = '(306)111-1234'
+            # tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'FTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-04'
+            tempPerson.gender = 'FEMALE'
+            tempPerson.pCode = 's7k5j8'
+            tempPerson.full_clean()
+            tempPerson.save()
+            self.assertTrue(Person.objects.count() == 1)
 
 
     # Test 32- member image
@@ -772,12 +866,107 @@ class PersonTestCase(TestCase):
     # Test 33- Test to see if the hire date is in the format: DD/MM/YYYY
 
 
+
     # Test 34- Check to see if the database throws an error if the hire date field is empty
 
 
     # Test 35- Check to see if Job type is one of the following: 'Full-time ongoing', 'Full-time end dated',
         # 'Part-time ongoing', 'Part-time end dated'
+    def testIfDatabaseAcceptsFTOasAfulltimeongoingJobType(self):
+        tempPerson = Person()
+        tempPerson.memberID = 123456789
+        tempPerson.firstName = 'First'
+        tempPerson.middleName = 'mid'
+        tempPerson.lastName = 'last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'city'
+        tempPerson.mailAddress = 'Sample Address 1'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = '(306)111-1234'
+        tempPerson.cPhone = '(306)111-1234'
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'FTO'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-04'
+        tempPerson.gender = 'FEMALE'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.full_clean()
+        tempPerson.save()
+        self.assertTrue(Person.objects.count() == 1)
 
+    def testIfDatabaseAcceptsFTEDasAfulltimeEndDatedJobType(self):
+        tempPerson = Person()
+        tempPerson.memberID = 123456789
+        tempPerson.firstName = 'First'
+        tempPerson.middleName = 'mid'
+        tempPerson.lastName = 'last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'city'
+        tempPerson.mailAddress = 'Sample Address 1'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = '(306)111-1234'
+        tempPerson.cPhone = '(306)111-1234'
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'FTED'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-04'
+        tempPerson.gender = 'FEMALE'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.full_clean()
+        tempPerson.save()
+        self.assertTrue(Person.objects.count() == 1)
+
+    def testIfDatabaseAcceptsPTOasAPartTimeOngoingJobType(self):
+        tempPerson = Person()
+        tempPerson.memberID = 123456789
+        tempPerson.firstName = 'First'
+        tempPerson.middleName = 'mid'
+        tempPerson.lastName = 'last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'city'
+        tempPerson.mailAddress = 'Sample Address 1'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = '(306)111-1234'
+        tempPerson.cPhone = '(306)111-1234'
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'PTO'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-04'
+        tempPerson.gender = 'FEMALE'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.full_clean()
+        tempPerson.save()
+        self.assertTrue(Person.objects.count() == 1)
+
+    def testIfDatabaseAcceptsPTEDasAPartTimeEndDatedJobType(self):
+        tempPerson = Person()
+        tempPerson.memberID = 123456789
+        tempPerson.firstName = 'First'
+        tempPerson.middleName = 'mid'
+        tempPerson.lastName = 'last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'city'
+        tempPerson.mailAddress = 'Sample Address 1'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = '(306)111-1234'
+        tempPerson.cPhone = '(306)111-1234'
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'PTED'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-04'
+        tempPerson.gender = 'FEMALE'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.full_clean()
+        tempPerson.save()
+        self.assertTrue(Person.objects.count() == 1)
     # Test 36- Check to see if the database throws an error if the job type is empty
 
 
