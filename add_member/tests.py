@@ -28,6 +28,7 @@ from django.db import DataError
     # tempPerson.save()
 
 
+
 class PersonTestCase(TestCase):
     #Test 1 - check to see if the database accepts 9 digit id number
     def test9digitIdnumber(self):
@@ -967,8 +968,56 @@ class PersonTestCase(TestCase):
         tempPerson.full_clean()
         tempPerson.save()
         self.assertTrue(Person.objects.count() == 1)
-    # Test 36- Check to see if the database throws an error if the job type is empty
+    # Test 36- Check to see if the database throws an error if the job type is invalid
+    def testIfDatabaseThrowsErrorIfPersonsJobTypeIsInvalid(self):
+        with self.assertRaises(ValidationError):
+            tempPerson = Person()
+            tempPerson.memberID = 123456789
+            tempPerson.firstName = 'First'
+            tempPerson.middleName = 'mid'
+            tempPerson.lastName = 'last'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'city'
+            tempPerson.mailAddress = 'Sample Address 1'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone = '(306)111-1234'
+            tempPerson.cPhone = '(306)111-1234'
+            tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'ABC'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-04'
+            tempPerson.gender = 'FEMALE'
+            tempPerson.pCode = 's7k5j8'
+            tempPerson.full_clean()
+            tempPerson.save()
+            self.assertTrue(Person.objects.count() == 1)
 
+    def testIfDatabaseThrowsErrorIfPersonsJobTypeIsEmpty(self):
+        with self.assertRaises(ValidationError):
+            tempPerson = Person()
+            tempPerson.memberID = 123456789
+            tempPerson.firstName = 'First'
+            tempPerson.middleName = 'mid'
+            tempPerson.lastName = 'last'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'city'
+            tempPerson.mailAddress = 'Sample Address 1'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone = '(306)111-1234'
+            tempPerson.cPhone = '(306)111-1234'
+            tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            # tempPerson.jobType = 'PTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-04'
+            tempPerson.gender = 'FEMALE'
+            tempPerson.pCode = 's7k5j8'
+            tempPerson.full_clean()
+            tempPerson.save()
+            self.assertTrue(Person.objects.count() == 1)
 
     # Test 37 - check to see if the program name field accepts first with less than or equal to 30 characters in length
 
@@ -983,6 +1032,30 @@ class PersonTestCase(TestCase):
 
 
     # Test 41 - Check to see if the database throws an error if the campus field is empty
+    def testIfDatabaseThrowsErrorIfPersonsJobTypeIsEmpty(self):
+        tempPerson = Person()
+        tempPerson.memberID = 123456789
+        tempPerson.firstName = 'First'
+        tempPerson.middleName = 'mid'
+        tempPerson.lastName = 'last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'city'
+        tempPerson.mailAddress = 'Sample Address 1'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = '(306)111-1234'
+        tempPerson.cPhone = '(306)111-1234'
+        tempPerson.hEmail = 'sample@sample.com'
+        # tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'PTO'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-04'
+        tempPerson.gender = 'FEMALE'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.full_clean()
+        tempPerson.save()
+        self.assertTrue(Person.objects.count() == 1)
+
 
 
     # Test 42- Check to see if the database throws an error if the position field is greater than 20

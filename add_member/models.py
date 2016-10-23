@@ -9,25 +9,31 @@ from django.core.validators import MaxValueValidator
 # Create your models here.
 
 class Person(models.Model):
-    GENDER_CHOICE = (
+    GENDER_CHOICE = [
         ('MALE', 'Male'),
         ('FEMALE', 'Female'),
         ('UNDEFINED', 'Undefined'),
-    )
+    ]
 
-    CAMPUS_CHOICE = (
+    CAMPUS_CHOICE = [
         ('SASKATOON', 'SASKATOON'),
         ('REGINA', 'REGINA'),
         ('MOOSEJAW', 'MOOSE JAW'),
         ('PA', 'PRINCE ALBERT'),
-    )
+    ]
 
-    POSITION_CLASS_CHOICE = (
+    POSITION_CLASS_CHOICE = [
         ('FTO', 'Full-time ongoing'),
         ('FTED', 'Full-time end dated'),
         ('PTO', 'Part-time ongoing'),
         ('PTED', 'Part-time end dated'),
-    )
+    ]
+
+    MEMBERSHIP_STATUS = [
+        ('RESOURCE', 'RESOURCE'),
+        ('COMCHAIR', 'COMMITTEE CHAIR'),
+        ('RECORDER', 'RECORDER'),
+    ]
 
     memberID = models.IntegerField()
     firstName = models.CharField(max_length=30)
@@ -47,6 +53,10 @@ class Person(models.Model):
     jobType = models.CharField(max_length=30, choices=POSITION_CLASS_CHOICE)
     committee = models.CharField(max_length=30)
     memberImage = models.CharField(max_length=30, blank=True, null=True)
+    programChoice = models.CharField(max_length=30, null=True)
+    membershipStatus = models.CharField(max_length=30, choices=MEMBERSHIP_STATUS, null=True)
+
+
 
     def clean(self):
         if self.memberID > 999999999:
