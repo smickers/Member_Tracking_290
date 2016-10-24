@@ -917,19 +917,18 @@ class PersonTestCase(TestCase):
             self.assertTrue(Person.objects.count() == 1)
 
 
-            # Test 32- member image
+    # Test 32- member image
 
 
-            # Test 33- Test to see if the hire date is in the format: DD/MM/YYYY
+    # Test 33- Test to see if the hire date is in the format: DD/MM/YYYY
 
 
 
-            # Test 34- Check to see if the database throws an error if the hire date field is empty
+    # Test 34- Check to see if the database throws an error if the hire date field is empty
 
 
-            # Test 35- Check to see if Job type is one of the following: 'Full-time ongoing', 'Full-time end dated',
-            # 'Part-time ongoing', 'Part-time end dated'
-
+    # Test 35- Check to see if Job type is one of the following: 'Full-time ongoing', 'Full-time end dated',
+    # 'Part-time ongoing', 'Part-time end dated'
     def testIfDatabaseAcceptsFTOasAfulltimeongoingJobType(self):
         tempPerson = Person()
         tempPerson.memberID = 123456789
@@ -1088,13 +1087,86 @@ class PersonTestCase(TestCase):
             tempPerson.save()
 
     # Test 37 - check to see if the program name field accepts first with less than or equal to 30 characters in length
+    def testIfDatabaseAcceptsProgramWithLessThanOrEqualTO30Characters(self):
+        tempPerson = Person()
+        tempPerson.memberID = 123456789
+        tempPerson.firstName = 'First'
+        tempPerson.middleName = 'mid'
+        tempPerson.lastName = 'last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'city'
+        tempPerson.mailAddress = 'Sample Address 1'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = '(306)111-1234'
+        tempPerson.cPhone = '(306)111-1234'
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'PTO'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-04'
+        tempPerson.gender = 'FEMALE'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.membershipStatus = 'RESOURCE'
+        tempPerson.programChoice = 'Sample Program'
+        tempPerson.full_clean()
+        tempPerson.save()
 
 
     # Test 38 - Check to see if the database throws an error if the program field is empty
+    def testIFdatabaseThrowsANErrorWhenProgramFieldIsEmpty(self):
+        with self.assertRaises(ValidationError):
+            tempPerson = Person()
+            tempPerson.memberID = 123456789
+            tempPerson.firstName = 'First'
+            tempPerson.middleName = 'mid'
+            tempPerson.lastName = 'last'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'city'
+            tempPerson.mailAddress = 'Sample Address 1'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone = '(306)111-1234'
+            tempPerson.cPhone = '(306)111-1234'
+            tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'PTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-04'
+            tempPerson.gender = 'FEMALE'
+            tempPerson.pCode = 's7k5j8'
+            tempPerson.membershipStatus = 'RESOURCE'
+            # tempPerson.programChoice = 'Sample Program'
+            tempPerson.full_clean()
+            tempPerson.save()
 
 
     # Test 39- Check to see if the database throws an error if the program field is greater than 30
-
+    def testIfDatabaseAcceptsProgramWithLessThanOrEqualTO30Characters(self):
+        tempPerson = Person()
+        tempPerson.memberID = 123456789
+        tempPerson.firstName = 'First'
+        tempPerson.middleName = 'mid'
+        tempPerson.lastName = 'last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'city'
+        tempPerson.mailAddress = 'Sample Address 1'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = '(306)111-1234'
+        tempPerson.cPhone = '(306)111-1234'
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'PTO'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-04'
+        tempPerson.gender = 'FEMALE'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.membershipStatus = 'RESOURCE'
+        tempPerson.programChoice = 'Sample Program'
+        tempPerson.full_clean()
+        tempPerson.save()
+        self.assertTrue(Person.objects.count() == 1)
 
     # Test 40 - check to see if the campus name field accepts first with less than or equal to 20 characters in length
     def testIfDatabaseAcceptsNameWithLessThanOrEqualTo20CharactersInLength(self):
@@ -1176,5 +1248,3 @@ class PersonTestCase(TestCase):
             tempPerson.programChoice = 'Sample Program'
             tempPerson.full_clean()
             tempPerson.save()
-
-    # Test 42- Check to see if the database throws an error if the position field is greater than 20

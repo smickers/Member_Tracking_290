@@ -6,7 +6,6 @@ def validate_pCode(value):
     if not PCODE_REGEX.match(str(value).upper()):
         raise ValidationError("Invalid postal code")
 
-
 def validate_numbers(value):
     HNUM_REGEX = re.compile(r"\([0-9]{3}\)[0-9]{3}-[0-9]{4}")
     if not HNUM_REGEX.match(str(value)):

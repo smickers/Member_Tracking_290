@@ -36,20 +36,16 @@ class PersonForm(ModelForm):
 
     def clean_memberID(self):
         data = self.cleaned_data['memberID']
-        if(data <= 99999999):
+        if(data > 999999999):
             raise ValidationError("Invalid member id")
         return data
 
     def clean_socNum(self):
         data = self.cleaned_data['socNum']
-        if( data <= 99999999 ):
-            raise  ValidationError("Invalid SIN number")
+        if( data > 999999999 ):
+            raise ValidationError("Invalid SIN number")
         return data
 
-    def clean_pCode(self):
-        data = self.cleaned_data['pCode']
-        data = validate_pCode(data)
-        return data
 
 
 
