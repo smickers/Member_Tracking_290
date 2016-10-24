@@ -6,9 +6,9 @@ import sys
 
 
 class Member(models.Model):
-    memberID = models.IntegerField(max_length=9),
-    firstName = models.CharField(max_length=20),
-    lastName = models.CharField(max_length=30),
+    memberID = models.IntegerField(max_length=9, unique='true')
+    firstName = models.CharField(max_length=20)
+    lastName = models.CharField(max_length=30)
 
     def __str__(self):
         return self.firstName + " " + self.lastName
@@ -23,8 +23,5 @@ class Member(models.Model):
 
 
 class Case(models.Model):
-    caseID = models.IntegerField(max_length=9),
-    members = models.ForeignKey(Member, on_delete=models.CASCADE)
-
-
-
+    caseID = models.IntegerField(max_length=9)
+    members = models.ForeignKey(Member, on_delete=models.CASCADE, to_field='memberID', default=000000000)
