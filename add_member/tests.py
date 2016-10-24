@@ -52,6 +52,7 @@ class PersonTestCase(TestCase):
         tempPerson.committee = 'Sample Commitee'
         tempPerson.memberImage = 'image.img'
         tempPerson.bDay = '2012-03-03'
+        tempPerson.hireDate = '2012-03-03'
         tempPerson.gender = 'MALE'
         tempPerson.membershipStatus = 'RESOURCE'
         tempPerson.programChoice = 'Sample Program'
@@ -82,6 +83,7 @@ class PersonTestCase(TestCase):
             tempPerson.gender = 'MALE'
             tempPerson.membershipStatus = 'RESOURCE'
             tempPerson.programChoice = 'Sample Program'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.full_clean()
             tempPerson.save()
 
@@ -105,6 +107,7 @@ class PersonTestCase(TestCase):
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-03'
             tempPerson.membershipStatus = 'RESOURCE'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.programChoice = 'Sample Program'
             tempPerson.gender = 'MALE'
             tempPerson.save()
@@ -132,6 +135,7 @@ class PersonTestCase(TestCase):
         tempPerson.membershipStatus = 'RESOURCE'
         tempPerson.programChoice = 'Sample Program'
         tempPerson.pCode = 's7k5j8'
+        tempPerson.hireDate = '2012-03-03'
         tempPerson.full_clean()
         tempPerson.save()
         self.assertTrue(tempPerson.socNum <= 999999999)
@@ -158,6 +162,7 @@ class PersonTestCase(TestCase):
             tempPerson.bDay = '2012-03-03'
             tempPerson.gender = 'MALE'
             tempPerson.pCode = 's7k5j8'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.membershipStatus = 'RESOURCE'
             tempPerson.programChoice = 'Sample Program'
             tempPerson.save()
@@ -186,6 +191,7 @@ class PersonTestCase(TestCase):
             tempPerson.gender = 'MALE'
             tempPerson.membershipStatus = 'RESOURCE'
             tempPerson.programChoice = 'Sample Program'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.pCode = 's7k5j8'
             tempPerson.full_clean()
             tempPerson.save()
@@ -194,6 +200,7 @@ class PersonTestCase(TestCase):
     def testIfFirstNameFieldAcceptsFirstNameLessThanOREqual30Chars(self):
         tempPerson = Person()
         tempPerson.memberID = 123456789
+        tempPerson.hireDate = '2012-03-03'
         tempPerson.firstName = 'First'
         tempPerson.middleName = 'Middle'
         tempPerson.lastName = 'Last'
@@ -222,6 +229,7 @@ class PersonTestCase(TestCase):
         with self.assertRaises(IntegrityError):
             tempPerson = Person()
             tempPerson.memberID = 123456789
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.middleName = 'Middle'
             tempPerson.lastName = 'Last'
             tempPerson.socNum = 123456789
@@ -248,6 +256,7 @@ class PersonTestCase(TestCase):
         with self.assertRaises(ValueError):
             tempPerson = Person()
             tempPerson.memberID = 1234567899
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.middleName = 'Middle'
             tempPerson.firstName = 'abcdefghijklmnopqrstuvabcdeeeeaaaaaaaa'
             tempPerson.lastName = 'Last'
@@ -274,6 +283,7 @@ class PersonTestCase(TestCase):
     def testIfMiddleNameFieldAcceptsMiddleNameLessThanOREqual30Chars(self):
         tempPerson = Person()
         tempPerson.memberID = 123456789
+        tempPerson.hireDate = '2012-03-03'
         tempPerson.middleName = 'Middle'
         tempPerson.firstName = 'First'
         tempPerson.lastName = 'Last'
@@ -303,6 +313,7 @@ class PersonTestCase(TestCase):
         with self.assertRaises(IntegrityError):
             tempPerson = Person()
             tempPerson.memberID = 123456789
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.firstName = 'First'
             tempPerson.lastName = 'Last'
             tempPerson.socNum = 123456789
@@ -328,6 +339,7 @@ class PersonTestCase(TestCase):
     def testIfDatabaseThrowsErrorifMiddleNameIsEmpty(self):
         with self.assertRaises(ValueError):
             tempPerson = Person()
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.memberID = 123456789
             tempPerson.firstName = 'First'
             tempPerson.lastName = 'Last'
@@ -356,6 +368,7 @@ class PersonTestCase(TestCase):
         tempPerson = Person()
         tempPerson.memberID = 123456789
         tempPerson.firstName = 'First'
+        tempPerson.hireDate = '2012-03-03'
         tempPerson.lastName = 'Last'
         tempPerson.middleName = 'middle'
         tempPerson.socNum = 123456789
@@ -384,6 +397,7 @@ class PersonTestCase(TestCase):
             tempPerson = Person()
             tempPerson.memberID = 123456789
             tempPerson.firstName = 'First'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.middleName = 'mid'
             tempPerson.socNum = 123456789
             tempPerson.city = 'Sample City'
@@ -410,6 +424,7 @@ class PersonTestCase(TestCase):
             tempPerson = Person()
             tempPerson.memberID = 123456789
             tempPerson.firstName = 'First'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.middleName = 'mid'
             tempPerson.lastName = 'abcdefghijklmnopqrstuvabcdeeeeaaaaaaaa'
             tempPerson.socNum = 123456789
@@ -435,6 +450,7 @@ class PersonTestCase(TestCase):
     def testIfDatabaseAcceptsMailingAddressWithLessThan50Characters(self):
         tempPerson = Person()
         tempPerson.memberID = 123456789
+        tempPerson.hireDate = '2012-03-03'
         tempPerson.middleName = 'Middle'
         tempPerson.firstName = 'First'
         tempPerson.lastName = 'Last'
@@ -465,6 +481,7 @@ class PersonTestCase(TestCase):
             tempPerson = Person()
             tempPerson.memberID = 123456789
             tempPerson.firstName = 'First'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.middleName = 'mid'
             tempPerson.lastName = 'last'
             tempPerson.socNum = 123456789
@@ -492,6 +509,7 @@ class PersonTestCase(TestCase):
             tempPerson.memberID = 123456789
             tempPerson.firstName = 'First'
             tempPerson.middleName = 'mid'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.lastName = 'last'
             tempPerson.socNum = 123456789
             tempPerson.city = 'Sample City'
@@ -517,6 +535,7 @@ class PersonTestCase(TestCase):
         tempPerson = Person()
         tempPerson.memberID = 123456789
         tempPerson.firstName = 'First'
+        tempPerson.hireDate = '2012-03-03'
         tempPerson.middleName = 'mid'
         tempPerson.lastName = 'last'
         tempPerson.socNum = 123456789
@@ -549,6 +568,7 @@ class PersonTestCase(TestCase):
             tempPerson.lastName = 'last'
             tempPerson.socNum = 123456789
             tempPerson.city = 'Sample City'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.mailAddress2 = 'Sample Address 2'
             tempPerson.hPhone = 3061111234
             tempPerson.cPhone = 3061111234
@@ -574,6 +594,7 @@ class PersonTestCase(TestCase):
             tempPerson.middleName = 'mid'
             tempPerson.lastName = 'last'
             tempPerson.socNum = 123456789
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.city = 'Sample City'
             tempPerson.mailAddress = 'Sample Address 1'
             tempPerson.mailAddress2 = 'asdffasdfgasdffasdfgasdffasdfgasdffasdfgasdffasdfgasdffasdfg'
@@ -612,6 +633,7 @@ class PersonTestCase(TestCase):
         tempPerson.memberImage = 'image.img'
         tempPerson.bDay = '2012-03-03'
         tempPerson.gender = 'MALE'
+        tempPerson.hireDate = '2012-03-03'
         tempPerson.pCode = 's7k5j8'
         tempPerson.membershipStatus = 'RESOURCE'
         tempPerson.programChoice = 'Sample Program'
@@ -638,6 +660,7 @@ class PersonTestCase(TestCase):
             tempPerson.committee = 'Sample Commitee'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-03'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.gender = 'MALE'
             tempPerson.pCode = 's7k5j8'
             tempPerson.membershipStatus = 'RESOURCE'
@@ -655,6 +678,7 @@ class PersonTestCase(TestCase):
             tempPerson.lastName = 'last'
             tempPerson.socNum = 123456789
             tempPerson.city = 'abcdeabcdeabcdeabcdeabcde'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.mailAddress = 'Sample Address 1'
             tempPerson.mailAddress2 = 'Sample Address 2'
             tempPerson.hPhone = 3061111234
@@ -677,6 +701,7 @@ class PersonTestCase(TestCase):
         with self.assertRaises(ValidationError):
             tempPerson = Person()
             tempPerson.memberID = 123456789
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.firstName = 'First'
             tempPerson.middleName = 'mid'
             tempPerson.lastName = 'last'
@@ -703,6 +728,7 @@ class PersonTestCase(TestCase):
     def testIfDatabaseAcceptsValidPostalCode(self):
         tempPerson = Person()
         tempPerson.memberID = 123456789
+        tempPerson.hireDate = '2012-03-03'
         tempPerson.firstName = 'First'
         tempPerson.middleName = 'mid'
         tempPerson.lastName = 'last'
@@ -733,6 +759,7 @@ class PersonTestCase(TestCase):
             tempPerson.memberID = 123456789
             tempPerson.firstName = 'First'
             tempPerson.middleName = 'mid'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.lastName = 'last'
             tempPerson.socNum = 123456789
             tempPerson.city = 'city'
@@ -760,6 +787,7 @@ class PersonTestCase(TestCase):
         tempPerson.middleName = 'Middle'
         tempPerson.lastName = 'Last'
         tempPerson.socNum = 123456789
+        tempPerson.hireDate = '2012-03-03'
         tempPerson.city = 'Sample City'
         tempPerson.mailAddress = 'Sample address'
         tempPerson.mailAddress2 = 'Sample Address 2'
@@ -796,6 +824,7 @@ class PersonTestCase(TestCase):
         tempPerson.campus = 'SASKATOON'
         tempPerson.jobType = 'FTO'
         tempPerson.committee = 'Sample Commitee'
+        tempPerson.hireDate = '2012-03-03'
         tempPerson.memberImage = 'image.img'
         tempPerson.bDay = '2012-03-04'
         tempPerson.gender = 'FEMALE'
@@ -818,6 +847,7 @@ class PersonTestCase(TestCase):
         tempPerson.mailAddress = 'Sample Address 1'
         tempPerson.mailAddress2 = 'Sample Address 2'
         tempPerson.hPhone = '(306)111-1234'
+        tempPerson.hireDate = '2012-03-03'
         tempPerson.cPhone = '(306)111-1234'
         tempPerson.hEmail = 'sample@sample.com'
         tempPerson.campus = 'SASKATOON'
@@ -841,6 +871,7 @@ class PersonTestCase(TestCase):
         tempPerson.middleName = 'mid'
         tempPerson.lastName = 'last'
         tempPerson.socNum = 123456789
+        tempPerson.hireDate = '2012-03-03'
         tempPerson.city = 'city'
         tempPerson.mailAddress = 'Sample Address 1'
         tempPerson.mailAddress2 = 'Sample Address 2'
@@ -871,6 +902,7 @@ class PersonTestCase(TestCase):
             tempPerson.socNum = 123456789
             tempPerson.city = 'city'
             tempPerson.mailAddress = 'Sample Address 1'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.mailAddress2 = 'Sample Address 2'
             tempPerson.hPhone = '(306)111-1234'
             tempPerson.cPhone = '(306)111-1234'
@@ -901,6 +933,7 @@ class PersonTestCase(TestCase):
             tempPerson.mailAddress = 'Sample Address 1'
             tempPerson.mailAddress2 = 'Sample Address 2'
             tempPerson.hPhone = '(306)111-1234'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.cPhone = '(306)111-1234'
             # tempPerson.hEmail = 'sample@sample.com'
             tempPerson.campus = 'SASKATOON'
@@ -920,12 +953,35 @@ class PersonTestCase(TestCase):
     # Test 32- member image
 
 
-    # Test 33- Test to see if the hire date is in the format: DD/MM/YYYY
-
 
 
     # Test 34- Check to see if the database throws an error if the hire date field is empty
-
+    def testIfDatabaseThrowsErrorIfhiredatefieldIsEmpty(self):
+        tempPerson = Person()
+        tempPerson.memberID = 123456789
+        tempPerson.firstName = 'First'
+        tempPerson.middleName = 'mid'
+        tempPerson.lastName = 'last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'city'
+        tempPerson.mailAddress = 'Sample Address 1'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = '(306)111-1234'
+        tempPerson.cPhone = '(306)111-1234'
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.hireDate = '2012-03-03'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'FTO'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-04'
+        tempPerson.gender = 'FEMALE'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.membershipStatus = 'RESOURCE'
+        tempPerson.programChoice = 'Sample Program'
+        tempPerson.full_clean()
+        tempPerson.save()
+        self.assertTrue(Person.objects.count() == 1)
 
     # Test 35- Check to see if Job type is one of the following: 'Full-time ongoing', 'Full-time end dated',
     # 'Part-time ongoing', 'Part-time end dated'
@@ -945,6 +1001,7 @@ class PersonTestCase(TestCase):
         tempPerson.campus = 'SASKATOON'
         tempPerson.jobType = 'FTO'
         tempPerson.committee = 'Sample Commitee'
+        tempPerson.hireDate = '2012-03-03'
         tempPerson.memberImage = 'image.img'
         tempPerson.bDay = '2012-03-04'
         tempPerson.gender = 'FEMALE'
@@ -973,6 +1030,7 @@ class PersonTestCase(TestCase):
         tempPerson.committee = 'Sample Commitee'
         tempPerson.memberImage = 'image.img'
         tempPerson.bDay = '2012-03-04'
+        tempPerson.hireDate = '2012-03-03'
         tempPerson.gender = 'FEMALE'
         tempPerson.membershipStatus = 'RESOURCE'
         tempPerson.programChoice = 'Sample Program'
@@ -994,6 +1052,7 @@ class PersonTestCase(TestCase):
         tempPerson.hPhone = '(306)111-1234'
         tempPerson.cPhone = '(306)111-1234'
         tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.hireDate = '2012-03-03'
         tempPerson.campus = 'SASKATOON'
         tempPerson.jobType = 'PTO'
         tempPerson.committee = 'Sample Commitee'
@@ -1017,6 +1076,7 @@ class PersonTestCase(TestCase):
         tempPerson.city = 'city'
         tempPerson.mailAddress = 'Sample Address 1'
         tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hireDate = '2012-03-03'
         tempPerson.hPhone = '(306)111-1234'
         tempPerson.cPhone = '(306)111-1234'
         tempPerson.hEmail = 'sample@sample.com'
@@ -1039,6 +1099,7 @@ class PersonTestCase(TestCase):
             tempPerson = Person()
             tempPerson.memberID = 123456789
             tempPerson.firstName = 'First'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.middleName = 'mid'
             tempPerson.lastName = 'last'
             tempPerson.socNum = 123456789
@@ -1065,6 +1126,7 @@ class PersonTestCase(TestCase):
             tempPerson = Person()
             tempPerson.memberID = 123456789
             tempPerson.firstName = 'First'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.middleName = 'mid'
             tempPerson.lastName = 'last'
             tempPerson.socNum = 123456789
@@ -1091,6 +1153,7 @@ class PersonTestCase(TestCase):
         tempPerson = Person()
         tempPerson.memberID = 123456789
         tempPerson.firstName = 'First'
+        tempPerson.hireDate = '2012-03-03'
         tempPerson.middleName = 'mid'
         tempPerson.lastName = 'last'
         tempPerson.socNum = 123456789
@@ -1131,6 +1194,7 @@ class PersonTestCase(TestCase):
             tempPerson.campus = 'SASKATOON'
             tempPerson.jobType = 'PTO'
             tempPerson.committee = 'Sample Commitee'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-04'
             tempPerson.gender = 'FEMALE'
@@ -1157,6 +1221,7 @@ class PersonTestCase(TestCase):
         tempPerson.hEmail = 'sample@sample.com'
         tempPerson.campus = 'SASKATOON'
         tempPerson.jobType = 'PTO'
+        tempPerson.hireDate = '2012-03-03'
         tempPerson.committee = 'Sample Commitee'
         tempPerson.memberImage = 'image.img'
         tempPerson.bDay = '2012-03-04'
@@ -1186,6 +1251,7 @@ class PersonTestCase(TestCase):
             # tempPerson.campus = 'SASKATOON'
             tempPerson.jobType = 'PTO'
             tempPerson.committee = 'Sample Commitee'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-04'
             tempPerson.gender = 'FEMALE'
@@ -1218,6 +1284,7 @@ class PersonTestCase(TestCase):
             tempPerson.gender = 'FEMALE'
             tempPerson.pCode = 's7k5j8'
             tempPerson.membershipStatus = 'RESOURCE'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.programChoice = 'Sample Program'
             tempPerson.full_clean()
             tempPerson.save()
@@ -1243,8 +1310,64 @@ class PersonTestCase(TestCase):
             tempPerson.memberImage = 'image.img'
             tempPerson.bDay = '2012-03-04'
             tempPerson.gender = 'FEMALE'
+            tempPerson.hireDate = '2012-03-03'
             tempPerson.pCode = 's7k5j8'
             tempPerson.membershipStatus = 'RESOURCE'
             tempPerson.programChoice = 'Sample Program'
             tempPerson.full_clean()
             tempPerson.save()
+    #Check to see if database throws an error if hire date empty
+    def testIfDatabaseThrowsErrorIfHireDateFieldIsEmpty(self):
+        with self.assertRaises(ValidationError):
+            tempPerson = Person()
+            tempPerson.memberID = 123456789
+            tempPerson.firstName = 'First'
+            tempPerson.middleName = 'mid'
+            tempPerson.lastName = 'last'
+            tempPerson.socNum = 123456789
+            tempPerson.city = 'city'
+            tempPerson.mailAddress = 'Sample Address 1'
+            tempPerson.mailAddress2 = 'Sample Address 2'
+            tempPerson.hPhone = '(306)111-1234'
+            tempPerson.cPhone = '(306)111-1234'
+            tempPerson.hEmail = 'sample@sample.com'
+            tempPerson.campus = 'SASKATOON'
+            tempPerson.jobType = 'PTO'
+            tempPerson.committee = 'Sample Commitee'
+            tempPerson.memberImage = 'image.img'
+            tempPerson.bDay = '2012-03-04'
+            tempPerson.gender = 'FEMALE'
+            # tempPerson.hireDate = '2012-03-03'
+            tempPerson.pCode = 's7k5j8'
+            tempPerson.membershipStatus = 'RESOURCE'
+            tempPerson.programChoice = 'Sample Program'
+            tempPerson.full_clean()
+            tempPerson.save()
+
+    #Check to see if database accepts a hire date
+    def testIfDatabaseAcceptsDateForhireDate(self):
+        tempPerson = Person()
+        tempPerson.memberID = 123456789
+        tempPerson.firstName = 'First'
+        tempPerson.middleName = 'mid'
+        tempPerson.lastName = 'last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'city'
+        tempPerson.mailAddress = 'Sample Address 1'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.hPhone = '(306)111-1234'
+        tempPerson.cPhone = '(306)111-1234'
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'PTO'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-04'
+        tempPerson.gender = 'FEMALE'
+        tempPerson.hireDate = '2012-03-03'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.membershipStatus = 'RESOURCE'
+        tempPerson.programChoice = 'Sample Program'
+        tempPerson.full_clean()
+        tempPerson.save()
+        self.assertTrue(Person.objects.count()==1)

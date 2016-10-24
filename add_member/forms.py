@@ -31,7 +31,8 @@ class PersonForm(ModelForm):
         widgets = {
             'memberID': NumberInput(attrs={'min':0,'max':999999999}),
             'socNum': NumberInput(attrs={'min': 0, 'max': 999999999}),
-            'bDay': SelectDateWidget()
+            'bDay': SelectDateWidget(),
+            'hireDate': SelectDateWidget()
             }
 
     def clean_memberID(self):

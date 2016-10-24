@@ -55,7 +55,7 @@ class Person(models.Model):
     memberImage = models.CharField(max_length=30, blank=True, null=True)
     programChoice = models.CharField(max_length=30, null=True)
     membershipStatus = models.CharField(max_length=30, choices=MEMBERSHIP_STATUS, null=True)
-
+    hireDate = models.DateField(null=True)
 
 
     def clean(self):
