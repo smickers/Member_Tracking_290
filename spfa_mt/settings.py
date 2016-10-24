@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'contact_log.apps.ContactLogConfig',
+    'contactLog.apps.ContactlogConfig'
 ]
 
 MIDDLEWARE = [
