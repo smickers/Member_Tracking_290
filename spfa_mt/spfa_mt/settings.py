@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    '../add_case.apps.AddCaseConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -78,6 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'gamma',
         'HOST': '127.0.0.1',
+        'PORT': '3306',
         'PASSWORD': 'bitnami',
         'USER': 'root',
     }
