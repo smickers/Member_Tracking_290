@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'cases.apps.casesConfig',
+    'add_member.apps.AddMemberConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -78,11 +79,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'gamma',
-        'USER': 'root',
-        'PASSWORD': 'bitnami',
         'HOST': '127.0.0.1',
         'PORT': '3306',
-        'OPTIONS': {'init_command': 'SET storage_engine=myISAM'}
+        'PASSWORD': 'bitnami',
+        'USER': 'root',
     }
 }
 
