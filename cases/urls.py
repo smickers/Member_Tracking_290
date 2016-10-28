@@ -3,6 +3,6 @@ from . import views
 
 app_name = 'cases'
 
-urlpatterns = {
+urlpatterns = [
     url(r'^$', views.CaseMembersCreate.as_view(), name='addMemberToCase'),
-}
+]
