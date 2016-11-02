@@ -4,13 +4,23 @@
     <meta charset="UTF-8">
     <title>List of Person</title>
 
-    <ul>
+
+    <table border="2">
+        <thead>
+            <th>name</th>
+            <th>Action1</th>
+            <th>Action2<th/>
+        </thead>
         {% for person in object_list %}
-            <li>{{ person.firstName }}</li>
+            <tr>
+                <td>{{ person.firstName }}</td>
+                <td><a href="{% url 'add_member:member_update' person.pk %}">[Update]</a></td>
+                <td><a href="{% url 'add_member:member_detail' person.pk %}">[View Detail]</a></td>
+            </tr>
         {% empty %}
-            <li>No members yet</li>
+            <tr>NO MEMBERS YET</tr>
         {% endfor %}
-    </ul>
+    </table>
 
 </head>
 <body>

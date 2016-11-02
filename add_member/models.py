@@ -102,5 +102,5 @@ class Person(models.Model):
             raise ValueError("City Field must be less than 20 characters")
 
     def get_absolute_url(self):
-        return reverse(viewname='add_member:member_add')
+        return reverse(viewname='add_member:member_detail', kwargs={'pk':self.pk})
 
