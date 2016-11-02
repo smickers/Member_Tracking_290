@@ -1,8 +1,0 @@
-<h1>{{ add_case.title }}</h1>
-<form action="" method="post">
-    {% for field in add_case.fields %}
-        <label for="{{ field.name }}">{{ field.name }}</label>
-        <input type="text" name="{{ field.name }}" id="{{ field.name }}" />
-    {% endfor %}
-    <input type="submit" value="Create Case"/>
-</form>

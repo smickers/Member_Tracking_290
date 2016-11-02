@@ -1,8 +1,8 @@
 from django.conf.urls import url
-from . views
+from . import views
 
 app_name = 'add_case'
 
 urlpatterns = [
-    url(r'^/case', views.)
+    url(r'^$', views.CaseCreate.as_view(), name='case_add'),
 ]

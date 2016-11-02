@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'fsdafdsa.wsgi.application'
+WSGI_APPLICATION = 'spfa_mt.wsgi.application'
 
 
 # Database

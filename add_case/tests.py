@@ -91,25 +91,26 @@ class CaseTests(TestCase):
     def testTrue(self):
         return self.assertTrue(True)
 
-    # Test 11 - Campus writes to database when string length is 255 characters
-    def testThatCampusIsWrittenToDBWhenStringLengthIs255Characters(self):
-        tempCase = Case()
-        tempCase.lead = 123456789
-        tempCase.complainant = 987654321
-        tempCase.campus = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                          "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                          "natoque penatibus et magnis dis parturient montes, nascetur " \
-                          "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,"
-        tempCase.school = "School of Business"
-        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
-        tempCase.status = "OPEN"
-        tempCase.additionalMembers = 0
-        tempCase.additionalNonMembers = ""
-        tempCase.docs = None
-        tempCase.logs = None
-        tempCase.date = "2016-10-20"
-        tempCase.full_clean()
-        tempCase.save()
+    # Test 11 - Campus does not write to database when string length is 255 characters
+    def testThatCampusIsNotWrittenToDBWhenStringLengthIs255Characters(self):
+        with self.assertRaises(ValidationError):
+            tempCase = Case()
+            tempCase.lead = 123456789
+            tempCase.complainant = 987654321
+            tempCase.campus = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                              "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                              "natoque penatibus et magnis dis parturient montes, nascetur " \
+                              "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,"
+            tempCase.school = "School of Business"
+            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.status = "OPEN"
+            tempCase.additionalMembers = 0
+            tempCase.additionalNonMembers = ""
+            tempCase.docs = None
+            tempCase.logs = None
+            tempCase.date = "2016-10-20"
+            tempCase.full_clean()
+            tempCase.save()
 
     # Test 12 - Campus writes to database when string length is 8 characters
     def testThatCampusIsWrittenToDBWhenStringLengthIs8Characters(self):
@@ -125,46 +126,54 @@ class CaseTests(TestCase):
         tempCase.docs = None
         tempCase.logs = None
         tempCase.date = "2016-10-20"
+        tempCase.full_clean()
+        tempCase.save()
 
     # Test 13 - Campus doesnt' write to database when length is 256 characters
     def testThatCampusIsNotWrittenWhenLengthIs256Characters(self):
-        tempCase = Case()
-        tempCase.lead = 123456789
-        tempCase.complainant = 987654321
-        tempCase.campus = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                          "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                          "natoque penatibus et magnis dis parturient montes, nascetur " \
-                          "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
-        tempCase.school = "School of Business"
-        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
-        tempCase.status = "OPEN"
-        tempCase.additionalMembers = 0
-        tempCase.additionalNonMembers = ""
-        tempCase.docs = None
-        tempCase.logs = None
-        tempCase.date = "2016-10-20"
+        with self.assertRaises(ValidationError):
+            tempCase = Case()
+            tempCase.lead = 123456789
+            tempCase.complainant = 987654321
+            tempCase.campus = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                              "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                              "natoque penatibus et magnis dis parturient montes, nascetur " \
+                              "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
+            tempCase.school = "School of Business"
+            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.status = "OPEN"
+            tempCase.additionalMembers = 0
+            tempCase.additionalNonMembers = ""
+            tempCase.docs = None
+            tempCase.logs = None
+            tempCase.date = "2016-10-20"
+            tempCase.full_clean()
+            tempCase.save()
 
     # Test 14 - Campus doesn't write to database when length is 512 characters
     def testThatCampusIsNotWrittenWhenLengthIs512Characters(self):
-        tempCase = Case()
-        tempCase.lead = 123456789
-        tempCase.complainant = 987654321
-        tempCase.campus = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                          "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                          "natoque penatibus et magnis dis parturient montes, nascetur " \
-                          "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,," \
-                          "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                          "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                          "natoque penatibus et magnis dis parturient montes, nascetur " \
-                          "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
-        tempCase.school = "School of Business"
-        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
-        tempCase.status = "OPEN"
-        tempCase.additionalMembers = 0
-        tempCase.additionalNonMembers = ""
-        tempCase.docs = None
-        tempCase.logs = None
-        tempCase.date = "2016-10-20"
+        with self.assertRaises(ValidationError):
+            tempCase = Case()
+            tempCase.lead = 123456789
+            tempCase.complainant = 987654321
+            tempCase.campus = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                              "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                              "natoque penatibus et magnis dis parturient montes, nascetur " \
+                              "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,," \
+                              "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                              "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                              "natoque penatibus et magnis dis parturient montes, nascetur " \
+                              "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
+            tempCase.school = "School of Business"
+            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.status = "OPEN"
+            tempCase.additionalMembers = 0
+            tempCase.additionalNonMembers = ""
+            tempCase.docs = None
+            tempCase.logs = None
+            tempCase.date = "2016-10-20"
+            tempCase.full_clean()
+            tempCase.save()
 
     # Test 15 - School writes to database when string length is 255 characters
     def testThatSchoolIsWrittenToDBWhenStringLengthIs255Characters(self):
@@ -183,6 +192,8 @@ class CaseTests(TestCase):
         tempCase.docs = None
         tempCase.logs = None
         tempCase.date = "2016-10-20"
+        tempCase.full_clean()
+        tempCase.save()
 
     # Test 16 - School writes to database when string length is 18 characters
     def testThatSchoolIsWrittenToDBWhenStringLengthIs18Characters(self):
@@ -198,64 +209,75 @@ class CaseTests(TestCase):
         tempCase.docs = None
         tempCase.logs = None
         tempCase.date = "2016-10-20"
+        tempCase.full_clean()
+        tempCase.save()
 
     # Test 17 - School doesnt' write to database when length is 256 characters
     def testThatSchoolIsWrittenToDBWhenStringLengthIs256Characters(self):
-        tempCase = Case()
-        tempCase.lead = 123456789
-        tempCase.complainant = 987654321
-        tempCase.campus = "Saskatoon"
-        tempCase.school = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                          "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                          "natoque penatibus et magnis dis parturient montes, nascetur " \
-                          "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
-        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
-        tempCase.status = "OPEN"
-        tempCase.additionalMembers = 0
-        tempCase.additionalNonMembers = ""
-        tempCase.docs = None
-        tempCase.logs = None
-        tempCase.date = "2016-10-20"
+        with self.assertRaises(ValidationError):
+            tempCase = Case()
+            tempCase.lead = 123456789
+            tempCase.complainant = 987654321
+            tempCase.campus = "Saskatoon"
+            tempCase.school = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                              "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                              "natoque penatibus et magnis dis parturient montes, nascetur " \
+                              "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
+            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.status = "OPEN"
+            tempCase.additionalMembers = 0
+            tempCase.additionalNonMembers = ""
+            tempCase.docs = None
+            tempCase.logs = None
+            tempCase.date = "2016-10-20"
+            tempCase.full_clean()
+            tempCase.save()
 
     # Test 18 - School doesn't write to database when length is 512 characters
     def testThatSchoolIsWrittenToDBWhenStringLengthIs512Characters(self):
-        tempCase = Case()
-        tempCase.lead = 123456789
-        tempCase.complainant = 987654321
-        tempCase.campus = "Saskatoon"
-        tempCase.school = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                          "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                          "natoque penatibus et magnis dis parturient montes, nascetur " \
-                          "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,," \
-                          "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                          "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                          "natoque penatibus et magnis dis parturient montes, nascetur " \
-                          "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
-        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
-        tempCase.status = "OPEN"
-        tempCase.additionalMembers = 0
-        tempCase.additionalNonMembers = ""
-        tempCase.docs = None
-        tempCase.logs = None
-        tempCase.date = "2016-10-20"
+        with self.assertRaises(ValidationError):
+            tempCase = Case()
+            tempCase.lead = 123456789
+            tempCase.complainant = 987654321
+            tempCase.campus = "Saskatoon"
+            tempCase.school = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                              "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                              "natoque penatibus et magnis dis parturient montes, nascetur " \
+                              "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,," \
+                              "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                              "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                              "natoque penatibus et magnis dis parturient montes, nascetur " \
+                              "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
+            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.status = "OPEN"
+            tempCase.additionalMembers = 0
+            tempCase.additionalNonMembers = ""
+            tempCase.docs = None
+            tempCase.logs = None
+            tempCase.date = "2016-10-20"
+            tempCase.full_clean()
+            tempCase.save()
 
-    # Test 19 - Case type writes to database when string length is 255 characters
-    def testThatCaseTypeIsWrittenToDBWhenStringLengthIs255Characters(self):
-        tempCase = Case()
-        tempCase.lead = 123456789
-        tempCase.complainant = 987654321
-        tempCase.campus = "Saskatoon"
-        tempCase.school = "School of Business"
-        tempCase.caseType = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                            "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                            "natoque penatibus et magnis dis parturient montes, nascetur " \
-                            "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,"
-        tempCase.status = "OPEN"
-        tempCase.additionalMembers = 0
-        tempCase.additionalNonMembers = ""
-        tempCase.docs = None
-        tempCase.logs = None
-        tempCase.date = "2016-10-20"
+    # Test 19 - Case type doesn't write to database when string length is 255 characters
+    def testThatCaseTypeIsNotWrittenToDBWhenStringLengthIs255Characters(self):
+        with self.assertRaises(ValidationError):
+            tempCase = Case()
+            tempCase.lead = 123456789
+            tempCase.complainant = 987654321
+            tempCase.campus = "Saskatoon"
+            tempCase.school = "School of Business"
+            tempCase.caseType = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                                "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                                "natoque penatibus et magnis dis parturient montes, nascetur " \
+                                "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,"
+            tempCase.status = "OPEN"
+            tempCase.additionalMembers = 0
+            tempCase.additionalNonMembers = ""
+            tempCase.docs = None
+            tempCase.logs = None
+            tempCase.date = "2016-10-20"
+            tempCase.full_clean()
+            tempCase.save()
 
     # Test 20 - Case type writes to database when string length is 27 characters
     def testThatCaseTypeIsWrittenToDBWhenStringLengthIs27Characters(self):
