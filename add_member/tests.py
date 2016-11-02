@@ -5,8 +5,8 @@ from .models import Person
 from django.db import DataError
 
 
+# region The base template
 # Create your tests here.
-
 # Base Person Object
 # tempPerson = Person()
 # tempPerson.memberID = 123456789
@@ -28,9 +28,11 @@ from django.db import DataError
 # tempPerson.pCode = 's7k5j8'
 # tempPerson.gender = 'MALE'
 # tempPerson.save()
+# endregion
 
 
 
+# region Tests for Creating a person
 class PersonTestCase(TestCase):
     # Test 1 - check to see if the database accepts 9 digit id number
     def test9digitIdnumber(self):
@@ -1371,3 +1373,12 @@ class PersonTestCase(TestCase):
         tempPerson.full_clean()
         tempPerson.save()
         self.assertTrue(Person.objects.count()==1)
+# endregion
+
+
+
+# region Test for Modifying person information
+class ModifyPerson(TestCase):
+    def sampleTest(self):
+        self.assertTrue(True)
+# endregion
