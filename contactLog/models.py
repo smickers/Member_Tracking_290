@@ -11,7 +11,7 @@ class contactLog(models.Model):
     def clean(self):
         if self.memberID > 999999999:
             raise ValueError("Member ID must be 9 digits or less!")
-        if self.memberID < 1:
+        elif self.memberID < 1:
             raise ValueError("Member ID must be a positive number!")
         if not self.validateDate(self.date):
             raise ValueError("An invalid date was entered!")
