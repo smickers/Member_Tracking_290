@@ -82,6 +82,9 @@ DATABASES = {
         'PORT': '3306',
         'PASSWORD': 'bitnami',
         'USER': 'root',
+        'OPTIONS': {
+            'sql_mode': 'traditional',
+        },
     }
 }
 
