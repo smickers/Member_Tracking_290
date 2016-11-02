@@ -293,68 +293,75 @@ class CaseTests(TestCase):
         tempCase.docs = None
         tempCase.logs = None
         tempCase.date = "2016-10-20"
+        tempCase.full_clean()
+        tempCase.save()
 
     # Test 21 - Case type doesnt' write to database when length is 256 characters
     def testThatCaseTypeIsWrittenToDBWhenStringLengthIs256Characters(self):
-        tempCase = Case()
-        tempCase.lead = 123456789
-        tempCase.complainant = 987654321
-        tempCase.campus = "Saskatoon"
-        tempCase.school = "School of Business"
-        tempCase.caseType = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                            "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                            "natoque penatibus et magnis dis parturient montes, nascetur " \
-                            "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
-        tempCase.status = "OPEN"
-        tempCase.additionalMembers = 0
-        tempCase.additionalNonMembers = ""
-        tempCase.docs = None
-        tempCase.logs = None
-        tempCase.date = "2016-10-20"
+        with self.assertRaises(ValidationError):
+            tempCase = Case()
+            tempCase.lead = 123456789
+            tempCase.complainant = 987654321
+            tempCase.campus = "Saskatoon"
+            tempCase.school = "School of Business"
+            tempCase.caseType = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                                "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                                "natoque penatibus et magnis dis parturient montes, nascetur " \
+                                "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
+            tempCase.status = "OPEN"
+            tempCase.additionalMembers = 0
+            tempCase.additionalNonMembers = ""
+            tempCase.docs = None
+            tempCase.logs = None
+            tempCase.date = "2016-10-20"
+            tempCase.full_clean()
+            tempCase.save()
 
     # Test 22 - Case type doesn't write to database when length is 512 characters
     def testThatCaseTypeIsWrittenToDBWhenStringLengthIs512Characters(self):
-        tempCase = Case()
-        tempCase.lead = 123456789
-        tempCase.complainant = 987654321
-        tempCase.campus = "Saskatoon"
-        tempCase.school = "School of Business"
-        tempCase.caseType = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                            "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                            "natoque penatibus et magnis dis parturient montes, nascetur " \
-                            "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,," \
-                            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                            "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                            "natoque penatibus et magnis dis parturient montes, nascetur " \
-                            "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
-        tempCase.status = "OPEN"
-        tempCase.additionalMembers = 0
-        tempCase.additionalNonMembers = ""
-        tempCase.docs = None
-        tempCase.logs = None
-        tempCase.date = "2016-10-20"
+        with self.assertRaises(ValidationError):
+            tempCase = Case()
+            tempCase.lead = 123456789
+            tempCase.complainant = 987654321
+            tempCase.campus = "Saskatoon"
+            tempCase.school = "School of Business"
+            tempCase.caseType = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                                "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                                "natoque penatibus et magnis dis parturient montes, nascetur " \
+                                "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,," \
+                                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                                "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                                "natoque penatibus et magnis dis parturient montes, nascetur " \
+                                "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
+            tempCase.status = "OPEN"
+            tempCase.additionalMembers = 0
+            tempCase.additionalNonMembers = ""
+            tempCase.docs = None
+            tempCase.logs = None
+            tempCase.date = "2016-10-20"
+            tempCase.full_clean()
+            tempCase.save()
 
-    # Test 23 - Status writes to database when string length is 255 characters
-    def testThatStatusIsWrittenToDBWhenStringLengthIs255Characters(self):
-        tempCase = Case()
-        tempCase.lead = 123456789
-        tempCase.complainant = 987654321
-        tempCase.campus = "Saskatoon"
-        tempCase.school = "School of Business"
-        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
-        tempCase.status = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                            "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                            "natoque penatibus et magnis dis parturient montes, nascetur " \
-                            "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,," \
-                            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                            "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                            "natoque penatibus et magnis dis parturient montes, nascetur " \
-                            "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,"
-        tempCase.additionalMembers = 0
-        tempCase.additionalNonMembers = ""
-        tempCase.docs = None
-        tempCase.logs = None
-        tempCase.date = "2016-10-20"
+    # Test 23 - Status doesn't write to database when string length is 255 characters
+    def testThatStatusIsNotWrittenToDBWhenStringLengthIs255Characters(self):
+        with self.assertRaises(ValidationError):
+            tempCase = Case()
+            tempCase.lead = 123456789
+            tempCase.complainant = 987654321
+            tempCase.campus = "Saskatoon"
+            tempCase.school = "School of Business"
+            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.status = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                                "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                                "natoque penatibus et magnis dis parturient montes, nascetur " \
+                                "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,"
+            tempCase.additionalMembers = 0
+            tempCase.additionalNonMembers = ""
+            tempCase.docs = None
+            tempCase.logs = None
+            tempCase.date = "2016-10-20"
+            tempCase.full_clean()
+            tempCase.save()
 
     # Test 24 - Status writes to database when string length is 4 characters
     def testThatStatusIsWrittenToDBWhenStringLengthIs4Characters(self):
@@ -370,58 +377,66 @@ class CaseTests(TestCase):
         tempCase.docs = None
         tempCase.logs = None
         tempCase.date = "2016-10-20"
+        tempCase.full_clean()
+        tempCase.save()
 
     # Test 25 - Status doesnt' write to database when length is 256 characters
     def testThatStatusIsWrittenToDBWhenStringLengthIs256Characters(self):
-        tempCase = Case()
-        tempCase.lead = 123456789
-        tempCase.complainant = 987654321
-        tempCase.campus = "Saskatoon"
-        tempCase.school = "School of Business"
-        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
-        tempCase.status = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                          "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                          "natoque penatibus et magnis dis parturient montes, nascetur " \
-                          "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,," \
-                          "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                          "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                          "natoque penatibus et magnis dis parturient montes, nascetur " \
-                          "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
-        tempCase.additionalMembers = 0
-        tempCase.additionalNonMembers = ""
-        tempCase.docs = None
-        tempCase.logs = None
-        tempCase.date = "2016-10-20"
+        with self.assertRaises(ValidationError):
+            tempCase = Case()
+            tempCase.lead = 123456789
+            tempCase.complainant = 987654321
+            tempCase.campus = "Saskatoon"
+            tempCase.school = "School of Business"
+            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.status = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                              "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                              "natoque penatibus et magnis dis parturient montes, nascetur " \
+                              "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,," \
+                              "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                              "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                              "natoque penatibus et magnis dis parturient montes, nascetur " \
+                              "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
+            tempCase.additionalMembers = 0
+            tempCase.additionalNonMembers = ""
+            tempCase.docs = None
+            tempCase.logs = None
+            tempCase.date = "2016-10-20"
+            tempCase.full_clean()
+            tempCase.save()
 
     # Test 26 - Status doesn't write to database when length is 512 characters
     def testThatStatusIsWrittenToDBWhenStringLengthIs512Characters(self):
-        tempCase = Case()
-        tempCase.lead = 123456789
-        tempCase.complainant = 987654321
-        tempCase.campus = "Saskatoon"
-        tempCase.school = "School of Business"
-        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
-        tempCase.status = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                          "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                          "natoque penatibus et magnis dis parturient montes, nascetur " \
-                          "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,," \
-                          "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                          "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                          "natoque penatibus et magnis dis parturient montes, nascetur " \
-                          "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,," \
-                          "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                          "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                          "natoque penatibus et magnis dis parturient montes, nascetur " \
-                          "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,," \
-                          "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                          "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                          "natoque penatibus et magnis dis parturient montes, nascetur " \
-                          "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
-        tempCase.additionalMembers = 0
-        tempCase.additionalNonMembers = ""
-        tempCase.docs = None
-        tempCase.logs = None
-        tempCase.date = "2016-10-20"
+        with self.assertRaises(ValidationError):
+            tempCase = Case()
+            tempCase.lead = 123456789
+            tempCase.complainant = 987654321
+            tempCase.campus = "Saskatoon"
+            tempCase.school = "School of Business"
+            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.status = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                              "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                              "natoque penatibus et magnis dis parturient montes, nascetur " \
+                              "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,," \
+                              "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                              "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                              "natoque penatibus et magnis dis parturient montes, nascetur " \
+                              "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,," \
+                              "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                              "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                              "natoque penatibus et magnis dis parturient montes, nascetur " \
+                              "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,," \
+                              "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+                              "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+                              "natoque penatibus et magnis dis parturient montes, nascetur " \
+                              "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
+            tempCase.additionalMembers = 0
+            tempCase.additionalNonMembers = ""
+            tempCase.docs = None
+            tempCase.logs = None
+            tempCase.date = "2016-10-20"
+            tempCase.full_clean()
+            tempCase.save()
 
     # Test 27 - Date writes to database when correct format is entered (yyyy/mm/dd)
     def testThatDateIsWrittenToDBWhenCorrectFormatIsEntered(self):
@@ -437,51 +452,63 @@ class CaseTests(TestCase):
         tempCase.docs = None
         tempCase.logs = None
         tempCase.date = "2016-10-20"
+        tempCase.full_clean()
+        tempCase.save()
 
+    # TODO - make validation for the date format
     # Test 28 - Date doesn't write to database when an incorrect format is entered
     def testThatDateIsNotWrittenToDBWhenIncorrectFormatIsEntered(self):
-        tempCase = Case()
-        tempCase.lead = 123456789
-        tempCase.complainant = 987654321
-        tempCase.campus = "Saskatoon"
-        tempCase.school = "School of Business"
-        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
-        tempCase.status = "OPEN"
-        tempCase.additionalMembers = 0
-        tempCase.additionalNonMembers = ""
-        tempCase.docs = None
-        tempCase.logs = None
-        tempCase.date = "twentysixteen-october-twenty"
+        with self.assertRaises(ValidationError):
+            tempCase = Case()
+            tempCase.lead = 123456789
+            tempCase.complainant = 987654321
+            tempCase.campus = "Saskatoon"
+            tempCase.school = "School of Business"
+            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.status = "OPEN"
+            tempCase.additionalMembers = 0
+            tempCase.additionalNonMembers = ""
+            tempCase.docs = None
+            tempCase.logs = None
+            tempCase.date = "twentysixteen-october-twenty"
+            tempCase.full_clean()
+            tempCase.save()
 
     # Test 29 - Campus field is not filled out, error thrown
     def testCampusIsRequired(self):
-        tempCase = Case()
-        tempCase.lead = 123456789
-        tempCase.complainant = 987654321
-        tempCase.campus = ""
-        tempCase.school = "School of Business"
-        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
-        tempCase.status = "OPEN"
-        tempCase.additionalMembers = 0
-        tempCase.additionalNonMembers = ""
-        tempCase.docs = None
-        tempCase.logs = None
-        tempCase.date = "2016-10-20"
+        with self.assertRaises(ValidationError):
+            tempCase = Case()
+            tempCase.lead = 123456789
+            tempCase.complainant = 987654321
+            tempCase.campus = ""
+            tempCase.school = "School of Business"
+            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.status = "OPEN"
+            tempCase.additionalMembers = 0
+            tempCase.additionalNonMembers = ""
+            tempCase.docs = None
+            tempCase.logs = None
+            tempCase.date = "2016-10-20"
+            tempCase.full_clean()
+            tempCase.save()
 
     # Test 30 - School field is not filled out, error thrown
     def testSchoolIsRequired(self):
-        tempCase = Case()
-        tempCase.lead = 123456789
-        tempCase.complainant = 987654321
-        tempCase.campus = "Saskatoon"
-        tempCase.school = ""
-        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
-        tempCase.status = "OPEN"
-        tempCase.additionalMembers = 0
-        tempCase.additionalNonMembers = ""
-        tempCase.docs = None
-        tempCase.logs = None
-        tempCase.date = "2016-10-20"
+        with self.assertRaises(ValidationError):
+            tempCase = Case()
+            tempCase.lead = 123456789
+            tempCase.complainant = 987654321
+            tempCase.campus = "Saskatoon"
+            tempCase.school = ""
+            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.status = "OPEN"
+            tempCase.additionalMembers = 0
+            tempCase.additionalNonMembers = ""
+            tempCase.docs = None
+            tempCase.logs = None
+            tempCase.date = "2016-10-20"
+            tempCase.full_clean()
+            tempCase.save()
 
     # Test 31 - Case type field is not filled out, error thrown
     def testCaseTypeIsRequired(self):
