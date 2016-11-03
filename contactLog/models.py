@@ -12,7 +12,7 @@ class contactLog(models.Model):
 
     def validateDate(self, toCheck):
         try:
-            datetime.strptime(toCheck, '%Y/%m/%d')
+            datetime.strptime(toCheck, '%Y-%m-%d')
             return True
         except ValueError:
             return False
