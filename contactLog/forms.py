@@ -1,5 +1,6 @@
 from django.forms import ModelForm, NumberInput, ValidationError, SelectDateWidget, Textarea
 from .models import contactLog
+import datetime
 from django import forms
 
 class ContactLogForm(ModelForm):
@@ -15,6 +16,6 @@ class ContactLogForm(ModelForm):
 
         widgets = {
             'memberID' : NumberInput(attrs={'min':1,'max':999999999,}),
-            'date' : SelectDateWidget(),
+            'date' : SelectDateWidget(years=range(1959, datetime.datetime.now().year + 1)),
             'description' : forms.Textarea(attrs={'maxlength' : '150',}),
         }

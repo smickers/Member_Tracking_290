@@ -1,13 +1,14 @@
 from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
-from datetime import date, datetime
+from datetime import date
+import datetime
 from django.db import models
 from .validators import *
 
 # Create your models here.
 class contactLog(models.Model):
     memberID = models.IntegerField(validators=[validate_memberID])
-    date = models.DateField(default=date.today())
+    date = models.DateField(default=datetime.now, blank=True)
     description = models.TextField(max_length=150, null=True, blank=True, validators=[validate_description])
 
     def validateDate(self, toCheck):
