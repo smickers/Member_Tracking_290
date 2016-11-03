@@ -64,7 +64,7 @@ class PersonTestCase(TestCase):
 
     # Test 2- check to see if the database throws error if user tries to insert id number that's greater than 9 digits
     def test9digitIdnumber_less(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ValidationError):
             tempPerson = Person()
             tempPerson.memberID = 1234567899
             tempPerson.firstName = 'First'
@@ -74,8 +74,8 @@ class PersonTestCase(TestCase):
             tempPerson.city = 'Sample City'
             tempPerson.mailAddress = 'Sample address'
             tempPerson.mailAddress2 = 'Sample Address 2'
-            tempPerson.hPhone = 3061111234
-            tempPerson.cPhone = 3061111234
+            tempPerson.hPhone = '(306)111-1234'
+            tempPerson.cPhone = '(306)111-1234'
             tempPerson.hEmail = 'sample@sample.com'
             tempPerson.campus = 'SASKATOON'
             tempPerson.jobType = 'FTO'
@@ -172,7 +172,7 @@ class PersonTestCase(TestCase):
     # Test 5- check to see if the database throws error if user tries to insert SIN number that's greater than 9 digits
 
     def testIfDbthrowserrorifusertriesToSaveSINnumbermorethan9(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ValidationError):
             tempPerson = Person()
             tempPerson.memberID = 123456789
             tempPerson.firstName = 'First'
@@ -228,7 +228,7 @@ class PersonTestCase(TestCase):
 
     # Test 8 - Check to see if the database throws an error if the first name is empty
     def testIfFirstNameFieldIfFirstNameIsEmpty(self):
-        with self.assertRaises(IntegrityError):
+        with self.assertRaises(ValidationError):
             tempPerson = Person()
             tempPerson.memberID = 123456789
             tempPerson.hireDate = '2012-03-03'
@@ -255,7 +255,7 @@ class PersonTestCase(TestCase):
 
     # Test 9- Check to see if the database throws an error if the first name is greater than 30
     def testIfDatabaseThrowsErrorifFirstNameisGreaterthan30characters(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ValidationError):
             tempPerson = Person()
             tempPerson.memberID = 1234567899
             tempPerson.hireDate = '2012-03-03'
@@ -312,7 +312,7 @@ class PersonTestCase(TestCase):
 
     # Test 11 - Check to see if the database throws an error if the middle name is empty
     def testIfDatabaseThrowsErrorifMiddleNameIsEmpty(self):
-        with self.assertRaises(IntegrityError):
+        with self.assertRaises(ValidationError):
             tempPerson = Person()
             tempPerson.memberID = 123456789
             tempPerson.hireDate = '2012-03-03'
@@ -339,7 +339,7 @@ class PersonTestCase(TestCase):
 
     # Test 12- Check to see if the database throws an error if the middle name is greater than 30
     def testIfDatabaseThrowsErrorifMiddleNameIsEmpty(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ValidationError):
             tempPerson = Person()
             tempPerson.hireDate = '2012-03-03'
             tempPerson.memberID = 123456789
@@ -395,7 +395,7 @@ class PersonTestCase(TestCase):
 
     # Test 14- Check to see if the database throws an error if the last name is empty
     def testIfDatabaseThrowsErroriflastNameIsEmpty(self):
-        with self.assertRaises(IntegrityError):
+        with self.assertRaises(ValidationError):
             tempPerson = Person()
             tempPerson.memberID = 123456789
             tempPerson.firstName = 'First'
@@ -422,7 +422,7 @@ class PersonTestCase(TestCase):
 
     # Test 15 Check to see if the database throws an error if the last name is greater than 30
     def testIfDatabaseThrowsErroriflastNameIsEmpty(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ValidationError):
             tempPerson = Person()
             tempPerson.memberID = 123456789
             tempPerson.firstName = 'First'
@@ -479,7 +479,7 @@ class PersonTestCase(TestCase):
 
     # Test 17- Check to see if the database throws an error if the mailing address is empty
     def testIfDatabaseThrowsErrorIFMailAddressIsEmpty(self):
-        with self.assertRaises(IntegrityError):
+        with self.assertRaises(ValidationError):
             tempPerson = Person()
             tempPerson.memberID = 123456789
             tempPerson.firstName = 'First'
@@ -506,7 +506,7 @@ class PersonTestCase(TestCase):
 
     # Test 18 Check to see if the database throws an error if the mailing address is greater than 50
     def testIfDatabaseThrowsErrorIfMailingAddressIsGreaterThan50(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ValidationError):
             tempPerson = Person()
             tempPerson.memberID = 123456789
             tempPerson.firstName = 'First'
@@ -562,7 +562,7 @@ class PersonTestCase(TestCase):
 
     # Test 20- Check to see if the database throws an error if the mailing address is empty
     def testIfDatabaseThrowsErrorIfMailingAddressIsEmpty(self):
-        with self.assertRaises(IntegrityError):
+        with self.assertRaises(ValidationError):
             tempPerson = Person()
             tempPerson.memberID = 123456789
             tempPerson.firstName = 'First'
@@ -589,7 +589,7 @@ class PersonTestCase(TestCase):
 
     # Test 21 Check to see if the database throws an error if the mailing address 2 is greater than 50
     def testIfDatabaseThrowsErrorIfMailingAddress2IsGreaterThan50(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ValidationError):
             tempPerson = Person()
             tempPerson.memberID = 123456789
             tempPerson.firstName = 'First'
@@ -645,7 +645,7 @@ class PersonTestCase(TestCase):
 
     # Test 23- Check to see if the database throws an error if the city is empty
     def testIfDatabaseThrowsAnErrorIfCityIsEmpty(self):
-        with self.assertRaises(IntegrityError):
+        with self.assertRaises(ValidationError):
             tempPerson = Person()
             tempPerson.memberID = 123456789
             tempPerson.firstName = 'First'
@@ -672,7 +672,7 @@ class PersonTestCase(TestCase):
 
     # Test 24 Check to see if the database throws an error if the city is greater than 20
     def testIfDatabaseThrowsErrorIfCityIsGreaterThan20(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ValidationError):
             tempPerson = Person()
             tempPerson.memberID = 123456789
             tempPerson.firstName = 'First'

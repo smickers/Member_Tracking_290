@@ -2,6 +2,7 @@ from django.forms import ModelForm, NumberInput, ValidationError, SelectDateWidg
 from .models import Person
 from .validators import *
 import re
+import datetime
 
 class PersonForm(ModelForm):
     class Meta:
@@ -29,25 +30,9 @@ class PersonForm(ModelForm):
             }
 
         widgets = {
-            'memberID': NumberInput(attrs={'min':0,'max':999999999}),
-            'socNum': NumberInput(attrs={'min': 0, 'max': 999999999}),
-            'bDay': SelectDateWidget(),
-            'hireDate': SelectDateWidget()
+            'bDay': SelectDateWidget(years=range(1980, datetime.datetime.now().year + 1)),
+            'hireDate': SelectDateWidget(years=range(1980, datetime.datetime.now().year + 1))
             }
-
-    def clean_memberID(self):
-        data = self.cleaned_data['memberID']
-        if(data > 999999999):
-            raise ValidationError("Invalid member id")
-        return data
-
-    def clean_socNum(self):
-        data = self.cleaned_data['socNum']
-        if( data > 999999999 ):
-            raise ValidationError("Invalid SIN number")
-        return data
-
-
 
 
 
