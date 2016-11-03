@@ -1377,8 +1377,77 @@ class PersonTestCase(TestCase):
 
 
 
+
+
 # region Test for Modifying person information
 class ModifyPerson(TestCase):
-    def sampleTest(self):
-        self.assertTrue(True)
+
+    def setUp(self):
+        tempPerson = Person()
+        tempPerson.memberID = 123456789
+        tempPerson.firstName = 'First'
+        tempPerson.middleName = 'Middle'
+        tempPerson.lastName = 'Last'
+        tempPerson.socNum = 123456789
+        tempPerson.city = 'Sample City'
+        tempPerson.mailAddress = 'Sample address'
+        tempPerson.mailAddress2 = 'Sample Address 2'
+        tempPerson.pCode = 's7k5j8'
+        tempPerson.hPhone = '(306)812-1234'
+        tempPerson.cPhone = '(306)812-1234'
+        tempPerson.hEmail = 'sample@sample.com'
+        tempPerson.campus = 'SASKATOON'
+        tempPerson.jobType = 'FTO'
+        tempPerson.committee = 'Sample Commitee'
+        tempPerson.memberImage = 'image.img'
+        tempPerson.bDay = '2012-03-03'
+        tempPerson.hireDate = '2012-03-03'
+        tempPerson.gender = 'MALE'
+        tempPerson.membershipStatus = 'RESOURCE'
+        tempPerson.programChoice = 'Sample Program'
+        tempPerson.full_clean()
+        tempPerson.save()
+
+    def testIfThereIsAMemberInsideTestDB(self):
+        self.assertTrue(Person.objects.count() == 1)
+
+
+    #Normal - Test 1
+    def test_if_member_id_is_modifiable(self):
+        person_to_edit =  Person.objects.filter(memberID=123456789)[0]
+        person_to_edit.memberID = 987654321
+        person_to_edit.save()
+        self.assertTrue(Person.objects.get(pk=person_to_edit.pk).memberID == 987654321)
+
+
+
+    #Exception - Test 2
+    def test_if_db_throws_an_exception_if_member_id_is_left_blank(self):
+        with self.assertRaises(ValidationError):
+            person_to_edit = Person.objects.filter(memberID=123456789)[0]
+            person_to_edit.memberID = None
+            person_to_edit.full_clean()
+            person_to_edit.save()
+
+
+    #Boundary - Test 3
+    def test_if_db_throws_an_exception_if_member_id_is_greater_than_nine_digits(self):
+        with self.assertRaises(ValidationError):
+            person_to_edit = Person.objects.filter(memberID=123456789)[0]
+            person_to_edit.memberID = 9876543211
+            person_to_edit.full_clean()
+            person_to_edit.save()
+
+    #Normal - Test 1
+    def test_if_first_name_field_is_modifiable(self):
+        person_to_edit =  Person.objects.filter(memberID=123456789)[0]
+        person_to_edit.firstName = "New first"
+        person_to_edit.save()
+        self.assertTrue(Person.objects.get(pk=person_to_edit.pk).firstName == "New first")
+
+
+
+
+
+
 # endregion
