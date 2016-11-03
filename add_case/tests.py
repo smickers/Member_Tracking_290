@@ -512,18 +512,21 @@ class CaseTests(TestCase):
 
     # Test 31 - Case type field is not filled out, error thrown
     def testCaseTypeIsRequired(self):
-        tempCase = Case()
-        tempCase.lead = 123456789
-        tempCase.complainant = 987654321
-        tempCase.campus = "Saskatoon"
-        tempCase.school = "School of Business"
-        tempCase.caseType = ""
-        tempCase.status = "OPEN"
-        tempCase.additionalMembers = 0
-        tempCase.additionalNonMembers = ""
-        tempCase.docs = None
-        tempCase.logs = None
-        tempCase.date = "2016-10-20"
+        with self.assertRaises(ValidationError):
+            tempCase = Case()
+            tempCase.lead = 123456789
+            tempCase.complainant = 987654321
+            tempCase.campus = "Saskatoon"
+            tempCase.school = "School of Business"
+            tempCase.caseType = ""
+            tempCase.status = "OPEN"
+            tempCase.additionalMembers = 0
+            tempCase.additionalNonMembers = ""
+            tempCase.docs = None
+            tempCase.logs = None
+            tempCase.date = "2016-10-20"
+            tempCase.full_clean()
+            tempCase.save()
 
     # Test 32 - Status field is not filled out, defaults to OPEN
     def testStatusHasADefault(self):
@@ -539,6 +542,8 @@ class CaseTests(TestCase):
         tempCase.docs = None
         tempCase.logs = None
         tempCase.date = "2016-10-20"
+        tempCase.full_clean()
+        tempCase.save()
 
     # Test 33 - Date field is not filled out, defaults to current date
     def testDateHasADefault(self):
@@ -554,3 +559,6 @@ class CaseTests(TestCase):
         tempCase.docs = None
         tempCase.logs = None
         tempCase.date = ""
+        tempCase.full_clean()
+        tempCase.save()
+
