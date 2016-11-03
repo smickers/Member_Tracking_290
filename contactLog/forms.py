@@ -15,7 +15,8 @@ class ContactLogForm(ModelForm):
         }
 
         widgets = {
-            'memberID' : NumberInput(attrs={'min':1,'max':999999999,}),
-            'date' : SelectDateWidget(years=range(1959, datetime.datetime.now().year + 1)),
-            'description' : forms.Textarea(attrs={'maxlength' : '150',}),
+            'memberID' : NumberInput(attrs={'min':1,'max':999999999}),
+            'date' : SelectDateWidget(years=range(1959, datetime.datetime.now().year + 1),),
+            #'description': forms.CharField(attrs={'maxlength': '150', }),
+            #'description' : forms.CharField(attrs={'maxlength' : '150',}),
         }

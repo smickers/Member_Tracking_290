@@ -10,5 +10,5 @@ def validate_memberID(value):
 def validate_description(value):
     DESCRIPTION_LENGTH_REGEX = re.compile(r"^.{0,150}$")
     if not DESCRIPTION_LENGTH_REGEX.match(str(value)):
-        raise ValidationError("The description must be 0 to 150 characters!")
+        raise ValidationError("The description must be 0 to 150 characters!!!!")
 
