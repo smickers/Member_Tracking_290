@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
-from datetime import date
+
 
 import datetime
 from django.db import models
@@ -10,6 +10,7 @@ from .validators import *
 class contactLog(models.Model):
     memberID = models.IntegerField(validators=[validate_memberID])
     date = models.DateField()
+    #date = forms.DateField(widget=SelectDateWidget(), label='Date of Contact', initial=timezone.now())
     description = models.CharField(max_length=150)
 
     def validateDate(self, toCheck):
