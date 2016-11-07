@@ -1,7 +1,6 @@
 from django.forms import ModelForm, NumberInput, ValidationError, SelectDateWidget
 from .models import Case
 import re
-import datetime
 
 class CaseForm(ModelForm):
     class Meta:
@@ -25,8 +24,3 @@ class CaseForm(ModelForm):
             'date': SelectDateWidget()
         }
 
-        def clean_date(self):
-            data = self.cleaned_data['date']
-            if data < datetime.datetime.now().date():
-                raise ValidationError("Date cannot be in the future")
-            return data
