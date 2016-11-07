@@ -1455,6 +1455,7 @@ class ModifyPerson(TestCase):
         print(response.status_code)
         #301 is http code for url redirection
         self.assertTrue(response.status_code == 301)
+
     #Normal Tests 5- Test if user can modify existing member's first name if first name supplied is less than 30 characters
 
     #Boundary Test 6 - Test if user cannot modify member info if supplied first name is greater than 30 characters
@@ -1479,7 +1480,9 @@ class ModifyPerson(TestCase):
 
     # Normal Test 16 - Test if member's existing SIN number is modifiable
 
-    # Exception Test 17 - Test if
+    # Exception Test 17 - Test if SIN number cannot be left empty
+
+    # Excption
 
 
 

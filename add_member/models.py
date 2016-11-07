@@ -58,48 +58,6 @@ class Person(models.Model):
     hireDate = models.DateField(null=True)
 
 
-    # def clean(self):
-    #     if self.memberID > 999999999:
-    #         raise ValueError("Member ID should be equal than 9 digits")
-    #
-    #     if self.socNum > 999999999:
-    #         raise ValueError("SIN should be less than 9 digits")
-    #
-    #     if len(self.firstName) == 0:
-    #         raise IntegrityError("First name is required")
-    #
-    #     if len(self.firstName) > 30:
-    #         raise ValueError("First Name should be lesser than 30 characters")
-    #
-    #     if len(self.middleName) == 0:
-    #         raise IntegrityError("Middle name is required")
-    #
-    #     if len(self.middleName) > 30:
-    #         raise ValueError("Middle Name should be lesser than 30 characters")
-    #
-    #     if len(self.lastName) == 0:
-    #         raise IntegrityError("Last name name is required")
-    #
-    #     if len(self.lastName) > 30:
-    #         raise ValueError("Last Name should be lesser than 30 characters")
-    #
-    #     if len(self.mailAddress) == 0:
-    #         raise IntegrityError("Mail Address is required")
-    #
-    #     if len(self.mailAddress) > 50:
-    #         raise ValueError("Mail Address must be less than 50 characters")
-    #
-    #     if len(self.mailAddress2) == 0:
-    #         raise IntegrityError("Mail Address is required")
-    #
-    #     if len(self.mailAddress2) > 50:
-    #         raise ValueError("Mail Address must be less than 50 characters")
-    #
-    #     if len(self.city) == 0:
-    #         raise IntegrityError("City is required")
-    #
-    #     if len(self.city) > 20:
-    #         raise ValueError("City Field must be less than 20 characters")
 
     def get_absolute_url(self):
         return reverse(viewname='add_member:member_detail', kwargs={'pk':self.pk})
