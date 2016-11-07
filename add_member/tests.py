@@ -1438,14 +1438,40 @@ class ModifyPerson(TestCase):
             person_to_edit.full_clean()
             person_to_edit.save()
 
-    #Normal - Test 1
-    def test_if_first_name_field_is_modifiable(self):
-        person_to_edit =  Person.objects.filter(memberID=123456789)[0]
-        person_to_edit.firstName = "New first"
-        person_to_edit.save()
-        self.assertTrue(Person.objects.get(pk=person_to_edit.pk).firstName == "New first")
+    # #Normal - Test 1
+    # def test_if_first_name_field_is_modifiable(self):
+    #     person_to_edit =  Person.objects.filter(memberID=123456789)[0]
+    #     person_to_edit.firstName = "New first"
+    #     person_to_edit.save()
+    #     self.assertTrue(Person.objects.get(pk=person_to_edit.pk).firstName == "New first")
 
+    #Normal Test 4 - Test if user can modify existing member's first name
 
+    #Normal Tests 5- Test if user can modify existing member's first name if first name supplied is less than 30 characters
+
+    #Boundary Test 6 - Test if user cannot modify member info if supplied first name is greater than 30 characters
+
+    #Exception Test 7 - Test if user cannot leave first name field empty
+
+    #Exception Test 8 - Test if user can't leave middle name epty
+
+    #Normal Test 9 - Test if user can modify middle name
+
+    #Normal Test 10 - Test if user can modify existing member's middle name if middle name supplied is less than 30 characters
+
+    #Exception Test 11 - Test if user cannot modify member info if supplied middle name is greater than 30 characters
+
+    # Exception Test 12 - Test if user can't leave last name epty
+
+    # Normal Test 13 - Test if user can modify last name
+
+    # Normal Test 14 - Test if user can modify existing member's last name if last name supplied is less than 30 characters
+
+    # Exception Test 15 - Test if user cannot modify member info if supplied last name is greater than 30 characters
+
+    # Normal Test 16 - Test if member's existing SIN number is modifiable
+
+    # Exception Test 17 - Test if
 
 
 
