@@ -1,3 +1,5 @@
+# SPFA MT CST Project
+# November 7, 2016
 from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 
@@ -6,13 +8,25 @@ import datetime
 from django.db import models
 from .validators import *
 
-# Create your models here.
+# Contact Log Class
+# Purpose: This class will hold a contact log, and
+# all attributes associated with a contact log. This
+# class extends the default Model class.
 class contactLog(models.Model):
-    memberID = models.IntegerField(validators=[validate_memberID])
+    # A contact log will include a memberID, date of contact,
+    # and description
+    memberID = models.IntegerField(validators=[validate_memberID], blank=True)
     date = models.DateField()
-    #date = forms.DateField(widget=SelectDateWidget(), label='Date of Contact', initial=timezone.now())
-    description = models.CharField(max_length=150)
+    description = models.CharField(max_length=150, blank=True)
 
+    # Function: validateDate
+    # Purpose: Takes in a date, and ensures
+    # that the entered date is valid.
+    # Parameters:
+    # self - the calling object
+    # toCheck - the entered date to validate
+    # Returns: true/false, depending on whether the
+    # date was valid or not
     def validateDate(self, toCheck):
         try:
             datetime.strptime(toCheck, '%Y-%m-%d')
@@ -20,19 +34,35 @@ class contactLog(models.Model):
         except ValueError:
             return False
 
+    # Function: clean
+    # Purpose: Ensures all variables in this object
+    # are in the correct format for storage in the DB.
+    # Also saves the object to the DB.
+    # Parameters:
+    # self - the calling object
+    # Returns: Nothing, but can throw an exception
+    # if a value doesn't meet its requirements.
     def clean(self):
-        if self.memberID > 999999999:
-            raise ValueError("Member ID must be 9 digits or less!")
-        elif self.memberID < 1:
-            raise ValueError("Member ID must be a positive number!")
-        #if not self.validateDate(self.date):
-         #   raise ValueError("An invalid date was entered!")
+        # MemberID value validation
+        if hasattr(self, 'memberID'):
+            if self.memberID > 999999999:
+                raise ValueError("Member ID must be 9 digits or less!")
+            elif self.memberID < 1:
+                raise ValueError("Member ID must be a positive number!")
+        # Date validation
+        if not self.validateDate(str(self.date)):
+            raise ValueError("An invalid date was entered!")
+        # Contact description validation
+        if self.description != '':
+            if len(self.description) > 150:
+                raise ValueError("The description is limited to 150 characters!")
 
-        #TODO - ENSURE THAT THIS VALIDATION IS BEING CALLED UPON SUBMISSION
-        if len(self.description) > 150:
-            raise ValueError("The description is limited to 150 characters!")
-
-        #END TODO
-
+    # Function: get_absolute_url
+    # Purpose: Returns a URL to redirect the user to after submitting
+    # a new contact log entry.
+    # Parameters:
+    # self - the calling object
+    # Returns: a URL to redirect the user to after submitting the form.
     def get_absolute_url(self):
-        return reverse(viewname='contact_log_creation:contact_log_add')
+        #return reverse(viewname='contact_log_creation:contact_log_add')
+        return "http://google.ca"
