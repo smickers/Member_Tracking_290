@@ -1,7 +1,8 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from .models import Person
+
 from django.db import DataError
 
 
@@ -1446,8 +1447,13 @@ class ModifyPerson(TestCase):
         self.assertTrue(Person.objects.get(pk=person_to_edit.pk).firstName == "New first")
 
 
-
-
+    def test_if_user_can_get_to_the_form_where_it_modifies_a_user(self):
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        client = Client()
+        response = client.get('/member/update/' + str(person_to_edit.pk))
+        print(response.status_code)
+        #301 is http code for url redirection
+        self.assertTrue(response.status_code == 301)
 
 
 # endregion
