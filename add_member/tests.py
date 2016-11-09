@@ -1482,7 +1482,89 @@ class ModifyPerson(TestCase):
 
     # Exception Test 17 - Test if SIN number cannot be left empty
 
-    # Excption
+    # Exception Test 18 - Test if user cannot modify SIN number if invalid format is given (must be 9 digits)
+
+    #Normal Test 19 - Test if user can modify city
+
+    #Exception Test 20 - Test if user cannot leave city field empty
+
+    #Boundary Test 21 - Test if user cannot modify member info if city is greater than 20 characters
+
+    #Normal Test 22 - Test if user can modify mail address
+
+    #Exception Test 23 - Test if user cannot leave mail address empty
+
+    #Boundary Test 24 - Test if user can modify mail address if mail address is less than 50 characters
+
+    #Normal Test 25 - Test if user can modify existing postal code
+
+    #Exception Test 26 - Test if user cannot leave postal code field empty
+
+    #Boundary Test 27 - Test if user can modify postal code if format is L#L-#L#
+
+    #Normal Test 28 - Test if user can modify members birth date
+
+    #Exception Test 29 - Test if user cannot leave birthdate empty
+
+    #Boundary Test 30 - Test if user cant modify birthdate if invalid format is supplied. (must be dd/mm/yyyy)
+
+    #Normal Test 31 - Test if user can modify members gender
+
+    #Exception Test 32 - Test if user cannot leave members gender field empty
+
+    #Boundary Test 33 - Test if user cannot modify gender if format is NOT: "MALE', 'FEMALE', 'UNSPECIFIED'
+
+    #Normal Test 34 - Test if user can modify home phone field
+
+    #Boundary Test 35 - test if user cannot modify members home phone if not in the format (###)###-####
+
+    #Normal Test 36 - Test if user can modify cell phone field
+
+    #Boundary Test 37 - test if user cannot modify members cell phone if not in the format (###)###-####
+
+    #Normal Test 38 - Test if user user can modify existing member email
+
+    #Exception Test 39 - Test if user cannot leave member email empty
+
+    #Boundary Test 40 - Test if user cannot modify member email if not in format: abc@abc.ca
+
+    #Normal Test 41 - Test if user can modify existing campus
+
+    #Exception Test 42 - Test if user cannot leave campus field empty
+
+    #Boundary Test 43 - Test if user cannot modify campus field if not: 'SASKATOON', 'REGINA', 'MOOSE JAW', 'PRINCE ALBERT'
+
+    #Normal Test 44 - Test if user can modify existing job type
+
+    #Exception Test 45 - Test if user cannot leave job type field empty
+
+    #Boundary Test 46 - Test if user cannot modify job type if not: 'FULL-TIME ONGOING', 'FULL-TIME ENDDATED', 'PART-TIME ONGOING', 'PART-TIME ENDDATED'
+
+    #Normal Test 47 - Test if user can modify existing committee
+
+    #Boundary Test 48 - Test if user cannot modify committee if greater than 30 characters
+
+    #Normal Test 49 - Test if user can modify existing member image
+
+    #Boundary Test 50 - Test if user cannot modify member image if greater than 2mb in size
+
+    #Normal Test 51 - Test if user can modify existing program choice
+
+    #Exception Test 52 - Test if user cannot leave program choice field empty
+
+    #Boundary Test 53 - Test if user cannot modify program choice if greater than 30 characters
+
+    #Normal Test 54 - Test if user can modify existing membership status
+
+    #Exception Test 55 - Test if user cannot leave membership status empty
+
+    #Boundary Test 56 - Test if user cannot modify membership status if not: 'RESOURCE', 'COMMITTEE CHAIR', 'RECORDER'
+
+    #Normal Test 57 - Test if user can modify existing hire date
+
+    #Exception Test 58 - Test if user cannot leave hire date field empty
+
+    #Boundary Test 59 - Test if user cannot modify hire date if not in format: dd/mm/yyyy
 
 
 
