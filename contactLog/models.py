@@ -15,9 +15,9 @@ from .validators import *
 class contactLog(models.Model):
     # A contact log will include a memberID, date of contact,
     # and description
-    memberID = models.IntegerField(validators=[validate_memberID], blank=True)
+    memberID = models.IntegerField(validators=[validate_memberID], blank=True, null=True)
     date = models.DateField()
-    description = models.CharField(max_length=150, blank=True)
+    description = models.CharField(max_length=150, blank=True, null=True)
 
     # Function: validateDate
     # Purpose: Takes in a date, and ensures
@@ -44,7 +44,7 @@ class contactLog(models.Model):
     # if a value doesn't meet its requirements.
     def clean(self):
         # MemberID value validation
-        if hasattr(self, 'memberID'):
+        if self.memberID == '':
             if self.memberID > 999999999:
                 raise ValueError("Member ID must be 9 digits or less!")
             elif self.memberID < 1:
@@ -65,4 +65,5 @@ class contactLog(models.Model):
     # Returns: a URL to redirect the user to after submitting the form.
     def get_absolute_url(self):
         #return reverse(viewname='contact_log_creation:contact_log_add')
-        return "http://google.ca"
+        return "success.html"
+        #return reverse(viewname='contactLog:contact_log_success')
