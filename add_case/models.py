@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 from .validators import *
 from django.db import models
 from django.core.validators import MaxValueValidator
+from django.core.urlresolvers import reverse
+import datetime
 
 
 
@@ -16,4 +18,7 @@ class Case(models.Model):
     additionalNonMembers = models.TextField(blank=True, null=True)
     docs = models.TextField(blank=True, null=True)
     logs = models.TextField(blank=True, null=True)
-    date = models.DateField(blank=True, null=True, validators=[validate_date])
+    date = models.DateField(blank=True, null=True, default=datetime.date.today, validators=[validate_date])
+
+    def get_absolute_url(self):
+        return reverse(viewname='add_case:case_add')

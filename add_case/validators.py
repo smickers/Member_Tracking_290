@@ -4,21 +4,32 @@ import datetime
 
 def validate_date(value):
     data = value
-    if data == 0:
-        data = datetime.datetime.now().date().strftime('%Y-%m-%d')
 
-    if data > datetime.datetime.now().date():
+    if data > datetime.date.today():
         raise ValidationError("Cannot enter a future date")
 
     return data
 
 def validate_status(value):
     data = value
+    found = False
     if data == 0:
         data = 'OPEN'
 
-    if data is not 'OPEN' or data != 'CLOSED' or data != 'PENDING' or data != "ACTION REQ'D - MGMT" or data != "ACTION REQ'D SPFA":
-        raise ValidationError("Must enter a valid status.")
+    status = [
+        "OPEN",
+        "CLOSED",
+        "PENDING",
+        "ACTION REQ'D - MGMT",
+        "ACTION REQ'D SPFA"
+    ]
+
+    for val in status:
+        if val == data:
+            found = True
+
+    if not found:
+        raise ValidationError("Must enter a valid status")
 
     return data
 
@@ -26,13 +37,13 @@ def validate_case_type(value):
     data = value
 
     types = [
-        "GREIVANCES - INDIVIDUAL",
-        "GREIVANCES - GROUP",
-        "GREIVANCES - POLICY",
-        "GREIVANCES - CLASSIFICATION",
-        "GREIVANCES - COMPLAINTS",
+        "GRIEVANCES - INDIVIDUAL",
+        "GRIEVANCES - GROUP",
+        "GRIEVANCES - POLICY",
+        "GRIEVANCES - CLASSIFICATION",
+        "GRIEVANCES - COMPLAINTS",
         "DISABILITY CLAIMS",
-        "ARBITRATIONS",
+        "ARBITRATION",
         "COMPLAINTS"
     ]
 
@@ -41,7 +52,7 @@ def validate_case_type(value):
         if val == data:
             found = True
 
-    if not found:
+    if found == False:
         raise ValidationError("Must enter a valid case type")
 
     return data
