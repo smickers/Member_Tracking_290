@@ -34,6 +34,22 @@ class contactLog(models.Model):
         except ValueError:
             return False
 
+    def validateMemberID(self):
+        if self.memberID:
+            if self.memberID > 999999999:
+                raise ValueError("Member ID must be 9 digits or less!")
+            elif self.memberID < 1:
+                raise ValueError("Member ID must be a positive number!")
+
+    def validateDescription(self):
+        if self.description:
+            if not self.validateDate(str(self.date)):
+                raise ValueError("An invalid date was entered!")
+            # Contact description validation
+            if self.description:
+                if len(self.description) > 150:
+                    raise ValueError("The description is limited to 150 characters!")
+
     # Function: clean
     # Purpose: Ensures all variables in this object
     # are in the correct format for storage in the DB.
@@ -43,19 +59,14 @@ class contactLog(models.Model):
     # Returns: Nothing, but can throw an exception
     # if a value doesn't meet its requirements.
     def clean(self):
-        # MemberID value validation
-        if self.memberID == '':
-            if self.memberID > 999999999:
-                raise ValueError("Member ID must be 9 digits or less!")
-            elif self.memberID < 1:
-                raise ValueError("Member ID must be a positive number!")
+
+        #Member ID validation
+        self.validateMemberID()
         # Date validation
         if not self.validateDate(str(self.date)):
             raise ValueError("An invalid date was entered!")
         # Contact description validation
-        if self.description != '':
-            if len(self.description) > 150:
-                raise ValueError("The description is limited to 150 characters!")
+        self.validateDescription()
 
     # Function: get_absolute_url
     # Purpose: Returns a URL to redirect the user to after submitting
@@ -64,6 +75,4 @@ class contactLog(models.Model):
     # self - the calling object
     # Returns: a URL to redirect the user to after submitting the form.
     def get_absolute_url(self):
-        #return reverse(viewname='contact_log_creation:contact_log_add')
-        return "success.html"
-        #return reverse(viewname='contactLog:contact_log_success')
+        return reverse(viewname='contact_log_creation:success', kwargs={'pk':self.pk})

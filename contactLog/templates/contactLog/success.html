@@ -6,20 +6,6 @@
 </head>
 <body>
     <h2>Contact log has been successfully created!</h2>
-    <table>
-    <tr>
-        <th>Member Id</th>
-        <th>Date</th>
-        <th>Description</th>
-    </tr>
-
-    {% for log in object_list %}
-    <tr>
-        <td>{{ log.memberID}}</td>
-        <td>{{ log.date}}</td>
-        <td>{{ log.description}}</td>
-    </tr>
-    {% endfor %}
-    </table>
+    <p>Contact Log ID: {{ pk }}</p>
 </body>
 </html>
