@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from .models import Person
@@ -1451,12 +1451,42 @@ class ModifyPerson(TestCase):
     def test_if_user_can_get_to_the_form_where_it_modifies_a_user(self):
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         client = Client()
-        response = client.get('/member/update/' + str(person_to_edit.pk))
+        response = client.get('/member/update/' + str(person_to_edit.pk)  )
         print(response.status_code)
         #301 is http code for url redirection
         self.assertTrue(response.status_code == 301)
 
     #Normal Tests 5- Test if user can modify existing member's first name if first name supplied is less than 30 characters
+    def user_can_modify_existing_member_first_name_if_first_name_is_less_than_30_chars(self):
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+
+        # Instantiate the Client
+        client = Client()
+
+        # Connect to the actual site
+        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+
+        # Get the initial values found in the model & view
+        oldresponsevalues = response.context['form'].initial
+
+        # Override the old set of values with the desired one
+        oldresponsevalues["firstName"] = "lessthan30chars"
+
+        # DO a post method to send the newly created dataset
+        response = client.post('/member/update/' + str(person_to_edit.pk) + '/',
+                               oldresponsevalues)
+
+        # Do a query for the object that you want to compare
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        self.assertTrue(person_to_edit.firstName == "lessthan30chars")
+
+
+        # response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+
+
+
+
+
 
     #Boundary Test 6 - Test if user cannot modify member info if supplied first name is greater than 30 characters
 
