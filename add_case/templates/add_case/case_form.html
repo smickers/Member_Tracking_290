@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Case</title>
 </head>
 <body>
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        {% include 'cases/form_template.html' %}
+        {% include 'add_case/form-template.html' %}
         <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
     </form>
-
 </body>
 </html>

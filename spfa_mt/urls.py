@@ -19,5 +19,6 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^addmember/', include('add_member.urls')),
-    url(r'^cases/', include('cases.urls'))
+    url(r'^cases/', include('cases.urls')),
+    url(r'^addCase/', include('add_case.urls'))
 ]

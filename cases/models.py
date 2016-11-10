@@ -3,7 +3,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from add_member.models import Person
 import sys
-
+from django.contrib import admin
 
 class Member(models.Model):
     memberID = models.CharField(max_length=9, unique='true')
@@ -38,10 +38,13 @@ class Case(models.Model):
 # noinspection PyGlobalUndefined
 class CaseMembers(models.Model):
     caseNum = models.CharField(max_length=9)
-    memberNum = models.CharField(max_length=9)
+    memberNum = models.TextField()
     caseMember = models.CharField(max_length=18, unique='true', null='true', )
 
     # noinspection PyGlobalUndefined
+    #Function: save
+    #Purpose: Save the memberID and caseID to the caseMembers table
+    #params: self - instance of CaseMembers
     def save(self):
         caseCheck = False
         memberCheck = False
@@ -51,8 +54,11 @@ class CaseMembers(models.Model):
         except ObjectDoesNotExist:
             print ("Case Does not exist")
         try:
-            Person.objects.get(memberID=self.memberNum)
-            memberCheck = True
+            members = CaseMembers.memberNum.split(', ')
+            for mem in members:
+                    assert isinstance(Person.objects.get(memberID=mem))
+                    #Person.objects.get(memberID=self.memberNum)
+                    memberCheck = True
         except Exception:
             print ("Member Does not exist")
         if(memberCheck & caseCheck):
@@ -60,6 +66,18 @@ class CaseMembers(models.Model):
             super(CaseMembers, self).save()
             print("Member added to Case")
 
+    #Function: get_absolute_url
+    #Purpose: Reload the page when information is submited
+    #Params: None
     @staticmethod
     def get_absolute_url():
         return reverse(viewname='cases:addMemberToCase')
+
+
+class CaseMembersAdmin(admin.ModelAdmin):
+        def save_model(self, request, obj, form, change):
+                data = obj.member
+
+                caseMember = [x for x in data.split(', ') if x and not x.isspace()]
+                for member in caseMember:
+                    CaseMembers.objects.create(caseMember=member, caseNum=CaseMembers.caseNum)
