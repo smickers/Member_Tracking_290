@@ -1,14 +1,13 @@
-from django.shortcuts import render
-from django.views import generic
-from django.views.generic import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic import DetailView
+from django.views.generic.edit import CreateView
 from .models import contactLog
 from .forms import ContactLogForm
-from . import models
 from django.http import HttpResponse
 from django.template import loader
 
+# View success
+# Purpose: This view will be called whenever a contact log has
+# been successfully created. It will display a success page with
+# the new contact log's PK.
 def success(request, pk):
     template = loader.get_template('contactLog/success.html')
     context = {
@@ -17,20 +16,10 @@ def success(request, pk):
 
     return HttpResponse(template.render(context, request))
 
-
-def contactLogCreateSuccess(request):
-    template = loader.get_template('contactLog/success.html')
-    context = {
-        'contactLogID': '55'
-    }
-    return HttpResponse(template.render(context, template))
-
+# View ContactLogCreate
+# Purpose: Put together a form to allow the user to create a new
+# contact log from.
 class ContactLogCreate(CreateView):
     model = contactLog
     form_class = ContactLogForm
-
-class CreateSuccess(DetailView):
-    model = contactLog
-    pk = 5
-    template_name = 'contactLog/success.html'
 

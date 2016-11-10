@@ -34,6 +34,12 @@ class contactLog(models.Model):
         except ValueError:
             return False
 
+    # Function: validateMemberID
+    # Purpose: Verifies that the member ID for the current object
+    # is a valid member ID (meets integer requirements for now)
+    # Parameters:
+    # self - the calling object
+    # Returns: N/A
     def validateMemberID(self):
         if self.memberID:
             if self.memberID > 999999999:
@@ -41,6 +47,12 @@ class contactLog(models.Model):
             elif self.memberID < 1:
                 raise ValueError("Member ID must be a positive number!")
 
+    # Function: validateDescription
+    # Purpose: Verifies that the description for the current object
+    # is less than 150 characters
+    # Parameters:
+    # self - the calling object
+    # Returns: N/A
     def validateDescription(self):
         if self.description:
             if not self.validateDate(str(self.date)):
