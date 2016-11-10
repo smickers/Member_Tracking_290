@@ -18,6 +18,7 @@ class CaseTests(TestCase):
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
             tempCase.additionalMembers = 0
@@ -35,6 +36,7 @@ class CaseTests(TestCase):
         tempCase.complainant = 987654321
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
+        tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
         tempCase.additionalMembers = 0
@@ -56,6 +58,7 @@ class CaseTests(TestCase):
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
             tempCase.additionalMembers = 0
@@ -81,6 +84,7 @@ class CaseTests(TestCase):
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
             tempCase.additionalMembers = 0
@@ -101,6 +105,7 @@ class CaseTests(TestCase):
                           "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                           "natoque penatibus et magnis dis parturient montes, nascetur " \
                           "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,"
+        tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
         tempCase.additionalMembers = 0
@@ -118,6 +123,7 @@ class CaseTests(TestCase):
         tempCase.complainant = 987654321
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
+        tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
         tempCase.additionalMembers = 0
@@ -139,6 +145,7 @@ class CaseTests(TestCase):
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
             tempCase.additionalMembers = 0
@@ -164,6 +171,7 @@ class CaseTests(TestCase):
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
             tempCase.additionalMembers = 0
@@ -182,6 +190,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                                 "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                                 "natoque penatibus et magnis dis parturient montes, nascetur " \
@@ -202,6 +211,7 @@ class CaseTests(TestCase):
         tempCase.complainant = 987654321
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
+        tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
         tempCase.additionalMembers = 0
@@ -220,6 +230,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                                 "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                                 "natoque penatibus et magnis dis parturient montes, nascetur " \
@@ -241,6 +252,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                                 "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                                 "natoque penatibus et magnis dis parturient montes, nascetur " \
@@ -266,6 +278,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                                 "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
@@ -286,6 +299,7 @@ class CaseTests(TestCase):
         tempCase.complainant = 987654321
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
+        tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
         tempCase.additionalMembers = 0
@@ -304,6 +318,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
@@ -329,6 +344,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
@@ -361,6 +377,7 @@ class CaseTests(TestCase):
         tempCase.complainant = 987654321
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
+        tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
         tempCase.additionalMembers = 0
@@ -380,6 +397,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
             tempCase.additionalMembers = 0
@@ -398,6 +416,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = ""
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
             tempCase.additionalMembers = 0
@@ -416,6 +435,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = "Saskatoon"
             tempCase.school = ""
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
             tempCase.additionalMembers = 0
@@ -434,6 +454,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = ""
             tempCase.status = "OPEN"
             tempCase.additionalMembers = 0
@@ -451,6 +472,7 @@ class CaseTests(TestCase):
         tempCase.complainant = 987654321
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
+        tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = ""
         tempCase.additionalMembers = 0
@@ -468,6 +490,7 @@ class CaseTests(TestCase):
         tempCase.complainant = 987654321
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
+        tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
         tempCase.additionalMembers = 0
