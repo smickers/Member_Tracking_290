@@ -58,7 +58,6 @@ class Person(models.Model):
     hireDate = models.DateField(null=True)
 
 
-
     def get_absolute_url(self):
         return reverse(viewname='add_member:member_detail', kwargs={'pk':self.pk})
 

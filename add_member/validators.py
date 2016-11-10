@@ -9,9 +9,9 @@ def validate_pCode(value):
 
 
 def validate_numbers(value):
-    HNUM_REGEX = re.compile(r"\([0-9]{3}\)[0-9]{3}-[0-9]{4}")
+    HNUM_REGEX = re.compile(r"^\([0-9]{3}\)[0-9]{3}-[0-9]{4}$")
     if not HNUM_REGEX.match(str(value)):
-        raise ValidationError("Invalid number")
+        raise ValidationError("Invalid number format")
 
 
 def validate_ninedigits(value):
@@ -26,7 +26,7 @@ def validate_rightstringlen20(value):
 
 def validate_rightstringlen30(value):
     strrep = str(value)
-    if len(str(value))  >= 30:
+    if len(str(value))  > 30:
         raise ValidationError("Character length must be less than or equal to 30")
 
 
