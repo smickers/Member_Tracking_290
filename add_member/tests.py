@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from .models import Person
-
+from django.forms import formset_factory
 from django.db import DataError
 
 
@@ -1383,6 +1383,8 @@ class PersonTestCase(TestCase):
 # region Test for Modifying person information
 class ModifyPerson(TestCase):
 
+    characters_len_31 = "testchartestchartestcharteestchaaaaa"
+
     def setUp(self):
         tempPerson = Person()
         tempPerson.memberID = 123456789
@@ -1409,9 +1411,10 @@ class ModifyPerson(TestCase):
         tempPerson.full_clean()
         tempPerson.save()
 
+
+
     def testIfThereIsAMemberInsideTestDB(self):
         self.assertTrue(Person.objects.count() == 1)
-
 
     #Normal - Test 1
     def test_if_member_id_is_modifiable(self):
@@ -1419,7 +1422,6 @@ class ModifyPerson(TestCase):
         person_to_edit.memberID = 987654321
         person_to_edit.save()
         self.assertTrue(Person.objects.get(pk=person_to_edit.pk).memberID == 987654321)
-
 
 
     #Exception - Test 2
@@ -1447,50 +1449,62 @@ class ModifyPerson(TestCase):
         self.assertTrue(Person.objects.get(pk=person_to_edit.pk).firstName == "New first")
 
     #Normal Test 4 - Test if user can modify existing member's first name
-
     def test_if_user_can_get_to_the_form_where_it_modifies_a_user(self):
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         client = Client()
-        response = client.get('/member/update/' + str(person_to_edit.pk)  )
-        print(response.status_code)
+        response = client.get('/member/update/' + str(person_to_edit.pk))
         #301 is http code for url redirection
+        print("hi")
         self.assertTrue(response.status_code == 301)
+        self.tearDown()
 
     #Normal Tests 5- Test if user can modify existing member's first name if first name supplied is less than 30 characters
-    def user_can_modify_existing_member_first_name_if_first_name_is_less_than_30_chars(self):
+    def testIfUserCanModifyExistingFirstNameIFFnameIslessThan30Chars(self):
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
-
-        # Instantiate the Client
         client = Client()
-
-        # Connect to the actual site
         response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
-
-        # Get the initial values found in the model & view
         oldresponsevalues = response.context['form'].initial
-
-        # Override the old set of values with the desired one
         oldresponsevalues["firstName"] = "lessthan30chars"
-
-        # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/',
-                               oldresponsevalues)
-
-        # Do a query for the object that you want to compare
+        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertTrue(person_to_edit.firstName == "lessthan30chars")
 
-
-        # response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
-
-
-
-
-
-
     #Boundary Test 6 - Test if user cannot modify member info if supplied first name is greater than 30 characters
+    def testIfUserCANNOTModifyExistingFirstNameIFFnameIslessThan30Chars(self):
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        # Instantiate the Client
+        client = Client()
+        # Connect to the actual site
+        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        # Get the initial values found in the model & view
+        # print(response.context)
+        oldresponsevalues = response.context['form'].initial
+        # Override the old set of values with the desired one
+        oldresponsevalues["firstName"] = self.characters_len_31
+        # DO a post method to send the newly created dataset
+        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        # Do a query for the object that you want to compare
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        self.assertContains(response, "Ensure this value has at most 30 characters", 1,200)
 
     #Exception Test 7 - Test if user cannot leave first name field empty
+    def testIfUserCANNOTLeaveFirstNameFieldEmpty(self):
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        # Instantiate the Client
+        client = Client()
+        # Connect to the actual site
+        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        # Get the initial values found in the model & view
+        # print(response.context)
+        oldresponsevalues = response.context['form'].initial
+        # Override the old set of values with the desired one
+        oldresponsevalues["firstName"] = ""
+        # DO a post method to send the newly created dataset
+        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        print(response.content)
+        # Do a query for the object that you want to compare
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        self.assertContains(response, "This field is required", 1, 200)
 
     #Exception Test 8 - Test if user can't leave middle name epty
 

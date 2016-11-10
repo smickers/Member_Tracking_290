@@ -26,7 +26,7 @@ def validate_rightstringlen20(value):
 
 def validate_rightstringlen30(value):
     strrep = str(value)
-    if len(str(value))  > 30:
+    if len(str(value))  >= 30:
         raise ValidationError("Character length must be less than or equal to 30")
 
 
