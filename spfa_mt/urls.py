@@ -1,5 +1,5 @@
-"""spfa_mt URL Configuration
-from django.conf.urls import url
+#spfa_mt URL Configuration
+from django.conf.urls import url, include
 from django.contrib import admin
 
 urlpatterns = [

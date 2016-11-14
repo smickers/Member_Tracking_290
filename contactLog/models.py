@@ -49,7 +49,6 @@ class contactLog(models.Model):
 
     # Function: validateDescription
     # Purpose: Verifies that the description for the current object
-    # is less than 150 characters
     # Parameters:
     # self - the calling object
     # Returns: N/A
