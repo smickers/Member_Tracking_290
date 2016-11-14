@@ -1,5 +1,5 @@
 #  gitignore for Django using pyCharm
-# 
+#
 
 # extensions to ignore
 *.log
