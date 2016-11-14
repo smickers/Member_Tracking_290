@@ -1,3 +1,5 @@
+from itertools import permutations
+
 from django.test import TestCase, Client
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
@@ -2043,22 +2045,154 @@ class ModifyPerson(TestCase):
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "Invalid number format", 1, 200)
     #Normal Test 36 - Test if user can modify cell phone field
+    def test_if_user_cannot_modify_member_cell_phone_if_given_cell_phone_is_invalid(self):
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        # Instantiate the Client
+        client = Client()
+        # Connect to the actual sites
+        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        # Get the initial values found in the model & view
+        # print(response.context)
+        oldresponsevalues = response.context['form'].initial
+        # Override the old set of values with the desired one
+        oldresponsevalues["cPhone"] = "(306)812-1235"
+        # DO a post method to send the newly created dataset
+        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        # Do a query for the object that you want to compare
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        self.assertTrue(person_to_edit.cPhone == "(306)812-1235")
 
     #Boundary Test 37 - test if user cannot modify members cell phone if not in the format (###)###-####
+    def test_if_user_cannot_modify_member_cell_phone_if_given_cell_phone_is_invalid(self):
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        # Instantiate the Client
+        client = Client()
+        # Connect to the actual sites
+        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        # Get the initial values found in the model & view
+        # print(response.context)
+        oldresponsevalues = response.context['form'].initial
+        # Override the old set of values with the desired one
+        oldresponsevalues["cPhone"] = "306812-1235"
+        # DO a post method to send the newly created dataset
+        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        # Do a query for the object that you want to compare
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        self.assertContains(response, "Invalid number format", 1, 200)
 
     #Normal Test 38 - Test if user user can modify existing member email
+    def test_if_user_can_modify_member_existing_email(self):
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        # Instantiate the Client
+        client = Client()
+        # Connect to the actual sites
+        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        # Get the initial values found in the model & view
+        # print(response.context)
+        oldresponsevalues = response.context['form'].initial
+        # Override the old set of values with the desired one
+        oldresponsevalues["hEmail"] = "sample@sample.com"
+        # DO a post method to send the newly created dataset
+        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        # Do a query for the object that you want to compare
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        self.assertTrue(person_to_edit.hEmail == "sample@sample.com")
 
     #Exception Test 39 - Test if user cannot leave member email empty
+    def test_if_user_cannot_modify_member_existing_email_if_email_is_empty(self):
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        # Instantiate the Client
+        client = Client()
+        # Connect to the actual sites
+        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        # Get the initial values found in the model & view
+        # print(response.context)
+        oldresponsevalues = response.context['form'].initial
+        # Override the old set of values with the desired one
+        oldresponsevalues["hEmail"] = ""
+        # DO a post method to send the newly created dataset
+        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        # Do a query for the object that you want to compare
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        self.assertContains(response, "This field is required", 1, 200)
+
 
     #Boundary Test 40 - Test if user cannot modify member email if not in format: abc@abc.ca
+    def test_if_user_cannot_modify_member_existing_email_if_email_in_invalid_format(self):
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        # Instantiate the Client
+        client = Client()
+        # Connect to the actual sites
+        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        # Get the initial values found in the model & view
+        # print(response.context)
+        oldresponsevalues = response.context['form'].initial
+        # Override the old set of values with the desired one
+        oldresponsevalues["hEmail"] = "@gmail.c"
+        # DO a post method to send the newly created dataset
+        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        # Do a query for the object that you want to compare
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        self.assertContains(response, "Enter a valid email", 1, 200)
 
     #Normal Test 41 - Test if user can modify existing campus
+    def test_if_user_cannot_modify_member_existing_email_if_email_in_invalid_format(self):
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        # Instantiate the Client
+        client = Client()
+        # Connect to the actual sites
+        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        # Get the initial values found in the model & view
+        # print(response.context)
+        oldresponsevalues = response.context['form'].initial
+        # Override the old set of values with the desired one
+        oldresponsevalues["hEmail"] = "@gmail.c"
+        # DO a post method to send the newly created dataset
+        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        # Do a query for the object that you want to compare
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        self.assertContains(response, "Enter a valid email", 1, 200)
+
 
     #Exception Test 42 - Test if user cannot leave campus field empty
+    def test_if_user_cannot_modify_member_campusfield_if_campus_given_is_EMPTY(self):
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        # Instantiate the Client
+        client = Client()
+        # Connect to the actual sites
+        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        # Get the initial values found in the model & view
+        # print(response.context)
+        oldresponsevalues = response.context['form'].initial
+        # Override the old set of values with the desired one
+        oldresponsevalues["campus"] = ""
+        # DO a post method to send the newly created dataset
+        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        # Do a query for the object that you want to compare
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        self.assertContains(response, "This field is required", 1, 200)
 
     #Boundary Test 43 - Test if user cannot modify campus field if not: 'SASKATOON', 'REGINA', 'MOOSE JAW', 'PRINCE ALBERT'
+    def test_if_user_cannot_modify_member_campusfield_if_campus_given_is_invalid(self):
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        # Instantiate the Client
+        client = Client()
+        # Connect to the actual sites
+        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        # Get the initial values found in the model & view
+        # print(response.context)
+        oldresponsevalues = response.context['form'].initial
+        # Override the old set of values with the desired one
+        oldresponsevalues["campus"] = "randomcampus"
+        # DO a post method to send the newly created dataset
+        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        # Do a query for the object that you want to compare
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        self.assertContains(response, "Select a valid choice", 1, 200)
 
     #Normal Test 44 - Test if user can modify existing job type
+
+
 
     #Exception Test 45 - Test if user cannot leave job type field empty
 
