@@ -32,12 +32,14 @@ ALLOWED_HOSTS = ['testserver', '127.0.0.1']
 
 INSTALLED_APPS = [
     'add_member.apps.AddMemberConfig',
+    'add_case.apps.AddCaseConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'contactLog.apps.ContactlogConfig'
 ]
 
 MIDDLEWARE = [
