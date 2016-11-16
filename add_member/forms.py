@@ -4,11 +4,17 @@ from .validators import *
 import re
 import datetime
 
+
+#The form used for modifying/adding a member
 class PersonForm(ModelForm):
     class Meta:
+
         model = Person
 
+        #specifies which field are going to be used on the form
         fields = '__all__'
+
+        #specifies labels for all the fields found in the model
         labels = {
             'memberID': 'Member ID/Saskpoly ID',
             'firstName': 'First Name',
@@ -29,9 +35,10 @@ class PersonForm(ModelForm):
             'memberImage': 'Member Image',
             }
 
+        #modifies the date fields to have a valid range
         widgets = {
-            'bDay': SelectDateWidget(years=range(1980, datetime.datetime.now().year + 1)),
-            'hireDate': SelectDateWidget(years=range(1980, datetime.datetime.now().year + 1))
+            'bDay': SelectDateWidget(years=range(1900, datetime.datetime.now().year + 1)),
+            'hireDate': SelectDateWidget(years=range(1900, datetime.datetime.now().year + 1))
             }
 
 

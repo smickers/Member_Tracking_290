@@ -9,12 +9,15 @@ from django.core.validators import MaxValueValidator
 # Create your models here.
 
 class Person(models.Model):
+
+    #bound fields choices for gender field
     GENDER_CHOICE = [
         ('MALE', 'Male'),
         ('FEMALE', 'Female'),
         ('UNDEFINED', 'Undefined'),
     ]
 
+    # bound fields choices for campus field
     CAMPUS_CHOICE = [
         ('SASKATOON', 'SASKATOON'),
         ('REGINA', 'REGINA'),
@@ -22,6 +25,7 @@ class Person(models.Model):
         ('PA', 'PRINCE ALBERT'),
     ]
 
+    # bound fields choices for position field
     POSITION_CLASS_CHOICE = [
         ('FTO', 'Full-time ongoing'),
         ('FTED', 'Full-time end dated'),
@@ -29,6 +33,7 @@ class Person(models.Model):
         ('PTED', 'Part-time end dated'),
     ]
 
+    # bound fields choices for membership status field
     MEMBERSHIP_STATUS = [
         ('RESOURCE', 'RESOURCE'),
         ('COMCHAIR', 'COMMITTEE CHAIR'),
@@ -57,7 +62,7 @@ class Person(models.Model):
     membershipStatus = models.CharField(max_length=30, choices=MEMBERSHIP_STATUS, null=True)
     hireDate = models.DateField(null=True)
 
-
+    #when model gets updated, user will be routed to thte member_detail url
     def get_absolute_url(self):
         return reverse(viewname='add_member:member_detail', kwargs={'pk':self.pk})
 
