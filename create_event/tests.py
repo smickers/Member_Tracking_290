@@ -40,3 +40,23 @@ import datetime
 # Test 9 - Validate event date, invalid date
 # Input: "2016-11-35"
 # Expected result: Error thrown explaining a valid date must be entered
+
+# Test 10 - Validate event date, invalid date v2
+# Input: 'this is invalid'
+# Expected result: Error thrown explaining a valid date must be entered
+
+# Test 11 - Validate valid event location
+# Input "HONALULU"
+# Expected result: Event is created and added to DB
+
+# Test 12 - Validate valid event location v2
+# Input: "REGINA"
+# Expected result: Event is created and added to DB
+
+# Test 13: Validate an invalid event location
+# Input: "this city name is way too long"
+# Expected result: Error thrown explaining event location is too long
+
+# Test 14 - Validate an invalid event location v2
+# Input: ""
+# Expected result: Error thrown explaining event location cannot be left empty.
