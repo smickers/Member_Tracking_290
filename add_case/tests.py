@@ -4,92 +4,8 @@ from django.core.exceptions import ValidationError
 from models import Case
 from django.db import DataError
 
-#TODO Put the class up top when starting the validation test methods
-#Test 1 - Campus validation
-'''
-The campus entered must match a campus from the DB.
-    Saskatoon
-    Prince Albert
-    Regina
-    Moose Jaw
-If a different campus is entered, an exception is thrown. This will prevent someone changing the select
-box to a textbox and entering their own value.
-'''
-
-#Test 2 - School validation
-'''
-The school entered must match a school from the DB.
-    School of Animal and BioSciences
-    School of Business
-    School of Construction
-    School of Health Sciences
-    School of Hospitality and Tourism
-    School of Human Services and Community Safety
-    School of Information and Communications Technology
-    School of Mining, Energy, and Manufacturing
-    School of Natural Resources and Built Environment
-    School of Nursing
-    School of Transportation
-
-If a different school is entered, an exception is thrown. This will prevent someone from changing the
-select box to a textbox and entering their own value.
-'''
-
-#Test 3 - Case type validation
-'''
-The case type entered must match a school from the DB.
-    GRIEVANCES - INDIVIDUAL
-    GRIEVANCES - GROUP
-    GRIEVANCES - POLICY
-    GRIEVANCES - CLASSIFICATION
-    ARBITRATIONS
-    COMPLAINTS
-    DISABILITY CLAIMS
-
-If a different case type is entered, an exception is thrown. This will prevent someone from changing the
-select box to a textbox and entering their own value.
-'''
-
-#Test 4 - Status validation
-'''
-The status entered must match a school from the DB.
-    OPEN
-    CLOSED
-    PENDING
-    ACTION REQ'D - MGMT
-    ACTION REQ'D - SPFA
-
-If a different status is entered, an exception is thrown. This will prevent someone from changing the
-select box to a textbox and entering their own value.
-'''
-
-#Test 5 - Department/Program validation
-'''
-The status entered must match a school from the DB.
-
-
-If a different department/program is entered, an exception is thrown. T
-his will prevent someone from changing the select box to a textbox and entering their own value.
-'''
-
-#Test 6 - Start Date validation
-
-
-#Test 7 - Default Status validation
-
-
-#Test 8 - Default Start Date validation
-
-
-#Test 9 - End date set when closing case
-
-
-# Test 10 - Case created with correct attributes
 
 class CaseTests(TestCase):
-
-    def testTrue(self):
-        return self.assertTrue(True)
 
     # Test 11 - Campus does not write to database when string length is 255 characters
     def testThatCampusIsNotWrittenToDBWhenStringLengthIs255Characters(self):
@@ -102,6 +18,7 @@ class CaseTests(TestCase):
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
             tempCase.additionalMembers = 0
@@ -119,6 +36,7 @@ class CaseTests(TestCase):
         tempCase.complainant = 987654321
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
+        tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
         tempCase.additionalMembers = 0
@@ -140,6 +58,7 @@ class CaseTests(TestCase):
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
             tempCase.additionalMembers = 0
@@ -165,6 +84,7 @@ class CaseTests(TestCase):
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
             tempCase.additionalMembers = 0
@@ -185,6 +105,7 @@ class CaseTests(TestCase):
                           "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                           "natoque penatibus et magnis dis parturient montes, nascetur " \
                           "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,"
+        tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
         tempCase.additionalMembers = 0
@@ -202,6 +123,7 @@ class CaseTests(TestCase):
         tempCase.complainant = 987654321
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
+        tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
         tempCase.additionalMembers = 0
@@ -223,6 +145,7 @@ class CaseTests(TestCase):
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
             tempCase.additionalMembers = 0
@@ -248,6 +171,7 @@ class CaseTests(TestCase):
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
             tempCase.additionalMembers = 0
@@ -266,6 +190,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                                 "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                                 "natoque penatibus et magnis dis parturient montes, nascetur " \
@@ -286,6 +211,7 @@ class CaseTests(TestCase):
         tempCase.complainant = 987654321
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
+        tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
         tempCase.additionalMembers = 0
@@ -304,6 +230,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                                 "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                                 "natoque penatibus et magnis dis parturient montes, nascetur " \
@@ -325,6 +252,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                                 "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                                 "natoque penatibus et magnis dis parturient montes, nascetur " \
@@ -350,6 +278,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                                 "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
@@ -370,6 +299,7 @@ class CaseTests(TestCase):
         tempCase.complainant = 987654321
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
+        tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
         tempCase.additionalMembers = 0
@@ -388,6 +318,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
@@ -413,6 +344,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
@@ -445,6 +377,7 @@ class CaseTests(TestCase):
         tempCase.complainant = 987654321
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
+        tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
         tempCase.additionalMembers = 0
@@ -464,6 +397,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
             tempCase.additionalMembers = 0
@@ -482,6 +416,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = ""
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
             tempCase.additionalMembers = 0
@@ -500,6 +435,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = "Saskatoon"
             tempCase.school = ""
+            tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
             tempCase.additionalMembers = 0
@@ -518,6 +454,7 @@ class CaseTests(TestCase):
             tempCase.complainant = 987654321
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
             tempCase.caseType = ""
             tempCase.status = "OPEN"
             tempCase.additionalMembers = 0
@@ -535,6 +472,7 @@ class CaseTests(TestCase):
         tempCase.complainant = 987654321
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
+        tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = ""
         tempCase.additionalMembers = 0
@@ -552,13 +490,13 @@ class CaseTests(TestCase):
         tempCase.complainant = 987654321
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
+        tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
         tempCase.additionalMembers = 0
         tempCase.additionalNonMembers = ""
         tempCase.docs = None
         tempCase.logs = None
-        tempCase.date = ""
         tempCase.full_clean()
         tempCase.save()
 
