@@ -41,29 +41,37 @@ class CaseMembers(models.Model):
     memberNum = models.TextField()
     caseMember = models.CharField(max_length=18, unique='true', null='true', )
 
+    def member_split(self):
+        members = self.memberNum.split(',')
+        print(members)
+        for mem in members:
+            tempCaseMem = CaseMembers(caseNum=self.caseNum, memberNum=mem,
+                                      caseMember=self.caseNum + mem)
+            tempCaseMem.save()
+
     # noinspection PyGlobalUndefined
     #Function: save
     #Purpose: Save the memberID and caseID to the caseMembers table
     #params: self - instance of CaseMembers
     def save(self):
         caseCheck = False
-        memberCheck = False
+        memberCheck = True
+        caseID = self.caseNum
         try:
             Case.objects.get(caseID=self.caseNum)
             caseCheck = True
         except ObjectDoesNotExist:
             print ("Case Does not exist")
         try:
-            members = CaseMembers.memberNum.split(', ')
-            for mem in members:
-                    assert isinstance(Person.objects.get(memberID=mem))
-                    #Person.objects.get(memberID=self.memberNum)
-                    memberCheck = True
+            Person.objects.get(memberID=mem)
+            memberCheck = True
         except Exception:
             print ("Member Does not exist")
-        if(memberCheck & caseCheck):
-            self.caseMember = self.caseNum + self.memberNum
-            super(CaseMembers, self).save()
+        if memberCheck & caseCheck:
+            caseMem.caseNum = caseID
+            caseMem.memberNum = mem
+            caseMem.caseMember = self.caseNum + mem
+            caseMem.save()
             print("Member added to Case")
 
     #Function: get_absolute_url
@@ -73,11 +81,13 @@ class CaseMembers(models.Model):
     def get_absolute_url():
         return reverse(viewname='cases:addMemberToCase')
 
+    #cms = [save(mem) for mem in member_split()]
 
-class CaseMembersAdmin(admin.ModelAdmin):
-        def save_model(self, request, obj, form, change):
-                data = obj.member
 
-                caseMember = [x for x in data.split(', ') if x and not x.isspace()]
-                for member in caseMember:
-                    CaseMembers.objects.create(caseMember=member, caseNum=CaseMembers.caseNum)
+# class CaseMembersAdmin(admin.ModelAdmin):
+#         def save_model(self, request, obj, form, change):
+#                 data = obj.member
+#
+#                 caseMember = [x for x in data.split(', ') if x and not x.isspace()]
+#                 for member in caseMember:
+#                     CaseMembers.objects.create(caseMember=member, caseNum=CaseMembers.caseNum)
