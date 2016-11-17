@@ -5,6 +5,8 @@ from add_member.models import Person
 import sys
 from django.contrib import admin
 
+
+
 class Member(models.Model):
     memberID = models.CharField(max_length=9, unique='true')
     firstName = models.CharField(max_length=20)
@@ -41,42 +43,30 @@ class CaseMembers(models.Model):
     memberNum = models.TextField()
     caseMember = models.CharField(max_length=18, unique='true', null='true', )
 
+
+
+
+
+
+
+class CallerClass(models.Model):
+    caseNum = models.CharField(max_length=9)
+    memberNum = models.TextField()
+    caseMember = models.CharField(max_length=18, unique='true', null='true')
+
+
     def member_split(self):
-        members = self.memberNum.split(',')
+        members = self.memberNum.split(', ')
         print(members)
         for mem in members:
             tempCaseMem = CaseMembers(caseNum=self.caseNum, memberNum=mem,
-                                      caseMember=self.caseNum + mem)
+                                          caseMember=self.caseNum + mem)
             tempCaseMem.save()
 
-    # noinspection PyGlobalUndefined
-    #Function: save
-    #Purpose: Save the memberID and caseID to the caseMembers table
-    #params: self - instance of CaseMembers
     def save(self):
-        caseCheck = False
-        memberCheck = True
-        caseID = self.caseNum
-        try:
-            Case.objects.get(caseID=self.caseNum)
-            caseCheck = True
-        except ObjectDoesNotExist:
-            print ("Case Does not exist")
-        try:
-            Person.objects.get(memberID=mem)
-            memberCheck = True
-        except Exception:
-            print ("Member Does not exist")
-        if memberCheck & caseCheck:
-            caseMem.caseNum = caseID
-            caseMem.memberNum = mem
-            caseMem.caseMember = self.caseNum + mem
-            caseMem.save()
-            print("Member added to Case")
+        self.member_split()
 
-    #Function: get_absolute_url
-    #Purpose: Reload the page when information is submited
-    #Params: None
+
     @staticmethod
     def get_absolute_url():
         return reverse(viewname='cases:addMemberToCase')
@@ -84,10 +74,3 @@ class CaseMembers(models.Model):
     #cms = [save(mem) for mem in member_split()]
 
 
-# class CaseMembersAdmin(admin.ModelAdmin):
-#         def save_model(self, request, obj, form, change):
-#                 data = obj.member
-#
-#                 caseMember = [x for x in data.split(', ') if x and not x.isspace()]
-#                 for member in caseMember:
-#                     CaseMembers.objects.create(caseMember=member, caseNum=CaseMembers.caseNum)

@@ -1,5 +1,5 @@
 from django.forms import ModelForm, NumberInput, ValidationError
-from cases.models import CaseMembers
+from cases.models import CaseMembers, CallerClass
 from django import forms
 
 
@@ -7,7 +7,7 @@ class CaseMembersForm(ModelForm):
     caseNum = forms.CharField()
     memberNum = forms.CharField()
     class Meta:
-        model = CaseMembers
+        model = CallerClass
         fields = ['caseNum', 'memberNum']
         labels = {
             'caseNum': 'CaseID',
