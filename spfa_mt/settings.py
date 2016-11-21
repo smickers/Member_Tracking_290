@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'contactLog.apps.ContactlogConfig'
+    'contactLog.apps.ContactlogConfig',
+    'create_event.apps.CreateEventConfig'
 ]
 
 MIDDLEWARE = [
