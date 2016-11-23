@@ -1,12 +1,39 @@
 from django.test import TestCase
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
-from models import Case
+from add_case.models import Case
 from django.db import DataError
 import datetime
+from add_member.models import Person
 
 
 class CaseTests(TestCase):
+    person1 = Person()
+
+    def setUp(self):
+        self.person1.memberID = 4204444
+        self.person1.firstName = 'First'
+        self.person1.middleName = 'Middle'
+        self.person1.lastName = 'Last'
+        self.person1.socNum = 123456789
+        self.person1.city = 'Sample City'
+        self.person1.mailAddress = 'Sample address'
+        self.person1.mailAddress2 = 'Sample Address 2'
+        self.person1.pCode = 's7k5j8'
+        self.person1.hPhone = '(306)812-1234'
+        self.person1.cPhone = '(306)812-1234'
+        self.person1.hEmail = 'sample@sample.com'
+        self.person1.campus = 'SASKATOON'
+        self.person1.jobType = 'FTO'
+        self.person1.committee = 'Sample Commitee'
+        self.person1.memberImage = 'image.img'
+        self.person1.bDay = '2012-03-03'
+        self.person1.hireDate = '2012-03-03'
+        self.person1.gender = 'MALE'
+        self.person1.membershipStatus = 'RESOURCE'
+        self.person1.programChoice = 'Sample Program'
+        self.person1.full_clean()
+        self.person1.save()
 
     # Test 11 - Campus does not write to database when string length is 255 characters
     def testThatCampusIsNotWrittenToDBWhenStringLengthIs255Characters(self):
@@ -22,13 +49,14 @@ class CaseTests(TestCase):
             tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
-            tempCase.additionalMembers = 0
-            tempCase.additionalNonMembers = ""
             tempCase.docs = None
             tempCase.logs = None
             tempCase.date = "2016-10-20"
             tempCase.full_clean()
             tempCase.save()
+            tempCase.additionalMembers.add(self.person1)
+            tempCase.save()
+
 
     # Test 12 - Campus writes to database when string length is 8 characters
     def testThatCampusIsWrittenToDBWhenStringLengthIs8Characters(self):
@@ -40,15 +68,16 @@ class CaseTests(TestCase):
         tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
-        tempCase.additionalMembers = 0
         tempCase.additionalNonMembers = ""
         tempCase.docs = None
         tempCase.logs = None
         tempCase.date = "2016-10-20"
         tempCase.full_clean()
         tempCase.save()
+        tempCase.additionalMembers.add(self.person1)
+        tempCase.save()
 
-    # Test 13 - Campus doesnt' write to database when length is 256 characters
+    # # Test 13 - Campus doesnt' write to database when length is 256 characters
     def testThatCampusIsNotWrittenWhenLengthIs256Characters(self):
         with self.assertRaises(ValidationError):
             tempCase = Case()
@@ -62,15 +91,16 @@ class CaseTests(TestCase):
             tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
-            tempCase.additionalMembers = 0
             tempCase.additionalNonMembers = ""
             tempCase.docs = None
             tempCase.logs = None
             tempCase.date = "2016-10-20"
             tempCase.full_clean()
             tempCase.save()
+            tempCase.additionalMembers.add(self.person1)
+            tempCase.save()
 
-    # Test 14 - Campus doesn't write to database when length is 512 characters
+    # # Test 14 - Campus doesn't write to database when length is 512 characters
     def testThatCampusIsNotWrittenWhenLengthIs512Characters(self):
         with self.assertRaises(ValidationError):
             tempCase = Case()
@@ -88,15 +118,14 @@ class CaseTests(TestCase):
             tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
-            tempCase.additionalMembers = 0
             tempCase.additionalNonMembers = ""
             tempCase.docs = None
             tempCase.logs = None
             tempCase.date = "2016-10-20"
             tempCase.full_clean()
             tempCase.save()
-
-    # Test 15 - School writes to database when string length is 255 characters
+    #
+    # # Test 15 - School writes to database when string length is 255 characters
     def testThatSchoolIsWrittenToDBWhenStringLengthIs255Characters(self):
         tempCase = Case()
         tempCase.lead = 123456789
@@ -109,7 +138,6 @@ class CaseTests(TestCase):
         tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
-        tempCase.additionalMembers = 0
         tempCase.additionalNonMembers = ""
         tempCase.docs = None
         tempCase.logs = None
@@ -127,7 +155,6 @@ class CaseTests(TestCase):
         tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
-        tempCase.additionalMembers = 0
         tempCase.additionalNonMembers = ""
         tempCase.docs = None
         tempCase.logs = None
@@ -149,7 +176,7 @@ class CaseTests(TestCase):
             tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
-            tempCase.additionalMembers = 0
+
             tempCase.additionalNonMembers = ""
             tempCase.docs = None
             tempCase.logs = None
@@ -175,7 +202,7 @@ class CaseTests(TestCase):
             tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
-            tempCase.additionalMembers = 0
+
             tempCase.additionalNonMembers = ""
             tempCase.docs = None
             tempCase.logs = None
@@ -197,7 +224,7 @@ class CaseTests(TestCase):
                                 "natoque penatibus et magnis dis parturient montes, nascetur " \
                                 "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,"
             tempCase.status = "OPEN"
-            tempCase.additionalMembers = 0
+
             tempCase.additionalNonMembers = ""
             tempCase.docs = None
             tempCase.logs = None
@@ -215,7 +242,7 @@ class CaseTests(TestCase):
         tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
-        tempCase.additionalMembers = 0
+
         tempCase.additionalNonMembers = ""
         tempCase.docs = None
         tempCase.logs = None
@@ -237,7 +264,7 @@ class CaseTests(TestCase):
                                 "natoque penatibus et magnis dis parturient montes, nascetur " \
                                 "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
             tempCase.status = "OPEN"
-            tempCase.additionalMembers = 0
+
             tempCase.additionalNonMembers = ""
             tempCase.docs = None
             tempCase.logs = None
@@ -263,7 +290,7 @@ class CaseTests(TestCase):
                                 "natoque penatibus et magnis dis parturient montes, nascetur " \
                                 "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
             tempCase.status = "OPEN"
-            tempCase.additionalMembers = 0
+
             tempCase.additionalNonMembers = ""
             tempCase.docs = None
             tempCase.logs = None
@@ -285,7 +312,7 @@ class CaseTests(TestCase):
                                 "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                                 "natoque penatibus et magnis dis parturient montes, nascetur " \
                                 "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,"
-            tempCase.additionalMembers = 0
+
             tempCase.additionalNonMembers = ""
             tempCase.docs = None
             tempCase.logs = None
@@ -303,7 +330,7 @@ class CaseTests(TestCase):
         tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
-        tempCase.additionalMembers = 0
+
         tempCase.additionalNonMembers = ""
         tempCase.docs = None
         tempCase.logs = None
@@ -329,7 +356,7 @@ class CaseTests(TestCase):
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
-            tempCase.additionalMembers = 0
+
             tempCase.additionalNonMembers = ""
             tempCase.docs = None
             tempCase.logs = None
@@ -363,7 +390,7 @@ class CaseTests(TestCase):
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
-            tempCase.additionalMembers = 0
+
             tempCase.additionalNonMembers = ""
             tempCase.docs = None
             tempCase.logs = None
@@ -381,7 +408,7 @@ class CaseTests(TestCase):
         tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
-        tempCase.additionalMembers = 0
+
         tempCase.additionalNonMembers = ""
         tempCase.docs = None
         tempCase.logs = None
@@ -400,7 +427,7 @@ class CaseTests(TestCase):
             tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
-            tempCase.additionalMembers = 0
+
             tempCase.additionalNonMembers = ""
             tempCase.docs = None
             tempCase.logs = None
@@ -419,7 +446,7 @@ class CaseTests(TestCase):
             tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
-            tempCase.additionalMembers = 0
+
             tempCase.additionalNonMembers = ""
             tempCase.docs = None
             tempCase.logs = None
@@ -438,7 +465,7 @@ class CaseTests(TestCase):
             tempCase.department = "Business Certificate"
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
-            tempCase.additionalMembers = 0
+
             tempCase.additionalNonMembers = ""
             tempCase.docs = None
             tempCase.logs = None
@@ -457,7 +484,7 @@ class CaseTests(TestCase):
             tempCase.department = "Business Certificate"
             tempCase.caseType = ""
             tempCase.status = "OPEN"
-            tempCase.additionalMembers = 0
+
             tempCase.additionalNonMembers = ""
             tempCase.docs = None
             tempCase.logs = None
@@ -475,7 +502,6 @@ class CaseTests(TestCase):
         tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = ""
-        tempCase.additionalMembers = 0
         tempCase.additionalNonMembers = ""
         tempCase.docs = None
         tempCase.logs = None
@@ -494,7 +520,7 @@ class CaseTests(TestCase):
         tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
-        tempCase.additionalMembers = 0
+
         tempCase.additionalNonMembers = ""
         tempCase.docs = None
         tempCase.logs = None

@@ -13,7 +13,7 @@ class Case(models.Model):
     school = models.CharField(max_length=255)
     department = models.CharField(max_length=255, null=True)
     caseType = models.CharField(max_length=50, validators=[validate_case_type])
-    status = models.CharField(max_length=50, blank=True, validators=[validate_status])
+    status = models.CharField(max_length=50, blank=True, validators=[validate_status], default="OPEN")
     additionalMembers = models.ManyToManyField(Person, default=None)
     additionalNonMembers = models.TextField(blank=True, null=True)
     docs = models.TextField(blank=True, null=True)
@@ -23,6 +23,10 @@ class Case(models.Model):
     def get_absolute_url(self):
         return reverse(viewname='cases:case_detail', kwargs={'pk':self.pk})
 
+
+    def clean(self):
+        if len(self.status) == 0:
+            self.status = 'OPEN'
 
 class CaseMembers(models.Model):
     caseNum = models.CharField(max_length=9)
