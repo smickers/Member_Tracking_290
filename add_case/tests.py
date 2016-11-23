@@ -3,6 +3,7 @@ from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from models import Case
 from django.db import DataError
+import datetime
 
 
 class CaseTests(TestCase):
@@ -388,7 +389,6 @@ class CaseTests(TestCase):
         tempCase.full_clean()
         tempCase.save()
 
-    # TODO - make validation for the date format
     # Test 28 - Date doesn't write to database when an incorrect format is entered
     def testThatDateIsNotWrittenToDBWhenIncorrectFormatIsEntered(self):
         with self.assertRaises(ValidationError):
@@ -482,6 +482,7 @@ class CaseTests(TestCase):
         tempCase.date = "2016-10-20"
         tempCase.full_clean()
         tempCase.save()
+        assert (tempCase.status == 'OPEN')
 
     # Test 33 - Date field is not filled out, defaults to current date
     def testDateHasADefault(self):
@@ -499,4 +500,4 @@ class CaseTests(TestCase):
         tempCase.logs = None
         tempCase.full_clean()
         tempCase.save()
-
+        assert (tempCase.date == datetime.date.today())

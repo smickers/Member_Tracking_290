@@ -25,7 +25,7 @@ SECRET_KEY = 'd!18#flrv@bnv#12)*$n#mup9=!k4rmn#4k!q*9q*kr#3#cl7s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['testserver', '127.0.0.1']
 
 
 # Application definition
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'contactLog.apps.ContactlogConfig'
 ]
 
 MIDDLEWARE = [
@@ -84,6 +85,9 @@ DATABASES = {
         'PORT': '3306',
         # 'PASSWORD': 'bitnami',
         'USER': 'root',
+        'OPTIONS': {
+            'sql_mode': 'traditional',
+        },
     }
 }
 

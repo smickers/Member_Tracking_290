@@ -9,12 +9,15 @@ from django.core.validators import MaxValueValidator
 # Create your models here.
 
 class Person(models.Model):
+
+    #bound fields choices for gender field
     GENDER_CHOICE = [
         ('MALE', 'Male'),
         ('FEMALE', 'Female'),
         ('UNDEFINED', 'Undefined'),
     ]
 
+    # bound fields choices for campus field
     CAMPUS_CHOICE = [
         ('SASKATOON', 'SASKATOON'),
         ('REGINA', 'REGINA'),
@@ -22,6 +25,7 @@ class Person(models.Model):
         ('PA', 'PRINCE ALBERT'),
     ]
 
+    # bound fields choices for position field
     POSITION_CLASS_CHOICE = [
         ('FTO', 'Full-time ongoing'),
         ('FTED', 'Full-time end dated'),
@@ -29,20 +33,21 @@ class Person(models.Model):
         ('PTED', 'Part-time end dated'),
     ]
 
+    # bound fields choices for membership status field
     MEMBERSHIP_STATUS = [
         ('RESOURCE', 'RESOURCE'),
         ('COMCHAIR', 'COMMITTEE CHAIR'),
         ('RECORDER', 'RECORDER'),
     ]
 
-    memberID = models.IntegerField()
-    firstName = models.CharField(max_length=30)
-    middleName = models.CharField(max_length=30)
-    lastName = models.CharField(max_length=30)
-    socNum = models.IntegerField()
-    city = models.CharField(max_length=20)
-    mailAddress = models.CharField(max_length=50)
-    mailAddress2 = models.CharField(max_length=50, null=True, blank=True)
+    memberID = models.IntegerField(validators=[validate_ninedigits])
+    firstName = models.CharField(max_length=30, validators=[validate_rightstringlen30])
+    middleName = models.CharField(max_length=30, validators=[validate_rightstringlen30])
+    lastName = models.CharField(max_length=30, validators=[validate_rightstringlen30])
+    socNum = models.IntegerField(validators=[validate_ninedigits])
+    city = models.CharField(max_length=20, validators=[validate_rightstringlen20])
+    mailAddress = models.CharField(max_length=50, validators=[validate_rightstringlen50])
+    mailAddress2 = models.CharField(max_length=50, null=True, blank=True, validators=[validate_rightstringlen50])
     pCode = models.CharField(max_length=7, validators=[validate_pCode])
     bDay = models.DateField()
     gender = models.CharField(choices=GENDER_CHOICE, max_length=10)
@@ -51,56 +56,13 @@ class Person(models.Model):
     hEmail = models.EmailField()
     campus = models.CharField(max_length=20, choices=CAMPUS_CHOICE)
     jobType = models.CharField(max_length=30, choices=POSITION_CLASS_CHOICE)
-    committee = models.CharField(max_length=30)
+    committee = models.CharField(max_length=30, validators=[validate_rightstringlen30])
     memberImage = models.CharField(max_length=30, blank=True, null=True)
-    programChoice = models.CharField(max_length=30, null=True)
+    programChoice = models.CharField(max_length=30, null=True, validators=[validate_rightstringlen30])
     membershipStatus = models.CharField(max_length=30, choices=MEMBERSHIP_STATUS, null=True)
     hireDate = models.DateField(null=True)
 
-
-    def clean(self):
-        if self.memberID > 999999999:
-            raise ValueError("Member ID should be equal than 9 digits")
-
-        if self.socNum > 999999999:
-            raise ValueError("SIN should be less than 9 digits")
-
-        if len(self.firstName) == 0:
-            raise IntegrityError("First name is required")
-
-        if len(self.firstName) > 30:
-            raise ValueError("First Name should be lesser than 30 characters")
-
-        if len(self.middleName) == 0:
-            raise IntegrityError("Middle name is required")
-
-        if len(self.middleName) > 30:
-            raise ValueError("Middle Name should be lesser than 30 characters")
-
-        if len(self.lastName) == 0:
-            raise IntegrityError("Last name name is required")
-
-        if len(self.lastName) > 30:
-            raise ValueError("Last Name should be lesser than 30 characters")
-
-        if len(self.mailAddress) == 0:
-            raise IntegrityError("Mail Address is required")
-
-        if len(self.mailAddress) > 50:
-            raise ValueError("Mail Address must be less than 50 characters")
-
-        if len(self.mailAddress2) == 0:
-            raise IntegrityError("Mail Address is required")
-
-        if len(self.mailAddress2) > 50:
-            raise ValueError("Mail Address must be less than 50 characters")
-
-        if len(self.city) == 0:
-            raise IntegrityError("City is required")
-
-        if len(self.city) > 20:
-            raise ValueError("City Field must be less than 20 characters")
-
+    #when model gets updated, user will be routed to thte member_detail url
     def get_absolute_url(self):
-        return reverse(viewname='add_member:member_add')
+        return reverse(viewname='add_member:member_detail', kwargs={'pk':self.pk})
 

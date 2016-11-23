@@ -13,8 +13,9 @@ def validate_date(value):
 def validate_status(value):
     data = value
     found = False
-    if data == 0:
+    if data == "":
         data = 'OPEN'
+        return data
 
     status = [
         "OPEN",
@@ -33,6 +34,7 @@ def validate_status(value):
 
     return data
 
+
 def validate_case_type(value):
     data = value
 
@@ -44,7 +46,7 @@ def validate_case_type(value):
         "GRIEVANCES - COMPLAINTS",
         "DISABILITY CLAIMS",
         "ARBITRATION",
-        "COMPLAINTS"
+        "COMPLAINT"
     ]
 
     found = False
@@ -52,7 +54,7 @@ def validate_case_type(value):
         if val == data:
             found = True
 
-    if found == False:
+    if found is False:
         raise ValidationError("Must enter a valid case type")
 
     return data
