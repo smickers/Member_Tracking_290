@@ -21,7 +21,7 @@ class Case(models.Model):
     date = models.DateField(blank=True, null=True, default=datetime.date.today, validators=[validate_date])
 
     def get_absolute_url(self):
-        return reverse(viewname='add_case:case_add')
+        return reverse(viewname='cases:case_detail', kwargs={'pk':self.pk})
 
 
 class CaseMembers(models.Model):
