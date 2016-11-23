@@ -1,8 +1,6 @@
 from django.shortcuts import render
-from django.views import generic
 from django.views.generic.edit import  UpdateView
 from django.views.generic import ListView, DetailView
-# from models import CallerClass
 from cases.forms import CaseMembersForm
 from add_case.models import Case
 
