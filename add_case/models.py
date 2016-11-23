@@ -4,7 +4,7 @@ from django.db import models
 from django.core.validators import MaxValueValidator
 from django.core.urlresolvers import reverse
 import datetime
-
+from add_member.models import Person
 
 class Case(models.Model):
     lead = models.IntegerField(max_length=9)
@@ -14,7 +14,7 @@ class Case(models.Model):
     department = models.CharField(max_length=255)
     caseType = models.CharField(max_length=50, validators=[validate_case_type])
     status = models.CharField(max_length=50, blank=True, validators=[validate_status])
-    additionalMembers = models.IntegerField(max_length=9, blank=True, null=True)
+    additionalMembers = models.ManyToManyField(Person, default=None)
     additionalNonMembers = models.TextField(blank=True, null=True)
     docs = models.TextField(blank=True, null=True)
     logs = models.TextField(blank=True, null=True)

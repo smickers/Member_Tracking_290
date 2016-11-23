@@ -6,6 +6,6 @@ from .forms import CaseMembersForm
 
 
 # Create your views here.
-class CaseMembersCreate(CreateView):
+class CaseMembersCreate(UpdateView):
     model = CallerClass
     form_class = CaseMembersForm
