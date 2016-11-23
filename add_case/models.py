@@ -1,7 +1,6 @@
 from __future__ import unicode_literals
 from .validators import *
 from django.db import models
-from django.core.validators import MaxValueValidator
 from django.core.urlresolvers import reverse
 import datetime
 from add_member.models import Person

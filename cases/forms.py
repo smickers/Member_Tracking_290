@@ -6,3 +6,7 @@ class CaseMembersForm(ModelForm):
     class Meta:
         model = Case
         fields = ['additionalMembers']
+
+        labels = {
+            'additionalMembers':'Additional Involved Persons',
+        }
