@@ -7,7 +7,7 @@ import datetime
 
 
 class CaseTests(TestCase):
-    #NEW CASES ADDED FOR story 26-6-1
+    #NEW CASES ADDED FOR story 26-6-1 Add Primary Complaintant from member DB
 
 
     #STORIES FOR 26-6
