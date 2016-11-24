@@ -27,3 +27,7 @@ class EventForm(ModelForm):
             'Date:': 'date',
             'Location': 'location'
         }
+
+        widgets = {
+            'date': SelectDateWidget()
+        }

@@ -11,11 +11,11 @@
 <body>
     <form action="" method="POST" enctype="multipart/form-data" class="form">
         {% csrf_token %}
-        {%  bootstrap_form form %}
-        {%  buttons %}
-            <button type="submit" class="btn btn-primary">Submit</button>
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">Create Event</button>
             <button type="reset" class="btn btn-warning">Reset</button>
-        {%  endbuttons %}
+        {% endbuttons %}
     </form>
 </body>
 </html>

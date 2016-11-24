@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 import re
 import datetime
 
+
 def validate_name(value):
     data = value
 
@@ -13,6 +14,7 @@ def validate_name(value):
 
     return data
 
+
 def validate_desc(value):
     data = value
 
@@ -20,6 +22,7 @@ def validate_desc(value):
         raise ValidationError("Description needs to be less than 50 characters")
 
     return data
+
 
 def validate_location(value):
     data = value
