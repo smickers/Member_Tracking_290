@@ -6,13 +6,16 @@ from django import forms
 
 
 class EventForm(ModelForm):
-    char_field_with_list = forms.CharField(required=True)
-
     def __init__(self, *args, **kwargs):
-        _location_list = kwargs.pop('data_list', None)
+        _location_list = {
+            'Prince Albert',
+            'Moose Jaw',
+            'Regina',
+            'Saskatoon'
+        }
         super(ModelForm, self).__init__(*args, **kwargs)
 
-        self.fields['char_field_with_list'].widget = ListTextWidget(data_list=_location_list, name='location-list')
+        self.fields['location'].widget = ListTextWidget(data_list=_location_list, name='location-list')
 
     class Meta:
         model = Event

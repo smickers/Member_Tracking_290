@@ -3,9 +3,17 @@ from .models import Event
 from .forms import EventForm
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.detail import DetailView
+
 
 class EventCreate(CreateView):
     model = Event
     form_class = EventForm
-    location_list = ('REGINA', 'SASKATOON', 'MOOSE JAW', 'PRINCE ALBERT')
-    form = EventForm(data_list=location_list)
+    form = EventForm()
+
+class EventCreateSuccess(DetailView):
+    model = Event
+
+    def get_context_data(self, **kwargs):
+        context = super(EventCreateSuccess, self).get_context_data(**kwargs)
+        return context
