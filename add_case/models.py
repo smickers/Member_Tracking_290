@@ -63,10 +63,7 @@ class Case(models.Model):
     ]"""
 
     lead = models.IntegerField(max_length=9)
-    #complainant = models.IntegerField(max_length=9)
-    #IMPORTANT: NEED TO CHANGE TEST CASES BEFORE DOING THIS
-    #note for future references: the select box will show what the parent's to string method returns
-    complainant = models.ForeignKey('add_member.Person', on_delete=models.CASCADE, blank=True)
+    complainant = models.IntegerField(max_length=9)
     campus = models.CharField(choices=CAMPUS_CHOICE, default='Saskatoon', max_length=20)
     school = models.CharField(choices=SCHOOLS, default='Business', max_length=255)
     department = models.CharField(max_length=255, null=True)
