@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'add_member.apps.AddMemberConfig',
     'add_case.apps.AddCaseConfig',
+    'create_event.apps.CreateEventConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
