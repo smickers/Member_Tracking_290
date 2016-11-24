@@ -37,20 +37,21 @@ class Case(models.Model):
         ('Prince Albert', 'Prince Albert'),
     ]
     SCHOOLS=[
-        ("Business","Business"),
-        ("Construction", "Construction"),
-        ("Health Sciences", "Health Sciences"),
-        ("Hospitality and Tourism", "Hospitality and Tourism"),
-        ("Human Services and Community Safety", "Human Services and Community Safety"),
-        ("Information and Communications Technology", "Information and Communications Technology"),
-        ("Mining, Energy and Manufacturing", "Mining, Energy and Manufacturing"),
-        ("Natural Resources and Built Environment", "Natural Resources and Built Environment"),
-        ("Nursing", "Nursing"),
-        ("Transportation", "Transportation"),
+        ("School of Business","Business"),
+        ("School of Construction", "Construction"),
+        ("School of Health Sciences", "Health Sciences"),
+        ("School of Hospitality and Tourism", "Hospitality and Tourism"),
+        ("School of Human Services and Community Safety", "Human Services and Community Safety"),
+        ("School of Information and Communications Technology", "Information and Communications Technology"),
+        ("School of Mining, Energy and Manufacturing", "Mining, Energy and Manufacturing"),
+        ("School of Natural Resources and Built Environment", "Natural Resources and Built Environment"),
+        ("School of Nursing", "Nursing"),
+        ("School of Transportation", "Transportation"),
     ]
 
 
-    DEPARTMENTS=[
+    #for another story - have both departments and non school departments as valid
+    """NON_SCHOOL_DEPARTMENTS=[
         ("Fitness Centre", "Fitness Centre"),
         ("ILDC", "ILDC"),
         ("Learning Services", "Learning Services"),
@@ -59,7 +60,7 @@ class Case(models.Model):
         ("PLAR","PLAR"),
         ("Simulation Lab","Simulation Lab"),
         ("Student Development","Student Development"),
-    ]
+    ]"""
 
     lead = models.IntegerField(max_length=9)
     #complainant = models.IntegerField(max_length=9)
@@ -68,7 +69,7 @@ class Case(models.Model):
     complainant = models.ForeignKey('add_member.Person', on_delete=models.CASCADE, blank=True)
     campus = models.CharField(choices=CAMPUS_CHOICE, default='Saskatoon', max_length=20)
     school = models.CharField(choices=SCHOOLS, default='Business', max_length=255)
-    department = models.CharField(choices=DEPARTMENTS,default='Learning Technologies', max_length=255, null=True)
+    department = models.CharField(max_length=255, null=True)
     caseType = models.CharField(choices=CASE_TYPE, max_length=50, default='GRIEVANCES - INDIVIDUAL', validators=[validate_case_type])
     status = models.CharField(choices=STATUS,  default='OPEN', max_length=50, blank=True,validators=[validate_status])
     additionalMembers = models.IntegerField(max_length=9, blank=True, null=True)
