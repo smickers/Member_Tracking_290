@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 import datetime
 from add_member.models import Person
 
+
 class Case(models.Model):
     lead = models.IntegerField(max_length=9)
     complainant = models.IntegerField(max_length=9)
@@ -13,7 +14,7 @@ class Case(models.Model):
     department = models.CharField(max_length=255, null=True)
     caseType = models.CharField(max_length=50, validators=[validate_case_type])
     status = models.CharField(max_length=50, blank=True, validators=[validate_status], default="OPEN")
-    additionalMembers = models.ManyToManyField(Person, default=None)
+    additionalMembers = models.ManyToManyField(Person, default=None, null=True, blank=True)
     additionalNonMembers = models.TextField(blank=True, null=True)
     docs = models.TextField(blank=True, null=True)
     logs = models.TextField(blank=True, null=True)
