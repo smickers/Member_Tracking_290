@@ -5,7 +5,11 @@ from create_event.fields import ListTextWidget
 from django import forms
 
 
+# This creates names for fields on the form.
 class EventForm(ModelForm):
+
+    # Name:     __init__
+    # Function: This routine creates the datalist for selecting a location or entering it in.
     def __init__(self, *args, **kwargs):
         _location_list = {
             'Prince Albert',
@@ -17,6 +21,7 @@ class EventForm(ModelForm):
 
         self.fields['location'].widget = ListTextWidget(data_list=_location_list, name='location-list')
 
+    # This names the fields for the form
     class Meta:
         model = Event
 
