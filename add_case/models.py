@@ -37,7 +37,7 @@ class Case(models.Model):
         ('Prince Albert', 'Prince Albert'),
     ]
     SCHOOLS=[
-        ("School of Business","Business"),
+        ("School of Business", "Business"),
         ("School of Construction", "Construction"),
         ("School of Health Sciences", "Health Sciences"),
         ("School of Hospitality and Tourism", "Hospitality and Tourism"),

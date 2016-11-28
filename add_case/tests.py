@@ -1,13 +1,80 @@
 from django.test import TestCase
 from django.db import IntegrityError
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from models import Case
+from add_member.models import Person
 from django.db import DataError
 import datetime
 
 
 class CaseTests(TestCase):
     #NEW CASES ADDED FOR story 26-6-1 Add Primary Complaintant from member DB
+    #Test 1 - Test User Enters Valid Compnainant
+    tempPerson = Person()
+
+    def setUp(self):
+        self.tempPerson.memberID = 123456789
+        self.tempPerson.firstName = 'First'
+        self.tempPerson.middleName = 'Middle'
+        self.tempPerson.lastName = 'Last'
+        self.tempPerson.socNum = 123456789
+        self.tempPerson.city = 'Sample City'
+        self.tempPerson.mailAddress = 'Sample address'
+        self.tempPerson.mailAddress2 = 'Sample Address 2'
+        self.tempPerson.pCode = 's7k5j8'
+        self.tempPerson.hPhone = '(306)812-1234'
+        self.tempPerson.cPhone = '(306)812-1234'
+        self.tempPerson.hEmail = 'sample@sample.com'
+        self.tempPerson.campus = 'SASKATOON'
+        self.tempPerson.jobType = 'FTO'
+        self.tempPerson.committee = 'Sample Commitee'
+        self.tempPerson.memberImage = 'image.img'
+        self.tempPerson.bDay = '2012-03-03'
+        self.tempPerson.hireDate = '2012-03-03'
+        self.tempPerson.gender = 'MALE'
+        self.tempPerson.membershipStatus = 'RESOURCE'
+        self.tempPerson.programChoice = 'Sample Program'
+        self.tempPerson.full_clean()
+        self.tempPerson.save()
+
+
+
+    def testUserEntersValidCompaintant(self):
+        tempCase = Case()
+        tempCase.lead = 123456789
+        tempCase.complainant = self.tempPerson.pk
+        tempCase.campus = "Saskatoon"
+        tempCase.school = "School of Business"
+        tempCase.department = "Business Certificate"
+        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+        tempCase.status = "OPEN"
+        tempCase.additionalMembers = 0
+        tempCase.additionalNonMembers = ""
+        tempCase.docs = None
+        tempCase.logs = None
+        tempCase.date = "2016-10-20"
+        tempCase.full_clean()
+        tempCase.save()
+
+    # Test 2 - Test User Enters invalid Compnainant
+    def testUserEntersInValidCompaintant(self):
+        with self.assertRaises(Person.DoesNotExist):
+            person_holder = Person.objects.get(firstName='noname');
+            tempCase = Case()
+            tempCase.lead = 123456789
+            tempCase.complainant = person_holder.pk
+            tempCase.campus = "Saskatoon"
+            tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
+            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.status = "OPEN"
+            tempCase.additionalMembers = 0
+            tempCase.additionalNonMembers = ""
+            tempCase.docs = None
+            tempCase.logs = None
+            tempCase.date = "2016-10-20"
+            tempCase.full_clean()
+            tempCase.save()
 
 
     #STORIES FOR 26-6
@@ -105,10 +172,7 @@ class CaseTests(TestCase):
         tempCase.lead = 123456789
         tempCase.complainant = 1
         tempCase.campus = "Saskatoon"
-        tempCase.school = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                          "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                          "natoque penatibus et magnis dis parturient montes, nascetur " \
-                          "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,"
+        tempCase.school = "School of Business"
         tempCase.department = "Business Certificate"
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
@@ -504,3 +568,4 @@ class CaseTests(TestCase):
         tempCase.full_clean()
         tempCase.save()
         assert (tempCase.date == datetime.date.today())
+
