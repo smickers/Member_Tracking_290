@@ -8,12 +8,10 @@ import datetime
 
 
 class CaseTests(TestCase):
-    #NEW CASES ADDED FOR story 26-6-1 Add Primary Complaintant from member DB
-    #Test 1 - Test User Enters Valid Compnainant
     tempPerson = Person()
 
     def setUp(self):
-        self.tempPerson.memberID = 123456789
+        self.tempPerson.memberID = 1
         self.tempPerson.firstName = 'First'
         self.tempPerson.middleName = 'Middle'
         self.tempPerson.lastName = 'Last'
@@ -38,11 +36,12 @@ class CaseTests(TestCase):
         self.tempPerson.save()
 
 
-
+    #test 1 - Test User enters a valid case
     def testUserEntersValidCompaintant(self):
+        person_holder = Person.objects.get(firstName='First');
         tempCase = Case()
         tempCase.lead = 123456789
-        tempCase.complainant = self.tempPerson.pk
+        tempCase.complainant = person_holder.pk
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.department = "Business Certificate"
@@ -59,7 +58,7 @@ class CaseTests(TestCase):
     # Test 2 - Test User Enters invalid Compnainant
     def testUserEntersInValidCompaintant(self):
         with self.assertRaises(Person.DoesNotExist):
-            person_holder = Person.objects.get(firstName='noname');
+            person_holder = Person.objects.get(pk=500);
             tempCase = Case()
             tempCase.lead = 123456789
             tempCase.complainant = person_holder.pk
@@ -80,10 +79,11 @@ class CaseTests(TestCase):
     #STORIES FOR 26-6
     # Test 11 - Campus does not write to database when string length is 255 characters
     def testThatCampusIsNotWrittenToDBWhenStringLengthIs255Characters(self):
+        person_holder = Person.objects.get(firstName='First');
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 1
+            tempCase.complainant = person_holder.pk
             tempCase.campus = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
@@ -102,9 +102,10 @@ class CaseTests(TestCase):
 
     # Test 12 - Campus writes to database when string length is 8 characters
     def testThatCampusIsWrittenToDBWhenStringLengthIs8Characters(self):
+        person_holder = Person.objects.get(firstName='First');
         tempCase = Case()
         tempCase.lead = 123456789
-        tempCase.complainant = 1
+        tempCase.complainant = person_holder.pk
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.department = "Business Certificate"
@@ -120,10 +121,11 @@ class CaseTests(TestCase):
 
     # Test 13 - Campus doesnt' write to database when length is 256 characters
     def testThatCampusIsNotWrittenWhenLengthIs256Characters(self):
+        person_holder = Person.objects.get(firstName='First');
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 1
+            tempCase.complainant = person_holder.pk
             tempCase.campus = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
@@ -142,10 +144,11 @@ class CaseTests(TestCase):
 
     # Test 14 - Campus doesn't write to database when length is 512 characters
     def testThatCampusIsNotWrittenWhenLengthIs512Characters(self):
+        person_holder = Person.objects.get(firstName='First');
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 1
+            tempCase.complainant = person_holder.pk
             tempCase.campus = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
@@ -168,9 +171,10 @@ class CaseTests(TestCase):
 
     # Test 15 - School writes to database when string length is 255 characters
     def testThatSchoolIsWrittenToDBWhenStringLengthIs255Characters(self):
+        person_holder = Person.objects.get(firstName='First');
         tempCase = Case()
         tempCase.lead = 123456789
-        tempCase.complainant = 1
+        tempCase.complainant = person_holder.pk
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.department = "Business Certificate"
@@ -186,9 +190,10 @@ class CaseTests(TestCase):
 
     # Test 16 - School writes to database when string length is 18 characters
     def testThatSchoolIsWrittenToDBWhenStringLengthIs18Characters(self):
+        person_holder = Person.objects.get(firstName='First');
         tempCase = Case()
         tempCase.lead = 123456789
-        tempCase.complainant = 1
+        tempCase.complainant = person_holder.pk
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.department = "Business Certificate"
@@ -204,10 +209,11 @@ class CaseTests(TestCase):
 
     # Test 17 - School doesnt' write to database when length is 256 characters
     def testThatSchoolIsWrittenToDBWhenStringLengthIs256Characters(self):
+        person_holder = Person.objects.get(firstName='First');
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 1
+            tempCase.complainant = person_holder.pk
             tempCase.campus = "Saskatoon"
             tempCase.school = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
@@ -226,10 +232,11 @@ class CaseTests(TestCase):
 
     # Test 18 - School doesn't write to database when length is 512 characters
     def testThatSchoolIsWrittenToDBWhenStringLengthIs512Characters(self):
+        person_holder = Person.objects.get(firstName='First');
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 1
+            tempCase.complainant = person_holder.pk
             tempCase.campus = "Saskatoon"
             tempCase.school = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
@@ -252,10 +259,11 @@ class CaseTests(TestCase):
 
     # Test 19 - Case type doesn't write to database when string length is 255 characters
     def testThatCaseTypeIsNotWrittenToDBWhenStringLengthIs255Characters(self):
+        person_holder = Person.objects.get(firstName='First');
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 1
+            tempCase.complainant = person_holder.pk
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
@@ -274,9 +282,10 @@ class CaseTests(TestCase):
 
     # Test 20 - Case type writes to database when string length is 27 characters
     def testThatCaseTypeIsWrittenToDBWhenStringLengthIs27Characters(self):
+        person_holder = Person.objects.get(firstName='First');
         tempCase = Case()
         tempCase.lead = 123456789
-        tempCase.complainant = 1
+        tempCase.complainant = person_holder.pk
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.department = "Business Certificate"
@@ -292,10 +301,11 @@ class CaseTests(TestCase):
 
     # Test 21 - Case type doesnt' write to database when length is 256 characters
     def testThatCaseTypeIsWrittenToDBWhenStringLengthIs256Characters(self):
+        person_holder = Person.objects.get(firstName='First');
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 1
+            tempCase.complainant = person_holder.pk
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
@@ -314,10 +324,11 @@ class CaseTests(TestCase):
 
     # Test 22 - Case type doesn't write to database when length is 512 characters
     def testThatCaseTypeIsWrittenToDBWhenStringLengthIs512Characters(self):
+        person_holder = Person.objects.get(firstName='First');
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 1
+            tempCase.complainant = person_holder.pk
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
@@ -340,10 +351,11 @@ class CaseTests(TestCase):
 
     # Test 23 - Status doesn't write to database when string length is 255 characters
     def testThatStatusIsNotWrittenToDBWhenStringLengthIs255Characters(self):
+        person_holder = Person.objects.get(firstName='First');
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 1
+            tempCase.complainant = person_holder.pk
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
@@ -362,9 +374,10 @@ class CaseTests(TestCase):
 
     # Test 24 - Status writes to database when string length is 4 characters
     def testThatStatusIsWrittenToDBWhenStringLengthIs4Characters(self):
+        person_holder = Person.objects.get(firstName='First');
         tempCase = Case()
         tempCase.lead = 123456789
-        tempCase.complainant = 1
+        tempCase.complainant = person_holder.pk
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.department = "Business Certificate"
@@ -380,10 +393,11 @@ class CaseTests(TestCase):
 
     # Test 25 - Status doesnt' write to database when length is 256 characters
     def testThatStatusIsWrittenToDBWhenStringLengthIs256Characters(self):
+        person_holder = Person.objects.get(firstName='First');
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 1
+            tempCase.complainant = person_holder.pk
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
@@ -406,10 +420,11 @@ class CaseTests(TestCase):
 
     # Test 26 - Status doesn't write to database when length is 512 characters
     def testThatStatusIsWrittenToDBWhenStringLengthIs512Characters(self):
+        person_holder = Person.objects.get(firstName='First');
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 1
+            tempCase.complainant = person_holder.pk
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
@@ -440,9 +455,10 @@ class CaseTests(TestCase):
 
     # Test 27 - Date writes to database when correct format is entered (yyyy/mm/dd)
     def testThatDateIsWrittenToDBWhenCorrectFormatIsEntered(self):
+        person_holder = Person.objects.get(firstName='First');
         tempCase = Case()
         tempCase.lead = 123456789
-        tempCase.complainant = 1
+        tempCase.complainant = person_holder.pk
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.department = "Business Certificate"
@@ -458,10 +474,11 @@ class CaseTests(TestCase):
 
     # Test 28 - Date doesn't write to database when an incorrect format is entered
     def testThatDateIsNotWrittenToDBWhenIncorrectFormatIsEntered(self):
+        person_holder = Person.objects.get(firstName='First');
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 1
+            tempCase.complainant = person_holder.pk
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
@@ -477,10 +494,11 @@ class CaseTests(TestCase):
 
     # Test 29 - Campus field is not filled out, error thrown
     def testCampusIsRequired(self):
+        person_holder = Person.objects.get(firstName='First');
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 1
+            tempCase.complainant =person_holder.pk
             tempCase.campus = ""
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
@@ -496,10 +514,11 @@ class CaseTests(TestCase):
 
     # Test 30 - School field is not filled out, error thrown
     def testSchoolIsRequired(self):
+        person_holder = Person.objects.get(firstName='First');
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 1
+            tempCase.complainant = person_holder.pk
             tempCase.campus = "Saskatoon"
             tempCase.school = ""
             tempCase.department = "Business Certificate"
@@ -515,10 +534,11 @@ class CaseTests(TestCase):
 
     # Test 31 - Case type field is not filled out, error thrown
     def testCaseTypeIsRequired(self):
+        person_holder = Person.objects.get(firstName='First');
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 1
+            tempCase.complainant = person_holder.pk
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
@@ -534,9 +554,10 @@ class CaseTests(TestCase):
 
     # Test 32 - Status field is not filled out, defaults to OPEN
     def testStatusHasADefault(self):
+        person_holder = Person.objects.get(firstName='First');
         tempCase = Case()
         tempCase.lead = 123456789
-        tempCase.complainant = 1
+        tempCase.complainant = person_holder.pk
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.department = "Business Certificate"
@@ -553,9 +574,10 @@ class CaseTests(TestCase):
 
     # Test 33 - Date field is not filled out, defaults to current date
     def testDateHasADefault(self):
+        person_holder = Person.objects.get(firstName='First');
         tempCase = Case()
         tempCase.lead = 123456789
-        tempCase.complainant = 1
+        tempCase.complainant = person_holder.pk
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.department = "Business Certificate"
