@@ -2,6 +2,10 @@ from django.core.exceptions import ValidationError
 import re
 import datetime
 
+
+# Name:     validate_name
+# purpose:  ensure a entered name is valid
+# returns:  validated data
 def validate_name(value):
     data = value
 
@@ -13,6 +17,10 @@ def validate_name(value):
 
     return data
 
+
+# Name:     validate_desc
+# purpose:  ensure a entered description is valid
+# returns:  validated data
 def validate_desc(value):
     data = value
 
@@ -21,6 +29,10 @@ def validate_desc(value):
 
     return data
 
+
+# Name:     validate_location
+# purpose:  ensure a entered location is valid
+# returns:  validated data
 def validate_location(value):
     data = value
 
