@@ -25,12 +25,13 @@ SECRET_KEY = 'd!18#flrv@bnv#12)*$n#mup9=!k4rmn#4k!q*9q*kr#3#cl7s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['testserver', '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'cases.apps.casesConfig',
     'add_member.apps.AddMemberConfig',
     'add_case.apps.AddCaseConfig',
     'create_event.apps.CreateEventConfig',
@@ -84,8 +85,11 @@ DATABASES = {
         'NAME': 'gamma',
         'HOST': '127.0.0.1',
         'PORT': '3306',
-        'PASSWORD': 'bitnami',
+        # 'PASSWORD': 'bitnami',
         'USER': 'root',
+        'OPTIONS': {
+            'sql_mode': 'traditional',
+        },
     }
 }
 
