@@ -73,7 +73,6 @@ class EventTest(unittest.TestCase):
         self.tempPerson2.full_clean()
         self.tempPerson2.save()
 
-
         self.not_saved_person = Person()
         self.not_saved_person.memberID = 123456789
         self.not_saved_person.firstName = 'First'
@@ -98,14 +97,13 @@ class EventTest(unittest.TestCase):
         self.not_saved_person.programChoice = 'Sample Program'
         self.not_saved_person.full_clean()
 
-    """
-    Test 1 - Validate event name, empty name
-    Input: ""
-    Expected result: error thrown explaining event name is required
-
-    """
-
+    # region Tests For Event Creation
     def test_event_name_empty_error(self):
+        """
+        Test 1 - Validate event name, empty name
+        Input: ""
+        Expected result: error thrown explaining event name is required
+        """
         with self.assertRaises(ValidationError):
             testEvent = Event()
             testEvent.name = ""
@@ -115,11 +113,12 @@ class EventTest(unittest.TestCase):
             testEvent.full_clean()
             testEvent.save()
 
-    # Test 2 - Validate event name, valid name
-    # Input: "A"
-    # Expected result: Event created and added to DB
-
     def test_event_name_valid(self):
+        """
+         Test 2 - Validate event name, valid name
+         Input: "A"
+         Expected result: Event created and added to DB
+        """
         testEvent = Event()
         testEvent.name = "A"
         testEvent.description = ""
@@ -128,10 +127,10 @@ class EventTest(unittest.TestCase):
         testEvent.full_clean()
         testEvent.save()
 
-    # Test 3 - Validate event name, name 20 characters
-    # Input: "01234567890126459789"
-    # Expected result: Event created and added to DB
     def test_event_name_valid_20_char(self):
+        # Test 3 - Validate event name, name 20 characters
+        # Input: "01234567890126459789"
+        # Expected result: Event created and added to DB
         testEvent = Event()
         testEvent.name = "01234567890126459789"
         testEvent.description = ""
@@ -140,10 +139,10 @@ class EventTest(unittest.TestCase):
         testEvent.full_clean()
         testEvent.save()
 
-    # Test 4 - Validate event name, name 21 characters
-    # Input: "012345678901234567890"
-    # Expected result: Error thrown explaining event name limited to 20 characters
     def test_event_name_21_chars_error(self):
+        # Test 4 - Validate event name, name 21 characters
+        # Input: "012345678901234567890"
+        # Expected result: Error thrown explaining event name limited to 20 characters
         with self.assertRaises(ValidationError):
             testEvent = Event()
             testEvent.name = "012345678901264597890"
@@ -166,10 +165,10 @@ class EventTest(unittest.TestCase):
         testEvent.full_clean()
         testEvent.save()
 
-    # Test 6 - Validate event description, desc 51 characters
-    # Input: "012345678901234567890123456789012345678901234567890"
-    # Expected result: Error thrown explaining event description is limited to 50 characters
     def test_event_desc_51_chars_error(self):
+        # Test 6 - Validate event description, desc 51 characters
+        # Input: "012345678901234567890123456789012345678901234567890"
+        # Expected result: Error thrown explaining event description is limited to 50 characters
         with self.assertRaises(ValidationError):
             testEvent = Event()
             testEvent.name = "A"
@@ -192,10 +191,10 @@ class EventTest(unittest.TestCase):
         testEvent.full_clean()
         testEvent.save()
 
-    # Test 8 - Validate event date, valid date
-    # Input: "2016-11-17"
-    # Expected result: Event created and added to DB
     def test_event_valid_date(self):
+        # Test 8 - Validate event date, valid date
+        # Input: "2016-11-17"
+        # Expected result: Event created and added to DB
         testEvent = Event()
         testEvent.name = "A"
         testEvent.description = ""
@@ -204,10 +203,10 @@ class EventTest(unittest.TestCase):
         testEvent.full_clean()
         testEvent.save()
 
-    # Test 9 - Validate event date, invalid date
-    # Input: "2016-11-35"
-    # Expected result: Error thrown explaining a valid date must be entered
     def test_event_invalid_date_format(self):
+        # Test 9 - Validate event date, invalid date
+        # Input: "2016-11-35"
+        # Expected result: Error thrown explaining a valid date must be entered
         with self.assertRaises(ValidationError):
             testEvent = Event()
             testEvent.name = "A"
@@ -217,11 +216,10 @@ class EventTest(unittest.TestCase):
             testEvent.full_clean()
             testEvent.save()
 
-            # Test 10 - Validate event date, invalid date v2
-            # Input: 'this is invalid'
-            # Expected result: Error thrown explaining a valid date must be entered
-
     def test_event_invalid_date_text(self):
+        # Test 10 - Validate event date, invalid date v2
+        # Input: 'this is invalid'
+        # Expected result: Error thrown explaining a valid date must be entered
         with self.assertRaises(ValidationError):
             testEvent = Event()
             testEvent.name = "A"
@@ -231,11 +229,10 @@ class EventTest(unittest.TestCase):
             testEvent.full_clean()
             testEvent.save()
 
-            # Test 11 - Validate valid event location
-            # Input "HONALULU"
-            # Expected result: Event is created and added to DB
-
     def test_event_location_valid(self):
+        # Test 11 - Validate valid event location
+        # Input "HONALULU"
+        # Expected result: Event is created and added to DB
         testEvent = Event()
         testEvent.name = "A"
         testEvent.description = ""
@@ -244,10 +241,10 @@ class EventTest(unittest.TestCase):
         testEvent.full_clean()
         testEvent.save()
 
-    # Test 12 - Validate valid event location v2
-    # Input: "REGINA"
-    # Expected result: Event is created and added to DB
     def test_event_location_valid2(self):
+        # Test 12 - Validate valid event location v2
+        # Input: "REGINA"
+        # Expected result: Event is created and added to DB
         testEvent = Event()
         testEvent.name = "A"
         testEvent.description = ""
@@ -256,10 +253,10 @@ class EventTest(unittest.TestCase):
         testEvent.full_clean()
         testEvent.save()
 
-    # Test 13: Validate an invalid event location
-    # Input: "this city name is way too long"
-    # Expected result: Error thrown explaining event location is too long
     def test_event_location_too_long(self):
+        # Test 13: Validate an invalid event location
+        # Input: "this city name is way too long"
+        # Expected result: Error thrown explaining event location is too long
         with self.assertRaises(ValidationError):
             testEvent = Event()
             testEvent.name = "A"
@@ -269,11 +266,10 @@ class EventTest(unittest.TestCase):
             testEvent.full_clean()
             testEvent.save()
 
-            # Test 14 - Validate an invalid event location v2
-            # Input: ""
-            # Expected result: Error thrown explaining event location cannot be left empty.
-
     def test_event_location_empty(self):
+        # Test 14 - Validate an invalid event location v2
+        # Input: ""
+        # Expected result: Error thrown explaining event location cannot be left empty.
         with self.assertRaises(ValidationError):
             testEvent = Event()
             testEvent.name = "A"
@@ -283,9 +279,8 @@ class EventTest(unittest.TestCase):
             testEvent.full_clean()
             testEvent.save()
 
-    # end tests
+    # endregion
 
-    # test for adding member to an event
     def test_if_user_can_add_member_to_an_event(self):
         """
         :parameter self
@@ -310,13 +305,17 @@ class EventTest(unittest.TestCase):
         self.assertEqual(self.members.count == 1)
 
     def test_if_user_cannnot_add_member_that_doesnt_exist_in_db(self):
+        """
+        :parameter self
+        """
         with self.assertRaises(Person.DoesNotExist):
             self.testEvent.members.add(self.not_saved_person)
 
     def test_if_usr_cannot_add_a_member_to_an_event_that_doesnt_exist(self):
+        """
+        :parameter self
+        :return:
+        """
         with self.assertRaises(Event.DoesNotExist):
             target_event = Event.objects.get(name='Sample Event')
             target_event.members.add(self.tempPerson)
-
-
-    # test
