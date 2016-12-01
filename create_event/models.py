@@ -2,7 +2,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 import datetime
-import validators
+from create_event import  validators
+
 from django.core.urlresolvers import reverse
 
 
