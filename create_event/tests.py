@@ -8,11 +8,11 @@ import datetime
 from add_member.models import Person
 
 
-
 class EventTest(unittest.TestCase):
     testEvent = None
     tempPerson = None
     tempPerson2 = None
+    not_saved_person = None
 
     def setUp(self):
         self.testEvent = Event()
@@ -72,12 +72,39 @@ class EventTest(unittest.TestCase):
         self.tempPerson2.programChoice = 'Sample Program'
         self.tempPerson2.full_clean()
         self.tempPerson2.save()
+
+
+        self.not_saved_person = Person()
+        self.not_saved_person.memberID = 123456789
+        self.not_saved_person.firstName = 'First'
+        self.not_saved_person.middleName = 'Middle'
+        self.not_saved_person.lastName = 'Last'
+        self.not_saved_person.socNum = 123456789
+        self.not_saved_person.city = 'Sample City'
+        self.not_saved_person.mailAddress = 'Sample address'
+        self.not_saved_person.mailAddress2 = 'Sample Address 2'
+        self.not_saved_person.pCode = 's7k5j8'
+        self.not_saved_person.hPhone = '(306)812-1234'
+        self.not_saved_person.cPhone = '(306)812-1234'
+        self.not_saved_person.hEmail = 'sample@sample.com'
+        self.not_saved_person.campus = 'SASKATOON'
+        self.not_saved_person.jobType = 'FTO'
+        self.not_saved_person.committee = 'Sample Commitee'
+        self.not_saved_person.memberImage = 'image.img'
+        self.not_saved_person.bDay = '2012-03-03'
+        self.not_saved_person.hireDate = '2012-03-03'
+        self.not_saved_person.gender = 'MALE'
+        self.not_saved_person.membershipStatus = 'RESOURCE'
+        self.not_saved_person.programChoice = 'Sample Program'
+        self.not_saved_person.full_clean()
+
     """
     Test 1 - Validate event name, empty name
     Input: ""
     Expected result: error thrown explaining event name is required
 
     """
+
     def test_event_name_empty_error(self):
         with self.assertRaises(ValidationError):
             testEvent = Event()
@@ -260,19 +287,36 @@ class EventTest(unittest.TestCase):
 
     # test for adding member to an event
     def test_if_user_can_add_member_to_an_event(self):
+        """
+        :parameter self
+        """
         self.testEvent.members.add(self.tempPerson)
         self.assertEqual(self.members.count == 1)
 
-
     def test_if_user_can_add_multiple_member_to_an_event(self):
+        """
+        :parameter self
+        """
         self.testEvent.members.add(self.tempPerson)
         self.testEvent.members.add(self.tempPerson2)
         self.assertEqual(self.members.count == 2)
 
     def test_if_user_cannot_add_a_member_that_already_exist_on_an_event(self):
+        """
+        :parameter self
+        """
         self.testEvent.members.add(self.tempPerson)
         self.testEvent.members.add(self.tempPerson)
         self.assertEqual(self.members.count == 1)
+
+    def test_if_user_cannnot_add_member_that_doesnt_exist_in_db(self):
+        with self.assertRaises(Person.DoesNotExist):
+            self.testEvent.members.add(self.not_saved_person)
+
+    def test_if_usr_cannot_add_a_member_to_an_event_that_doesnt_exist(self):
+        with self.assertRaises(Event.DoesNotExist):
+            target_event = Event.objects.get(name='Sample Event')
+            target_event.members.add(self.tempPerson)
 
 
     # test
