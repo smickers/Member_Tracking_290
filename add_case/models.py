@@ -13,7 +13,7 @@ import datetime
 # Creating the model for the case
 class Case(models.Model):
     lead = models.IntegerField(max_length=9)
-    complainant = models.IntegerField(max_length=9)
+    complainant = models.ForeignKey('add_member.Person', on_delete=models.CASCADE, blank=True)
     campus = models.CharField(max_length=20)
     school = models.CharField(max_length=255)
     department = models.CharField(max_length=255, null=True)

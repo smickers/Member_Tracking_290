@@ -37,7 +37,7 @@ class CaseTests(TestCase):
 
 
     #test 1 - Test User enters a valid case
-    def testUserEntersValidCompaintant(self):
+    def testUserEntersValidComplaintant(self):
         person_holder = Person.objects.get(firstName='First');
         tempCase = Case()
         tempCase.lead = 123456789
@@ -56,7 +56,7 @@ class CaseTests(TestCase):
         tempCase.save()
 
     # Test 2 - Test User Enters invalid Compnainant
-    def testUserEntersInValidCompaintant(self):
+    def testUserEntersInValidComplaintant(self):
         with self.assertRaises(Person.DoesNotExist):
             person_holder = Person.objects.get(pk=500);
             tempCase = Case()
