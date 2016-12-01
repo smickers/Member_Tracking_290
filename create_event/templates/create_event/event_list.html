@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List of Person</title>
+
+    <h2>LIST OF EVENTS</h2>
+
+    <table border="2">
+        <thead>
+            <th>name</th>
+            <th>Action1</th>
+            <th>Action2</th>
+        </thead>
+        {% for event in object_list %}
+             <tr>
+                <td>{{ event.name }}</td>
+                <td><a href="{% url 'create_event:event_detail' event.pk %}">[View Detail]</a></td>
+                 <td><a href="{% url 'create_event:event_add_member' event.pk %}">[Add Member]</a></td>
+            </tr>
+         {% empty %}
+        <tr>NO MEMBERS YET</tr>
+        {% endfor %}
+    </table>
+
+</head>
+<body>
+
+</body>
+</html>

@@ -1,5 +1,5 @@
 from django.forms import ModelForm, NumberInput, ValidationError, SelectDateWidget
-from .models import Event
+from .models import Event, Person
 from .validators import *
 from create_event.fields import ListTextWidget
 from django import forms
@@ -36,3 +36,21 @@ class EventForm(ModelForm):
         widgets = {
             'date': SelectDateWidget()
         }
+
+
+
+
+class EventAddMemberForm(ModelForm):
+    class Meta:
+        model = Event
+        fields = ('members',)
+
+    def __init__(self, **kwargs):
+        super(EventAddMemberForm, self).__init__(**kwargs)
+        self.fields['members'].queryset = Person.objects.exclude(event=self.instance)
+
+
+    def clean_members(self):
+        return self.initial['members'] | self.cleaned_data['members']
+
+
