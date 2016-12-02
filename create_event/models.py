@@ -1,8 +1,9 @@
 from __future__ import unicode_literals
-
+from django.core.exceptions import ValidationError
 from django.db import models
 import datetime
-import validators
+from create_event import  validators
+from add_member.models import Person
 from django.core.urlresolvers import reverse
 
 
@@ -13,13 +14,15 @@ class Event(models.Model):
     description = models.CharField(max_length=50, blank=True, null=True, validators=[validators.validate_desc])
     date = models.DateField(default=datetime.date.today)
     location = models.CharField(max_length=25, validators=[validators.validate_location])
+    members = models.ManyToManyField(Person, blank=True, related_name="event_members")
 
     # Name: get_absolute_url
     # Function: This function gets the url record for this object then passes in the primary key from the created record
     #           and passes it in as a parameter
     # Returns:  a URL
     def get_absolute_url(self):
-        return reverse(viewname='create_event:event_create_success', kwargs={'pk':self.pk})
+        return reverse(viewname='create_event:event_detail', kwargs={'pk':self.pk})
 
     def __str__(self):
         return self.name + ' - ' + self.date.__str__() + ' - ' + self.location
+
