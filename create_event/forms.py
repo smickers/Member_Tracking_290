@@ -47,7 +47,7 @@ class EventAddMemberForm(ModelForm):
 
     def __init__(self, **kwargs):
         super(EventAddMemberForm, self).__init__(**kwargs)
-        self.fields['members'].queryset = Person.objects.exclude(event=self.instance)
+        self.fields['members'].queryset = Person.objects.exclude(event_members=self.instance)
 
 
     def clean_members(self):

@@ -1,10 +1,12 @@
-from django.test import TestCase
+import pkg_resources
+from django.test import TestCase, Client
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from create_event.models import Event
 from django.db import DataError
 import datetime
 from add_member.models import Person
+from create_event.forms import EventAddMemberForm, EventForm
 
 
 class EventTest(TestCase):
@@ -302,6 +304,21 @@ class EventTest(TestCase):
         """
         # with self.assertRaises(ValidationError):
         # TODO raise an exception
+        self.testEvent.members.add(self.tempPerson)
+        self.testEvent.save()
+
+        case_to_edit = self.testEvent
+        # Instantiate the Client
+        client = Client()
+        response = client.get('/add_event/add_member/' + str(case_to_edit.pk))
+        # Get the initial values found in the model & view
+        oldresponsevalues = response.context['form'].initial
+        # Override the old set of values with the desired one
+        oldresponsevalues['members'] = (self.tempPerson.pk,)
+        response = client.post('/add_event/add_member/' + str(case_to_edit.pk) , oldresponsevalues)
+        self.assertContains(response, "is not one of the available choices", 1, 200)
+
+
 
 
     def test_if_user_cannnot_add_member_that_doesnt_exist_in_db(self):

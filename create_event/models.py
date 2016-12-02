@@ -14,7 +14,7 @@ class Event(models.Model):
     description = models.CharField(max_length=50, blank=True, null=True, validators=[validators.validate_desc])
     date = models.DateField(default=datetime.date.today)
     location = models.CharField(max_length=25, validators=[validators.validate_location])
-    members = models.ManyToManyField(Person, blank=True)
+    members = models.ManyToManyField(Person, blank=True, related_name="event_members")
 
     # Name: get_absolute_url
     # Function: This function gets the url record for this object then passes in the primary key from the created record
