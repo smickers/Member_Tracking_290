@@ -302,8 +302,6 @@ class EventTest(TestCase):
         """
         :parameter self
         """
-        # with self.assertRaises(ValidationError):
-        # TODO raise an exception
         self.testEvent.members.add(self.tempPerson)
         self.testEvent.save()
 
