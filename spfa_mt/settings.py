@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'contactLog.apps.ContactlogConfig',
+    'grievance_award_creation.apps.GrievanceAwardCreationConfig',
     'bootstrap3'
 ]
 
