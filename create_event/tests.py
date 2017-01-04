@@ -333,3 +333,44 @@ class EventTest(TestCase):
 
     #TESTS FOR EVENT UPDATE
 
+    def test_if_user_cannot_update_event_with_empty_event_name(self):
+        pass
+
+    def test_if_user_can_update_event_name_with_1_character_long(self):
+        pass
+
+    def test_if_can_update_event_name_with_20_characters_long(self):
+        pass
+
+    def test_if_user_cannot_update_event_name_with_21_characters_long(self):
+        pass
+
+    def test_if_user_cannot_update_an_event_description_that_is_empty(self):
+        pass
+
+    def test_if_user_cannot_update_an_event_description_that_is_51_chars_long(self):
+        pass
+
+    def test_user_cant_updfate_event_if_invalid_date_is_given(self):
+        pass
+
+    def test_user_can_update_if_location_is_not_in_defined_location(self):
+        pass
+
+    def test_user_can_update_given_location_defined_in_the_location_list(self):
+        pass
+
+    def test_user_can_update_location_that_isnt_in_the_predefined_location(self):
+        pass
+
+    def test_user_can_add_a_member_to_an_existing_event(self):
+        pass
+
+    def attempts_to_add_multiple_member_to_an_existing_event(self):
+        pass
+
+    def test_if_user_can_remove_member_to_an_event(self):
+        pass
+
+    def test_ifi_user_can_remove_multiple_member_from_an_event(self):
+        pass
