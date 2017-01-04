@@ -316,9 +316,6 @@ class EventTest(TestCase):
         response = client.post('/add_event/add_member/' + str(case_to_edit.pk) , oldresponsevalues)
         self.assertContains(response, "is not one of the available choices", 1, 200)
 
-
-
-
     def test_if_user_cannnot_add_member_that_doesnt_exist_in_db(self):
         """
         :parameter self
@@ -333,3 +330,6 @@ class EventTest(TestCase):
         with self.assertRaises(Event.DoesNotExist):
             target_event = Event.objects.get(name='Sample Event')
             target_event.members.add(self.tempPerson)
+
+    #TESTS FOR EVENT UPDATE
+
