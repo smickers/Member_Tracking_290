@@ -15,7 +15,9 @@
        <script type="text/javascript">
             $(document).ready(function() {
               var $basic_additional_m = $(".js-additional-members");
-              $basic_additional_m.select2();
+              $basic_additional_m.select2({
+                 tokenSeparators: [','],
+              });
             });
 
 
