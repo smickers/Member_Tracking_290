@@ -6,7 +6,7 @@
 *.log
 *.pot
 *.pyc
+*_auto_*.py
 
 # directories to ignore
 .idea/
-/migrations
