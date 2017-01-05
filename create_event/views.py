@@ -38,3 +38,7 @@ class EventAddMember(UpdateView):
 class EventDetailView(DetailView):
     model = Event
     template_name = 'create_event/event_actual_detail.html'
+
+class EventEditView(UpdateView):
+    model = Event
+    form_class = EventForm

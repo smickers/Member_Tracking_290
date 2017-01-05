@@ -333,44 +333,72 @@ class EventTest(TestCase):
 
     #TESTS FOR EVENT UPDATE
 
-    def test_if_user_cannot_update_event_with_empty_event_name(self):
-        pass
+    def test__user_cannot_update_event_with_empty_event_name(self):
+        with self.assertRaises(IntegrityError):
+            self.testEvent.name = None
+            self.testEvent.save()
 
-    def test_if_user_can_update_event_name_with_1_character_long(self):
-        pass
+    def test_user_can_update_event_name_with_1_character_long(self):
+        self.testEvent.name = 'A'
+        self.testEvent.save()
+        self.assertTrue(self.testEvent.name=='A')
 
-    def test_if_can_update_event_name_with_20_characters_long(self):
-        pass
 
-    def test_if_user_cannot_update_event_name_with_21_characters_long(self):
-        pass
+    def test_can_update_event_name_with_20_characters_long(self):
+        self.testEvent.name = 'adfasfdafdsafdsafdas'
+        self.testEvent.save()
+        self.assertTrue(self.testEvent.name=='adfasfdafdsafdsafdas')
 
-    def test_if_user_cannot_update_an_event_description_that_is_empty(self):
-        pass
+    def test_user_cannot_update_event_name_with_21_characters_long(self):
+        with self.assertRaises(DataError):
+            self.testEvent.name = 'adfasfdafdsafdsafdass'
+            self.testEvent.save()
 
-    def test_if_user_cannot_update_an_event_description_that_is_51_chars_long(self):
-        pass
+    def test_user_can_update_an_event_description_that_is_empty(self):
+        self.testEvent.description = None
+        self.testEvent.save()
+        self.assertTrue(self.testEvent.description==None)
 
-    def test_user_cant_updfate_event_if_invalid_date_is_given(self):
-        pass
+    def test_user_cannot_update_an_event_description_that_is_51_chars_long(self):
+        with self.assertRaises(DataError):
+            self.testEvent.description = 'Lorem ipsum dolor sit amet, consectetuer adipiscing'
+            self.testEvent.save()
+
+    def test_user_cannot_update_event_if_invalid_date_is_given(self):
+        with self.assertRaises(ValidationError):
+            self.testEvent.date = '1/3/2015'
+            self.testEvent.save()
 
     def test_user_can_update_if_location_is_not_in_defined_location(self):
-        pass
+        self.testEvent.location = 'honolulu'
+        self.testEvent.save()
+        self.assertTrue(self.testEvent.location=='honolulu')
+
 
     def test_user_can_update_given_location_defined_in_the_location_list(self):
-        pass
+        self.testEvent.location = 'Saskatoon'
+        self.testEvent.save()
+        self.assertTrue(self.testEvent.location=='Saskatoon')
 
-    def test_user_can_update_location_that_isnt_in_the_predefined_location(self):
-        pass
 
-    def test_user_can_add_a_member_to_an_existing_event(self):
-        pass
+    # def test_user_can_add_a_member_to_an_existing_event(self):
+    #     self.fail()
+    #
+    #
+    # def test_user_can_add_multiple_member_to_an_existing_event(self):
+    #     self.fail()
 
-    def attempts_to_add_multiple_member_to_an_existing_event(self):
-        pass
+    def test_user_can_remove_member_to_an_event(self):
+        self.testEvent.members.add(self.tempPerson)
+        self.testEvent.members.add(self.tempPerson2)
+        self.testEvent.save()
 
-    def test_if_user_can_remove_member_to_an_event(self):
-        pass
+        self.testEvent.members.remove(self.tempPerson)
+        self.assertTrue(self.testEvent.members.count()==1)
 
-    def test_ifi_user_can_remove_multiple_member_from_an_event(self):
-        pass
+    def test_user_can_remove_multiple_members_from_an_event(self):
+        self.testEvent.members.add(self.tempPerson)
+        self.testEvent.save()
+
+        self.testEvent.members.remove(self.tempPerson)
+        self.assertTrue(self.testEvent.members.count()==0)
