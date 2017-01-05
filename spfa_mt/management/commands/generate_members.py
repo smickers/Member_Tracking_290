@@ -4,6 +4,11 @@ import names
 from random import randint
 
 class Command(BaseCommand):
+    """
+        This will generate random members
+        To run this command type:
+            python manage.py generate_members
+    """
     help = 'Creates dummy person to the db'
 
     def handle(self, *args, **options):
