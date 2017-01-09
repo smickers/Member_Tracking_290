@@ -23,6 +23,8 @@ class Event(models.Model):
     def get_absolute_url(self):
         return reverse(viewname='create_event:event_detail', kwargs={'pk':self.pk})
 
+    # Name:     __str__
+    # Function: This method creates a string for the event, with the name, date, and location.
+    # Returns:  The string of the event. (In the format: Name - date - location)
     def __str__(self):
         return self.name + ' - ' + self.date.__str__() + ' - ' + self.location
-

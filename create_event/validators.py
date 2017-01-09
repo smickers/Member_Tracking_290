@@ -40,11 +40,3 @@ def validate_location(value):
         raise ValidationError("Location needs to be less than 25 characters")
 
     return data
-
-def validate_location(value, ):
-    data = value
-
-    if not data or len(data) > 25:
-        raise ValidationError("Location needs to be less than 25 characters")
-
-    return data

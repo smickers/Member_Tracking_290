@@ -5,13 +5,13 @@
     <title>Event Detail</title>
 </head>
 <body>
-    <h1>Event Name: {{ object.lead }}</h1>
-
+    <h1>Event Name: {{ object.name }}</h1>
+    <h2>Description: {{ object.description }}</h2>
 
     <h3>Members: </h3>
     {%  for members in object.members.all %}
         <p>
-            <strong>{{ members.memberID }}</strong>: {{ members.firstName }}
+            <strong>{{ members.memberID }}</strong>: {{ members.firstName }} {{ members.lastName }}
         </p>
     {% empty %}
         <p>
