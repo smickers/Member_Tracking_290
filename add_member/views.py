@@ -29,5 +29,9 @@ class PersonDetail(DetailView):
     template_name = 'add_member/person_detail.html'
 
 class MemberSearchView(HaystackViewSet):
+    """
+    View that connects the Member search serializer.
+    This view will then be used by restframework for routing into a browsable url
+    """
     index_models = [Person]
     serializer_class = MemberSearchSerializer

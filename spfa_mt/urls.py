@@ -18,11 +18,15 @@ from django.contrib import admin
 from rest_framework import routers
 from add_member.views import MemberSearchView
 
+#initialize rest framework's router
 router = routers.DefaultRouter()
+
+#route the member search functionality to 'member_list/view' url path
 router.register('members_list/search', MemberSearchView, base_name='member-search')
 
 
 urlpatterns = [
+    #rest service's root url
     url(r'^api-root/', include(router.urls)),
     url(r'^admin/', admin.site.urls),
     url(r'^addmember/', include('add_member.urls')),
