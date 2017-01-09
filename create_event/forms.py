@@ -35,7 +35,7 @@ class EventForm(ModelForm):
         }
 
         widgets = {
-            'date': SelectDateWidget(),
+            'date': SelectDateWidget(years=range(2010, datetime.datetime.now().year + 10)),
             'members': forms.SelectMultiple(
                 attrs={'class':'js-members'})
         }

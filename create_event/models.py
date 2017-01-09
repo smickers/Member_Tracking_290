@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from django.core.exceptions import ValidationError
 from django.db import models
-import datetime
+from django.utils.timezone import  now
 from create_event import  validators
 from add_member.models import Person
 from django.core.urlresolvers import reverse
@@ -12,7 +12,7 @@ from django.core.urlresolvers import reverse
 class Event(models.Model):
     name = models.CharField(max_length=20, validators=[validators.validate_name])
     description = models.CharField(max_length=50, blank=True, null=True, validators=[validators.validate_desc])
-    date = models.DateField(default=datetime.date.today)
+    date = models.DateField()
     location = models.CharField(max_length=25, validators=[validators.validate_location])
     members = models.ManyToManyField(Person, blank=True, related_name="event_members")
 
