@@ -15,8 +15,15 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from rest_framework import routers
+from add_member.views import MemberSearchView
+
+router = routers.DefaultRouter()
+router.register('members_list/search', MemberSearchView, base_name='member-search')
+
 
 urlpatterns = [
+    url(r'^api-root/', include(router.urls)),
     url(r'^admin/', admin.site.urls),
     url(r'^addmember/', include('add_member.urls')),
     url(r'^cases/', include('cases.urls')),

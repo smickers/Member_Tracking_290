@@ -4,6 +4,8 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Person
 from .forms import PersonForm
+from drf_haystack.viewsets import HaystackViewSet
+from .serializer import MemberSearchSerializer
 
 
 # view responsible for the member creation
@@ -25,3 +27,7 @@ class PersonUpdate(UpdateView):
 class PersonDetail(DetailView):
     model = Person
     template_name = 'add_member/person_detail.html'
+
+class MemberSearchView(HaystackViewSet):
+    index_models = [Person]
+    serializer_class = MemberSearchSerializer
