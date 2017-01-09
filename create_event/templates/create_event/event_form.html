@@ -14,10 +14,32 @@
 
        <script type="text/javascript">
             $(document).ready(function() {
-              var $basic_additional_m = $(".js-additional-members");
-              $basic_additional_m.select2({
-                 tokenSeparators: [','],
+              var members = $(".js-members");
+
+              members.select2({
+                ajax: {
+                    url: "http://127.0.0.1:8000/api-root/members_list/search/",
+                    dataType: 'json',
+                    data: function(params)
+                    {
+                        return {
+                            text: params.term,
+                            page: params.page
+                        }
+                    },
+                   processResults: function (data, params) {
+                        return {
+                            results: data,
+                            pagination: {
+                              more: true
+                            }
+                        }
+                   },
+                }
               });
+
+
+
             });
 
 
