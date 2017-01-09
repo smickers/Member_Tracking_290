@@ -28,7 +28,8 @@ class Case(models.Model):
         if len(self.status) == 0:
             self.status = 'OPEN'
 
-class CaseMembers(models.Model):
-    caseNum = models.CharField(max_length=9)
-    memberNum = models.TextField()
-    caseMember = models.CharField(max_length=18, unique='true', null='true')
+#told this was never used, and just to delete it
+#class CaseMembers(models.Model):
+#    caseNum = models.CharField(max_length=9)
+#    memberNum = models.TextField()
+#    caseMember = models.CharField(max_length=18, unique='true', null='true')
