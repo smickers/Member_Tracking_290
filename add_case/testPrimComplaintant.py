@@ -81,3 +81,20 @@ class CaseTestsPrimComplaintant(TestCase):
         tempCase.date = "2016-10-20"
         tempCase.full_clean()
         tempCase.save()
+
+    # Tests for a blank primary complaintant. This test should not pass
+    def testValidPrimaryComplaintant(self):
+        with self.assertRaises(ValidationError):
+            tempCase = Case()
+            tempCase.complainant = ""
+            tempCase.campus = "Saskatoon"
+            tempCase.school = "School of Business"
+            tempCase.department = "Business Certificate"
+            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.status = "OPEN"
+            tempCase.additionalNonMembers = ""
+            tempCase.docs = None
+            tempCase.logs = None
+            tempCase.date = "2016-10-20"
+            tempCase.full_clean()
+            tempCase.save()
