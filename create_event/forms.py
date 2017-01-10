@@ -22,6 +22,7 @@ class EventForm(ModelForm):
         self.fields['location'].widget = ListTextWidget(data_list=_location_list, name='location-list')
         # self.fields['members'].widget.attrs = {'class':'js-additional-members'}
 
+
     # This names the fields for the form
     class Meta:
         model = Event

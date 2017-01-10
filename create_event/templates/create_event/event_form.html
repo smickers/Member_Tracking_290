@@ -18,18 +18,18 @@
 
               members.select2({
                 ajax: {
-                    url: "http://127.0.0.1:8000/api-root/members_list/search/",
+                    url: "/api-root/members_list/search/",
                     dataType: 'json',
                     data: function(params)
                     {
                         return {
-                            q: params.term,
+                            q: params.term, //The terms to be searched
                             page: params.page
                         }
                     },
                     processResults: function (data, params) {
                         return {
-                            results: data.results,
+                            results: data.results, //The result sent back by the web service
                             pagination: {
                                 more: true
                             }
@@ -37,8 +37,6 @@
                    },
                 }
               });
-
-
 
             });
 
