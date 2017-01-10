@@ -11,13 +11,15 @@ class GrievanceAward(models.Model):
 
     GRIEVANCE_TYPES = [
         ('M', 'Member'),
-        ('P', 'Policy'),
+        ('P', 'Policy')
     ]
 
     # Object properties
-    grievanceType = models.CharField(max_length=1, choices=GRIEVANCE_TYPES, validators=[validators.validate_grievance_type])
-    recipient = models.ManyToManyField(Person, blank=True, validators=[validators.validate_recipient])
-    case = models.ManyToManyField(Case, blank=True, validators=[validators.validate_case])
+    grievanceType = models.CharField(max_length=1, choices=GRIEVANCE_TYPES, validators=[validators.validate_grievance_type], default='M')
+    #recipient = models.ManyToManyField(Person, blank=True, validators=[validators.validate_recipient])
+    recipient = models.CharField(max_length=50)
+    #case = models.ManyToManyField(Case, blank=True, validators=[validators.validate_case])
+    case = models.CharField(max_length=50)
     awardAmount = models.FloatField(validators=[validators.validate_award_amt])
     description = models.CharField(max_length=1000, null=True,blank=True, validators=[validators.validate_description])
     date = models.DateField()

@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': 'gamma',
         'HOST': '127.0.0.1',
         'PORT': '3306',
-        'PASSWORD': 'bitnami',
+        #'PASSWORD': 'bitnami',
         'USER': 'root',
     }
 }
@@ -116,10 +116,10 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
-
+DATE_FORMAT= 'j, N, Y'
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
