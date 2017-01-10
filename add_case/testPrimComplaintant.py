@@ -83,7 +83,7 @@ class CaseTestsPrimComplaintant(TestCase):
         tempCase.save()
 
     # Tests for a blank primary complaintant. This test should not pass
-    def testValidPrimaryComplaintant(self):
+    def testBlankPrimaryComplaintant(self):
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.complainant = ""
