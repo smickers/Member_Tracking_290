@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['testserver', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'spfa_mt',
     'cases.apps.casesConfig',
     'add_member.apps.AddMemberConfig',
     'add_case.apps.AddCaseConfig',
@@ -42,7 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'contactLog.apps.ContactlogConfig',
-    'bootstrap3'
+    'bootstrap3',
+    'haystack',
+    'drf_haystack',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -112,6 +116,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
@@ -131,3 +147,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#this will cause haystack to update its indexes in realtime
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
