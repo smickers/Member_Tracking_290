@@ -9,7 +9,7 @@ class MemberSearchSerializer(HaystackSerializer):
         #Specifify which model classes are your index based on
         index_classes = [MembersIndex]
         #Specify which fields from the index needs to be serialized
-        fields = ['text', 'id', 'auto_complete']
+        fields = ['text', 'id', 'auto_complete', 'k']
         ignore_fields = ["auto_complete"]
 
         field_aliases = {
