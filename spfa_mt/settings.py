@@ -25,12 +25,14 @@ SECRET_KEY = 'd!18#flrv@bnv#12)*$n#mup9=!k4rmn#4k!q*9q*kr#3#cl7s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['testserver', '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'spfa_mt',
+    'cases.apps.casesConfig',
     'add_member.apps.AddMemberConfig',
     'add_case.apps.AddCaseConfig',
     'create_event.apps.CreateEventConfig',
@@ -41,8 +43,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'contactLog.apps.ContactlogConfig',
-    'grievance_award_creation.apps.GrievanceAwardCreationConfig',
-    'bootstrap3'
+    'bootstrap3',
+    'haystack',
+    'drf_haystack',
+    'rest_framework',
+    'grievance_award_creation.apps.GrievanceAwardCreationConfig'
 ]
 
 MIDDLEWARE = [
@@ -87,6 +92,9 @@ DATABASES = {
         'PORT': '3306',
         'PASSWORD': 'bitnami',
         'USER': 'root',
+        'OPTIONS': {
+            'sql_mode': 'traditional',
+        },
     }
 }
 
@@ -109,6 +117,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
@@ -128,3 +148,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#this will cause haystack to update its indexes in realtime
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

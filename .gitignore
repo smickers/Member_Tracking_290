@@ -1,10 +1,15 @@
 #  gitignore for Django using pyCharm
 #
+#
 
 # extensions to ignore
 *.log
 *.pot
 *.pyc
+*_auto_*.py
 
 # directories to ignore
 .idea/
+whoosh_index/
+spfa_mt/whoosh_index/MAIN_xmrpy3j4m43phlvd.seg
+spfa_mt/whoosh_index/_MAIN_1.toc

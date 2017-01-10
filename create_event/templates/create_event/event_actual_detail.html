@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Detail</title>
+</head>
+<body>
+    <h1>Event Name: {{ object.name }}</h1>
+    <h2>Description: {{ object.description }}</h2>
+    <h2>Date: {{ object.date }}</h2>
+    <h3>Members: </h3>
+    {%  for members in object.members.all %}
+        <p>
+            <strong>{{ members.memberID }}</strong>: {{ members.firstName }} {{ members.lastName }}
+        </p>
+    {% empty %}
+        <p>
+            No members associated
+        </p>
+    {% endfor %}
+</body>
+</html>

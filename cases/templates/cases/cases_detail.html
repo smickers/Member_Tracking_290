@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Person Detail</title>
+</head>
+<body>
+    <h1>Lead: {{ object.lead }}</h1>
+    <p>Complaint: {{ object.complainant }}</p><br>
+
+    <h3>Members: </h3>
+    {%  for members in object.additionalMembers.all %}
+        <p>
+            <strong>{{ members.memberID }}</strong>: {{ members.firstName }}
+        </p>
+    {% empty %}
+        <p>
+            No members associated
+        </p>
+    {% endfor %}
+</body>
+</html>
