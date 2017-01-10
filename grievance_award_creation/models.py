@@ -5,7 +5,8 @@ from django.db import models
 import validators
 from django.core.urlresolvers import reverse
 
-# Create your models here.
+# Class: GrievanceAward
+# Purpose: The class for a grievance award.
 class GrievanceAward(models.Model):
 
     GRIEVANCE_TYPES = [
@@ -13,6 +14,7 @@ class GrievanceAward(models.Model):
         ('P', 'Policy'),
     ]
 
+    # Object properties
     grievanceType = models.CharField(max_length=1, choices=GRIEVANCE_TYPES, validators=[validators.validate_grievance_type])
     recipient = models.ManyToManyField(Person, blank=True, validators=[validators.validate_recipient])
     case = models.ManyToManyField(Case, blank=True, validators=[validators.validate_case])
@@ -21,9 +23,13 @@ class GrievanceAward(models.Model):
     date = models.DateField()
 
 
+
+    # Default get_absolute_url method
     def get_absolute_url(self):
         return reverse(viewname='grievance_award_creation:create_grievance_award_success', kwargs={'pk': self.pk})
 
+    # Method: clean
+    # Purpose: Validate attribute values.
     def clean(self):
         validators.validate_grievance_type(self.grievanceType)
         #validators.validate_recipient(self.recipient)
@@ -31,5 +37,7 @@ class GrievanceAward(models.Model):
         validators.validate_award_amt(self.awardAmount)
         validators.validate_description(self.description)
 
+    # Method: __str__ (toString)
+    # Purpose: Return a string representation of this object.
     def __str__(self):
         return self.id

@@ -1,5 +1,6 @@
 from django.forms import ModelForm, SelectDateWidget, Textarea
 from .models import GrievanceAward
+from datetime import date
 
 
 class GrievanceAwardForm(ModelForm):
@@ -10,17 +11,46 @@ class GrievanceAwardForm(ModelForm):
     class Meta:
         model = GrievanceAward
 
+        # Date range is +- 5 years
+        YEARS = {date.today().year - 5,
+                 date.today().year - 4,
+                 date.today().year - 3,
+                 date.today().year - 2,
+                 date.today().year - 1,
+                 date.today().year,
+                 date.today().year + 1,
+                 date.today().year + 2,
+                 date.today().year + 3,
+                 date.today().year + 4,
+                 date.today().year + 5}
+
+
+        MONTHS = {
+            1: 'Jan',
+            2: 'Feb',
+            3: 'Mar',
+            4: 'Apr',
+            5: 'May',
+            6: 'Jun',
+            7: 'Jul',
+            8: 'Aug',
+            9: 'Sep',
+            10: 'Oct',
+            11: 'Nov',
+            12: 'Dec'
+        }
+
         fields = '__all__'
         labels = {
-            'Grievance Type:': 'grievanceType',
-            'Related Recipient:': 'recipient',
-            'Related Case:': 'case',
-            'Award Amount:': 'awardAmount',
-            'Description:' : 'description',
-            'Date Awarded:' : 'date'
+            'grievanceType': 'Grievance Type',
+            'recipient': 'Related Recipient',
+            'case': 'Related Case',
+            'awardAmount': 'Award Amount',
+            'description' : 'Description',
+            'date' : 'Date Awarded'
         }
 
         widgets = {
-            'date': SelectDateWidget(),
+            'date': SelectDateWidget(months=MONTHS, years=YEARS),
             'description' : Textarea()
         }
