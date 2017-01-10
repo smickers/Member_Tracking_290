@@ -8,7 +8,7 @@ from add_member.models import Person
 
 class Case(models.Model):
     lead = models.IntegerField(max_length=9)
-    complainant = models.IntegerField(max_length=9)
+    complainant = models.ForeignKey(Person, related_name='case_complainant')
     campus = models.CharField(max_length=20)
     school = models.CharField(max_length=255)
     department = models.CharField(max_length=255, null=True)

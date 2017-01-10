@@ -48,10 +48,11 @@ class CaseTestsPrimComplaintant(TestCase):
     #Tests for a invalid primary complaintant. We will use "Not Exist" for both
     #   first and last name, which are not associated with a created test person
     def testInValidPrimaryComplaintant(self):
-        with self.assertRaises(ValidationError):
-            complaintant = self.ClientForPrimComplaintant("Not Exist", "Not Exist", "/addCase/", "/member/add/")
+
+
+        with self.assertRaises(Person.DoesNotExist):
             tempCase = Case()
-            tempCase.complainant = complaintant
+            tempCase.complainant = Person.objects.get(firstName='Nonexistent member')
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
@@ -66,10 +67,11 @@ class CaseTestsPrimComplaintant(TestCase):
 
     # Tests for a valid primary complaintant using "First" and "Last" as first and last names respectively.
     #   There should be a person existing with this first and last name
+
     def testValidPrimaryComplaintant(self):
-        complaintant = self.ClientForPrimComplaintant("First", "Last", "/addCase/", "/member/add/")
         tempCase = Case()
-        tempCase.complainant = complaintant
+        tempCase.complainant = self.person1
+        tempCase.lead = 1
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.department = "Business Certificate"
@@ -86,7 +88,7 @@ class CaseTestsPrimComplaintant(TestCase):
     def testBlankPrimaryComplaintant(self):
         with self.assertRaises(ValidationError):
             tempCase = Case()
-            tempCase.complainant = ""
+            tempCase.complainant = None
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
