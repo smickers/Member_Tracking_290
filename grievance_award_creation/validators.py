@@ -1,10 +1,18 @@
 from django.core.exceptions import ValidationError
+from add_member.models import Person
+from add_case.models import Case
 
 def validate_recipient(memberID):
-    return True
+    if Person.objects.filter(id=memberID).exists():
+        return True
+    else:
+        raise ValidationError("A valid member ID must be entered!")
 
 def validate_case(caseID):
-    return True
+    if Case.objects.filter(id=caseID).exists():
+        return True
+    else:
+        raise ValidationError("A valid case ID must be entered!")
 
 def validate_award_amt(amount):
     if amount:
