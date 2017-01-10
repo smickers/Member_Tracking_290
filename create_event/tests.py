@@ -9,7 +9,7 @@ from add_member.models import Person
 from create_event.forms import EventAddMemberForm, EventForm
 
 
-class EventTest(TestCase):
+class EventUpdate(TestCase):
     testEvent = None
     tempPerson = None
     tempPerson2 = None
@@ -308,13 +308,14 @@ class EventTest(TestCase):
         case_to_edit = self.testEvent
         # Instantiate the Client
         client = Client()
-        response = client.get('/add_event/add_member/' + str(case_to_edit.pk))
+        response = client.get('/event/edit_event/' + str(case_to_edit.pk))
         # Get the initial values found in the model & view
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
-        oldresponsevalues['members'] = (self.tempPerson.pk,)
-        response = client.post('/add_event/add_member/' + str(case_to_edit.pk) , oldresponsevalues)
-        self.assertContains(response, "is not one of the available choices", 1, 200)
+        oldresponsevalues['members'] = (Person.objects.get(pk=self.tempPerson.pk))
+        # print(oldresponsevalues.__dict__)
+        response = client.post('/event/edit_event/' + str(case_to_edit.pk) , oldresponsevalues)
+        self.assertContains(response, "is not ", 1, 200)
 
     def test_if_user_cannnot_add_member_that_doesnt_exist_in_db(self):
         """
@@ -331,74 +332,3 @@ class EventTest(TestCase):
             target_event = Event.objects.get(name='Sample Event')
             target_event.members.add(self.tempPerson)
 
-    #TESTS FOR EVENT UPDATE
-
-    def test__user_cannot_update_event_with_empty_event_name(self):
-        with self.assertRaises(IntegrityError):
-            self.testEvent.name = None
-            self.testEvent.save()
-
-    def test_user_can_update_event_name_with_1_character_long(self):
-        self.testEvent.name = 'A'
-        self.testEvent.save()
-        self.assertTrue(self.testEvent.name=='A')
-
-
-    def test_can_update_event_name_with_20_characters_long(self):
-        self.testEvent.name = 'adfasfdafdsafdsafdas'
-        self.testEvent.save()
-        self.assertTrue(self.testEvent.name=='adfasfdafdsafdsafdas')
-
-    def test_user_cannot_update_event_name_with_21_characters_long(self):
-        with self.assertRaises(DataError):
-            self.testEvent.name = 'adfasfdafdsafdsafdass'
-            self.testEvent.save()
-
-    def test_user_can_update_an_event_description_that_is_empty(self):
-        self.testEvent.description = None
-        self.testEvent.save()
-        self.assertTrue(self.testEvent.description==None)
-
-    def test_user_cannot_update_an_event_description_that_is_51_chars_long(self):
-        with self.assertRaises(DataError):
-            self.testEvent.description = 'Lorem ipsum dolor sit amet, consectetuer adipiscing'
-            self.testEvent.save()
-
-    def test_user_cannot_update_event_if_invalid_date_is_given(self):
-        with self.assertRaises(ValidationError):
-            self.testEvent.date = '1/3/2015'
-            self.testEvent.save()
-
-    def test_user_can_update_if_location_is_not_in_defined_location(self):
-        self.testEvent.location = 'honolulu'
-        self.testEvent.save()
-        self.assertTrue(self.testEvent.location=='honolulu')
-
-
-    def test_user_can_update_given_location_defined_in_the_location_list(self):
-        self.testEvent.location = 'Saskatoon'
-        self.testEvent.save()
-        self.assertTrue(self.testEvent.location=='Saskatoon')
-
-
-    # def test_user_can_add_a_member_to_an_existing_event(self):
-    #     self.fail()
-    #
-    #
-    # def test_user_can_add_multiple_member_to_an_existing_event(self):
-    #     self.fail()
-
-    def test_user_can_remove_member_to_an_event(self):
-        self.testEvent.members.add(self.tempPerson)
-        self.testEvent.members.add(self.tempPerson2)
-        self.testEvent.save()
-
-        self.testEvent.members.remove(self.tempPerson)
-        self.assertTrue(self.testEvent.members.count()==1)
-
-    def test_user_can_remove_multiple_members_from_an_event(self):
-        self.testEvent.members.add(self.tempPerson)
-        self.testEvent.save()
-
-        self.testEvent.members.remove(self.tempPerson)
-        self.assertTrue(self.testEvent.members.count()==0)
