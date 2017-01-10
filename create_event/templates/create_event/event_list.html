@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>List of Person</title>
-
+    <title>List of Events</title>
+</head>
+<body>
     <h2>LIST OF EVENTS</h2>
 
     <table border="2">
@@ -16,15 +17,12 @@
              <tr>
                 <td>{{ event.name }}</td>
                 <td><a href="{% url 'create_event:event_detail' event.pk %}">[View Detail]</a></td>
-                 <td><a href="{% url 'create_event:event_add_member' event.pk %}">[Add Member]</a></td>
+                 <td><a href="{% url 'create_event:event_edit' event.pk %}">[Edit Event]</a></td>
             </tr>
          {% empty %}
         <tr>NO MEMBERS YET</tr>
         {% endfor %}
     </table>
-
-</head>
-<body>
 
 </body>
 </html>

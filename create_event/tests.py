@@ -9,7 +9,7 @@ from add_member.models import Person
 from create_event.forms import EventAddMemberForm, EventForm
 
 
-class EventTest(TestCase):
+class EventUpdate(TestCase):
     testEvent = None
     tempPerson = None
     tempPerson2 = None
@@ -308,16 +308,14 @@ class EventTest(TestCase):
         case_to_edit = self.testEvent
         # Instantiate the Client
         client = Client()
-        response = client.get('/add_event/add_member/' + str(case_to_edit.pk))
+        response = client.get('/event/edit_event/' + str(case_to_edit.pk))
         # Get the initial values found in the model & view
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
-        oldresponsevalues['members'] = (self.tempPerson.pk,)
-        response = client.post('/add_event/add_member/' + str(case_to_edit.pk) , oldresponsevalues)
-        self.assertContains(response, "is not one of the available choices", 1, 200)
-
-
-
+        oldresponsevalues['members'] = (Person.objects.get(pk=self.tempPerson.pk))
+        # print(oldresponsevalues.__dict__)
+        response = client.post('/event/edit_event/' + str(case_to_edit.pk) , oldresponsevalues)
+        self.assertContains(response, "is not ", 1, 200)
 
     def test_if_user_cannnot_add_member_that_doesnt_exist_in_db(self):
         """
@@ -333,3 +331,4 @@ class EventTest(TestCase):
         with self.assertRaises(Event.DoesNotExist):
             target_event = Event.objects.get(name='Sample Event')
             target_event.members.add(self.tempPerson)
+

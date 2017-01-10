@@ -1507,7 +1507,7 @@ class ModifyPerson(TestCase):
         oldresponsevalues["firstName"] = ""
         # DO a post method to send the newly created dataset
         response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
-        print(response.content)
+
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "This field is required", 1, 200)

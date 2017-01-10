@@ -14,6 +14,7 @@ class ListTextWidget(forms.TextInput):
 
     # Name:     render
     # Purpose:  This is writing the datalist html code to be used by the form
+    # Return:   The html text and the html code for the datalist
     def render(self, name, value, attrs=None):
         text_html = super(ListTextWidget, self).render(name, value, attrs=attrs)
         data_list = '<datalist id="list__%s">' % self._name
