@@ -65,7 +65,7 @@ class TestAddMember(TestCase):
         self.person2.save()
 
         self.temp_case.lead = 123456789
-        self.temp_case.complainant = 987654321
+        self.temp_case.complainant = self.person1
         self.temp_case.campus = "Saskatoon"
         self.temp_case.school = "School of Business"
         self.temp_case.department = "Business Certificate"
@@ -177,7 +177,7 @@ class TestAddMember(TestCase):
         # Since a Case with 'sapmleleadinfo' lead doesnt exist, an error will be thrown
         with self.assertRaises(Case.DoesNotExist):
             # Case collection will be queried for Case with a lead info of '4343'
-            add_person_to_this_case = Case.objects.get(complainant=4343)
+            add_person_to_this_case = Case.objects.get(complainant=None)
             add_person_to_this_case.additionalMembers.add(self.person1)
 
 # cannot add a member that does not exist, to a case:
@@ -192,7 +192,7 @@ class TestAddMember(TestCase):
 # cannot add a member to a case that does not exist:
     def test_cannot_add_member_to_nonexistent_case(self):
         with self.assertRaises(Case.DoesNotExist):
-            ghost_case = Case.objects.get(complainant=111111111)
+            ghost_case = Case.objects.get(complainant=None)
             person_to_add = self.person1
             ghost_case.additionalMembers.add(person_to_add)
 

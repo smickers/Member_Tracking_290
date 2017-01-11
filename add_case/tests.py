@@ -40,7 +40,7 @@ class CaseTests(TestCase):
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 987654321
+            tempCase.complainant = self.person1
             tempCase.campus = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
@@ -62,7 +62,7 @@ class CaseTests(TestCase):
     def testThatCampusIsWrittenToDBWhenStringLengthIs8Characters(self):
         tempCase = Case()
         tempCase.lead = 123456789
-        tempCase.complainant = 987654321
+        tempCase.complainant = self.person1
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.department = "Business Certificate"
@@ -82,7 +82,7 @@ class CaseTests(TestCase):
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 987654321
+            tempCase.complainant = self.person1
             tempCase.campus = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
@@ -105,7 +105,7 @@ class CaseTests(TestCase):
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 987654321
+            tempCase.complainant = self.person1
             tempCase.campus = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
@@ -129,7 +129,7 @@ class CaseTests(TestCase):
     def testThatSchoolIsWrittenToDBWhenStringLengthIs255Characters(self):
         tempCase = Case()
         tempCase.lead = 123456789
-        tempCase.complainant = 987654321
+        tempCase.complainant = self.person1
         tempCase.campus = "Saskatoon"
         tempCase.school = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                           "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
@@ -149,7 +149,7 @@ class CaseTests(TestCase):
     def testThatSchoolIsWrittenToDBWhenStringLengthIs18Characters(self):
         tempCase = Case()
         tempCase.lead = 123456789
-        tempCase.complainant = 987654321
+        tempCase.complainant = self.person1
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.department = "Business Certificate"
@@ -167,7 +167,7 @@ class CaseTests(TestCase):
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 987654321
+            tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
@@ -189,7 +189,7 @@ class CaseTests(TestCase):
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 987654321
+            tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
@@ -215,7 +215,7 @@ class CaseTests(TestCase):
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 987654321
+            tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
@@ -236,7 +236,7 @@ class CaseTests(TestCase):
     def testThatCaseTypeIsWrittenToDBWhenStringLengthIs27Characters(self):
         tempCase = Case()
         tempCase.lead = 123456789
-        tempCase.complainant = 987654321
+        tempCase.complainant = self.person1
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.department = "Business Certificate"
@@ -255,7 +255,7 @@ class CaseTests(TestCase):
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 987654321
+            tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
@@ -277,7 +277,7 @@ class CaseTests(TestCase):
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 987654321
+            tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
@@ -303,7 +303,7 @@ class CaseTests(TestCase):
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 987654321
+            tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
@@ -324,7 +324,7 @@ class CaseTests(TestCase):
     def testThatStatusIsWrittenToDBWhenStringLengthIs4Characters(self):
         tempCase = Case()
         tempCase.lead = 123456789
-        tempCase.complainant = 987654321
+        tempCase.complainant = self.person1
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.department = "Business Certificate"
@@ -343,7 +343,7 @@ class CaseTests(TestCase):
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 987654321
+            tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
@@ -369,7 +369,7 @@ class CaseTests(TestCase):
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 987654321
+            tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
@@ -402,7 +402,7 @@ class CaseTests(TestCase):
     def testThatDateIsWrittenToDBWhenCorrectFormatIsEntered(self):
         tempCase = Case()
         tempCase.lead = 123456789
-        tempCase.complainant = 987654321
+        tempCase.complainant = self.person1
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.department = "Business Certificate"
@@ -421,7 +421,7 @@ class CaseTests(TestCase):
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 987654321
+            tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
@@ -440,7 +440,7 @@ class CaseTests(TestCase):
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 987654321
+            tempCase.complainant = self.person1
             tempCase.campus = ""
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
@@ -459,7 +459,7 @@ class CaseTests(TestCase):
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 987654321
+            tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = ""
             tempCase.department = "Business Certificate"
@@ -478,7 +478,7 @@ class CaseTests(TestCase):
         with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.lead = 123456789
-            tempCase.complainant = 987654321
+            tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.department = "Business Certificate"
@@ -496,7 +496,7 @@ class CaseTests(TestCase):
     def testStatusHasADefault(self):
         tempCase = Case()
         tempCase.lead = 123456789
-        tempCase.complainant = 987654321
+        tempCase.complainant = self.person1
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.department = "Business Certificate"
@@ -514,7 +514,7 @@ class CaseTests(TestCase):
     def testDateHasADefault(self):
         tempCase = Case()
         tempCase.lead = 123456789
-        tempCase.complainant = 987654321
+        tempCase.complainant = self.person1
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.department = "Business Certificate"
