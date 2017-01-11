@@ -35,23 +35,23 @@ class CaseTestsPrimComplaintant(TestCase):
         self.person1.save()
 
 
-    def ClientForPrimComplaintant(self, firstName, lastName, postURL, returnURL):
-        c = Client()
-        response = c.post(postURL,{'firstName': firstName, 'lastName': lastName})
-        if(response.status_code == 200):
-            response = c.get(returnURL)
-            return response.content
-        else:
-            self.assertFalse()
+    # def ClientForPrimComplaintant(self, firstName, lastName, postURL, returnURL):
+    #     c = Client()
+    #     response = c.post(postURL,{'firstName': firstName, 'lastName': lastName})
+    #     if(response.status_code == 200):
+    #         response = c.get(returnURL)
+    #         return response.content
+    #     else:
+    #         self.assertFalse()
 
 
     #Tests for a invalid primary complaintant. We will use "Not Exist" for both
     #   first and last name, which are not associated with a created test person
     def testInValidPrimaryComplaintant(self):
-
-
+        # raises an error that the person does not exist
         with self.assertRaises(Person.DoesNotExist):
             tempCase = Case()
+            # Assigning the complainant to a non existent member
             tempCase.complainant = Person.objects.get(firstName='Nonexistent member')
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
@@ -84,7 +84,7 @@ class CaseTestsPrimComplaintant(TestCase):
         tempCase.full_clean()
         tempCase.save()
 
-    # Tests for a blank primary complaintant. This test should not pass
+    # Tests for a blank primary complaintant. Complainant is a required field. Should fail
     def testBlankPrimaryComplaintant(self):
         with self.assertRaises(ValidationError):
             tempCase = Case()
