@@ -11,7 +11,7 @@ class TestCreateCom(TestCase):
         """Set up will take place here."""
 
     # Test normal Committee creation.
-    def test_normal_com_creation(self):
+    def test_normal_active_com_creation(self):
         """default status
            name: TEST """
         c = Committee()
@@ -21,7 +21,7 @@ class TestCreateCom(TestCase):
         c.save()
 
     # Test normal Committee creation with status = inactive.
-    def test_inactive_com_creation(self):
+    def test_normal_inactive_com_creation(self):
         """status = inactive
            name: TEST2 """
         c = Committee()
@@ -32,7 +32,7 @@ class TestCreateCom(TestCase):
 
     # Test minimum (name) boundary Committee creation
     # Expected result: PASS
-    def test_min_boundary_com_creation(self):
+    def test_boundary_min_com_creation(self):
         """default status
            name: A """
         c = Committee()
@@ -42,7 +42,7 @@ class TestCreateCom(TestCase):
         c.save()
 
     # Test maximum (name) boundary Committee creation
-    def test_max_boundary_com_creation(self):
+    def test_boundary_max_com_creation(self):
         """default status
            name: THIS IS THEE LONGEST TITLE IN MY HEAD"""
         c = Committee()
