@@ -4,6 +4,7 @@ from add_case.models import Case
 from django.db import models
 import validators
 from django.core.urlresolvers import reverse
+from datetime import date
 
 # Class: GrievanceAward
 # Purpose: The class for a grievance award.
@@ -22,7 +23,7 @@ class GrievanceAward(models.Model):
     case = models.CharField(max_length=50, validators=[validators.validate_case],blank=True, null=True)
     awardAmount = models.FloatField(default=500.00, validators=[validators.validate_award_amt])
     description = models.CharField(max_length=1000, null=True,blank=True, validators=[validators.validate_description])
-    date = models.DateField()
+    date = models.DateField(default=date.today())
 
 
 

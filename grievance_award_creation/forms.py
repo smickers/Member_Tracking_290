@@ -12,18 +12,11 @@ class GrievanceAwardForm(ModelForm):
         model = GrievanceAward
 
         # Date range is +- 5 years
-        YEARS = {date.today().year - 5,
-                 date.today().year - 4,
-                 date.today().year - 3,
-                 date.today().year - 2,
-                 date.today().year - 1,
-                 date.today().year,
-                 date.today().year + 1,
-                 date.today().year + 2,
-                 date.today().year + 3,
-                 date.today().year + 4,
-                 date.today().year + 5}
 
+        # Make the range +6 on the high end, because this function doesn't
+        # include the end range value
+        YEARS = range(date.today().year - 5, date.today().year + 6)
+        YEARS.sort()
 
         MONTHS = {
             1: 'Jan',

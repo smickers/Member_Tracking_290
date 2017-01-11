@@ -15,13 +15,10 @@ def validate_case(caseID):
         raise ValidationError("A valid case ID must be entered!")
 
 def validate_award_amt(amount):
-    if amount:
-        if amount > 0 and amount < 1000000:
-            return True
-        else:
-            raise ValidationError("Amount must be greater han $0 and less than $1,000,000.")
+    if amount and amount > 0 and amount < 1000000:
+        return True
     else:
-        raise ValidationError("An award amount must be entered.")
+        raise ValidationError("Amount must be greater than $0 and less than $1,000,000.")
 
 def validate_description(description):
     if description and len(description) > 1000:
