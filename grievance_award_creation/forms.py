@@ -2,12 +2,15 @@ from django.forms import ModelForm, SelectDateWidget, Textarea, RadioSelect, Tex
 from .models import GrievanceAward
 from datetime import date
 
-
+# Class: GrievanceAwardForm
+# Purpose: Puts together a form for creating a grievance award
 class GrievanceAwardForm(ModelForm):
     def __init__(self, *args, **kwargs):
 
         super(ModelForm, self).__init__(*args, **kwargs)
 
+    # Class: Meta
+    # Purpose: Builds up a new form for creating a GA
     class Meta:
         model = GrievanceAward
 
@@ -18,6 +21,7 @@ class GrievanceAwardForm(ModelForm):
         YEARS = range(date.today().year - 5, date.today().year + 6)
         YEARS.sort()
 
+        # Define months so they're entered as three letters
         MONTHS = {
             1: 'Jan',
             2: 'Feb',
@@ -33,6 +37,7 @@ class GrievanceAwardForm(ModelForm):
             12: 'Dec'
         }
 
+        # Show all fields and set up labels
         fields = '__all__'
         labels = {
             'grievanceType': 'Grievance Type',
@@ -43,6 +48,7 @@ class GrievanceAwardForm(ModelForm):
             'date' : 'Date Awarded'
         }
 
+        # Use some special widgets for certain fields
         widgets = {
             'date': SelectDateWidget(months=MONTHS, years=YEARS),
             'description' : Textarea(),
