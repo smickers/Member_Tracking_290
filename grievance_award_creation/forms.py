@@ -1,4 +1,4 @@
-from django.forms import ModelForm, SelectDateWidget, Textarea, RadioSelect, TextInput
+from django.forms import ModelForm, SelectDateWidget, Textarea, RadioSelect, TextInput, NumberInput
 from .models import GrievanceAward
 from datetime import date
 
@@ -54,6 +54,6 @@ class GrievanceAwardForm(ModelForm):
             'date': SelectDateWidget(months=MONTHS, years=YEARS),
             'description' : Textarea(),
             'grievanceType' : RadioSelect(),
-            'recipient' : TextInput(),
-            'case' : TextInput()
+            'recipient' : NumberInput(),
+            'case' : NumberInput()
         }
