@@ -5,6 +5,10 @@ from django.db import models
 import validators
 from django.core.urlresolvers import reverse
 
+
+
+
+
 # Class: GrievanceAward
 # Purpose: The class for a grievance award.
 class GrievanceAward(models.Model):
@@ -45,3 +49,11 @@ class GrievanceAward(models.Model):
         # Get the complainant
         complainant = Person.objects.get(id=self.recipient)
         return self.id.__str__() + " - " + complainant.firstName + " " + complainant.lastName
+
+
+
+
+class GrievanceFiles(models.Model):
+    date_uploaded = models.DateTimeField(auto_now=True)
+    file = models.FileField(upload_to='/files/', )
+    award = models.ForeignKey(GrievanceAward)

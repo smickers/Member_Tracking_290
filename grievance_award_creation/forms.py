@@ -1,5 +1,5 @@
-from django.forms import ModelForm, SelectDateWidget, Textarea, RadioSelect, TextInput, NumberInput
-from .models import GrievanceAward
+from django.forms import ModelForm, SelectDateWidget, Textarea, RadioSelect, NumberInput
+from .models import GrievanceAward, GrievanceFiles
 from datetime import date
 
 
@@ -57,3 +57,8 @@ class GrievanceAwardForm(ModelForm):
             'recipient' : NumberInput(),
             'case' : NumberInput()
         }
+
+class GrievanceUploadFileForm(ModelForm):
+    class Meta:
+        model = GrievanceFiles
+        exclude = ['date_uploaded']
