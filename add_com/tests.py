@@ -48,61 +48,59 @@ class TestCreateCom(TestCase):
         c = Committee()
         c.name = 'THIS IS THEE LONGEST TITLE IN MY HEAD'
         c.status = 1
+        c.full_clean()
         c.save()
 
     # Test boundary exception Committee creation
     def test_boundary_exception_over_max_com_creation(self):
         """default status
            name: THIS IS A LONGER TITLE THAN THAT OTHER """
-        #with self.assertRaises(ValidationError):
-        c = Committee()
-        c.name = 'THIS IS A LONGER TITLE THAN THAT OTHER'
-        c.status = 1
-        c.full_clean()
-        c.save()
+        with self.assertRaises(ValidationError):
+            c = Committee()
+            c.name = "THIS IS A LONGER TITLE THAN THAT OTHER ONE O'ER THUR"
+            c.status = 1
+            c.full_clean()
+            c.save()
 
     # Test null exception Committee creation
     def test_exception_null_com_creation(self):
         """default status
            name: (blank)"""
-        #with self.assertRaises(ValidationError):
-        c = Committee()
-        c.name = ''
-        c.status = 1
-        c.full_clean()
-        c.save()
+        with self.assertRaises(ValidationError):
+            c = Committee()
+            c.name = ''
+            c.status = 1
+            c.full_clean()
+            c.save()
 
     # Test whitespace exception Committee creation
     def test_exception_whitespace_com_creation(self):
         """default status
            name: "        "     """
-        #with self.assertRaises(ValidationError):
-        c = Committee()
-        c.name = '            '
-        c.status = 1
-        c.full_clean()
-        c.save()
+        with self.assertRaises(ValidationError):
+            c = Committee()
+            c.name = '            '
+            c.status = 1
+            c.full_clean()
+            c.save()
 
     # Test invalid status exception Committee creation
     def test_exception_bad_status_com_creation(self):
         """default status, will be changed manually in browser to "asdf"
            name: TEST3 """
-        #with self.assertRaises(ValidationError):
-        c = Committee()
-        c.name = 'TEST3'
-        c.status = 'asdf'
-        c.full_clean()
-        c.save()
+        with self.assertRaises(ValidationError):
+            c = Committee()
+            c.name = 'TEST3'
+            c.status = 'asdf'
+            c.full_clean()
+            c.save()
 
     # Test special characters exception Committee creation
     def test_exception_special_characters_com_creation(self):
         """default status, name: !@#%/;"""
-        #with self.assertRaises(ValidationError):
-        c = Committee()
-        c.name = '!@#%/;'
-        c.status = 1
-        c.full_clean()
-        c.save()
-
-
-
+        with self.assertRaises(ValidationError):
+            c = Committee()
+            c.name = '!@#%/;'
+            c.status = 1
+            c.full_clean()
+            c.save()
