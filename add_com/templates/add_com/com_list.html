@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Committees</title>
+</head>
+<body>
+    <h2>List of Committees</h2>
+
+    <table border="1">
+        <thead>
+            <th>Name</th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+        {% for com in object_list %}
+        </tbody>
+            <tr>
+                <td>{{ committee.name }}</td>
+                <td><a href="{% url 'add_com:com_detail' committee.pk %}"></a>[View Detail]</td>
+            </tr>
+        {% empty %}
+            <tr>(No committees yet.)</tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
