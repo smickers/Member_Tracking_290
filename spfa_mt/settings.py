@@ -151,3 +151,11 @@ STATIC_URL = '/static/'
 
 #this will cause haystack to update its indexes in realtime
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+
+"""
+THIS SECTION IS WHERE WE DEFINE
+THE CONSTANTS TO BE UTILIZED BY OUR PROJECT
+"""
+FILE_EXT_TO_ACCEPT = '.xls, .xlsx'
+
