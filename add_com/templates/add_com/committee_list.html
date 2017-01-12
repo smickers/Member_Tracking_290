@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Committees</title>
+     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
     <h2>List of Committees</h2>
 
-    <table border="1">
+    <table border="1" table class="table table-bordered" style="width:50%;">
         <thead>
             <th>Name</th>
             <th>Action</th>
@@ -17,7 +20,7 @@
         </tbody>
             <tr>
                 <td>{{ committee.name }}</td>
-                <td><a href="{% url 'add_com:com_detail' committee.pk %}"></a>[View Detail]</td>
+                <td style="text-align:center;"><a href='{% url "add_com:committee_detail" committee.pk %}'>[View Detail]</a></td>
             </tr>
         {% empty %}
             <tr>(No committees yet.)</tr>

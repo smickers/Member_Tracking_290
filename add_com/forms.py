@@ -5,7 +5,6 @@ from .models import Committee
 # Form used for Creating a Committee:
 class ComForm(ModelForm):
     class Meta:
-
         model = Committee
 
         # Fields to be used on the form
