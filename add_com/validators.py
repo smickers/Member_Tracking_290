@@ -25,7 +25,7 @@ def validate_com_name(value):
 def validate_status(value):
     status = [
         1,    # Active
-        0     # Inactive
+        0     # Inactive 
     ]
 
     # length validation
