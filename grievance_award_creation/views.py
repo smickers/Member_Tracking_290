@@ -2,16 +2,21 @@ from django.shortcuts import render
 from .models import GrievanceAward
 from .forms import GrievanceAwardForm
 from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
-from django.forms.models import inlineformset_factory
-from .models import GrievanceFiles
+
 # Create your views here.
+# Class: GrievanceAwardCreation
+# Purpose: Links our creation form to a Grievance award to be shown when the user
+# wants to create a new award.
 class GrievanceAwardCreation(CreateView):
+    # Link GrievanceAward to the appropriate grievance award form
     model = GrievanceAward
     form_class = GrievanceAwardForm
     form = GrievanceAwardForm()
 
+# Class: GrievanceAwardCreationSuccess
+# Purpose: The view that is shown upon successfully creating a grievance award.
     def post(self, request, *args, **kwargs):
         form = self.form
         files = request.FILES.getlist('file_field')
@@ -22,6 +27,7 @@ class GrievanceAwardCreation(CreateView):
 
 
 class GrievanceAwardCreationSuccess(DetailView):
+    # Define the model
     model = GrievanceAward
 
     def get_context_data(self, **kwargs):

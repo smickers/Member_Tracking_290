@@ -1,5 +1,5 @@
 from django.contrib import admin
 from models import GrievanceAward
-# Register your models here.
 
+#Registering GA so we can use it in the admin panel
 admin.site.register(GrievanceAward)

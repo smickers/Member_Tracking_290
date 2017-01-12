@@ -4,7 +4,8 @@ from datetime import date
 from spfa_mt.settings import FILE_EXT_TO_ACCEPT_STR
 from django.http import HttpResponseRedirect
 
-
+# Class: GrievanceAwardForm
+# Purpose: Puts together a form for creating a grievance award
 class GrievanceAwardForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
@@ -19,23 +20,19 @@ class GrievanceAwardForm(ModelForm):
     def clean_file_field(self):
         print(self.files.getlist('file_field')[0].name)
 
+    # Class: Meta
+    # Purpose: Builds up a new form for creating a GA
     class Meta:
         model = GrievanceAward
 
         # Date range is +- 5 years
-        YEARS = {date.today().year - 5,
-                 date.today().year - 4,
-                 date.today().year - 3,
-                 date.today().year - 2,
-                 date.today().year - 1,
-                 date.today().year,
-                 date.today().year + 1,
-                 date.today().year + 2,
-                 date.today().year + 3,
-                 date.today().year + 4,
-                 date.today().year + 5}
 
+        # Make the range +6 on the high end, because this function doesn't
+        # include the end range value
+        YEARS = range(date.today().year - 5, date.today().year + 6)
+        YEARS.sort()
 
+        # Define months so they're entered as three letters
         MONTHS = {
             1: 'Jan',
             2: 'Feb',
@@ -51,6 +48,7 @@ class GrievanceAwardForm(ModelForm):
             12: 'Dec'
         }
 
+        # Show all fields and set up labels
         fields = '__all__'
         labels = {
             'grievanceType': 'Grievance Type',
@@ -61,6 +59,7 @@ class GrievanceAwardForm(ModelForm):
             'date' : 'Date Awarded'
         }
 
+        # Use some special widgets for certain fields
         widgets = {
             'date': SelectDateWidget(months=MONTHS, years=YEARS),
             'description' : Textarea(),
