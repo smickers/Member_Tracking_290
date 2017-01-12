@@ -10,6 +10,9 @@ from add_member.models import Person
 class CaseTests(TestCase):
     person1 = Person()
 
+    '''
+    Setting up a person to be used as the primary complainant
+    '''
     def setUp(self):
         self.person1.memberID = 4204444
         self.person1.firstName = 'First'
@@ -35,14 +38,33 @@ class CaseTests(TestCase):
         self.person1.full_clean()
         self.person1.save()
 
+    '''
+    Name:       test_satellite_location_saves_when_it_is_on_the_preset_list
+    Function:   Makes sure the satellite location is saved to the database
+                when an option from the list is chosen. Verifies to see if the entry is correct.
+    '''
     def test_satellite_location_saves_when_it_is_on_the_preset_list(self):
         pass
 
+    '''
+    Name:       test_satellite_location_saves_when_it_is_less_than_50_characters
+    Function:   Makes sure that the satellite saves to the database when the text is 50 characters or shorter.
+                For this test, we will be using 50 characters. Verifies to see if the entry is correct.
+    '''
     def test_satellite_location_saves_when_it_is_less_than_50_characters(self):
         pass
 
+    '''
+    Name:       test_satellite_location_does_not_save_when_it_is_over_50_characters
+    Function:   Makes sure that the satellite is not saved when the text is over 50 characters. For this test, we will
+                be using 51 characters.
+    '''
     def test_satellite_location_does_not_save_when_it_is_over_50_characters(self):
         pass
 
+    '''
+    Name:       test_satellite_location_is_optional_and_case_saved_when_empty
+    Function:   Makes sure that the satellite can be blank and the case is still saved to the database.
+    '''
     def test_satellite_location_is_optional_and_case_saved_when_empty(self):
         pass
