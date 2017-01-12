@@ -2456,8 +2456,4 @@ class ModifyPerson(TestCase):
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "Enter a valid date", 1, 200)
-
-
-
-
 # endregion
