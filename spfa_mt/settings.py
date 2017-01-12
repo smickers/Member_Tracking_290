@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['testserver', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'add_com.apps.AddComConfig',
     'cases.apps.casesConfig',
     'add_member.apps.AddMemberConfig',
     'add_case.apps.AddCaseConfig',
@@ -85,7 +86,6 @@ DATABASES = {
         'NAME': 'gamma',
         'HOST': '127.0.0.1',
         'PORT': '3306',
-        'PASSWORD': 'bitnami',
         'USER': 'root',
         'OPTIONS': {
             'sql_mode': 'traditional',

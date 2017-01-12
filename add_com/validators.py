@@ -16,7 +16,7 @@ def validate_com_name(value):
         raise ValidationError("Committee name cannot be blank.")
 
     # special characters validation
-    sc_regex = re.compile(r'^[a-zA-Z0-9\s]{1,40}$')
+    sc_regex = re.compile(r'^[a-zA-Z0-9\s\']{1,40}$')
     if not sc_regex.match(str(value)):
         raise ValidationError("Committee name must contain letters (A-Z) and/or numbers(0-9).")
 

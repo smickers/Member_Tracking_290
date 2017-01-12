@@ -12,12 +12,6 @@ class ComCreate(CreateView):
     form = ComForm()
 
 
-# View for listing all Committees in the DB:
-class ComList(ListView):
-    model = Committee
-    template_name = 'add_com/com_list.html'
-
-
 # Creates the 'success' view
 class ComCreateSuccess(DetailView):
     model = Committee
@@ -32,6 +26,12 @@ class ComCreateSuccess(DetailView):
         return context
 
 
+# View for listing all Committees in the DB:
+class ComList(ListView):
+    model = Committee
+    template_name = 'add_com/committee_list.html'
+
+
 class ComDetailView(DetailView):
     model = Committee
-    template_name = 'add_com/com_detail.html'
+    template_name = 'add_com/committee_detail.html'

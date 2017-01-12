@@ -19,7 +19,7 @@ class Committee(models.Model):
 
     # When the model is updated, re-route the user to the com_detail URL
     def get_absolute_url(self):
-        return reverse(viewname='add_com:com_detail', kwargs={'pk': self.pk})
+        return reverse(viewname='add_com:committee_detail', kwargs={'pk': self.pk})
 
     # Print the name of the Committee in a user-readable format.
     def __str__(self):
