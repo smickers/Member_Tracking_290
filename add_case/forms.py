@@ -1,5 +1,6 @@
 from django.forms import ModelForm, NumberInput, ValidationError, SelectDateWidget
 from .models import Case
+from django import  forms
 import re
 
 class CaseForm(ModelForm):
@@ -21,6 +22,8 @@ class CaseForm(ModelForm):
         }
 
         widgets = {
-            'date': SelectDateWidget()
+            'date': SelectDateWidget(),
+            'complainant': forms.Select(
+                attrs={'class': 'js-complainant'})
         }
 
