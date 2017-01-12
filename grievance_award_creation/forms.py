@@ -1,12 +1,19 @@
-from django.forms import ModelForm, SelectDateWidget, Textarea, RadioSelect, NumberInput
+from django.forms import ModelForm, SelectDateWidget, Textarea, RadioSelect, NumberInput, FileField, ClearableFileInput
 from .models import GrievanceAward, GrievanceFiles
 from datetime import date
+from django.http import HttpResponseRedirect
 
 
 class GrievanceAwardForm(ModelForm):
     def __init__(self, *args, **kwargs):
-
         super(ModelForm, self).__init__(*args, **kwargs)
+        self.fields['file_field'] = FileField(widget=ClearableFileInput(attrs={'multiple': True}))
+
+    def save(self, commit=True):
+        obj = super(ModelForm, self).save()
+        print(obj.__dict__)
+        return obj
+
 
     class Meta:
         model = GrievanceAward
@@ -57,6 +64,10 @@ class GrievanceAwardForm(ModelForm):
             'recipient' : NumberInput(),
             'case' : NumberInput()
         }
+
+
+
+
 
 class GrievanceUploadFileForm(ModelForm):
     class Meta:
