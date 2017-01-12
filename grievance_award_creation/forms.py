@@ -1,14 +1,14 @@
 from django.forms import ModelForm, SelectDateWidget, Textarea, RadioSelect, NumberInput, FileField, ClearableFileInput
 from .models import GrievanceAward, GrievanceFiles
 from datetime import date
-from spfa_mt.settings import FILE_EXT_TO_ACCEPT
+from spfa_mt.settings import FILE_EXT_TO_ACCEPT_STR
 from django.http import HttpResponseRedirect
 
 
 class GrievanceAwardForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
-        self.fields['file_field'] = FileField(widget=ClearableFileInput(attrs={'multiple': True, 'accept': FILE_EXT_TO_ACCEPT} ))
+        self.fields['file_field'] = FileField(widget=ClearableFileInput(attrs={'multiple': True, 'accept': FILE_EXT_TO_ACCEPT_STR} ))
 
     def save(self, commit=True):
         obj = super(ModelForm, self).save()
