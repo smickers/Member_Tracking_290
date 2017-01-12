@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Person Detail</title>
+    <title>Case Detail</title>
 </head>
 <body>
     <h1>Lead: {{ object.lead }}</h1>
-    <p>Complaint: {{ object.complainant }}</p><br>
+    <p>Complainant: {{ object.complainant }}</p><br>
 
     <h3>Members: </h3>
     {%  for members in object.additionalMembers.all %}
@@ -18,5 +18,8 @@
             No members associated
         </p>
     {% endfor %}
+
+    <a href="{%  url 'add_case:case_add' %}">Add New Case</a></br>
+    <a href="{%  url 'cases:case_list' %}">View All Cases</a>
 </body>
 </html>
