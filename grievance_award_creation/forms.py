@@ -11,14 +11,21 @@ class GrievanceAwardForm(ModelForm):
         super(ModelForm, self).__init__(*args, **kwargs)
         self.fields['file_field'] = FileField(widget=ClearableFileInput(attrs={'multiple': True, 'accept': FILE_EXT_TO_ACCEPT_STR} ))
 
-    def save(self, commit=True):
+    def save(self, commit=False):
+
+
         obj = super(ModelForm, self).save()
         # print(obj.pk)
         # print(self.__dict__)
         return obj
 
-    def clean_file_field(self):
-        print(self.files.getlist('file_field')[0].name)
+    # def clean_file_field(self):
+    #     # print(self.files.getlist('file_field')[0].name)
+    #     for f in self.files.getlist('file_field'):
+    #     pass
+
+
+
 
     # Class: Meta
     # Purpose: Builds up a new form for creating a GA

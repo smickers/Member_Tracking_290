@@ -157,6 +157,7 @@ HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 THIS SECTION IS WHERE WE DEFINE
 THE CONSTANTS TO BE UTILIZED BY OUR PROJECT
 """
-FILE_EXT_TO_ACCEPT = ['xls', 'xlsx']
+FILE_EXT_TO_ACCEPT = ['xls', 'xlsx', 'pptx', 'docx', 'csv', 'pdf',
+                      'txt', 'msg']
 FILE_EXT_TO_ACCEPT_STR = ',.'.join(FILE_EXT_TO_ACCEPT)
 
