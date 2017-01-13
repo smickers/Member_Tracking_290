@@ -5,7 +5,7 @@ import re
 # validators for Committee name
 def validate_com_name(value):
     # max length validation
-    if len(str(value)) >= 40:
+    if len(str(value)) > 40:
         raise ValidationError("Committee name must be less than 40 characters.")
     # min length validation
     elif len(str(value)) < 1:
@@ -21,11 +21,11 @@ def validate_com_name(value):
         raise ValidationError("Committee name must contain letters (A-Z) and/or numbers(0-9).")
 
 
-# validators for the status selector
+# validators for the status selector  
 def validate_status(value):
     status = [
         1,    # Active
-        0     # Inactive 
+        0     # Inactive
     ]
 
     # length validation

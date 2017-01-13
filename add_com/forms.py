@@ -15,3 +15,18 @@ class ComForm(ModelForm):
             'name': 'Name',
             'status': 'Status'
         }
+
+        # Change the default error messages displayed
+        error_messages = {
+            'name': {
+                'required': 'Committee name cannot be blank.',
+                'max_length': 'Committee name must be less than 40 characters.',
+                'min_length': 'Committee name cannot be blank.'
+            },
+            'status': {
+                'invalid': 'Value for committee status is invalid. Please check your selection.',
+                'min_value': 'Status value cannot be less than zero. Please check your selection.',
+            }
+        }
+
+
