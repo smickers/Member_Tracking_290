@@ -1,6 +1,5 @@
 from django.forms import ModelForm
 from .models import Committee
-from django.core.exceptions import NON_FIELD_ERRORS
 
 
 # Form used for Creating a Committee:
@@ -19,10 +18,6 @@ class ComForm(ModelForm):
 
         # Change the default error messages displayed
         error_messages = {
-            NON_FIELD_ERRORS: {
-
-
-            },
             'name': {
                 'required': 'Committee name cannot be blank.',
                 'max_length': 'Committee name must be less than 40 characters.',
