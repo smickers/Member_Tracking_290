@@ -20,6 +20,8 @@ class EventForm(ModelForm):
         super(ModelForm, self).__init__(*args, **kwargs)
 
         self.fields['location'].widget = ListTextWidget(data_list=_location_list, name='location-list')
+        # self.fields['members'].widget.attrs = {'class':'js-additional-members'}
+
 
     # This names the fields for the form
     class Meta:
@@ -34,22 +36,27 @@ class EventForm(ModelForm):
         }
 
         widgets = {
-            'date': SelectDateWidget()
+            'date': SelectDateWidget(years=range(2010, datetime.datetime.now().year + 10)),
+            'members': forms.SelectMultiple(
+                attrs={'class':'js-members'})
         }
 
 
 
-
+# This class creates the add member form for adding a member to an event.
 class EventAddMemberForm(ModelForm):
     class Meta:
         model = Event
         fields = ('members',)
 
+    # Name:     __init__
+    # Function: Constructor for the add member form.
     def __init__(self, **kwargs):
         super(EventAddMemberForm, self).__init__(**kwargs)
         self.fields['members'].queryset = Person.objects.exclude(event_members=self.instance)
 
-
+    # Name:     clean_members
+    # Function: Cleans members to be saved to the DB.
     def clean_members(self):
         return self.initial['members'] | self.cleaned_data['members']
 

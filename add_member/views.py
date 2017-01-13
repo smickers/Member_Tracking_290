@@ -1,9 +1,10 @@
-from django.shortcuts import render
-from django.views import generic
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView
 from .models import Person
 from .forms import PersonForm
+from drf_haystack.viewsets import HaystackViewSet
+from .serializer import MemberSearchSerializer
+from drf_haystack.filters import HaystackAutocompleteFilter
 
 
 # view responsible for the member creation
@@ -25,3 +26,12 @@ class PersonUpdate(UpdateView):
 class PersonDetail(DetailView):
     model = Person
     template_name = 'add_member/person_detail.html'
+
+class MemberSearchView(HaystackViewSet):
+    """
+    View that connects the Member search serializer.
+    This view will then be used by restframework for routing into a browsable url
+    """
+    index_models = [Person]
+    serializer_class = MemberSearchSerializer
+    filter_backends = [HaystackAutocompleteFilter]

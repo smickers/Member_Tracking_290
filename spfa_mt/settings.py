@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['testserver', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'spfa_mt',
     'add_com.apps.AddComConfig',
     'cases.apps.casesConfig',
     'add_member.apps.AddMemberConfig',
@@ -43,7 +44,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'contactLog.apps.ContactlogConfig',
-    'bootstrap3'
+    'bootstrap3',
+    'haystack',
+    'drf_haystack',
+    'rest_framework',
+    'grievance_award_creation.apps.GrievanceAwardCreationConfig'
 ]
 
 MIDDLEWARE = [
@@ -68,7 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+                'django.contrib.messages.context_processors.messages'
             ],
         },
     },
@@ -86,6 +91,7 @@ DATABASES = {
         'NAME': 'gamma',
         'HOST': '127.0.0.1',
         'PORT': '3306',
+        'PASSWORD': '',
         'USER': 'root',
         'OPTIONS': {
             'sql_mode': 'traditional',
@@ -112,6 +118,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
@@ -119,10 +137,10 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
-
+DATE_FORMAT= 'j, N, Y'
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
@@ -131,3 +149,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#this will cause haystack to update its indexes in realtime
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
