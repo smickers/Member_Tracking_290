@@ -1,1 +1,28 @@
-{{ form.as_p }}
+{% if form.name.errors %}
+        <ul class="list-unstyled">
+            {% for error in form.name.errors %}
+            <li class="list-group-item list-group-item-danger"><strong>{{ error }}</strong></li>
+            {% endfor %}
+        </ul>
+    {% elif form.status.errors %}
+        <ul class="list-unstyled">
+            {% for error in form.status.errors %}
+            <li class="list-group-item list-group-item-danger"><strong>{{ error }}</strong></li>
+            {% endfor %}
+        </ul>
+    {% elif form.non_field_errors %}
+        <ul class="list-unstyled">
+            {% for error in form.non_field_errors %}
+            <li class="list-group-item list-group-item-danger"><strong>{{ ferror }}</strong></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% if messages %}
+    <ul class="list-unstyled">
+        {% for message in messages %}
+        <li class="list-group-item list-group-item-success">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+<p>{{ form.name.label_tag }}{{ form.name }}</p>
+<p>{{ form.status.label_tag }}{{ form.status }}</p>

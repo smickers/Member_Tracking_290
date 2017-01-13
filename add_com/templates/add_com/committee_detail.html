@@ -10,6 +10,6 @@
 <body>
     <h2>Committee: {{ object.name }}</h2>
 
-    <h3>Status: {% if not object.status == 0 %}Active{% else %}Inactive{% endif %}</h3>
+    <h3>Status: {% if not object.status == 1 %}Inactive{% else %}Active{% endif %}</h3>
 </body>
 </html>

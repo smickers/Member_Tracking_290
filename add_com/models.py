@@ -9,17 +9,20 @@ class Committee(models.Model):
     """name, status"""
 
     # bound field choices for STATUS field
+    INACTIVE = 0
+    ACTIVE = 1
     COM_STATUS = [
-        (1, 'Active'),
-        (0, 'Inactive'),
+        (ACTIVE, 'Active'),
+        (INACTIVE, 'Inactive'),
     ]
 
     name = models.CharField(max_length=40, validators=[validate_com_name])
-    status = models.IntegerField(choices=COM_STATUS, validators=[validate_status])
+    status = models.IntegerField(choices=COM_STATUS, default='1', validators=[validate_status])
 
-    # When the model is updated, re-route the user to the com_detail URL
-    def get_absolute_url(self):
-        return reverse(viewname='add_com:committee_detail', kwargs={'pk': self.pk})
+    # # When the model is updated, re-route the user to the com_detail URL
+    # def get_absolute_url(self):
+    #     return reverse(viewname='add_com:committee_detail')
+    #     # , kwargs={'pk': self.pk})
 
     # Print the name of the Committee in a user-readable format.
     def __str__(self):
