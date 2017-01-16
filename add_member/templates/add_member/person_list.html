@@ -18,8 +18,9 @@
                 <td><a href="{% url 'add_member:member_update' person.pk %}">[Update]</a></td>
                 <td><a href="{% url 'add_member:member_detail' person.pk %}">[View Detail]</a></td>
             </tr>
-         {% empty %}
-        <tr>NO MEMBERS YET</tr>
+         {% if empty %}
+            <tr>NO MEMBERS YET</tr>
+        {% endif %}
         {% endfor %}
     </table>
 
