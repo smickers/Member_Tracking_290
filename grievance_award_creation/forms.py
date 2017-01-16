@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from spfa_mt import settings
 from django.core.exceptions import ValidationError
 from django.core.files import File
+import os
 
 
 # Class: GrievanceAwardForm
@@ -18,7 +19,9 @@ class GrievanceAwardForm(ModelForm):
     def save(self, commit=False):
         obj = super(ModelForm, self).save()
         for f in self.files.getlist('file_field'):
+            print(f.name)
             temp = File(file=f)
+            print(temp.__dict__)
             griev_file = GrievanceFiles()
             griev_file.award = obj
             griev_file.file = temp
