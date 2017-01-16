@@ -9,7 +9,8 @@
 </head>
 <body>
     <h2>Committee: {{ object.name }}</h2>
-
+    <!-- Note: this isn't the most ideal (not great if other statuses are implemented)
+    however it works for what we need. -->
     <h3>Status: {% if not object.status == 1 %}Inactive{% else %}Active{% endif %}</h3>
 </body>
 </html>

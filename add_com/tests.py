@@ -46,7 +46,7 @@ class TestCreateCom(TestCase):
         """default status
            name: THIS IS THEE LONGEST TITLE IN MY HEAD"""
         c = Committee()
-        c.name = 'THIS IS THEE LONGEST TITLE IN MY HEAD'
+        c.name = 'THIS IS THEE LONGEST TITLE IN MY HEAD YY'
         c.status = 1
         c.full_clean()
         c.save()

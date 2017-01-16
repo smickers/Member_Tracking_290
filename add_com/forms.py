@@ -26,6 +26,7 @@ class ComForm(ModelForm):
             'status': {
                 'invalid': 'Value for committee status is invalid. Please check your selection.',
                 'min_value': 'Status value cannot be less than zero. Please check your selection.',
+                # technically for the SELECT box, not the FIELD:
                 'invalid_choice': 'Committee status may be either ACTIVE or INACTIVE. Please check your selection.'
             }
         }

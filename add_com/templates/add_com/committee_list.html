@@ -16,12 +16,17 @@
             <th>Action</th>
         </thead>
         <tbody>
+        <!-- show this if there are committees existing in the DB -->
         {% for committee in object_list %}
         </tbody>
             <tr>
                 <td>{{ committee.name }}</td>
-                <td style="text-align:center;"><a href='{% url "add_com:committee_detail" committee.pk %}'>[View Detail]</a></td>
+                <td style="text-align:center;">
+                    <!-- Link to committee details, will show meeting info at a later date? -->
+                    <a href='{% url "add_com:committee_detail" committee.pk %}'>[View Detail]</a>
+                </td>
             </tr>
+        <!-- only appears if no committees exist in the DB -->
         {% empty %}
             <tr>(No committees yet.)</tr>
         {% endfor %}
