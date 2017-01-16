@@ -10,7 +10,7 @@ class ListTextWidget(forms.TextInput):
         super(ListTextWidget, self).__init__(*args, **kwargs)
         self._name = name
         self._list = data_list
-        self.attrs.update({'list':'list__%s' % self._name})
+        self.attrs.update({'list': 'list__%s' % self._name})
 
     # Name:     render
     # Purpose:  This is writing the datalist html code to be used by the form

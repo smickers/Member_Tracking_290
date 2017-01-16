@@ -68,3 +68,8 @@ class CaseTests(TestCase):
     '''
     def test_satellite_location_is_optional_and_case_saved_when_empty(self):
         pass
+
+    '''
+    Name:
+    Function:   Make sure the lists are populated correctly.
+    '''

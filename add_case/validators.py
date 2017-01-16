@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 import re
 import datetime
 
+
 def validate_date(value):
     data = value
 
@@ -9,6 +10,7 @@ def validate_date(value):
         raise ValidationError("Cannot enter a future date")
 
     return data
+
 
 def validate_status(value):
     data = value
@@ -56,5 +58,30 @@ def validate_case_type(value):
 
     if found is False:
         raise ValidationError("Must enter a valid case type")
+
+    return data
+
+'''
+Name:       validate_location
+Function:   Ensures that the location is a part of the location listing.
+Returns:    The data
+'''
+def validate_location(value):
+    data = value
+
+    locations = [
+        "Saskatoon",
+        "Regina",
+        "MJ",
+        "PA"
+    ]
+
+    found = False
+    for val in locations:
+        if val == data:
+            found = True
+
+    if found is False:
+        raise ValidationError("Must select a valid location")
 
     return data
