@@ -3,6 +3,10 @@ from .models import GrievanceAward, GrievanceFiles
 from datetime import date
 from spfa_mt.settings import FILE_EXT_TO_ACCEPT_STR
 from django.http import HttpResponseRedirect
+from spfa_mt import settings
+from django.core.exceptions import ValidationError
+from django.core.files import File
+
 
 # Class: GrievanceAwardForm
 # Purpose: Puts together a form for creating a grievance award
@@ -12,18 +16,25 @@ class GrievanceAwardForm(ModelForm):
         self.fields['file_field'] = FileField(widget=ClearableFileInput(attrs={'multiple': True, 'accept': FILE_EXT_TO_ACCEPT_STR} ))
 
     def save(self, commit=False):
-
-
         obj = super(ModelForm, self).save()
-        # print(obj.pk)
+        for f in self.files.getlist('file_field'):
+            temp = File(file=f)
+            griev_file = GrievanceFiles()
+            griev_file.award = obj
+            griev_file.file = temp
+            griev_file.save()
+        #print(obj.pk)
         # print(self.__dict__)
         return obj
 
-    # def clean_file_field(self):
-    #     # print(self.files.getlist('file_field')[0].name)
-    #     for f in self.files.getlist('file_field'):
-    #     pass
-
+    def clean_file_field(self):
+        # print(self.files.getlist('file_field')[0].name)
+        for f in self.files.getlist('file_field'):
+            if(f.size > settings.MAX_FILE_SIZE):
+                raise ValidationError("File exceeds maximum size allowed")
+            if(f.name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT):
+                raise ValidationError("File has exception which is not allowed")
+        return self.cleaned_data['file_field']
 
 
 

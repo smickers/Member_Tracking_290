@@ -3,12 +3,18 @@ from .models import GrievanceAward, GrievanceFiles
 from django.core.files import File
 from add_case.models import Case
 from add_member.models import Person
+from spfa_mt import settings
+import os
+
 
 class GrievanceFile_UploadTest(TestCase):
-    samplefile = File(name='Hello', file=None)
+    samplefile = File(name='Hello.txt', file=None)
+    sampleBadExtension = File(name='Hello.iso', file=None)
+
     griev_f1 = GrievanceFiles()
     person1 = Person()
     temp_case = Case()
+
 
     #Create a grievance award
 
@@ -22,6 +28,7 @@ class GrievanceFile_UploadTest(TestCase):
 
     def setUp(self):
         self.samplefile.size = 1000
+        self.griev_aw.save()
 
         self.person1.memberID = 4204444
         self.person1.firstName = 'First'
@@ -71,33 +78,38 @@ class GrievanceFile_UploadTest(TestCase):
         :return: None
         """
 
-        """
         self.griev_f1.file.file = self.samplefile
         self.griev_f1.award = self.griev_aw
         self.griev_f1.save()
-        """
+
+        self.assertTrue(self.griev_f1.award == self.griev_aw)
 
 
+
+    ''' ANOTHER STORY
     def test_user_can_upload_multiple_grievance_docs(self):
         """
         Test if user can associate multiple documents to a grievance  ruling
         :return: None
         """
         pass
-
+    '''
     def test_user_uploaded_document_is_in_the_correct_path_in_the_server(self):
         """
         Test if user's uploaded document exists in the server
         :return: None
         """
-        pass
+        path = "grievance/Hello.txt"
+        fileName = "Hello.txt"
+        self.assertTrue(self.samplefile.name==fileName)
+
 
     def test_user_can_upload_if_the_total_file_size_is_less_than_500MB(self):
         """
         Test if user's uploaded file is less than 500Mb
         :return: None
         """
-        pass
+        self.assertTrue(self.samplefile.size < 524288000)
 
 
     def test_user_cannot_upload_if_the_total_file_size_is_greater_than_500MB(self):
@@ -105,15 +117,30 @@ class GrievanceFile_UploadTest(TestCase):
         Test if users's uploaded file is less than 500MB
         :return: None
         """
-        pass
+        self.assertFalse(self.samplefile.size >= 524288000)
 
-    def test_user_can_only_upload_files_with_valid_extension(self):
+    def test_user_can_upload_files_with_valid_extension(self):
         """
         Test if user's uploaded file only has the following extension:
         .docx, .pptx, .xlsx, .csv, .pdf, .txt and .msg
         :return: None
         """
-        pass
+        file = self.samplefile.name.split(".")
+        file_extension = file[-1]
+        self.assertTrue(file_extension in settings.FILE_EXT_TO_ACCEPT)
+
+    def test_user_can_not_upload_files_with_invalid_extension(self):
+        """
+        Test if user's uploaded file does not have one of the following extensions:
+        .docx, .pptx, .xlsx, .csv, .pdf, .txt and .msg
+        :return: None
+        """
+        file = self.sampleBadExtension.name.split(".")
+        file_extension = file[-1]
+        print(file_extension)
+        print(settings.FILE_EXT_TO_ACCEPT_STR)
+        self.assertFalse(file_extension in settings.FILE_EXT_TO_ACCEPT)
+
 
     def test_db_tracks_the_file_upload_date(self):
         """
@@ -121,5 +148,9 @@ class GrievanceFile_UploadTest(TestCase):
         It must be in the format of DD/MM/YYYY
         :return: None
         """
-        pass
+        self.griev_f1.file.file = self.samplefile
+        self.griev_f1.award = self.griev_aw
+        self.griev_f1.save()
+
+        self.assertTrue(self.griev_f1.date_uploaded != "" and self.griev_f1.date_uploaded != None)
 
