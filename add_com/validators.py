@@ -18,7 +18,7 @@ def validate_com_name(value):
     # special characters validation
     sc_regex = re.compile(r'^[a-zA-Z0-9\s\']{1,40}$')
     if not sc_regex.match(str(value)):
-        raise ValidationError("Committee name must contain letters (A-Z) and/or numbers(0-9).")
+        raise ValidationError("Committee name must contain letters (A-Z) and numbers(0-9), or spaces/apostrophes.")
 
 
 # validators for the status selector  
