@@ -20,11 +20,11 @@ def validate_status(value):
         return data
 
     status = [
-        "OPEN",
-        "CLOSED",
-        "PENDING",
-        "ACTION REQ'D - MGMT",
-        "ACTION REQ'D SPFA"
+        "O",
+        "C",
+        "P",
+        "A-R-M",
+        "A-R-S"
     ]
 
     for val in status:
@@ -41,14 +41,14 @@ def validate_case_type(value):
     data = value
 
     types = [
-        "GRIEVANCES - INDIVIDUAL",
-        "GRIEVANCES - GROUP",
-        "GRIEVANCES - POLICY",
-        "GRIEVANCES - CLASSIFICATION",
-        "GRIEVANCES - COMPLAINTS",
-        "DISABILITY CLAIMS",
-        "ARBITRATION",
-        "COMPLAINT"
+        "G-I",
+        "G-G",
+        "G-P",
+        "G-CLASS",
+        "G-COMP",
+        "DC",
+        "A",
+        "C"
     ]
 
     found = False
@@ -83,5 +83,65 @@ def validate_location(value):
 
     if found is False:
         raise ValidationError("Must select a valid location")
+
+    return data
+
+'''
+Name:       validate_departments
+Function:   Ensures that the department is a part of the department listing.
+Returns:    The data
+'''
+def validate_department(value):
+    data = value
+
+    departments = [
+        "LT",
+        "ILDC",
+        "LIB",
+        "PLAR",
+        "SL",
+        "SD",
+        "LS",
+        "FC"
+    ]
+
+    found = False
+    for val in departments:
+        if val == data:
+            found = True
+
+    if found is False:
+        raise ValidationError("Must select a valid department")
+
+    return data
+
+
+'''
+Name:       validate_schools
+Function:   Ensures that the school is a part of the school listing.
+Returns:    The data
+'''
+def validate_school(value):
+    data = value
+
+    schools = [
+        "BUS",
+        "CON",
+        "HEAL",
+        "HSCS",
+        "ICT",
+        "MEM",
+        "NRBE",
+        "NURS",
+        "TRAN"
+    ]
+
+    found = False
+    for val in schools:
+        if val == data:
+            found = True
+
+    if found is False:
+        raise ValidationError("Must select a valid school")
 
     return data

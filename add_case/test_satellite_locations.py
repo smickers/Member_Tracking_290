@@ -1,14 +1,17 @@
 from django.test import TestCase
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
-from add_case.models import Case
+from add_case.models import *
 from django.db import DataError
 import datetime
 from add_member.models import Person
 
 
+
 class CaseTests(TestCase):
     person1 = Person()
+    satellite = CaseSatellite()
+
 
     '''
     Setting up a person to be used as the primary complainant
@@ -38,13 +41,33 @@ class CaseTests(TestCase):
         self.person1.full_clean()
         self.person1.save()
 
+        self.satellite.name = "S - Alberta Ave"
+        self.satellite.full_clean()
+        self.satellite.save()
+
+
+
     '''
     Name:       test_satellite_location_saves_when_it_is_on_the_preset_list
     Function:   Makes sure the satellite location is saved to the database
                 when an option from the list is chosen. Verifies to see if the entry is correct.
     '''
     def test_satellite_location_saves_when_it_is_on_the_preset_list(self):
-        pass
+            tempCase = Case()
+            tempCase.lead = 1
+            tempCase.complainant = self.person1
+            tempCase.campus = "Saskatoon"
+            tempCase.satellite = self.satellite
+            tempCase.school = "OTH"
+            tempCase.department = "LIB"
+            tempCase.caseType = "G-CLASS"
+            tempCase.status = "O"
+            tempCase.docs = None
+            tempCase.logs = None
+            tempCase.date = "2016-10-20"
+            tempCase.full_clean()
+            tempCase.save()
+
 
     '''
     Name:       test_satellite_location_saves_when_it_is_less_than_50_characters
@@ -53,6 +76,7 @@ class CaseTests(TestCase):
     '''
     def test_satellite_location_saves_when_it_is_less_than_50_characters(self):
         pass
+
 
     '''
     Name:       test_satellite_location_does_not_save_when_it_is_over_50_characters
@@ -67,7 +91,20 @@ class CaseTests(TestCase):
     Function:   Makes sure that the satellite can be blank and the case is still saved to the database.
     '''
     def test_satellite_location_is_optional_and_case_saved_when_empty(self):
-        pass
+        tempCase = Case()
+        tempCase.lead = 1
+        tempCase.complainant = self.person1
+        tempCase.campus = "Saskatoon"
+        tempCase.satellite = None
+        tempCase.school = "OTH"
+        tempCase.department = "LIB"
+        tempCase.caseType = "G-CLASS"
+        tempCase.status = "O"
+        tempCase.docs = None
+        tempCase.logs = None
+        tempCase.date = "2016-10-20"
+        tempCase.full_clean()
+        tempCase.save()
 
     '''
     Name:

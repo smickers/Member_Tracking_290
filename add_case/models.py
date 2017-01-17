@@ -56,7 +56,19 @@ class Case(models.Model):
         ("MEM", "School of Mining, Energy and Manufacturing"),
         ("NRBE", "School of Natural Resources and Built Environment"),
         ("NURS", "School of Nursing"),
-        ("TRAN", "School of Transportation")
+        ("TRAN", "School of Transportation"),
+        ("OTH", "Other"),
+    ]
+
+    DEPARTMENT_CHOICES = [
+        ("LT", "Learning Technologies"),
+        ("ILDC", "ILDC"),
+        ("LIB", "Library"),
+        ("PLAR", "PLAR"),
+        ("SL", "Simulation Lab"),
+        ("SD", "Student Development"),
+        ("LS", "Learning Services"),
+        ("FC", "Fitness Centre")
     ]
 
     lead = models.IntegerField(max_length=9)
@@ -65,7 +77,7 @@ class Case(models.Model):
     satellite = models.ForeignKey(CaseSatellite, default=None, null=True, blank=True)
     school = models.CharField(choices=SCHOOL_CHOICES, max_length=255)
     program = models.ForeignKey(CasePrograms, default=None, null=True, blank=True)
-    department = models.CharField(max_length=255, null=True)
+    department = models.CharField(choices=DEPARTMENT_CHOICES, max_length=255, null=True, default=None)
     caseType = models.CharField(choices=TYPE_CHOICES, max_length=50, validators=[validate_case_type])
     status = models.CharField(choices=STATUS_CHOICES, max_length=50, blank=True, validators=[validate_status], default="O")
     additionalMembers = models.ManyToManyField(Person, default=None, null=True, blank=True)
