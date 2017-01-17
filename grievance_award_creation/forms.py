@@ -33,6 +33,7 @@ class GrievanceAwardForm(ModelForm):
     def clean_file_field(self):
         # print(self.files.getlist('file_field')[0].name)
         for f in self.files.getlist('file_field'):
+            print(f.size)
             if(f.size > settings.MAX_FILE_SIZE):
                 raise ValidationError("File exceeds maximum size allowed")
             if(f.name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT):
