@@ -35,6 +35,14 @@ class PersonForm(ModelForm):
             'memberImage': 'Member Image',
             }
 
+        # Set up a custom error message for postal codes that are too long
+        # This is used to override the default max_length message.
+        error_messages = {
+            'pCode': {
+                'max_length': "Postal code entered is too long. Must be in the form A#A #A#.",
+            },
+        }
+
         #modifies the date fields to have a valid range
         widgets = {
             'bDay': SelectDateWidget(years=range(1900, datetime.datetime.now().year + 1)),
