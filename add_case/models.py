@@ -10,7 +10,14 @@ class CaseSatellite(models.Model):
     name = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
-        return "ID " + self.id.__str__() + ": " + self.name
+        return self.name
+
+
+class CasePrograms(models.Model):
+    name = models.CharField(max_length=200, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Case(models.Model):
@@ -41,14 +48,23 @@ class Case(models.Model):
     ]
 
     SCHOOL_CHOICES = [
-        ("")
+        ("BUS", "School of Business"),
+        ("CON", "School of Construction"),
+        ("HEAL", "School of Health Sciences"),
+        ("HSCS", "School of Human Services and Community Safety"),
+        ("ICT", "School of Information and Communications Technology"),
+        ("MEM", "School of Mining, Energy and Manufacturing"),
+        ("NRBE", "School of Natural Resources and Built Environment"),
+        ("NURS", "School of Nursing"),
+        ("TRAN", "School of Transportation")
     ]
 
     lead = models.IntegerField(max_length=9)
     complainant = models.ForeignKey(Person, related_name='case_complainant')
     campus = models.CharField(choices=CAMPUS_CHOICES, max_length=25, validators=[validate_location], default="Saskatoon")
     satellite = models.ForeignKey(CaseSatellite, default=None, null=True, blank=True)
-    school = models.CharField(max_length=255)
+    school = models.CharField(choices=SCHOOL_CHOICES, max_length=255)
+    program = models.ForeignKey(CasePrograms, default=None, null=True, blank=True)
     department = models.CharField(max_length=255, null=True)
     caseType = models.CharField(choices=TYPE_CHOICES, max_length=50, validators=[validate_case_type])
     status = models.CharField(choices=STATUS_CHOICES, max_length=50, blank=True, validators=[validate_status], default="O")

@@ -4,3 +4,4 @@ from .models import *
 
 admin.site.register(Case)
 admin.site.register(CaseSatellite)
+admin.site.register(CasePrograms)
