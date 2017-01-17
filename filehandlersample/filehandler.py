@@ -9,6 +9,11 @@ class PercentUpload(TemporaryFileUploadHandler):
             self.cache_key, { 'received': 0}
         )
 
+    def new_file(self, *args, **kwargs):
+        super(PercentUpload, self).new_file(*args, **kwargs)
+        data = cache.get(self.cache_key, {})
+
+
     def receive_data_chunk(self, raw_data, start):
         super(PercentUpload, self).receive_data_chunk(raw_data, start)
 
