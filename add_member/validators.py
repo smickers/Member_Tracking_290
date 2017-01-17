@@ -10,7 +10,7 @@ def validate_pCode(value):
         elif len(value) > 7:
             raise ValidationError("Postal code entered is too long. Must be in the form A#A #A#.")
         else:
-            PCODE_REGEX = re.compile(r"[a-zA-Z]\d[a-zA-Z]\s?\d[a-zA-Z]\d")
+            PCODE_REGEX = re.compile(r"^[a-zA-Z]\d[a-zA-Z]\s?\d[a-zA-Z]\d$")
             if not PCODE_REGEX.match(str(value)):
                 raise ValidationError("Invalid postal code entered! Postal code must be in the form A#A #A#.")
 

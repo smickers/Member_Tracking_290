@@ -59,12 +59,12 @@ class PostalCodeTestCase(TestCase):
         self.assertTrue(self.tempPerson.pCode == 'H0H 0H0')
 
     # Test 4 - Validate an invalid postal code
-    # Input: H@H 0H0
+    # Input: S1E8G6M
     # Expected result: Error is thrown
     def test_invalid_postal_code(self):
         #Change to specific error check
         with self.assertRaisesRegexp(ValidationError, "Invalid postal code entered! Postal code must be in the form A#A #A#."):
-            self.tempPerson.pCode = 'H@H 0H0'
+            self.tempPerson.pCode = 'S1E8G6M'
             self.tempPerson.full_clean()
             self.tempPerson.save()
 
