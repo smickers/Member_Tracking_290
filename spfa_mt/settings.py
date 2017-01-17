@@ -166,7 +166,8 @@ MAX_FILE_SIZE = 524288000
 
 MEDIA_ROOT = 'files/'
 
-FILE_UPLOAD_HANDLERS = ["django.core.files.uploadhandler.MemoryFileUploadHandler",
+FILE_UPLOAD_HANDLERS = ["filehandlersample.filehandler.ValidateUploadSize",
+    "django.core.files.uploadhandler.MemoryFileUploadHandler",
  "django.core.files.uploadhandler.TemporaryFileUploadHandler"]
 
 #For caching purposes

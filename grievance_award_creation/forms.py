@@ -15,20 +15,19 @@ from django import forms
 class GrievanceAwardForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
-        self.fields['file_field'] = FileField(widget=ClearableFileInput(attrs={'multiple': True, 'accept': FILE_EXT_TO_ACCEPT_STR} ))
-        self.fields['file_description'] = CharField(widget= forms.TextInput(attrs={'type':'hidden'}))
+        self.fields['file_field'] = FileField(widget=ClearableFileInput(attrs={'multiple': False, 'accept': FILE_EXT_TO_ACCEPT_STR} ))
+        self.fields['file_description'] = CharField(widget= forms.TextInput(attrs={'type':'hidden', 'size':'100%'}))
 
 
     def save(self, commit=False):
         obj = super(ModelForm, self).save()
-        for f in self.files.getlist('file_field'):
-            temp = File(file=f)
-            griev_file = GrievanceFiles()
-            griev_file.award = obj
-            griev_file.file = temp
-            griev_file.save()
-        #print(obj.pk)
-        # print(self.__dict__)
+        f = self.files.getlist('file_field')[0]
+        print(f.size)
+        temp = File(file=f)
+        desc = self.cleaned_data['file_description']
+        griev_file = GrievanceFiles(award=obj, file=temp,
+                                    description=desc)
+        griev_file.save()
         return obj
 
     def clean_file_field(self):
