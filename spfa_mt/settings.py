@@ -166,11 +166,10 @@ MAX_FILE_SIZE = 524288000
 
 MEDIA_ROOT = 'files/'
 
-FILE_UPLOAD_HANDLERS = ['filehandlersample.filehandler.PercentUpload',
-"django.core.files.uploadhandler.MemoryFileUploadHandler",
+FILE_UPLOAD_HANDLERS = ["django.core.files.uploadhandler.MemoryFileUploadHandler",
  "django.core.files.uploadhandler.TemporaryFileUploadHandler"]
 
-
+#For caching purposes
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',

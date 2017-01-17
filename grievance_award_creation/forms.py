@@ -1,4 +1,4 @@
-from django.forms import ModelForm, SelectDateWidget, Textarea, RadioSelect, NumberInput, FileField, ClearableFileInput
+from django.forms import ModelForm, SelectDateWidget, Textarea, RadioSelect, NumberInput, FileField, ClearableFileInput, CharField
 from .models import GrievanceAward, GrievanceFiles
 from datetime import date
 from spfa_mt.settings import FILE_EXT_TO_ACCEPT_STR
@@ -6,7 +6,8 @@ from django.http import HttpResponseRedirect
 from spfa_mt import settings
 from django.core.exceptions import ValidationError
 from django.core.files import File
-import os
+from django import forms
+
 
 
 # Class: GrievanceAwardForm
@@ -15,13 +16,13 @@ class GrievanceAwardForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
         self.fields['file_field'] = FileField(widget=ClearableFileInput(attrs={'multiple': True, 'accept': FILE_EXT_TO_ACCEPT_STR} ))
+        self.fields['file_description'] = CharField(widget= forms.TextInput(attrs={'type':'hidden'}))
+
 
     def save(self, commit=False):
         obj = super(ModelForm, self).save()
         for f in self.files.getlist('file_field'):
-            print(f.name)
             temp = File(file=f)
-            print(temp.__dict__)
             griev_file = GrievanceFiles()
             griev_file.award = obj
             griev_file.file = temp

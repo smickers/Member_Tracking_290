@@ -13,7 +13,7 @@ class GrievanceAwardCreation(CreateView):
     # Link GrievanceAward to the appropriate grievance award form
     model = GrievanceAward
     form_class = GrievanceAwardForm
-    form = GrievanceAwardForm()
+    # form = GrievanceAwardForm()
 
 # Class: GrievanceAwardCreationSuccess
 # Purpose: The view that is shown upon successfully creating a grievance award.
