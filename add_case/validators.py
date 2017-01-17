@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 import re
 import datetime
 
+
 def validate_date(value):
     data = value
 
