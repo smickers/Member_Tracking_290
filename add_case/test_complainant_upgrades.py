@@ -12,6 +12,7 @@ class CaseTests(TestCase):
     person1 = Person()
     person2 = Person()
     person3 = Person()
+    temp_case = Case()
 
     # Create our People
     def setUp(self):
@@ -101,27 +102,30 @@ class CaseTests(TestCase):
             # Create the Case
             temp_case = Case()
 
-            # Start up the Client
-            client = Client()
-
+            # # Start up the Client
+            # client = Client()
+            temp_case.complainant.add(self.person1)
+            self.assertNotContains(temp_case.additionalMembers(self.person1))
             # Add details for the Case
-            temp_case.lead = 123456789
-            temp_case.complainant = self.person1
-            temp_case.campus = "Saskatoon"
-            temp_case.school = "School of Business"
-            temp_case.department = "Business Certificate"
-            temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
-            temp_case.status = "OPEN"
-            temp_case.additionalNonMembers = ""
-            temp_case.docs = None
-            temp_case.logs = None
-            temp_case.date = "2016-10-20"
-            temp_case.full_clean()
-            temp_case.save()
+            # temp_case.lead = 123456789
+            # temp_case.complainant = self.person1
+            # temp_case.campus = "Saskatoon"
+            # temp_case.school = "School of Business"
+            # temp_case.department = "Business Certificate"
+            # temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
+            # temp_case.status = "OPEN"
+            # temp_case.additionalNonMembers = ""
+            # temp_case.docs = None
+            # temp_case.logs = None
+            # temp_case.date = "2016-10-20"
+            # temp_case.full_clean()
+            # temp_case.save()
 
     def test_remove_cn_from_add_members_when_add_members_exist(self):
         """CN should be removed when selected in the CN box. Additional
         members should be able to be selected."""
+
+
 
     def test_cn_cannot_be_add_member(self):
         """Can't have CN be selectable in list, validator should grab this."""
