@@ -20,11 +20,11 @@ def validate_status(value):
         return data
 
     status = [
-        "O",
-        "C",
-        "P",
-        "A-R-M",
-        "A-R-S"
+        "OPEN",
+        "CLOSED",
+        "PENDING",
+        "ACTION REQ'D - MGMT",
+        "ACTION REQ'D SPFA"
     ]
 
     for val in status:
@@ -41,14 +41,14 @@ def validate_case_type(value):
     data = value
 
     types = [
-        "G-I",
-        "G-G",
-        "G-P",
-        "G-CLASS",
-        "G-COMP",
-        "DC",
-        "A",
-        "C"
+        "GRIEVANCES - INDIVIDUAL",
+        "GRIEVANCES - GROUP",
+        "GRIEVANCES - POLICY",
+        "GRIEVANCES - CLASSIFICATION",
+        "GRIEVANCES - COMPLAINTS",
+        "DISABILITY CLAIMS",
+        "ARBITRATION",
+        "COMPLAINT"
     ]
 
     found = False
@@ -95,14 +95,14 @@ def validate_department(value):
     data = value
 
     departments = [
-        "LT",
+        "Learning Technologies",
         "ILDC",
-        "LIB",
+        "Library",
         "PLAR",
-        "SL",
-        "SD",
-        "LS",
-        "FC"
+        "Simulation Lab",
+        "Student Development",
+        "Learning Services",
+        "Fitness Centre"
     ]
 
     found = False
@@ -125,15 +125,16 @@ def validate_school(value):
     data = value
 
     schools = [
-        "BUS",
-        "CON",
-        "HEAL",
-        "HSCS",
-        "ICT",
-        "MEM",
-        "NRBE",
-        "NURS",
-        "TRAN"
+        "School of Business",
+        "School of Construction",
+        "School of Health Sciences",
+        "School of Human Services and Community Safety",
+        "School of Information and Communications Technology",
+        "School of Mining, Energy and Manufacturing",
+        "School of Natural Resources and Built Environment",
+        "School of Nursing",
+        "School of Transportation",
+        "Other",
     ]
 
     found = False

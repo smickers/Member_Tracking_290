@@ -7,6 +7,7 @@ import re
 
 class CaseForm(ModelForm):
 
+
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
         self.fields['satellite'].widget = ListTextWidget(data_list=list(CaseSatellite.objects.all()), name='satellite-list')

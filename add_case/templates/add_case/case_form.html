@@ -68,7 +68,7 @@
 
                 //If a school is selected as "other" Show the department dropdown, and hide program dropdown
                 $("#id_school").change(function(){
-                    if($("#id_school").val() === "OTH")
+                    if($("#id_school").val() === "Other")
                     {
                         $("#id_department").show();
                         $("label[for='id_department']").show();
@@ -97,8 +97,10 @@
         {% bootstrap_form form %}
         {% bootstrap_form_errors form %}
         {% buttons %}
-            <button class="btn btn-primary" type="submit">Submit</button>
-            <button class="btn btn-warning" type="reset">Reset</button>
+            <center>
+            <button class="btn btn-primary" type="submit" style="width: 49%">Submit</button>
+            <button class="btn btn-warning" type="reset" style="width: 49%">Reset</button>
+            </center>
         {% endbuttons %}
     </form>
 </body>

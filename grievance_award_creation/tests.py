@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from models import GrievanceAward
 from add_member.models import Person
-from add_case.models import Case
+from add_case.models import *
 from django.db import DataError
 import datetime
 
@@ -13,7 +13,11 @@ class EventTest(TestCase):
     person_pk = -1
     tempCase = Case()
     case_pk = -1
+    program = CasePrograms()
     def setUp(self):
+        self.program.name = "Computer Systems Technology - Diploma"
+        self.program.full_clean()
+        self.program.save()
 
         self.tempPerson.memberID = 1
         self.tempPerson.firstName = 'First'
@@ -44,9 +48,9 @@ class EventTest(TestCase):
         self.tempCase = Case()
         self.tempCase.lead = self.tempPerson.id
         self.tempCase.complainant = self.tempPerson
-        self.tempCase.campus = "Lorem ipsum"
+        self.tempCase.campus = "Saskatoon"
         self.tempCase.school = "School of Business"
-        self.tempCase.department = "Business Certificate"
+        self.tempCase.program = self.program
         self.tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         self.tempCase.status = "OPEN"
         #self.tempCase.additionalMembers = 0
@@ -130,7 +134,7 @@ class EventTest(TestCase):
             ga.awardAmount = 0.00
             ga.description = ""
             ga.date = '2016-12-01'
-            #GrievanceAward.full_clean(ga)
+            # GrievanceAward.full_clean(ga)
             ga.full_clean()
             ga.save()
 
