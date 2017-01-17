@@ -42,8 +42,8 @@ class EventTest(TestCase):
         self.person_pk = Person.objects.get(memberID=1).pk
 
         self.tempCase = Case()
-        self.tempCase.lead = 1
-        self.tempCase.complainant = 1
+        self.tempCase.lead = self.tempPerson.id
+        self.tempCase.complainant = self.tempPerson
         self.tempCase.campus = "Lorem ipsum"
         self.tempCase.school = "School of Business"
         self.tempCase.department = "Business Certificate"
@@ -57,7 +57,7 @@ class EventTest(TestCase):
         self.tempCase.full_clean()
         self.tempCase.save()
 
-        self.case_pk = Case.objects.get(lead=1).pk
+
 
 # Test 1 - Validate that a valid recipient can be added to a GrievanceAward
 # Input: Recipient is a valid PK

@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['testserver', '127.0.0.1']
 
 INSTALLED_APPS = [
     'spfa_mt',
+    'add_com.apps.AddComConfig',
     'cases.apps.casesConfig',
     'add_member.apps.AddMemberConfig',
     'add_case.apps.AddCaseConfig',
@@ -72,7 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+                'django.contrib.messages.context_processors.messages'
             ],
         },
     },
@@ -90,7 +91,7 @@ DATABASES = {
         'NAME': 'gamma',
         'HOST': '127.0.0.1',
         'PORT': '3306',
-        'PASSWORD': 'bitnami',
+        'PASSWORD': '',
         'USER': 'root',
         'OPTIONS': {
             'sql_mode': 'traditional',
