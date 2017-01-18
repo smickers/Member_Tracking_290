@@ -1,5 +1,5 @@
-from django.core.files.uploadhandler import TemporaryFileUploadHandler
-from django.core.files.uploadhandler import StopUpload, SkipFile
+from django.core.files.uploadhandler import TemporaryFileUploadHandler, FileUploadHandler
+from django.core.files.uploadhandler import StopUpload, SkipFile, StopFutureHandlers
 from spfa_mt.settings import MAX_FILE_SIZE
 from django.core.exceptions import ValidationError
 
@@ -22,7 +22,19 @@ class ValidateUploadSize(TemporaryFileUploadHandler):
 
 
 
-class CancelUpload(TemporaryFileUploadHandler):
-    def receive_data_chunk(self, raw_data, start):
-        super(CancelUpload, self).receive_data_chunk(raw_data, start)
-        raise SkipFile
+class CancelUpload(FileUploadHandler):
+    def __init__(self, *args, **kwargs):
+        super(CancelUpload, self).__init__(*args, **kwargs)
+        raise SkipFile()
+
+    def new_file(self, field_name, file_name, content_type, content_length, charset=None, content_type_extra=None):
+        super(CancelUpload, self).new_file(file_name, content_type, content_length, charset=None, content_type_extra=None)
+        print('future')
+        raise StopFutureHandlers()
+
+
+
+    # def receive_data_chunk(self, raw_data, start):
+    #     print('hi')
+    #     super(CancelUpload, self).receive_data_chunk(raw_data, start)
+    #     raise StopFutureHandlers
