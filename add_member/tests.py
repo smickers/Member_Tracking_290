@@ -729,60 +729,62 @@ class PersonTestCase(TestCase):
             tempPerson.full_clean()
             tempPerson.save()
 
+    #####Test No longer Valid See test_edit_postal_code
     # Test 25.b - check to see if the Database accepts valid postal code
-    def testIfDatabaseAcceptsValidPostalCode(self):
-        tempPerson = Person()
-        tempPerson.memberID = 123456789
-        tempPerson.hireDate = '2012-03-03'
-        tempPerson.firstName = 'First'
-        tempPerson.middleName = 'mid'
-        tempPerson.lastName = 'last'
-        tempPerson.socNum = 123456789
-        tempPerson.city = 'city'
-        tempPerson.mailAddress = 'Sample Address 1'
-        tempPerson.mailAddress2 = 'Sample Address 2'
-        tempPerson.hPhone = '(306)812-1234'
-        tempPerson.cPhone = '(306)812-1234'
-        tempPerson.hEmail = 'sample@sample.com'
-        tempPerson.campus = 'SASKATOON'
-        tempPerson.jobType = 'FTO'
-        tempPerson.committee = 'Sample Commitee'
-        tempPerson.memberImage = 'image.img'
-        tempPerson.bDay = '2012-03-04'
-        tempPerson.gender = 'MALE'
-        tempPerson.pCode = 's7k5j8'
-        tempPerson.membershipStatus = 'RESOURCE'
-        tempPerson.programChoice = 'Sample Program'
-        tempPerson.full_clean()
-        tempPerson.save()
-        self.assertTrue(Person.objects.count() == 1)
+    # def testIfDatabaseAcceptsValidPostalCode(self):
+    #     tempPerson = Person()
+    #     tempPerson.memberID = 123456789
+    #     tempPerson.hireDate = '2012-03-03'
+    #     tempPerson.firstName = 'First'
+    #     tempPerson.middleName = 'mid'
+    #     tempPerson.lastName = 'last'
+    #     tempPerson.socNum = 123456789
+    #     tempPerson.city = 'city'
+    #     tempPerson.mailAddress = 'Sample Address 1'
+    #     tempPerson.mailAddress2 = 'Sample Address 2'
+    #     tempPerson.hPhone = '(306)812-1234'
+    #     tempPerson.cPhone = '(306)812-1234'
+    #     tempPerson.hEmail = 'sample@sample.com'
+    #     tempPerson.campus = 'SASKATOON'
+    #     tempPerson.jobType = 'FTO'
+    #     tempPerson.committee = 'Sample Commitee'
+    #     tempPerson.memberImage = 'image.img'
+    #     tempPerson.bDay = '2012-03-04'
+    #     tempPerson.gender = 'MALE'
+    #     tempPerson.pCode = 's7k5j8'
+    #     tempPerson.membershipStatus = 'RESOURCE'
+    #     tempPerson.programChoice = 'Sample Program'
+    #     tempPerson.full_clean()
+    #     tempPerson.save()
+    #     self.assertTrue(Person.objects.count() == 1)
 
-    # Test 26- Check to see if the database throws an error if the postal code field is empty
-    def testIfDatabaseThrowsAnErrorIfPCodeIsEmpty(self):
-        with self.assertRaises(ValidationError):
-            tempPerson = Person()
-            tempPerson.memberID = 123456789
-            tempPerson.firstName = 'First'
-            tempPerson.middleName = 'mid'
-            tempPerson.hireDate = '2012-03-03'
-            tempPerson.lastName = 'last'
-            tempPerson.socNum = 123456789
-            tempPerson.city = 'city'
-            tempPerson.mailAddress = 'Sample Address 1'
-            tempPerson.mailAddress2 = 'Sample Address 2'
-            tempPerson.hPhone = 3061111234
-            tempPerson.cPhone = 3061111234
-            tempPerson.hEmail = 'sample@sample.com'
-            tempPerson.campus = 'SASKATOON'
-            tempPerson.jobType = 'FTO'
-            tempPerson.committee = 'Sample Commitee'
-            tempPerson.memberImage = 'image.img'
-            tempPerson.bDay = '2012-03-04'
-            tempPerson.gender = 'MALE'
-            tempPerson.membershipStatus = 'RESOURCE'
-            tempPerson.programChoice = 'Sample Program'
-            tempPerson.full_clean()
-            tempPerson.save()
+    #####Test No longer Valid See test_edit_postal_code
+    # # Test 26- Check to see if the database throws an error if the postal code field is empty
+    # def testIfDatabaseThrowsAnErrorIfPCodeIsEmpty(self):
+    #     with self.assertRaises(ValidationError):
+    #         tempPerson = Person()
+    #         tempPerson.memberID = 123456789
+    #         tempPerson.firstName = 'First'
+    #         tempPerson.middleName = 'mid'
+    #         tempPerson.hireDate = '2012-03-03'
+    #         tempPerson.lastName = 'last'
+    #         tempPerson.socNum = 123456789
+    #         tempPerson.city = 'city'
+    #         tempPerson.mailAddress = 'Sample Address 1'
+    #         tempPerson.mailAddress2 = 'Sample Address 2'
+    #         tempPerson.hPhone = 3061111234
+    #         tempPerson.cPhone = 3061111234
+    #         tempPerson.hEmail = 'sample@sample.com'
+    #         tempPerson.campus = 'SASKATOON'
+    #         tempPerson.jobType = 'FTO'
+    #         tempPerson.committee = 'Sample Commitee'
+    #         tempPerson.memberImage = 'image.img'
+    #         tempPerson.bDay = '2012-03-04'
+    #         tempPerson.gender = 'MALE'
+    #         tempPerson.membershipStatus = 'RESOURCE'
+    #         tempPerson.programChoice = 'Sample Program'
+    #         tempPerson.full_clean()
+    #         tempPerson.save()
 
     # Test 27- Check to see if the Gender field value is only : 'MALE', 'FEMALE', 'UNSPECIFIED'
     def testIfDatabaseAcceptsMALEasGender(self):
@@ -1838,44 +1840,45 @@ class ModifyPerson(TestCase):
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "Ensure this value has at most 50 characters", 1,200)
 
+    #####Test No longer Valid See test_edit_postal_code
+    # #Normal Test 25 - Test if user can modify existing postal code
+    # def test_if_user_can_modify_postalcode(self):
+    #     person_to_edit = Person.objects.filter(memberID=123456789)[0]
+    #     # Instantiate the Client
+    #     client = Client()
+    #     # Connect to the actual site
+    #     response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+    #     # Get the initial values found in the model & view
+    #     # print(response.context)
+    #     oldresponsevalues = response.context['form'].initial
+    #     # Override the old set of values with the desired one
+    #     oldresponsevalues["pCode"] = "S1E1E0"
+    #     # DO a post method to send the newly created dataset
+    #     response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+    #
+    #     # Do a query for the object that you want to compare
+    #     person_to_edit = Person.objects.filter(memberID=123456789)[0]
+    #     self.assertTrue(person_to_edit.pCode == "S1E1E0")
 
-    #Normal Test 25 - Test if user can modify existing postal code
-    def test_if_user_can_modify_postalcode(self):
-        person_to_edit = Person.objects.filter(memberID=123456789)[0]
-        # Instantiate the Client
-        client = Client()
-        # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
-        # Get the initial values found in the model & view
-        # print(response.context)
-        oldresponsevalues = response.context['form'].initial
-        # Override the old set of values with the desired one
-        oldresponsevalues["pCode"] = "S1E1E0"
-        # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
-
-        # Do a query for the object that you want to compare
-        person_to_edit = Person.objects.filter(memberID=123456789)[0]
-        self.assertTrue(person_to_edit.pCode == "S1E1E0")
-
-    #Exception Test 26 - Test if user cannot leave postal code field empty
-    def test_if_user_cannot_leave_postalcode_empty(self):
-        person_to_edit = Person.objects.filter(memberID=123456789)[0]
-        # Instantiate the Client
-        client = Client()
-        # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
-        # Get the initial values found in the model & view
-        # print(response.context)
-        oldresponsevalues = response.context['form'].initial
-        # Override the old set of values with the desired one
-        oldresponsevalues["pCode"] = ""
-        # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
-
-        # Do a query for the object that you want to compare
-        person_to_edit = Person.objects.filter(memberID=123456789)[0]
-        self.assertContains(response, "This field is required", 1, 200)
+    #####Test No longer Valid See test_edit_postal_code
+    # #Exception Test 26 - Test if user cannot leave postal code field empty
+    # def test_if_user_cannot_leave_postalcode_empty(self):
+    #     person_to_edit = Person.objects.filter(memberID=123456789)[0]
+    #     # Instantiate the Client
+    #     client = Client()
+    #     # Connect to the actual site
+    #     response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+    #     # Get the initial values found in the model & view
+    #     # print(response.context)
+    #     oldresponsevalues = response.context['form'].initial
+    #     # Override the old set of values with the desired one
+    #     oldresponsevalues["pCode"] = ""
+    #     # DO a post method to send the newly created dataset
+    #     response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+    #
+    #     # Do a query for the object that you want to compare
+    #     person_to_edit = Person.objects.filter(memberID=123456789)[0]
+    #     self.assertContains(response, "This field is required", 1, 200)
 
 
     #Boundary Test 27 - Test if user cannot modify postal code if format is L#L-#L#
@@ -2456,8 +2459,4 @@ class ModifyPerson(TestCase):
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "Enter a valid date", 1, 200)
-
-
-
-
 # endregion

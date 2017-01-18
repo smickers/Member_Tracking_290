@@ -48,7 +48,7 @@ class Person(models.Model):
     city = models.CharField(max_length=20, validators=[validate_rightstringlen20])
     mailAddress = models.CharField(max_length=50, validators=[validate_rightstringlen50])
     mailAddress2 = models.CharField(max_length=50, null=True, blank=True, validators=[validate_rightstringlen50])
-    pCode = models.CharField(max_length=7, validators=[validate_pCode])
+    pCode = models.CharField(null=True, max_length=7, blank=True, validators=[validate_pCode])
     bDay = models.DateField()
     gender = models.CharField(choices=GENDER_CHOICE, max_length=10)
     hPhone = models.CharField(max_length=13, null=True, blank=True, validators=[validate_numbers])
@@ -68,3 +68,10 @@ class Person(models.Model):
 
     def __str__(self):
         return self.firstName + " " + self.lastName
+
+    def clean(self):
+        # Validate the postal code, if it has been entered
+        if self.pCode:
+            self.pCode = self.pCode.upper()
+            if len(self.pCode) == 6:
+                self.pCode = self.pCode[:3] + ' ' + self.pCode[3:]
