@@ -20,6 +20,7 @@
         {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}
+            <a href="" id="cancel_upload">Stop Upload</a>
             <button type="submit" class="btn btn-primary">Create Ruling</button>
             <button type="reset" class="btn btn-warning">Reset</button>
         {% endbuttons %}
