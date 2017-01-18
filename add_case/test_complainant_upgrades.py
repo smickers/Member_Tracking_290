@@ -1,9 +1,6 @@
-from django.test import TestCase, Client
-from django.db import IntegrityError
+from django.test import TestCase
 from django.core.exceptions import ValidationError
 from add_case.models import Case
-from django.db import DataError
-import datetime
 from add_member.models import Person
 
 
@@ -12,12 +9,11 @@ class CaseTests(TestCase):
     person1 = Person()
     person2 = Person()
     person3 = Person()
+    person4 = Person()
     temp_case = Case()
 
     # Create our People
     def setUp(self):
-        # TODO: Check this page out:
-        # https://www.google.ca/webhp?sourceid=chrome-instant&rlz=1C1CHBF_enCA707CA707&ion=1&espv=2&ie=UTF-8#q=manage.py%20call%20django%20unit%20test
         self.person1.memberID = 4204444
         self.person1.firstName = 'Deborah'
         self.person1.middleName = 'Middle'
@@ -90,50 +86,108 @@ class CaseTests(TestCase):
         self.person3.full_clean()
         self.person3.save()
 
-    # Test that Complainant (CN) is dynamically removed from the list of Additional
-    #  Members for a Case, once selected by a User.
-    # INPUT: Deborah Williams as Complainant. All other input valid; no additional members.
-    # EXPECTED RESULT: Deborah Williams does not appear as an option in the list of available
-    #   Additional Members.
-    def test_remove_cn_from_add_members(self):
-        """Complainant (CN) should be removed from the list of available
-        members to add to a Case, once selected in the 'Complainant' box."""
-        with self.assertTrue(self):
-            # Create the Case
-            temp_case = Case()
+        self.person4.memberID = 7207777
+        self.person4.firstName = 'Deborah'
+        self.person4.middleName = 'Middle'
+        self.person4.lastName = 'Williams'
+        self.person4.socNum = 123456789
+        self.person4.city = 'Sample City'
+        self.person4.mailAddress = 'Sample address'
+        self.person4.mailAddress2 = 'Sample Address 2'
+        self.person4.pCode = 's7k5j8'
+        self.person4.hPhone = '(306)812-1234'
+        self.person4.cPhone = '(306)812-1234'
+        self.person4.hEmail = 'sample@sample.com'
+        self.person4.campus = 'SASKATOON'
+        self.person4.jobType = 'FTO'
+        self.person4.committee = 'Sample Commitee'
+        self.person4.memberImage = 'image.img'
+        self.person4.bDay = '2012-03-03'
+        self.person4.hireDate = '2012-03-03'
+        self.person4.gender = 'MALE'
+        self.person4.membershipStatus = 'RESOURCE'
+        self.person4.programChoice = 'Sample Program'
+        self.person4.full_clean()
+        self.person4.save()
 
-            # # Start up the Client
-            # client = Client()
-            temp_case.complainant.add(self.person1)
-            self.assertNotContains(temp_case.additionalMembers(self.person1))
-            # Add details for the Case
-            # temp_case.lead = 123456789
-            # temp_case.complainant = self.person1
-            # temp_case.campus = "Saskatoon"
-            # temp_case.school = "School of Business"
-            # temp_case.department = "Business Certificate"
-            # temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
-            # temp_case.status = "OPEN"
-            # temp_case.additionalNonMembers = ""
-            # temp_case.docs = None
-            # temp_case.logs = None
-            # temp_case.date = "2016-10-20"
-            # temp_case.full_clean()
-            # temp_case.save()
+    # Test that we can save a complainant to a case, and don't need additional members.
+    def test_case_saved_with_cn_and_no_add_members_exist(self):
+        """A CN is specified, with no additional members. Case is saved to DB."""
+        temp_case = Case()
+        temp_case.lead = 123456789
+        temp_case.complainant = self.person1
+        temp_case.campus = "Kelsey"
+        temp_case.school = "School of Business"
+        temp_case.department = "Business Certificate"
+        temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
+        temp_case.status = "OPEN"
+        temp_case.docs = None
+        temp_case.logs = None
+        temp_case.date = "2016-10-20"
+        temp_case.full_clean()
+        temp_case.save()
+        self.assertTrue(True)
 
-    def test_remove_cn_from_add_members_when_add_members_exist(self):
-        """CN should be removed when selected in the CN box. Additional
-        members should be able to be selected."""
+    # Test that we can save a complainant AND additional members to a case.
+    def test_case_saves_with_cn_and_add_members_exist(self):
+        """A CN is specified, as are additional members. Case is saved
+        to DB."""
+        temp_case = Case()
+        temp_case.lead = 123456789
+        temp_case.complainant = self.person1
+        temp_case.campus = "Kelsey"
+        temp_case.school = "School of Business"
+        temp_case.department = "Business Certificate"
+        temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
+        temp_case.status = "OPEN"
+        temp_case.docs = None
+        temp_case.logs = None
+        temp_case.date = "2016-10-20"
+        temp_case.full_clean()
+        temp_case.save()
+        temp_case.additionalMembers = (self.person2, self.person3)
+        temp_case.save()
+        self.assertTrue(True)
 
-
-
+    # Test that the complianant cannot also be added to a case as an additional member.
     def test_cn_cannot_be_add_member(self):
         """Can't have CN be selectable in list, validator should grab this."""
+        with self.assertRaisesRegexp(ValidationError, "Complainant cannot be added as an additional member."):
+            temp_case = Case()
+            temp_case.lead = 123456789
+            temp_case.complainant = self.person1
+            temp_case.campus = "Kelsey"
+            temp_case.school = "School of Business"
+            temp_case.department = "Business Certificate"
+            temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
+            temp_case.status = "OPEN"
+            temp_case.docs = None
+            temp_case.logs = None
+            temp_case.date = "2016-10-20"
+            temp_case.full_clean()
+            temp_case.save()
+            temp_case.additionalMembers.add(self.person1)
+            temp_case.save()
 
-    def test_warning_if_js_disabled(self):
-        """Should check if JS is disabled in browser. If true show warning,
-        else show nothing."""
-
-    def test_cn_cannot_be_add_member_despite_meddling(self):
-        """Even if a user meddles with the HTML in the browser, the page
-        should validate itself and know that CN != additional member."""
+    # Test that a complainant and additional member that have the same name, can both
+    #   be added to the case (as they will have different IDs in the system).
+    def test_cn_and_add_member_same_name_diff_person(self):
+        """CN and additional member are both named Deborah Williams, but have
+        different memberIDs and IDs in the database. System should save person1 as CN
+        and person4 as additional member."""
+        temp_case = Case()
+        temp_case.lead = 123456789
+        temp_case.complainant = self.person1
+        temp_case.campus = "Kelsey"
+        temp_case.school = "School of Business"
+        temp_case.department = "Business Certificate"
+        temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
+        temp_case.status = "OPEN"
+        temp_case.docs = None
+        temp_case.logs = None
+        temp_case.date = "2016-10-20"
+        temp_case.full_clean()
+        temp_case.save()
+        temp_case.additionalMembers.add(self.person4)
+        temp_case.save()
+        self.assertTrue(True)
