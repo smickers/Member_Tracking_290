@@ -16,7 +16,7 @@ class GrievanceAwardForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
         self.fields['file_field'] = FileField(widget=ClearableFileInput(attrs={'multiple': False, 'accept': FILE_EXT_TO_ACCEPT_STR} ))
-        self.fields['file_description'] = CharField(widget= forms.TextInput(attrs={'type':'hidden', 'size':'100%'}))
+        self.fields['file_description'] = CharField(label='File Description', widget= forms.TextInput(attrs={'type':'', 'size':'100%'}))
 
 
     def save(self, commit=False):
