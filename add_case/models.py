@@ -5,21 +5,30 @@ from django.core.urlresolvers import reverse
 import datetime
 from add_member.models import Person
 
-
+'''
+Name:       CaseSatellite
+Purpose:    This is a satellite location to be selected. Saves data to the DB.
+'''
 class CaseSatellite(models.Model):
     name = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
         return self.name
 
-
+'''
+Name:       CasePrograms
+Purpose:    This model is for the Programs to be chosen when a valid school is picked. Saves to DB.
+'''
 class CasePrograms(models.Model):
     name = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return self.name
 
-
+'''
+Name:       Case
+Purpose:    This is the model for the case. This is used by the web page to help generate the form. And saves data to the DB.
+'''
 class Case(models.Model):
     CAMPUS_CHOICES = [
         ('Saskatoon', 'Saskatoon'),
