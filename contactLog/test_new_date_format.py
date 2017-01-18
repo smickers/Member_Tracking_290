@@ -13,18 +13,21 @@ class DateFormatTestCase(TestCase):
         # Get the initial values found in the model & view
         #print(response.context)
         oldresponsevalues = response.context['form']
-        print(oldresponsevalues);
-        #self.assertRegexpMatches(oldresponsevalues.__str__(),
-        #            "^(?s).*(id_bDay_day).(?s).*(id_bDay_month)(?s).*(id_bDay_year)(?s).*$")
+        #print(oldresponsevalues)
+        self.assertRegexpMatches(oldresponsevalues.__str__(),
+                    # This regular expression searches for date selectors to load in Day, Month, Year
+                   "^(?s).*(id_date_day).(?s).*(id_date_month)(?s).*(id_date_year)(?s).*$")
 
-    # def test_old_format_is_not_loading(self):
-    #     event_to_edit = Event.objects.filter(id=1)[0]
-    #     # Instantiate the Client
-    #     client = Client()
-    #     # Connect to the actual sites
-    #     response = client.get('/add_event/add/' + str(event_to_edit.pk) + '/')
-    #     # Get the initial values found in the model & view
-    #     # print(response.context)
-    #     oldresponsevalues = response.context['form']
-    #     self.assertNotRegexpMatches(oldresponsevalues.__str__(),
-    #             "^(?s).*(id_bDay_month).(?s).*(id_bDay_day)(?s).*(id_bDay_year)(?s).*$")
+    # Test that the date is not loading in the unproper format
+    def test_old_format_is_not_loading(self):
+        # Instantiate the Client
+        client = Client()
+        # Connect to the actual sites
+        response = client.get('/contact_log/')
+        # Get the initial values found in the model & view
+        # print(response.context)
+        oldresponsevalues = response.context['form']
+        #print(oldresponsevalues)
+        self.assertNotRegexpMatches(oldresponsevalues.__str__(),
+                # This regular expression searches for date selectors to load in Day, Month, Year
+                "^(?s).*(id_date_month).(?s).*(id_date_day)(?s).*(id_date_year)(?s).*$")

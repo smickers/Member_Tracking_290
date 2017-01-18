@@ -42,8 +42,10 @@ class DateFormatTestCase(TestCase):
         #print(response.context)
         oldresponsevalues = response.context['form']
         self.assertRegexpMatches(oldresponsevalues.__str__(),
+                    # This regular expression searches for date selectors to load in Day, Month, Year
                     "^(?s).*(id_bDay_day).(?s).*(id_bDay_month)(?s).*(id_bDay_year)(?s).*$")
 
+    # Test that the date is not loading in the unproper format
     def test_old_format_is_not_loading(self):
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         # Instantiate the Client
@@ -54,4 +56,5 @@ class DateFormatTestCase(TestCase):
         # print(response.context)
         oldresponsevalues = response.context['form']
         self.assertNotRegexpMatches(oldresponsevalues.__str__(),
+                # This regular expression searches for date selectors to load in Day, Month, Year
                 "^(?s).*(id_bDay_month).(?s).*(id_bDay_day)(?s).*(id_bDay_year)(?s).*$")
