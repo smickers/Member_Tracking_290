@@ -13,5 +13,5 @@ class MemberSearchSerializer(HaystackSerializer):
         ignore_fields = ["auto_complete"]
 
         field_aliases = {
-            'q':'auto_complete'
+            'q': 'auto_complete'
         }
