@@ -116,9 +116,8 @@ class CaseTests(TestCase):
         temp_case = Case()
         temp_case.lead = 123456789
         temp_case.complainant = self.person1
-        temp_case.campus = "Kelsey"
+        temp_case.campus = "Saskatoon"
         temp_case.school = "School of Business"
-        temp_case.department = "Business Certificate"
         temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
         temp_case.status = "OPEN"
         temp_case.docs = None
@@ -135,9 +134,8 @@ class CaseTests(TestCase):
         temp_case = Case()
         temp_case.lead = 123456789
         temp_case.complainant = self.person1
-        temp_case.campus = "Kelsey"
+        temp_case.campus = "Saskatoon"
         temp_case.school = "School of Business"
-        temp_case.department = "Business Certificate"
         temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
         temp_case.status = "OPEN"
         temp_case.docs = None
@@ -156,9 +154,8 @@ class CaseTests(TestCase):
             temp_case = Case()
             temp_case.lead = 123456789
             temp_case.complainant = self.person1
-            temp_case.campus = "Kelsey"
+            temp_case.campus = "Saskatoon"
             temp_case.school = "School of Business"
-            temp_case.department = "Business Certificate"
             temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
             temp_case.status = "OPEN"
             temp_case.docs = None
@@ -178,9 +175,8 @@ class CaseTests(TestCase):
         temp_case = Case()
         temp_case.lead = 123456789
         temp_case.complainant = self.person1
-        temp_case.campus = "Kelsey"
+        temp_case.campus = "Saskatoon"
         temp_case.school = "School of Business"
-        temp_case.department = "Business Certificate"
         temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
         temp_case.status = "OPEN"
         temp_case.docs = None
