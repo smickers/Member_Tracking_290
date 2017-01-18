@@ -1,4 +1,5 @@
 from django.test import TestCase, Client
+import re
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from .models import Person
@@ -30,8 +31,20 @@ class DateFormatTestCase(TestCase):
         tempPerson.full_clean()
         tempPerson.save()
 
-    #Exception Test 42 - Test if user cannot leave campus field empty
-    def test_date_format(self):
+    #Test that the date is loading in the proper format in the proper format
+    def test_proper_date_format_is_loading(self):
+        person_to_edit = Person.objects.filter(memberID=123456789)[0]
+        # Instantiate the Client
+        client = Client()
+        # Connect to the actual sites
+        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        # Get the initial values found in the model & view
+        #print(response.context)
+        oldresponsevalues = response.context['form']
+        self.assertRegexpMatches(oldresponsevalues.__str__(),
+                    "^(?s).*(id_bDay_day).(?s).*(id_bDay_month)(?s).*(id_bDay_year)(?s).*$")
+
+    def test_old_format_is_not_loading(self):
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         # Instantiate the Client
         client = Client()
@@ -40,11 +53,5 @@ class DateFormatTestCase(TestCase):
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form']
-        print(oldresponsevalues)
-        # # Override the old set of values with the desired one
-        # oldresponsevalues["campus"] = ""
-        # # DO a post method to send the newly created dataset
-        # response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
-        # # Do a query for the object that you want to compare
-        # person_to_edit = Person.objects.filter(memberID=123456789)[0]
-        # self.assertContains(response, "This field is required", 1, 200)
+        self.assertNotRegexpMatches(oldresponsevalues.__str__(),
+                "^(?s).*(id_bDay_month).(?s).*(id_bDay_day)(?s).*(id_bDay_year)(?s).*$")

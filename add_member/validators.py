@@ -15,9 +15,11 @@ def validate_pCode(value):
                 raise ValidationError("Invalid postal code entered! Postal code must be in the form A#A #A#.")
 
 def validate_date_format(value):
-    PCODE_REGEX = re.compile(r"^(?s).*(id_bDay_day).(?s).*(id_bDay_month)(?s).*(id_bDay_year)(?s).*$")
-    if not PCODE_REGEX.match(str(value)):
+    DATE_REGEX = re.compile(r"^(?s).*(id_bDay_day).(?s).*(id_bDay_month)(?s).*(id_bDay_year)(?s).*$")
+    if not DATE_REGEX.match(str(value)):
         raise ValidationError("The Date is not loading in the proper format")
+    else:
+        assert True
 
 #validators for phone numbers
 def validate_numbers(value):
