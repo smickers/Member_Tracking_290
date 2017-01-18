@@ -2,7 +2,6 @@ from django.core.exceptions import ValidationError
 import re
 import datetime
 
-
 def validate_date(value):
     data = value
 
@@ -10,7 +9,6 @@ def validate_date(value):
         raise ValidationError("Cannot enter a future date")
 
     return data
-
 
 def validate_status(value):
     data = value
