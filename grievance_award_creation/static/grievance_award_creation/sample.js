@@ -6,12 +6,27 @@ $(document).ready(function(){
     //unselect any files when the page loads
     file_field[0].value = null;
 
+
+    $("#cancel_upload").hide();
+
+
     description_handler(file_field);
 
 
     file_field.change(function(){
         description_handler(file_field);
     });
+
+    $("#cancel_upload").click(function(){
+        file_field[0].value = null;
+    });
+
+
+     $("button[type=submit]").onclick(function(){
+         $("#cancel_upload").show();
+     });
+
+
 })
 /*
 function:   description_handler
@@ -50,6 +65,9 @@ function description_handler(file_field)
 
             //Disable the button
             $("button[type=submit]").attr('disabled','');
+
+            //hide the cancel upload
+            // $("#cancel_upload").hide();
         } else {
 
             if($("#file_error").length > 0);
@@ -57,7 +75,7 @@ function description_handler(file_field)
                 $("#file_error").hide();
             }
 
-
+            // $("#cancel_upload").show();
             if($("button[type=submit]").attr('disabled')!= undefined)
             {
                 $("button[type=submit]").removeAttr('disabled')
