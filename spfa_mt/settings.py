@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['testserver', '127.0.0.1']
 
 INSTALLED_APPS = [
     'spfa_mt',
+    'add_com.apps.AddComConfig',
     'cases.apps.casesConfig',
     'add_member.apps.AddMemberConfig',
     'add_case.apps.AddCaseConfig',
@@ -72,7 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+                'django.contrib.messages.context_processors.messages'
             ],
         },
     },
@@ -161,3 +162,18 @@ FILE_EXT_TO_ACCEPT = ['xls', 'xlsx', 'pptx', 'docx', 'csv', 'pdf',
                       'txt', 'msg']
 FILE_EXT_TO_ACCEPT_STR = ',.'.join(FILE_EXT_TO_ACCEPT)
 
+MAX_FILE_SIZE = 524288000
+
+MEDIA_ROOT = 'files/'
+
+FILE_UPLOAD_HANDLERS = ["filehandlersample.filehandler.ValidateUploadSize",
+    "django.core.files.uploadhandler.MemoryFileUploadHandler",
+ "django.core.files.uploadhandler.TemporaryFileUploadHandler"]
+
+#For caching purposes
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': 'c:/foo/',
+    }
+}
