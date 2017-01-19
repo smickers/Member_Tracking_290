@@ -3,6 +3,7 @@ from .models import Event, Person
 from .validators import *
 from create_event.fields import ListTextWidget
 from django import forms
+from datetime import date
 
 
 # This creates names for fields on the form.
@@ -11,6 +12,8 @@ class EventForm(ModelForm):
     # Name:     __init__
     # Function: This routine creates the datalist for selecting a location or entering it in.
     def __init__(self, *args, **kwargs):
+
+
         _location_list = {
             'Prince Albert',
             'Moose Jaw',
@@ -25,6 +28,21 @@ class EventForm(ModelForm):
 
     # This names the fields for the form
     class Meta:
+        # Define months so they're entered as three letters
+        MONTHS = {
+            1: 'Jan',
+            2: 'Feb',
+            3: 'Mar',
+            4: 'Apr',
+            5: 'May',
+            6: 'Jun',
+            7: 'Jul',
+            8: 'Aug',
+            9: 'Sep',
+            10: 'Oct',
+            11: 'Nov',
+            12: 'Dec'
+        }
         model = Event
 
         fields = '__all__'
@@ -36,7 +54,7 @@ class EventForm(ModelForm):
         }
 
         widgets = {
-            'date': SelectDateWidget(years=range(2010, datetime.datetime.now().year + 10)),
+            'date': SelectDateWidget(months=MONTHS, years=range(2010, datetime.datetime.now().year + 10)),
             'members': forms.SelectMultiple(
                 attrs={'class':'js-members'})
         }

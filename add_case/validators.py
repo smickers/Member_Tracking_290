@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 import re
 import datetime
 
+
 def validate_date(value):
     data = value
 
@@ -9,6 +10,7 @@ def validate_date(value):
         raise ValidationError("Cannot enter a future date")
 
     return data
+
 
 def validate_status(value):
     data = value
@@ -56,5 +58,91 @@ def validate_case_type(value):
 
     if found is False:
         raise ValidationError("Must enter a valid case type")
+
+    return data
+
+'''
+Name:       validate_location
+Function:   Ensures that the location is a part of the location listing.
+Returns:    The data
+'''
+def validate_location(value):
+    data = value
+
+    locations = [
+        "Saskatoon",
+        "Regina",
+        "MJ",
+        "PA"
+    ]
+
+    found = False
+    for val in locations:
+        if val == data:
+            found = True
+
+    if found is False:
+        raise ValidationError("Must select a valid location")
+
+    return data
+
+'''
+Name:       validate_departments
+Function:   Ensures that the department is a part of the department listing.
+Returns:    The data
+'''
+def validate_department(value):
+    data = value
+
+    departments = [
+        "Learning Technologies",
+        "ILDC",
+        "Library",
+        "PLAR",
+        "Simulation Lab",
+        "Student Development",
+        "Learning Services",
+        "Fitness Centre"
+    ]
+
+    found = False
+    for val in departments:
+        if val == data:
+            found = True
+
+    if found is False:
+        raise ValidationError("Must select a valid department")
+
+    return data
+
+
+'''
+Name:       validate_schools
+Function:   Ensures that the school is a part of the school listing.
+Returns:    The data
+'''
+def validate_school(value):
+    data = value
+
+    schools = [
+        "School of Business",
+        "School of Construction",
+        "School of Health Sciences",
+        "School of Human Services and Community Safety",
+        "School of Information and Communications Technology",
+        "School of Mining, Energy and Manufacturing",
+        "School of Natural Resources and Built Environment",
+        "School of Nursing",
+        "School of Transportation",
+        "Other",
+    ]
+
+    found = False
+    for val in schools:
+        if val == data:
+            found = True
+
+    if found is False:
+        raise ValidationError("Must select a valid school")
 
     return data

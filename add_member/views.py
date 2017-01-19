@@ -27,6 +27,7 @@ class PersonDetail(DetailView):
     model = Person
     template_name = 'add_member/person_detail.html'
 
+
 class MemberSearchView(HaystackViewSet):
     """
     View that connects the Member search serializer.
