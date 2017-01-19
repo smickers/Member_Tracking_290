@@ -57,8 +57,8 @@ class GrievanceAward(models.Model):
 
 
 class GrievanceFiles(models.Model):
-    date_uploaded = models.DateTimeField(auto_now=True)
-    file = models.FileField(upload_to='grievance/', )
-    award = models.ForeignKey(GrievanceAward)
-    description = models.CharField(max_length=50)
+    date_uploaded = models.DateTimeField(auto_now=True,blank=True,null=True)
+    file = models.FileField(upload_to='grievance/',blank=True,null=True)
+    award = models.ForeignKey(GrievanceAward,blank=True,null=True)
+    description = models.CharField(max_length=50,blank=True,null=True)
 

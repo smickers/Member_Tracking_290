@@ -37,7 +37,7 @@ class GrievanceAwardForm(ModelForm):
             if(f.size > settings.MAX_FILE_SIZE):
                 raise ValidationError("File exceeds maximum size allowed")
             if(f.name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT):
-                raise ValidationError("File has exception which is not allowed")
+                raise ValidationError("File type is not allowed")
         return self.cleaned_data['file_field']
 
 

@@ -2,6 +2,7 @@ from django.core.files.uploadhandler import TemporaryFileUploadHandler, FileUplo
 from django.core.files.uploadhandler import StopUpload, SkipFile, StopFutureHandlers
 from spfa_mt.settings import MAX_FILE_SIZE
 from django.core.exceptions import ValidationError
+from spfa_mt import settings
 
 class ValidateUploadSize(TemporaryFileUploadHandler):
     def __init__(self, *args, **kwargs):
@@ -21,20 +22,8 @@ class ValidateUploadSize(TemporaryFileUploadHandler):
         self.total_size = content_length
 
 
-
-class CancelUpload(FileUploadHandler):
-    def __init__(self, *args, **kwargs):
-        super(CancelUpload, self).__init__(*args, **kwargs)
-        raise SkipFile()
-
-    def new_file(self, field_name, file_name, content_type, content_length, charset=None, content_type_extra=None):
-        super(CancelUpload, self).new_file(file_name, content_type, content_length, charset=None, content_type_extra=None)
-        print('future')
-        raise StopFutureHandlers()
-
-
-
-    # def receive_data_chunk(self, raw_data, start):
-    #     print('hi')
-    #     super(CancelUpload, self).receive_data_chunk(raw_data, start)
-    #     raise StopFutureHandlers
+    def new_file(self, *args, **kwargs):
+        super(ValidateUploadSize, self).new_file(*args, **kwargs)
+        f_name = self.file_name
+        if (f_name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT):
+            raise ValidationError("File type is not allowed")

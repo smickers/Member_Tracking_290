@@ -65,10 +65,12 @@ function description_handler(file_field, desc)
         //display an error message if the file exceeds the file storage limit
         if (file_field[0].files[0].size > 524288000) {
             //append an error message
-            $("#id_file_description").before("<p style='color:red' id='file_error'>File is larger than the allowed maximum size</p>");
+            $("#id_file_description").before("<p style='color:red' id='file_error'>File has been removed. File is larger than the allowed maximum size. </p>");
 
-            //Disable the button
-            $("button[type=submit]").attr('disabled','');
+            //$("button[type=submit]").attr('disabled','');
+
+            file_field[0].value = "";
+
 
         }
         else {
@@ -83,7 +85,7 @@ function description_handler(file_field, desc)
                 $("button[type=submit]").removeAttr('disabled')
             }
             desc.siblings().removeAttr("hidden");
-            desc.removeAttr("type")
+            desc.removeAttr("type");
         }
     }
     //no files are present for upload so hide description title and input
@@ -91,6 +93,8 @@ function description_handler(file_field, desc)
     {
         desc.siblings().attr("hidden", "");
         desc.attr("type", "hidden");
+
+        $("#file_error").hide();
     }
 
 
