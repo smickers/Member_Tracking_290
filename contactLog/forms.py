@@ -16,7 +16,7 @@ class ContactLogForm(ModelForm):
     #                    datetime.now().year + 1)), initial=datetime.now)
     class Meta:
         model = contactLog
-
+        # Define months so they're entered as three letters
         MONTHS = {
             1: 'Jan',
             2: 'Feb',

@@ -12,7 +12,6 @@ class EventForm(ModelForm):
     # Name:     __init__
     # Function: This routine creates the datalist for selecting a location or entering it in.
     def __init__(self, *args, **kwargs):
-        # Define months so they're entered as three letters
 
 
         _location_list = {
@@ -29,6 +28,7 @@ class EventForm(ModelForm):
 
     # This names the fields for the form
     class Meta:
+        # Define months so they're entered as three letters
         MONTHS = {
             1: 'Jan',
             2: 'Feb',

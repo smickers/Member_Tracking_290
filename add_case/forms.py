@@ -6,7 +6,10 @@ from datetime import date
 class CaseForm(ModelForm):
     class Meta:
         model = Case
+        # Date range is +- 5 years
 
+        # Make the range +6 on the high end, because this function doesn't
+        # include the end range value
         YEARS = range(date.today().year - 5, date.today().year + 6)
         YEARS.sort()
 
