@@ -8,7 +8,7 @@ from django.db import DataError
 import datetime
 
 
-class EventTest(TestCase):
+class AwardTest(TestCase):
     tempPerson = Person()
     person_pk = -1
     tempCase = Case()
