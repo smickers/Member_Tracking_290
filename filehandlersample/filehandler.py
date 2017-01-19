@@ -26,4 +26,4 @@ class ValidateUploadSize(TemporaryFileUploadHandler):
         super(ValidateUploadSize, self).new_file(*args, **kwargs)
         f_name = self.file_name
         if (f_name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT):
-            raise ValidationError("File type is not allowed")
+            raise StopFutureHandlers("File type is not allowed")

@@ -19,12 +19,10 @@ class GrievanceAwardCreation(CreateView):
     form_class = GrievanceAwardForm
     # form = GrievanceAwardForm()
 
+
+
 # Class: GrievanceAwardCreationSuccess
 # Purpose: The view that is shown upon successfully creating a grievance award.
-#     def post(self, request, *args, **kwargs):
-#         form = self.form
-#         files = request.FILES.getlist('file_field')
-#         return super(GrievanceAwardCreation, self).post(request, *args, **kwargs)
 
     def get_success_url(self):
         return self.object.get_absolute_url()
