@@ -107,10 +107,7 @@ if __name__ == '__main__':
                 self.department = None
             validate_additional_members(self.complainant, self.additionalMembers)
 
-        def save(self):
-            # need to save the case, and then for each member in additionalMembers, addthem to
-            #   additionalMembers, THEN save
-            # URL: http://stackoverflow.com/questions/17505935/django-error-needs-to-have-a-value-for-field-before-this-many-to-many-rel
+
 
 
 class CaseMembers(models.Model):
