@@ -131,7 +131,7 @@ class AwardEditTest(TestCase):
     def test_that_recipient_is_changed_to_an_invalid_recipient(self):
         with self.assertRaises(ValidationError):
             self.ga.recipient = 78945648794
-            self.ga.clean()
+            self.ga.full_clean()
             self.ga.save()
 
             # check validation error message
@@ -150,9 +150,9 @@ class AwardEditTest(TestCase):
     # Input: Case is an invalid case
     # Expected result: Validation Error Thrown
     def test_that_case_can_not_be_changed_to_an_invalid_case(self):
-        with self.assertRaises(IntegrityError):
-            self.ga.case = self.tempCase3.id
-            self.ga.clean()
+        with self.assertRaisesMessage(ValidationError, "A valid case ID must be entered!"):
+            self.ga.case = 1000
+            self.ga.full_clean()
             self.ga.save()
 
             # check validation error message
@@ -162,7 +162,7 @@ class AwardEditTest(TestCase):
     # Expected result: Record is saved successfully
     def test_that_the_description_can_be_changed_if_under_a_size_of_1000_characters(self):
         self.ga.description = 'a' * 999
-        self.ga.clean();
+        self.ga.full_clean();
         self.ga.save();
 
         assert self.ga.description == 'a' * 999
@@ -171,9 +171,9 @@ class AwardEditTest(TestCase):
     # Input: Description is more than 1000 characters
     # Expected result: Validation Error Thrown
     def test_that_description_cannot_be_1000_characters(self):
-        with self.assertRaises(ValidationError):
+        with self.assertRaisesMessage(ValidationError, "Description must be 1000 characters or less!"):
             self.ga.description = 'a' * 1001
-            self.ga.clean();
+            self.ga.full_clean();
             self.ga.save();
 
     # check validation error message
@@ -184,7 +184,7 @@ class AwardEditTest(TestCase):
     # Expected result: Record is saved successfully
     def test_that_description_can_be_blank(self):
         self.ga.description = None
-        self.ga.clean();
+        self.ga.full_clean();
         self.ga.save();
 
         assert self.ga.description is None
@@ -194,7 +194,7 @@ class AwardEditTest(TestCase):
     # Expected result: Record is saved successfully
     def test_that_amount_can_be_changed(self):
         self.ga.awardAmount = 9850
-        self.ga.clean()
+        self.ga.full_clean()
         self.ga.save()
 
         assert self.ga.awardAmount == 9850
@@ -214,7 +214,7 @@ class AwardEditTest(TestCase):
     # Expected result: Record is saved successfully
     def test_that_grievance_type_can_be_changed_to_valid_choice(self):
         self.ga.grievanceType = 'P'
-        self.ga.clean()
+        self.ga.full_clean()
         self.ga.save()
 
         assert self.ga.grievanceType == 'P'
@@ -223,9 +223,9 @@ class AwardEditTest(TestCase):
     # Input: Grievence type is changed to 'L'
     # Expected result: Validation Error Thrown
     def test_that_grievance_type_cannot_be_changed_to_invalid_choice(self):
-        with self.assertRaises(ValidationError):
+        with self.assertRaisesMessage(ValidationError, "A grievance type of member or policy must be selected!" ):
             self.ga.grievanceType = 'L'
-            self.ga.clean()
+            self.ga.full_clean()
             self.ga.save()
 
             # check validation error message
