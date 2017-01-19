@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-from add_case.models import Case
+from add_case.models import Case, CasePrograms
 from add_member.models import Person
 
 
@@ -11,6 +11,7 @@ class CaseTests(TestCase):
     person3 = Person()
     person4 = Person()
     temp_case = Case()
+    prog = CasePrograms()
 
     # Create our People
     def setUp(self):
@@ -110,20 +111,25 @@ class CaseTests(TestCase):
         self.person4.full_clean()
         self.person4.save()
 
+        self.prog.name = "Computer Systems Technology - Diploma"
+        self.prog.full_clean()
+        self.prog.save()
+
     # Test that we can save a complainant to a case, and don't need additional members.
     def test_case_saved_with_cn_and_no_add_members_exist(self):
         """A CN is specified, with no additional members. Case is saved to DB."""
         temp_case = Case()
         temp_case.lead = 123456789
         temp_case.complainant = self.person1
-        temp_case.campus = "Kelsey"
+        temp_case.campus = "Saskatoon"
         temp_case.school = "School of Business"
-        temp_case.department = "Business Certificate"
+        temp_case.program = self.prog
         temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
         temp_case.status = "OPEN"
         temp_case.docs = None
         temp_case.logs = None
         temp_case.date = "2016-10-20"
+        # temp_case.additionalMembers = None
         temp_case.full_clean()
         temp_case.save()
         self.assertTrue(True)
@@ -135,9 +141,32 @@ class CaseTests(TestCase):
         temp_case = Case()
         temp_case.lead = 123456789
         temp_case.complainant = self.person1
-        temp_case.campus = "Kelsey"
+        temp_case.campus = "Saskatoon"
         temp_case.school = "School of Business"
-        temp_case.department = "Business Certificate"
+        temp_case.program = self.prog
+        temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
+        temp_case.status = "OPEN"
+        temp_case.docs = None
+        temp_case.logs = None
+        temp_case.date = "2016-10-20"
+
+        temp_case.full_clean()
+        temp_case.save()
+        temp_case.additionalMembers.add(self.person2, self.person3)
+        # temp_case.save()
+        self.assertTrue(True)
+
+    # Test that the complianant cannot also be added to a case as an additional member.
+    def test_cn_cannot_be_add_member(self):
+        """Can't have CN be selectable in list, validator should grab this."""
+        #with self.assertRaisesRegexp(ValidationError, "Complainant cannot be added as an additional member."):
+       #with self.assertRaisesRegexp(ValidationError, "Complainant cannot be added as an additional member."):
+        temp_case = Case()
+        temp_case.lead = 123456789
+        temp_case.complainant = self.person1
+        temp_case.campus = "Saskatoon"
+        temp_case.school = "School of Business"
+        temp_case.program = self.prog
         temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
         temp_case.status = "OPEN"
         temp_case.docs = None
@@ -145,29 +174,10 @@ class CaseTests(TestCase):
         temp_case.date = "2016-10-20"
         temp_case.full_clean()
         temp_case.save()
-        temp_case.additionalMembers = (self.person2, self.person3)
-        temp_case.save()
-        self.assertTrue(True)
+        temp_case.additionalMembers.add(self.person1)
+        temp_case.clean_additional_members()
+        temp_case.additionalMembers.save()
 
-    # Test that the complianant cannot also be added to a case as an additional member.
-    def test_cn_cannot_be_add_member(self):
-        """Can't have CN be selectable in list, validator should grab this."""
-        with self.assertRaisesRegexp(ValidationError, "Complainant cannot be added as an additional member."):
-            temp_case = Case()
-            temp_case.lead = 123456789
-            temp_case.complainant = self.person1
-            temp_case.campus = "Kelsey"
-            temp_case.school = "School of Business"
-            temp_case.department = "Business Certificate"
-            temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
-            temp_case.status = "OPEN"
-            temp_case.docs = None
-            temp_case.logs = None
-            temp_case.date = "2016-10-20"
-            temp_case.full_clean()
-            temp_case.save()
-            temp_case.additionalMembers.add(self.person1)
-            temp_case.save()
 
     # Test that a complainant and additional member that have the same name, can both
     #   be added to the case (as they will have different IDs in the system).
@@ -178,9 +188,9 @@ class CaseTests(TestCase):
         temp_case = Case()
         temp_case.lead = 123456789
         temp_case.complainant = self.person1
-        temp_case.campus = "Kelsey"
+        temp_case.campus = "Saskatoon"
         temp_case.school = "School of Business"
-        temp_case.department = "Business Certificate"
+        temp_case.program = self.prog
         temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
         temp_case.status = "OPEN"
         temp_case.docs = None

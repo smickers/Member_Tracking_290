@@ -98,12 +98,28 @@ class Case(models.Model):
     def get_absolute_url(self):
         return reverse(viewname='cases:case_detail', kwargs={'pk': self.pk})
 
-
     def clean(self):
+        print(self.complainant)
         if len(self.status) == 0:
             self.status = 'OPEN'
         if self.program is not None:
             self.department = None
+        # if self.additionalMembers and self.additionalMembers.count > 0:
+        #     for mem in self.additionalMembers:
+        #         if mem.id == self.complainant.id:
+        #             raise ValidationError("Complainant cannot be added as an additional member.")
+
+    # def clean_additional_members(self):
+    #     cleaned_data = supe.clean()
+    #     cn = cleaned_data.get('complainant')
+    #     additional_members = cleaned_data.get('additionalMembers')
+    #     for mem in additional_members:
+    #         # cn cannot be an additional member
+    #         if mem and cn and mem is cn:
+    #             msg = "Complainant cannot be added as an additional member."
+    #             self.add_error("additionalMembers", msg)
+    #             # raise ValidationError("Complainant cannot be added as an additional member.")
+    #     return self.initial['additionalMembers'] | self.cleaned_data['additionalMembers']
 
 
 class CaseMembers(models.Model):

@@ -145,7 +145,9 @@ def validate_school(value):
 
     return data
 
+
 # Validators to ensure that the complainant cannot be/is not entered to the Case
 #   as an additional member.
 def validate_additional_members(value):
     """things here"""
+
