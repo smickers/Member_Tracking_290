@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-from add_case.models import Case, CasePrograms
+from add_case.models import Case
 from add_member.models import Person
 
 
@@ -129,7 +129,6 @@ class CaseTests(TestCase):
         temp_case.docs = None
         temp_case.logs = None
         temp_case.date = "2016-10-20"
-        # temp_case.additionalMembers = None
         temp_case.full_clean()
         temp_case.save()
         self.assertTrue(True)
@@ -149,7 +148,6 @@ class CaseTests(TestCase):
         temp_case.docs = None
         temp_case.logs = None
         temp_case.date = "2016-10-20"
-
         temp_case.full_clean()
         temp_case.save()
         temp_case.additionalMembers.add(self.person2, self.person3)
