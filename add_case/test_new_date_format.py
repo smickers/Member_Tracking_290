@@ -13,7 +13,7 @@ class DateFormatTestCase(TestCase):
         # Get the initial values found in the model & view
         #print(response.context)
         oldresponsevalues = response.context['form']
-        print(oldresponsevalues)
+        #print(oldresponsevalues)
         #Compare response to the regular expression
         self.assertRegexpMatches(oldresponsevalues.__str__(),
                 #This regular expression searches for date selectors to load in Day, Month, Year
@@ -28,7 +28,7 @@ class DateFormatTestCase(TestCase):
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form']
-        print(oldresponsevalues)
+        #print(oldresponsevalues)
         #Compare respons to the regular expression
         self.assertNotRegexpMatches(oldresponsevalues.__str__(),
                 #This regular expression searches for date selectors to load in Day, Month, Year
