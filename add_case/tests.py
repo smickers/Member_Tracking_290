@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
-from add_case.models import Case
+from add_case.models import *
 from django.db import DataError
 import datetime
 from add_member.models import Person
@@ -9,6 +9,7 @@ from add_member.models import Person
 
 class CaseTests(TestCase):
     person1 = Person()
+    program = CasePrograms()
 
     def setUp(self):
         self.person1.memberID = 4204444
@@ -35,6 +36,10 @@ class CaseTests(TestCase):
         self.person1.full_clean()
         self.person1.save()
 
+        self.program.name = 'Business - Certificate'
+        self.program.full_clean()
+        self.program.save()
+
     # Test 11 - Campus does not write to database when string length is 255 characters
     def testThatCampusIsNotWrittenToDBWhenStringLengthIs255Characters(self):
         with self.assertRaises(ValidationError):
@@ -46,7 +51,7 @@ class CaseTests(TestCase):
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,"
             tempCase.school = "School of Business"
-            tempCase.department = "Business Certificate"
+            tempCase.program = self.program
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
             tempCase.docs = None
@@ -65,7 +70,7 @@ class CaseTests(TestCase):
         tempCase.complainant = self.person1
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
-        tempCase.department = "Business Certificate"
+        tempCase.program = self.program
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
         tempCase.additionalNonMembers = ""
@@ -88,7 +93,7 @@ class CaseTests(TestCase):
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
             tempCase.school = "School of Business"
-            tempCase.department = "Business Certificate"
+            tempCase.program = self.program
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
             tempCase.additionalNonMembers = ""
@@ -115,7 +120,7 @@ class CaseTests(TestCase):
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
             tempCase.school = "School of Business"
-            tempCase.department = "Business Certificate"
+            tempCase.program = self.program
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
             tempCase.additionalNonMembers = ""
@@ -124,26 +129,26 @@ class CaseTests(TestCase):
             tempCase.date = "2016-10-20"
             tempCase.full_clean()
             tempCase.save()
-    #
+    # Jan 17, 2017 - Test case is no longer needed. School is a select box now and model will still validate for length
     # # Test 15 - School writes to database when string length is 255 characters
-    def testThatSchoolIsWrittenToDBWhenStringLengthIs255Characters(self):
-        tempCase = Case()
-        tempCase.lead = 123456789
-        tempCase.complainant = self.person1
-        tempCase.campus = "Saskatoon"
-        tempCase.school = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
-                          "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
-                          "natoque penatibus et magnis dis parturient montes, nascetur " \
-                          "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,"
-        tempCase.department = "Business Certificate"
-        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
-        tempCase.status = "OPEN"
-        tempCase.additionalNonMembers = ""
-        tempCase.docs = None
-        tempCase.logs = None
-        tempCase.date = "2016-10-20"
-        tempCase.full_clean()
-        tempCase.save()
+    # def testThatSchoolIsWrittenToDBWhenStringLengthIs255Characters(self):
+    #     tempCase = Case()
+    #     tempCase.lead = 123456789
+    #     tempCase.complainant = self.person1
+    #     tempCase.campus = "Saskatoon"
+    #     tempCase.school = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
+    #                       "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
+    #                       "natoque penatibus et magnis dis parturient montes, nascetur " \
+    #                       "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,"
+    #     tempCase.program = self.program
+    #     tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+    #     tempCase.status = "OPEN"
+    #     tempCase.additionalNonMembers = ""
+    #     tempCase.docs = None
+    #     tempCase.logs = None
+    #     tempCase.date = "2016-10-20"
+    #     tempCase.full_clean()
+    #     tempCase.save()
 
     # Test 16 - School writes to database when string length is 18 characters
     def testThatSchoolIsWrittenToDBWhenStringLengthIs18Characters(self):
@@ -152,7 +157,7 @@ class CaseTests(TestCase):
         tempCase.complainant = self.person1
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
-        tempCase.department = "Business Certificate"
+        tempCase.program = self.program
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
         tempCase.additionalNonMembers = ""
@@ -173,7 +178,7 @@ class CaseTests(TestCase):
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
-            tempCase.department = "Business Certificate"
+            tempCase.program = self.program
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
 
@@ -199,7 +204,7 @@ class CaseTests(TestCase):
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
-            tempCase.department = "Business Certificate"
+            tempCase.program = self.program
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
 
@@ -218,7 +223,7 @@ class CaseTests(TestCase):
             tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
-            tempCase.department = "Business Certificate"
+            tempCase.program = self.program
             tempCase.caseType = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                                 "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                                 "natoque penatibus et magnis dis parturient montes, nascetur " \
@@ -239,7 +244,7 @@ class CaseTests(TestCase):
         tempCase.complainant = self.person1
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
-        tempCase.department = "Business Certificate"
+        tempCase.program = self.program
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
 
@@ -258,7 +263,7 @@ class CaseTests(TestCase):
             tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
-            tempCase.department = "Business Certificate"
+            tempCase.program = self.program
             tempCase.caseType = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                                 "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                                 "natoque penatibus et magnis dis parturient montes, nascetur " \
@@ -280,7 +285,7 @@ class CaseTests(TestCase):
             tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
-            tempCase.department = "Business Certificate"
+            tempCase.program = self.program
             tempCase.caseType = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                                 "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                                 "natoque penatibus et magnis dis parturient montes, nascetur " \
@@ -306,7 +311,7 @@ class CaseTests(TestCase):
             tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
-            tempCase.department = "Business Certificate"
+            tempCase.program = self.program
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                                 "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
@@ -327,7 +332,7 @@ class CaseTests(TestCase):
         tempCase.complainant = self.person1
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
-        tempCase.department = "Business Certificate"
+        tempCase.program = self.program
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
 
@@ -346,7 +351,7 @@ class CaseTests(TestCase):
             tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
-            tempCase.department = "Business Certificate"
+            tempCase.program = self.program
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
@@ -372,7 +377,7 @@ class CaseTests(TestCase):
             tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
-            tempCase.department = "Business Certificate"
+            tempCase.program = self.program
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
@@ -405,7 +410,7 @@ class CaseTests(TestCase):
         tempCase.complainant = self.person1
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
-        tempCase.department = "Business Certificate"
+        tempCase.program = self.program
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
 
@@ -424,7 +429,7 @@ class CaseTests(TestCase):
             tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
-            tempCase.department = "Business Certificate"
+            tempCase.program = self.program
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
 
@@ -443,7 +448,7 @@ class CaseTests(TestCase):
             tempCase.complainant = self.person1
             tempCase.campus = ""
             tempCase.school = "School of Business"
-            tempCase.department = "Business Certificate"
+            tempCase.program = self.program
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
 
@@ -462,7 +467,7 @@ class CaseTests(TestCase):
             tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = ""
-            tempCase.department = "Business Certificate"
+            tempCase.program = self.program
             tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
             tempCase.status = "OPEN"
 
@@ -481,7 +486,7 @@ class CaseTests(TestCase):
             tempCase.complainant = self.person1
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
-            tempCase.department = "Business Certificate"
+            tempCase.program = self.program
             tempCase.caseType = ""
             tempCase.status = "OPEN"
 
@@ -499,7 +504,7 @@ class CaseTests(TestCase):
         tempCase.complainant = self.person1
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
-        tempCase.department = "Business Certificate"
+        tempCase.program = self.program
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = ""
         tempCase.additionalNonMembers = ""
@@ -517,7 +522,7 @@ class CaseTests(TestCase):
         tempCase.complainant = self.person1
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
-        tempCase.department = "Business Certificate"
+        tempCase.program = self.program
         tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
         tempCase.status = "OPEN"
 

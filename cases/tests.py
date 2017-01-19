@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-from add_case.models import Case
+from add_case.models import *
 from add_member.models import Person
 
 
@@ -10,10 +10,15 @@ class TestAddMember(TestCase):
     person2 = Person()
     boundary_person2 = Person()
     boundary_person1 = Person()
+    program = CasePrograms()
 
     #   method :    setUP
     #   purpose:    create Person and Case objects for testing.
     def setUp(self):
+        self.program.name = "Computer Systems Technology - Diploma"
+        self.program.full_clean()
+        self.program.save()
+
         self.person1 = Person()
         self.person1.memberID = 4204444
         self.person1.firstName = 'First'
@@ -68,7 +73,7 @@ class TestAddMember(TestCase):
         self.temp_case.complainant = self.person1
         self.temp_case.campus = "Saskatoon"
         self.temp_case.school = "School of Business"
-        self.temp_case.department = "Business Certificate"
+        self.temp_case.program = self.program
         self.temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
         self.temp_case.status = "OPEN"
         self.temp_case.additionalNonMembers = ""

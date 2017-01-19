@@ -2,8 +2,19 @@ from django.forms import ModelForm, NumberInput, ValidationError, SelectDateWidg
 from .models import Case
 from django import  forms
 from datetime import date
+from .models import *
+from django import forms
+from .fields import ListTextWidget
+import re
+
 
 class CaseForm(ModelForm):
+
+
+    def __init__(self, *args, **kwargs):
+        super(ModelForm, self).__init__(*args, **kwargs)
+        self.fields['satellite'].widget = ListTextWidget(data_list=list(CaseSatellite.objects.all()), name='satellite-list')
+
     class Meta:
         model = Case
         # Date range is +- 5 years
@@ -32,9 +43,11 @@ class CaseForm(ModelForm):
         fields = '__all__'
         labels = {
             'lead': 'Lead',
-            'complainant': 'Complaintant',
+            'complainant': 'Complainant',
             'campus': 'Campus',
             'caseType': 'Case Type',
+            'satellite': 'Satellite',
+            'program': 'Program',
             'status': 'Status',
             'additionalMembers': 'Additional SPFA members',
             'additionalNonMembers': 'Additional non-members',
@@ -44,8 +57,10 @@ class CaseForm(ModelForm):
         }
 
         widgets = {
-            'date': SelectDateWidget(months=MONTHS, years=YEARS),
+             'date': SelectDateWidget(months=MONTHS, years=YEARS),
             'complainant': forms.Select(
-                attrs={'class': 'js-complainant'})
+                attrs={'class': 'js-complainant'}),
+            'additionalMembers': forms.SelectMultiple(
+                attrs={'class': 'js-additional_members'})
         }
 
