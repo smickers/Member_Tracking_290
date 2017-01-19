@@ -39,7 +39,7 @@ class CaseForm(ModelForm):
                 attrs={'class': 'js-additional_members'})
         }
 
-    def clean(self):
+    """ def clean(self):
         cleaned_data = super(CaseForm, self).clean()
         cn = cleaned_data.get('complainant')
         additional_members = cleaned_data.get('additionalMembers')
@@ -49,5 +49,5 @@ class CaseForm(ModelForm):
                 msg = "Complainant cannot be added as an additional member."
                 self.add_error("additionalMembers", msg)
                 # raise ValidationError("Complainant cannot be added as an additional member.")
-        return self.initial['additionalMembers'] | self.cleaned_data['additionalMembers']
+        #return self.initial['additionalMembers'] | self.cleaned_data['additionalMembers']"""
 
