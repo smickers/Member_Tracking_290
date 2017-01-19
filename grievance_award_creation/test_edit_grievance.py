@@ -7,6 +7,10 @@ from add_case.models import *
 from django.db import DataError
 import datetime
 
+#Author David Letkeman; Brett Larose
+#Class: AwardEditTest
+#Purpose: Test Cases for editing a Grievance Award
+#Date: Jan 19, 2017
 
 class AwardEditTest(TestCase):
     tempPerson = Person()
@@ -18,10 +22,13 @@ class AwardEditTest(TestCase):
     ga = GrievanceAward()
 
     def setUp(self):
+        #Set up a program
         self.program.name = "Computer Systems Technology - Diploma"
         self.program.full_clean()
         self.program.save()
 
+
+        #Set up a Member for testing
         self.tempPerson.memberID = 1
         self.tempPerson.firstName = 'First'
         self.tempPerson.middleName = 'Middle'
@@ -46,6 +53,7 @@ class AwardEditTest(TestCase):
         self.tempPerson.full_clean()
         self.tempPerson.save()
 
+        #Set up second member for testing
         self.tempPerson2.memberID = 1
         self.tempPerson2.firstName = 'Test'
         self.tempPerson2.middleName = 'This'
@@ -70,8 +78,7 @@ class AwardEditTest(TestCase):
         self.tempPerson2.full_clean()
         self.tempPerson2.save()
 
-        # self.person_pk = Person.objects.get(memberID=1).pk
-
+        #Set up a case for testing
         self.tempCase = Case()
         self.tempCase.lead = self.tempPerson.id
         self.tempCase.complainant = self.tempPerson
@@ -84,14 +91,32 @@ class AwardEditTest(TestCase):
         self.tempCase.full_clean()
         self.tempCase.save()
 
+        #Set up a second Case for testing
+        self.tempCase2 = Case()
+        self.tempCase2.lead = self.tempPerson.id
+        self.tempCase2.complainant = self.tempPerson
+        self.tempCase2.campus = "Saskatoon"
+        self.tempCase2.school = "School of Business"
+        self.tempCase2.program = self.program
+        self.tempCase2.caseType = "GRIEVANCES - CLASSIFICATION"
+        self.tempCase2.status = "OPEN"
+        self.tempCase2.date = "2016-10-20"
+        self.tempCase2.full_clean()
+        self.tempCase2.save()
+
+        #Set up a grievence award to be edited
         self.ga.grievanceType = "M"
         self.ga.recipient = self.tempPerson.id
+        self.ga.case = self.tempCase.id
         self.ga.awardAmount = 500.00
         self.ga.description = ""
         self.ga.date = '2016-12-01'
         self.ga.full_clean()
         self.ga.save()
 
+    # Test 1 - Validate that a recipient can be edited to a different valid recipient
+    # Input: Recipient is a valid Person
+    # Expected result: Record is saved successfully
     def test_that_recipient_is_changed_to_different_member(self):
         self.ga.recipient = self.tempPerson2.id
         self.ga.clean()
@@ -99,14 +124,97 @@ class AwardEditTest(TestCase):
 
         assert self.ga.recipient == self.tempPerson2.id
 
-    def test_that_recipient_is_changed_to_different_member(self):
+
+    # Test 2 - Validate that a recipient cannnot be edited to a different invalid recipient
+    # Input: Recipient is an invalid Person
+    # Expected result: Validation Error Thrown
+    def test_that_recipient_is_changed_to_an_invalid_recipient(self):
         with self.assertRaises(ValidationError):
             self.ga.recipient = 78945648794
             self.ga.clean()
             self.ga.save()
 
+
+    # Test 3 - Validate that the case can be changed to a valid case
+    # Input: Case is a valid case
+    # Expected result: Record is saved successfully
+    def test_that_case_can_be_changed_to_a_valid_case(self):
+        self.ga.case = self.tempCase2.id
+        self.ga.clean()
+        self.ga.save()
+
+        assert self.ga.case == self.tempCase2.id
+
+    # Test 4 - Validate that the case cannot be changed to an invalid case
+    # Input: Case is an invalid case
+    # Expected result: Validation Error Thrown
+    def test_that_case_can_not_be_changed_to_an_invalid_case(self):
+        self.ga.case = self.tempCase3.id
+        self.ga.clean()
+        self.ga.save()
+
+    # Test 5 - Validate that the description can be changed with less than 1000 characters
+    # Input: Description is less than 1000 characters
+    # Expected result: Record is saved successfully
+    def test_that_the_description_can_be_changed_if_under_a_size_of_1000_characters(self):
+        self.ga.description = 'a' * 999
+        self.ga.clean();
+        self.ga.save();
+
+        assert self.ga.description == 'a' * 999
+
+    # Test 6 - Validate that the description cannot be changed with more than 1000 characters
+    # Input: Description is more than 1000 characters
+    # Expected result: Validation Error Thrown
+    def test_that_description_cannot_be_1000_characters(self):
+        self.ga.description = 'a' * 1001
+        self.ga.clean();
+        self.ga.save();
+
+    # Test 7 - Validate that the description can be changed with 0 characters
+    # Input: Description is 0 characters
+    # Expected result: Record is saved successfully
+    def test_that_description_can_be_blank(self):
+        self.ga.description = None
+        self.ga.clean();
+        self.ga.save();
+
+        assert self.ga.description is None
+
+    # Test 8 - Validate that the amount can be changed between 0.01 and 999999.99
+    # Input: Amount is changed to 9850
+    # Expected result: Record is saved successfully
     def test_that_amount_can_be_changed(self):
         self.ga.awardAmount = 9850
         self.ga.clean()
         self.ga.save()
+
         assert self.ga.awardAmount == 9850
+
+    # Test 9 - Validate that the date can be changed to a valid date.
+    # Input: Date is changed to 2016-01-01
+    # Expected result: Record is saved successfully
+    def test_that_date_can_be_changed(self):
+        self.ga.date = '2016-01-01'
+        self.ga.clean()
+        self.ga.save()
+
+        assert self.ga.date == '2016-01-01'
+
+    # Test 9 - Validate that Grievence Type can be changed to valid choice
+    # Input: Grievence type is changed to 'P'
+    # Expected result: Record is saved successfully
+    def test_that_grievance_type_can_be_changed_to_valid_choice(self):
+        self.ga.grievanceType = 'P'
+        self.ga.clean()
+        self.ga.save()
+
+        assert self.ga.grievanceType ==  'P'
+
+    # Test 10 - Validate that Grievence Type cannot be changed to invalid choice
+    # Input: Grievence type is changed to 'L'
+    # Expected result: Validation Error Thrown
+    def test_that_grievance_type_cannot_be_changed_to_invalid_choice(self):
+        self.ga.grievanceType = 'L'
+        self.ga.clean()
+        self.ga.save()
