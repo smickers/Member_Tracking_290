@@ -121,11 +121,13 @@ class CaseMembers(models.Model):
 def additional_member_signal(sender, **kwargs):
     #print("----------------- SIGNAL CALLED -----------------------")
     #print("ARGS: " + kwargs.__str__())
+    pks = kwargs.pop('pk_set', None)
     instance = kwargs.pop('instance', None)
     complainant = instance.complainant
-    #print(complainant.id)
-    #if sender:
-        #print("A SENDER WAS SENT")
-        #print sender
-    validate_additional_members(complainant, sender)
+    #print (pks)
+    #print "Sender: "
+    #print vars(sender)
+    #print "Complainant: "
+    #print vars(complainant)
+    validate_additional_members(complainant, pks)
     #pass
