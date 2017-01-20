@@ -145,18 +145,10 @@ def validate_school(value):
 
     return data
 
+
 # Validators to ensure that the complainant cannot be/is not entered to the Case
 #   as an additional member.
 def validate_additional_members(complainant, additional_members):
-    """things here"""
-    # Loop through additional members
-        # Ensure current != complainant
-    #for curr_member in additional_members:
-    #print(additional_members.__str__())
-    #print("Additional member ID: " + additional_members.id.__str__())
-    #print("Complainant member ID: " + complainant.id.__str__())
-    #if additional_members.id == complainant:
-        #raise ValidationError("Complainant cannot be added as an additional member.")
     for curr_member in additional_members:
         if curr_member == complainant.id:
             raise ValidationError("Complainant cannot be added as an additional member.")

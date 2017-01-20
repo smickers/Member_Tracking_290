@@ -173,7 +173,6 @@ class CaseTests(TestCase):
             temp_case.full_clean()
             temp_case.save()
             temp_case.additionalMembers.add(self.person1)
-            #temp_case.clean_additional_members()
             temp_case.save()
 
 

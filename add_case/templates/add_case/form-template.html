@@ -1,1 +1,47 @@
-{{ form.as_p }}
+<!-- This will apply Bootstrap formatting to error messages re: complainant -->
+{% if form.complainant.errors %}
+        <ul class="list-unstyled">
+            {% for error in form.complainant.errors %}
+            <li class="list-group-item list-group-item-danger" style="width:50%;"><strong>{{ error }}</strong></li>
+            {% endfor %}
+        </ul>
+<!-- This will apply Bootstrap formatting to error messages re: additional members -->
+{% elif form.additionalMembers.errors %}
+    <ul class="list-unstyled">
+        {% for error in form.additionalMembers.errors %}
+        <li class="list-group-item list-group-item-danger"><strong>{{ error }}</strong></li>
+        {% endfor %}
+    </ul>
+    <!-- This will apply Bootstrap formatting to error messages that aren't field related,
+     such as when you try to muck with the code before clicking 'Create'-->
+    {% elif form.non_field_errors %}
+        <ul class="list-unstyled">
+            {% for error in form.non_field_errors %}
+            <li class="list-group-item list-group-item-danger"><strong>{{ ferror }}</strong></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+<!-- This will apply Bootstrap formatting to success messages re: case creation -->
+{% if messages %}
+    <ul class="list-unstyled">
+        {% for message in messages %}
+        <li class="list-group-item list-group-item-success">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+<table class="table table-bordered" style="width:50%;">
+    <tr><td class="col-md-3">{{ form.lead.label_tag }}</td><td>{{ form.lead }}</td></tr>
+    <tr><td>{{ form.complainant.label_tag }}</td><td>{{ form.complainant }}</td></tr>
+    <tr><td>{{ form.campus.label_tag }}</td><td>{{ form.campus }}</td></tr>
+    <tr><td>{{ form.caseType.label_tag }}</td><td>{{ form.caseType }}</td></tr>
+    <tr><td>{{ form.satellite.label_tag }}</td><td>{{ form.satellite }}</td></tr>
+    <tr><td>{{ form.program.label_tag }}</td><td>{{ form.program }}</td></tr>
+    <tr><td>{{ form.status.label_tag }}</td><td>{{ form.status }}</td></tr>
+    <tr><td>{{ form.additionalMembers.label_tag }}</td><td>{{ form.additionalMembers }}</td></tr>
+    <tr><td>{{ form.additionalNonMembers.label_tag }}</td><td>{{ form.additionalNonMembers }}</td></tr>
+    <tr><td>{{ form.docs.label_tag }}</td><td>{{ form.docs }}</td></tr>
+    <tr><td>{{ form.logs.label_tag }}</td><td>{{ form.logs }}</td></tr>
+    <tr><td>{{ form.date.label_tag }}</td><td>{{ form.date }}</td></tr>
+</table>
+
+{#{{ form.as_table }}#}

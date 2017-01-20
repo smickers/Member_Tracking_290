@@ -10,7 +10,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     {% load bootstrap3 %}
-    {% bootstrap_messages %}
        <script type="text/javascript">
             $(document).ready(function() {
                 $("#id_department").hide();
@@ -91,16 +90,17 @@
      </script>
 </head>
 <body>
-
-    <form action="" method="POST" class="form" enctype="multipart/form-data">
+    <h1><strong>Create a Case</strong></h1>
+    <form class="form form-group" action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        {% bootstrap_form form %}
-        {% bootstrap_form_errors form %}
+{#        {% bootstrap_form form %}#}
+{#        {% bootstrap_form_errors form %}#}
+        {% include 'add_case/form-template.html' %}
         {% buttons %}
-            <center>
-            <button class="btn btn-primary" type="submit" style="width: 49%">Submit</button>
-            <button class="btn btn-warning" type="reset" style="width: 49%">Reset</button>
-            </center>
+            <input type="button" class="btn btn-secondary" name="submit" value="Submit" style="width:15%;
+            margin-left:10%; border: 1px black solid;" />
+            <input type="button" class="btn btn-secondary" name="reset" value="Reset" style="width:15%;
+            border: 1px black solid;" />
         {% endbuttons %}
     </form>
 </body>
