@@ -115,7 +115,7 @@ class CaseMembers(models.Model):
     caseNum = models.CharField(max_length=9)
     memberNum = models.TextField()
 
-@receiver(m2m_changed, sender=Case.additionalMembers.through)
+#@receiver(m2m_changed, sender=Case.additionalMembers.through)
 
 
 def additional_member_signal(sender, **kwargs):
@@ -130,4 +130,3 @@ def additional_member_signal(sender, **kwargs):
     #print "Complainant: "
     #print vars(complainant)
     validate_additional_members(complainant, pks)
-    #pass
