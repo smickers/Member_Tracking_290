@@ -4,12 +4,24 @@ from django.core.files import File
 from add_case.models import Case
 from add_member.models import Person
 from spfa_mt import settings
+from django.test import Client
 import os
 
 
 class GrievanceFile_UploadTest(TestCase):
-    samplefile = File(name='Hello.txt', file=None)
-    sampleBadExtension = File(name='Hello.iso', file=None)
+    #Valid File
+    file_1 = open("test_files_grievance_docs_upload/SmallFile.txt", "r")
+    valid_file = File(file=file_1)
+
+
+    #Invalid File Extension
+    file_2 = open("test_files_grievance_docs_upload/Picture.jpg", "r")
+    sampleBadExtension = File(file=file_2)
+
+
+    file_3 = open("test_files_grievance_docs_upload/SmallFile.txt", "r")
+    very_large_file = File(file=file_3)
+    very_large_file.size = 524288001
 
     griev_f1 = GrievanceFiles()
     person1 = Person()
@@ -27,7 +39,7 @@ class GrievanceFile_UploadTest(TestCase):
 
 
     def setUp(self):
-        self.samplefile.size = 1000
+
         self.griev_aw.save()
 
         self.person1.memberID = 4204444
@@ -58,7 +70,7 @@ class GrievanceFile_UploadTest(TestCase):
         self.temp_case.complainant = self.person1
         self.temp_case.campus = "Saskatoon"
         self.temp_case.school = "School of Business"
-        self.temp_case.department = "Business Certificate"
+        self.temp_case.department = "ILDC"
         self.temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
         self.temp_case.status = "OPEN"
         self.temp_case.additionalNonMembers = ""
@@ -68,20 +80,14 @@ class GrievanceFile_UploadTest(TestCase):
         self.temp_case.full_clean()
         self.temp_case.save()
 
-
-
-
-
     def test_user_can_upload_single_grievance_document(self):
         """
         Test if a user can associate a single document to a grievance ruling
         :return: None
         """
-
-        self.griev_f1.file.file = self.samplefile
+        self.griev_f1.file.file = self.valid_file
         self.griev_f1.award = self.griev_aw
         self.griev_f1.save()
-
         self.assertTrue(self.griev_f1.award == self.griev_aw)
 
 
@@ -99,9 +105,17 @@ class GrievanceFile_UploadTest(TestCase):
         Test if user's uploaded document exists in the server
         :return: None
         """
-        path = "grievance/Hello.txt"
-        fileName = "Hello.txt"
-        self.assertTrue(self.samplefile.name==fileName)
+
+        self.griev_f1.file.file = self.valid_file
+        self.griev_f1.award = self.griev_aw
+        self.griev_f1.save()
+        c = Client()
+        response = c.get("http://127.0.0.1:8000/media/files/SmallFile.txt")
+
+        print(response.content)
+        # self.assertTrue(self.valid_file.name==path)
+        pass
+
 
 
     def test_user_can_upload_if_the_total_file_size_is_less_than_500MB(self):
@@ -127,6 +141,7 @@ class GrievanceFile_UploadTest(TestCase):
         """
         file = self.samplefile.name.split(".")
         file_extension = file[-1]
+        print(file_extension)
         self.assertTrue(file_extension in settings.FILE_EXT_TO_ACCEPT)
 
     def test_user_can_not_upload_files_with_invalid_extension(self):
@@ -154,3 +169,7 @@ class GrievanceFile_UploadTest(TestCase):
 
         self.assertTrue(self.griev_f1.date_uploaded != "" and self.griev_f1.date_uploaded != None)
 
+    def tearDown(self):
+        self.file_1.close()
+        self.file_2.close()
+        self.file_3.close()

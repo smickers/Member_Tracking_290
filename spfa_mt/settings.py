@@ -224,6 +224,7 @@ FILE_EXT_TO_ACCEPT_STR = ',.'.join(FILE_EXT_TO_ACCEPT)
 MAX_FILE_SIZE = 524288000
 
 MEDIA_ROOT = 'files/'
+MEDIA_URL = 'media/'
 
 FILE_UPLOAD_HANDLERS = ["filehandlersample.filehandler.ValidateUploadSize",
     "django.core.files.uploadhandler.MemoryFileUploadHandler",
