@@ -134,6 +134,7 @@ class AwardEditTest(TestCase):
             self.ga.clean()
             self.ga.save()
 
+            # check validation error message
 
     # Test 3 - Validate that the case can be changed to a valid case
     # Input: Case is a valid case
@@ -149,9 +150,12 @@ class AwardEditTest(TestCase):
     # Input: Case is an invalid case
     # Expected result: Validation Error Thrown
     def test_that_case_can_not_be_changed_to_an_invalid_case(self):
-        self.ga.case = self.tempCase3.id
-        self.ga.clean()
-        self.ga.save()
+        with self.assertRaises(IntegrityError):
+            self.ga.case = self.tempCase3.id
+            self.ga.clean()
+            self.ga.save()
+
+            # check validation error message
 
     # Test 5 - Validate that the description can be changed with less than 1000 characters
     # Input: Description is less than 1000 characters
@@ -167,9 +171,13 @@ class AwardEditTest(TestCase):
     # Input: Description is more than 1000 characters
     # Expected result: Validation Error Thrown
     def test_that_description_cannot_be_1000_characters(self):
-        self.ga.description = 'a' * 1001
-        self.ga.clean();
-        self.ga.save();
+        with self.assertRaises(ValidationError):
+            self.ga.description = 'a' * 1001
+            self.ga.clean();
+            self.ga.save();
+
+    # check validation error message
+
 
     # Test 7 - Validate that the description can be changed with 0 characters
     # Input: Description is 0 characters
@@ -209,12 +217,15 @@ class AwardEditTest(TestCase):
         self.ga.clean()
         self.ga.save()
 
-        assert self.ga.grievanceType ==  'P'
+        assert self.ga.grievanceType == 'P'
 
     # Test 10 - Validate that Grievence Type cannot be changed to invalid choice
     # Input: Grievence type is changed to 'L'
     # Expected result: Validation Error Thrown
     def test_that_grievance_type_cannot_be_changed_to_invalid_choice(self):
-        self.ga.grievanceType = 'L'
-        self.ga.clean()
-        self.ga.save()
+        with self.assertRaises(ValidationError):
+            self.ga.grievanceType = 'L'
+            self.ga.clean()
+            self.ga.save()
+
+            # check validation error message

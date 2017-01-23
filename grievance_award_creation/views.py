@@ -24,3 +24,9 @@ class GrievanceAwardCreationSuccess(DetailView):
     def get_context_data(self, **kwargs):
         context = super(GrievanceAwardCreationSuccess, self).get_context_data(**kwargs)
         return context
+
+# Class: GrievanceAwardDetail
+# Purpose: To display the details of an award
+class GrievanceAwardDetail(DetailView):
+    model = GrievanceAward
+    template_name = 'grievance_award_creation/grievanceaward_actual_detail.html'
