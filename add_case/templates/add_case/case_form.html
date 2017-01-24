@@ -93,13 +93,12 @@
     <h1><strong>Create a Case</strong></h1>
     <form class="form form-group" action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-{#        {% bootstrap_form form %}#}
-{#        {% bootstrap_form_errors form %}#}
-        {% include 'add_case/form-template.html' %}
+        {% bootstrap_form form %}
+        {% bootstrap_form_errors form %}
         {% buttons %}
-            <input type="button" class="btn btn-secondary" name="submit" value="Submit" style="width:15%;
+            <input type="submit" class="btn btn-secondary" name="submit" value="Submit" style="width:15%;
             margin-left:10%; border: 1px black solid;" />
-            <input type="button" class="btn btn-secondary" name="reset" value="Reset" style="width:15%;
+            <input type="reset" class="btn btn-secondary" name="reset" value="Reset" style="width:15%;
             border: 1px black solid;" />
         {% endbuttons %}
     </form>
