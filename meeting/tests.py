@@ -5,8 +5,7 @@ from add_member import Person
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 
-# Create your tests here.
-
+#Test cases for adding a Meeting.
 class MeetingTests(TestCase):
     committee = Committee()
     person1 = Person()
@@ -61,12 +60,28 @@ class MeetingTests(TestCase):
         testMeeting.save()
 
     '''
-        Name:           test_invalid_committee_is_not_saved_to_db
-        Function:       Makes sure the meeting is not saved to DB when committee is an invalid option
-        '''
+    Name:           test_invalid_committee_is_not_saved_to_db
+    Function:       Verifies that the meeting is not saved to DB when committee is an invalid option
+    '''
     def test_invalid_committee_is_not_saved_to_db(self):
+        with self.assertRaises(IntegrityError):
+            testMeeting = Meeting()
+            testMeeting.committee = None
+            testMeeting.liaison = 1234
+            testMeeting.date = "2016-10-20"
+            testMeeting.description = 'a' * 500
+            testMeeting.full_clean()
+            testMeeting.save()
+            testMeeting.members.add(self.person1)
+            testMeeting.save()
+
+    '''
+    Name:           test_valid_liaison_is_saved_to_db
+    Function:       Verifies that the liaison is a valid number ( not exceeding 10 digits)
+    '''
+    def test_valid_liaison_is_saved_to_db(self):
         testMeeting = Meeting()
-        testMeeting.committee = None
+        testMeeting.committee = self.committee
         testMeeting.liaison = 1234
         testMeeting.date = "2016-10-20"
         testMeeting.description = 'a' * 500
@@ -75,4 +90,112 @@ class MeetingTests(TestCase):
         testMeeting.members.add(self.person1)
         testMeeting.save()
 
+    '''
+    Name:           test_invalid_liaison_is_not_saved_to_db
+    Function:       Verifies that a invalid liaison (exceeding 10 digits) is not saved to the database
+    '''
+    def test_invalid_liaison_is_not_saved_to_db(self):
+        with self.assertRaises(ValidationError):
+            testMeeting = Meeting()
+            testMeeting.committee = self.committee
+            testMeeting.liaison = 01234567899
+            testMeeting.date = "2016-10-20"
+            testMeeting.description = 'a' * 500
+            testMeeting.full_clean()
+            testMeeting.save()
+            testMeeting.members.add(self.person1)
+            testMeeting.save()
 
+    '''
+    Name:           test_valid_meeting_date_is_saved_saved_to_db
+    Function:       Verifies that a valid date is saved to the database
+    '''
+    def test_valid_meeting_date_is_saved_saved_to_db(self):
+        testMeeting = Meeting()
+        testMeeting.committee = self.committee
+        testMeeting.liaison = 1234
+        testMeeting.date = "2016-10-20"
+        testMeeting.description = 'a' * 500
+        testMeeting.full_clean()
+        testMeeting.save()
+        testMeeting.members.add(self.person1)
+        testMeeting.save()
+
+    '''
+    Name:           test_invalid_meeting_date_is_not_saved_saved_to_db
+    Function:       Verifies that a invalid date (ex. feb.31) is not saved to the database
+    '''
+    def test_invalid_meeting_date_is_not_saved_saved_to_db(self):
+        with self.assertRaises(ValidationError):
+            testMeeting = Meeting()
+            testMeeting.committee = self.committee
+            testMeeting.liaison = 1234
+            testMeeting.date = "2016-02-31"
+            testMeeting.description = 'a' * 500
+            testMeeting.full_clean()
+            testMeeting.save()
+            testMeeting.members.add(self.person1)
+            testMeeting.save()
+
+    '''
+    Name:           test_valid_description_is_saved_to_db
+    Function:       Verifies that a valid description is saved to db (not exceeding 1000 characters)
+    '''
+    def test_valid_description_is_saved_to_db(self):
+        testMeeting = Meeting()
+        testMeeting.committee = self.committee
+        testMeeting.liaison = 1234
+        testMeeting.date = "2016-10-20"
+        testMeeting.description = 'a' * 500
+        testMeeting.full_clean()
+        testMeeting.save()
+        testMeeting.members.add(self.person1)
+        testMeeting.save()
+
+    '''
+    Name:           test_invalid_description_is_not_saved_to_db
+    Function:       Verifies that a in valid description is not saved to db (exceeding 1000 characters)
+    '''
+    def test_invalid_description_is_not_saved_to_db(self):
+        with self.assertRaises(ValidationError):
+            testMeeting = Meeting()
+            testMeeting.committee = self.committee
+            testMeeting.liaison = 1234
+            testMeeting.date = "2016-10-20"
+            testMeeting.description = 'a' * 1001
+            testMeeting.full_clean()
+            testMeeting.save()
+            testMeeting.members.add(self.person1)
+            testMeeting.save()
+
+    '''
+    Name:           test_valid_member_is_added_to_meeting_and_saved_to_db
+    Function:       Verifies that a valid person is added to the meeting
+    '''
+    def test_valid_member_is_added_to_meeting_and_saved_to_db(self):
+        testMeeting = Meeting()
+        testMeeting.committee = self.committee
+        testMeeting.liaison = 1234
+        testMeeting.date = "2016-10-20"
+        testMeeting.description = 'a' * 500
+        testMeeting.full_clean()
+        testMeeting.save()
+        testMeeting.members.add(self.person1)
+        testMeeting.save()
+
+    '''
+    Name:           test_invalid_member_is_not_added_to_meeting_and_not_saved_to_db
+    Function:       Verifies that a invalid person is not added to the meeting and not saved to DB
+    '''
+    def test_invalid_member_is_not_added_to_meeting_and_not_saved_to_db(self):
+        with self.assertRaises(IntegrityError):
+            testMeeting = Meeting()
+            testMeeting.committee = self.committee
+            testMeeting.liaison = 1234
+            testMeeting.date = "2016-10-20"
+            testMeeting.description = 'a' * 500
+            testMeeting.full_clean()
+            testMeeting.save()
+            testMeeting.members.add(None)
+        #   testMeeting.members.add("hello")
+            testMeeting.save()
