@@ -106,8 +106,8 @@ class AwardEditTest(TestCase):
 
         #Set up a grievence award to be edited
         self.ga.grievanceType = "M"
-        self.ga.recipient = self.tempPerson.id
-        self.ga.case = self.tempCase.id
+        self.ga.recipient = self.tempPerson
+        self.ga.case = self.tempCase
         self.ga.awardAmount = 500.00
         self.ga.description = ""
         self.ga.date = '2016-12-01'
@@ -118,18 +118,18 @@ class AwardEditTest(TestCase):
     # Input: Recipient is a valid Person
     # Expected result: Record is saved successfully
     def test_that_recipient_is_changed_to_different_member(self):
-        self.ga.recipient = self.tempPerson2.id
+        self.ga.recipient = self.tempPerson2
         self.ga.clean()
         self.ga.save()
 
-        assert self.ga.recipient == self.tempPerson2.id
+        assert self.ga.recipient == self.tempPerson2
 
 
     # Test 2 - Validate that a recipient cannnot be edited to a different invalid recipient
     # Input: Recipient is an invalid Person
     # Expected result: Validation Error Thrown
     def test_that_recipient_is_changed_to_an_invalid_recipient(self):
-        with self.assertRaises(ValidationError):
+        with self.assertRaisesMessage(ValueError, 'Cannot assign "78945648794L": "GrievanceAward.recipient" must be a "Person" instance.'):
             self.ga.recipient = 78945648794
             self.ga.full_clean()
             self.ga.save()
@@ -140,17 +140,17 @@ class AwardEditTest(TestCase):
     # Input: Case is a valid case
     # Expected result: Record is saved successfully
     def test_that_case_can_be_changed_to_a_valid_case(self):
-        self.ga.case = self.tempCase2.id
+        self.ga.case = self.tempCase2
         self.ga.clean()
         self.ga.save()
 
-        assert self.ga.case == self.tempCase2.id
+        assert self.ga.case == self.tempCase2
 
     # Test 4 - Validate that the case cannot be changed to an invalid case
     # Input: Case is an invalid case
     # Expected result: Validation Error Thrown
     def test_that_case_can_not_be_changed_to_an_invalid_case(self):
-        with self.assertRaisesMessage(ValidationError, "A valid case ID must be entered!"):
+        with self.assertRaisesMessage(ValueError, 'Cannot assign "1000": "GrievanceAward.case" must be a "Case" instance.'):
             self.ga.case = 1000
             self.ga.full_clean()
             self.ga.save()
@@ -223,7 +223,7 @@ class AwardEditTest(TestCase):
     # Input: Grievence type is changed to 'L'
     # Expected result: Validation Error Thrown
     def test_that_grievance_type_cannot_be_changed_to_invalid_choice(self):
-        with self.assertRaisesMessage(ValidationError, "A grievance type of member or policy must be selected!" ):
+        with self.assertRaisesMessage(ValidationError, "A grievance type of member or policy must be selected!"):
             self.ga.grievanceType = 'L'
             self.ga.full_clean()
             self.ga.save()
