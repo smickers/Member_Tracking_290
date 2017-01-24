@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Grievance Award Detail</title>
+</head>
+<body>
+    <h1>Award ID: {{ object.id }}</h1>
+    <h2>Recipient: {{ object.recipient }}</h2>
+    <h2>Related Case: {{ object.case }}</h2>
+    <h2>Grievance Type: {{ object.grieveanceType }}</h2>
+    <h2>Award Amount: {{ object.awardAmount }}</h2>
+    <h2>Description: {{ object.description }}</h2>
+    <h2>Date: {{ object.date }}</h2>
+<input type="button" value="Back" onclick="window.history.back()" />
+</body>
+</html>

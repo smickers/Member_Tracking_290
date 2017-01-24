@@ -105,6 +105,8 @@ class Case(models.Model):
         if self.program is not None:
             self.department = None
 
+    def __str__(self):
+        return self.complainant.__str__() + ' - ' + self.date.__str__()
 
 class CaseMembers(models.Model):
     caseNum = models.CharField(max_length=9)

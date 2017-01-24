@@ -8,7 +8,7 @@ from django.db import DataError
 import datetime
 
 
-class EventTest(TestCase):
+class AwardTest(TestCase):
     tempPerson = Person()
     person_pk = -1
     tempCase = Case()
@@ -69,7 +69,8 @@ class EventTest(TestCase):
     def test_valid_recipient(self):
         ga = GrievanceAward()
         ga.grievanceType = "M"
-        ga.recipient = self.tempPerson.id
+        ga.recipient = self.tempPerson
+        ga.case = self.tempCase
         ga.awardAmount = 500.00
         ga.description = ""
         ga.date = '2016-12-01'
@@ -129,7 +130,7 @@ class EventTest(TestCase):
     def test_amount_lower_invalid(self):
         with self.assertRaises(ValidationError):
             ga = GrievanceAward()
-            ga.recipient = self.tempPerson.id
+            ga.recipient = self.tempPerson
             ga.grievanceType = 'M'
             ga.awardAmount = 0.00
             ga.description = ""
@@ -143,7 +144,8 @@ class EventTest(TestCase):
 # Expected result: Record is saved to the DB.
     def test_award_amount_valid(self):
             ga = GrievanceAward()
-            ga.recipient = self.tempPerson.id
+            ga.recipient = self.tempPerson
+            ga.case = self.tempCase
             ga.grievanceType = 'M'
             ga.awardAmount = 100.00
             ga.description = ""
@@ -158,7 +160,8 @@ class EventTest(TestCase):
     def test_award_upper_valid(self):
             ga = GrievanceAward()
             ga.grievanceType = 'M'
-            ga.recipient = self.tempPerson.id
+            ga.recipient = self.tempPerson
+            ga.case = self.tempCase
             ga.awardAmount = 999999.99
             ga.description = ""
             ga.date = '2016-12-01'
@@ -172,7 +175,7 @@ class EventTest(TestCase):
     def test_amount_upper_invalid(self):
             with self.assertRaises(ValidationError):
                 ga = GrievanceAward()
-                ga.recipient = self.tempPerson.id
+                ga.recipient = self.tempPerson
                 ga.awardAmount = 1000000.00
                 ga.description = ""
                 ga.date = '2016-12-01'
@@ -184,8 +187,9 @@ class EventTest(TestCase):
 # Expected result: Record is successfully saved to the DB
     def test_empty_description(self):
         ga = GrievanceAward()
-        ga.recipient = self.tempPerson.id
+        ga.recipient = self.tempPerson
         ga.grievanceType = 'M'
+        ga.case = self.tempCase
         ga.awardAmount = 100.00
         ga.description = ""
         ga.date = '2016-12-01'
@@ -198,8 +202,9 @@ class EventTest(TestCase):
 # Expected result: Record is successfully saved to the DB
     def test_thousand_description(self):
         ga = GrievanceAward()
-        ga.recipient = self.tempPerson.id
+        ga.recipient = self.tempPerson
         ga.grievanceType = 'M'
+        ga.case = self.tempCase
         ga.awardAmount = 100.00
         ga.description = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. N"
         ga.date = '2016-12-01'
@@ -214,7 +219,7 @@ class EventTest(TestCase):
         with self.assertRaises(ValidationError):
             ga = GrievanceAward()
             ga.grievanceType = 'M'
-            ga.recipient = self.tempPerson.id
+            ga.recipient = self.tempPerson
             ga.awardAmount = 100.00
             ga.description = "ALorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. N"
             ga.date = '2016-12-01'

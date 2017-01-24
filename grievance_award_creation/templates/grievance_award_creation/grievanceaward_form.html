@@ -7,18 +7,75 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     <style>
         .radio {
             display: inline;
         }
     </style>
+    <script>
+        $(document).ready(function() {
+
+              var members = $(".js-recipient");
+
+              members.select2({
+                ajax: {
+                    //a list of all members
+                    url: "/api-root/members_list/search/", //URL of the REST API for querying the members
+                    dataType: 'json',
+                    data: function(params)
+                    {
+                        return {
+                            q: params.term, //The term to be sent
+                            offset: (params.page ) * 10 //Which page of the REST page will be loaded
+                        }
+                    },
+                    processResults: function (data, params) {
+                        return {
+                            results: data.results,
+                            pagination: {
+                                more: true //enables the pagination feature
+                            }
+                        }
+                   },
+                }
+              });
+
+            var cases = $(".js-case");
+            cases.select2({
+                ajax: {
+                //a list of all cases
+                url: "/api-root/case_list/search/", //URL of the REST API for querying the members
+                dataType: 'json',
+                data: function(params)
+                {
+                    return {
+                        q: params.term, //The term to be sent
+                        offset: (params.page ) * 10 //Which page of the REST page will be loaded
+                    }
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.results,
+                        pagination: {
+                            more: true //enables the pagination feature
+                        }
+                    }
+               },
+            }
+            });
+            //a list of cases
+
+        });
+    </script>
 </head>
 <body>
     <form action="" method="POST" enctype="multipart/form-data" class="form">
         {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}
-            <button type="submit" class="btn btn-primary">Create Ruling</button>
+            <button type="submit" class="btn btn-primary">Save</button>
             <button type="reset" class="btn btn-warning">Reset</button>
         {% endbuttons %}
     </form>
