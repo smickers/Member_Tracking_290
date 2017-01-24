@@ -20,9 +20,13 @@ class GrievanceAwardForm(ModelForm):
 
 
     def save(self, commit=False):
-        obj = super(ModelForm, self).save()
+        try:
+            obj = super(ModelForm, self).save()
+        except ValidationError:
+            return ValidationError
+
         f = self.files.getlist('file_field')[0]
-        print(f.size)
+
         temp = File(file=f)
         desc = self.cleaned_data['file_description']
         griev_file = GrievanceFiles(award=obj, file=temp,

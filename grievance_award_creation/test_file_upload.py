@@ -1,47 +1,32 @@
-from django.test import TestCase
 from .models import GrievanceAward, GrievanceFiles
 from django.core.files import File
 from add_case.models import Case
 from add_member.models import Person
+from django.test import override_settings
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from spfa_mt import settings
-from django.test import Client
-import os
+import shutil
+import os.path
 
 
-class GrievanceFile_UploadTest(TestCase):
-    #Valid File
-    file_1 = open("test_files_grievance_docs_upload/SmallFile.txt", "r")
-    valid_file = File(file=file_1)
+@override_settings(MEDIA_ROOT='/tmp/test')
+class GrievanceFile_UploadTest(StaticLiveServerTestCase):
+    def __init__(self, *args, **kwargs):
+        super(GrievanceFile_UploadTest, self).__init__(*args, **kwargs)
+        self.person1 = Person()
+        self.temp_case = Case()
+        self.grievance_files = GrievanceFiles()
 
-
-    #Invalid File Extension
-    file_2 = open("test_files_grievance_docs_upload/Picture.jpg", "r")
-    sampleBadExtension = File(file=file_2)
-
-
-    file_3 = open("test_files_grievance_docs_upload/SmallFile.txt", "r")
-    very_large_file = File(file=file_3)
-    very_large_file.size = 524288001
-
-    griev_f1 = GrievanceFiles()
-    person1 = Person()
-    temp_case = Case()
-
-
-    #Create a grievance award
-
-    griev_aw = GrievanceAward(awardAmount=500,
-                              grievanceType='M',
-                              case=1,
-                              recipient=1,
-                              )
+        #Create a grievance award
+        self.griev_aw = GrievanceAward(awardAmount=500,
+                                  grievanceType='M',
+                                  case=1,
+                                  recipient=1,)
 
 
 
     def setUp(self):
-
         self.griev_aw.save()
-
         self.person1.memberID = 4204444
         self.person1.firstName = 'First'
         self.person1.middleName = 'Middle'
@@ -80,42 +65,38 @@ class GrievanceFile_UploadTest(TestCase):
         self.temp_case.full_clean()
         self.temp_case.save()
 
+
     def test_user_can_upload_single_grievance_document(self):
         """
         Test if a user can associate a single document to a grievance ruling
         :return: None
         """
-        self.griev_f1.file.file = self.valid_file
-        self.griev_f1.award = self.griev_aw
-        self.griev_f1.save()
-        self.assertTrue(self.griev_f1.award == self.griev_aw)
+
+        #Open the file using its static directory
+        fp =  open(settings.STATIC_ROOT + "grievance_award_creation/test_files_grievance_docs_upload/Picture.jpg")
+
+        #Associate the Grievance File object with an actual file
+        self.grievance_files.file = File(fp)
+
+        #Associate an award witha file
+        self.grievance_files.award = self.griev_aw
+
+        #Save the file
+        self.grievance_files.save()
+
+        #close the file stream
+        fp.close()
+
+        #test if there is a file inside the media root directory
+        self.assertEqual( os.listdir(self._overridden_settings["MEDIA_ROOT"] + "/grievance").__len__() , 1)
 
 
 
-    ''' ANOTHER STORY
-    def test_user_can_upload_multiple_grievance_docs(self):
-        """
-        Test if user can associate multiple documents to a grievance  ruling
-        :return: None
-        """
-        pass
-    '''
-    def test_user_uploaded_document_is_in_the_correct_path_in_the_server(self):
-        """
-        Test if user's uploaded document exists in the server
-        :return: None
-        """
-
-        self.griev_f1.file.file = self.valid_file
-        self.griev_f1.award = self.griev_aw
-        self.griev_f1.save()
-        c = Client()
-        response = c.get("http://127.0.0.1:8000/media/files/SmallFile.txt")
-
-        print(response.content)
-        # self.assertTrue(self.valid_file.name==path)
-        pass
-
+    # def test_user_uploaded_document_is_in_the_correct_path_in_the_server(self):
+    #     """
+    #     Test if user's uploaded document exists in the server
+    #     :return: None
+    #     """
 
 
     def test_user_can_upload_if_the_total_file_size_is_less_than_500MB(self):
@@ -123,7 +104,28 @@ class GrievanceFile_UploadTest(TestCase):
         Test if user's uploaded file is less than 500Mb
         :return: None
         """
-        self.assertTrue(self.samplefile.size < 524288000)
+
+
+
+        #Open the file using its static directory
+        fp =  open(settings.STATIC_ROOT + "grievance_award_creation/test_files_grievance_docs_upload/Picture.jpg")
+
+        #Associate the Grievance File object with an actual file
+        file_wrap = File(fp)
+        file_wrap.size = settings.MAX_FILE_SIZE -1
+        self.grievance_files.file = file_wrap
+
+        #Associate an award with the file
+        self.grievance_files.award = self.griev_aw
+
+        #Save the file
+        self.grievance_files.save()
+
+        #close the file stream
+        fp.close()
+
+        #test if the file uploaded is less than the specified maximum file size
+        self.assertTrue(self.grievance_files.file.size < settings.MAX_FILE_SIZE)
 
 
     def test_user_cannot_upload_if_the_total_file_size_is_greater_than_500MB(self):
@@ -131,45 +133,68 @@ class GrievanceFile_UploadTest(TestCase):
         Test if users's uploaded file is less than 500MB
         :return: None
         """
-        self.assertFalse(self.samplefile.size >= 524288000)
-
-    def test_user_can_upload_files_with_valid_extension(self):
-        """
-        Test if user's uploaded file only has the following extension:
-        .docx, .pptx, .xlsx, .csv, .pdf, .txt and .msg
-        :return: None
-        """
-        file = self.samplefile.name.split(".")
-        file_extension = file[-1]
-        print(file_extension)
-        self.assertTrue(file_extension in settings.FILE_EXT_TO_ACCEPT)
-
-    def test_user_can_not_upload_files_with_invalid_extension(self):
-        """
-        Test if user's uploaded file does not have one of the following extensions:
-        .docx, .pptx, .xlsx, .csv, .pdf, .txt and .msg
-        :return: None
-        """
-        file = self.sampleBadExtension.name.split(".")
-        file_extension = file[-1]
-        print(file_extension)
-        print(settings.FILE_EXT_TO_ACCEPT_STR)
-        self.assertFalse(file_extension in settings.FILE_EXT_TO_ACCEPT)
+        #Open the file using its static directory
+        fp =  open(settings.STATIC_ROOT + "grievance_award_creation/test_files_grievance_docs_upload/Picture.jpg")
 
 
-    def test_db_tracks_the_file_upload_date(self):
-        """
-        Test if the database tracks the date when the file is uploaded.
-        It must be in the format of DD/MM/YYYY
-        :return: None
-        """
-        self.griev_f1.file.file = self.samplefile
-        self.griev_f1.award = self.griev_aw
-        self.griev_f1.save()
+        #TODO: ASK ERNESTO ABOUT THIS ONE. EMULATING LARGE FILE SIZE DOESNT WORK SINCE FILE HANDLER LOOKS AT THE
+        #TODO:      ACTUAL DATA CHUNK
 
-        self.assertTrue(self.griev_f1.date_uploaded != "" and self.griev_f1.date_uploaded != None)
+        #Associate the Grievance File object with an actual file
+        file_wrap = File(fp)
+        file_wrap.size = settings.MAX_FILE_SIZE + 1
+        self.grievance_files.file = file_wrap
+
+        #Associate an award with the file
+        self.grievance_files.award = self.griev_aw
+
+        #Save the file
+        self.grievance_files.save()
+
+        #close the file stream
+        fp.close()
+
+
+
+    # def test_user_can_upload_files_with_valid_extension(self):
+    #     """
+    #     Test if user's uploaded file only has the following extension:
+    #     .docx, .pptx, .xlsx, .csv, .pdf, .txt and .msg
+    #     :return: None
+    #     """
+    #     file = self.samplefile.name.split(".")
+    #     file_extension = file[-1]
+    #     print(file_extension)
+    #     self.assertTrue(file_extension in settings.FILE_EXT_TO_ACCEPT)
+    #
+    # def test_user_can_not_upload_files_with_invalid_extension(self):
+    #     """
+    #     Test if user's uploaded file does not have one of the following extensions:
+    #     .docx, .pptx, .xlsx, .csv, .pdf, .txt and .msg
+    #     :return: None
+    #     """
+    #     file = self.sampleBadExtension.name.split(".")
+    #     file_extension = file[-1]
+    #     print(file_extension)
+    #     print(settings.FILE_EXT_TO_ACCEPT_STR)
+    #     self.assertFalse(file_extension in settings.FILE_EXT_TO_ACCEPT)
+    #
+    #
+    # def test_db_tracks_the_file_upload_date(self):
+    #     """
+    #     Test if the database tracks the date when the file is uploaded.
+    #     It must be in the format of DD/MM/YYYY
+    #     :return: None
+    #     """
+    #     self.griev_f1.file.file = self.samplefile
+    #     self.griev_f1.award = self.griev_aw
+    #     self.griev_f1.save()
+    #
+    #     self.assertTrue(self.griev_f1.date_uploaded != "" and self.griev_f1.date_uploaded != None)
+
+
 
     def tearDown(self):
-        self.file_1.close()
-        self.file_2.close()
-        self.file_3.close()
+        shutil.rmtree(self._overridden_settings["MEDIA_ROOT"])
+
+
