@@ -101,7 +101,6 @@ class Case(models.Model):
     def get_absolute_url(self):
         return reverse(viewname='cases:case_detail', kwargs={'pk': self.pk})
 
-
     def clean(self):
         if len(self.status) == 0:
             self.status = 'OPEN'
@@ -111,23 +110,25 @@ class Case(models.Model):
     def __str__(self):
         return self.complainant.id.__str__()
 
+    @receiver(m2m_changed, sender=additionalMembers.through)
+    def additional_member_signal(sender, **kwargs):
+        #print("----------------- SIGNAL CALLED -----------------------")
+        #print("ARGS: " + kwargs.__str__())
+        pks = kwargs.pop('pk_set', None)
+        instance = kwargs.pop('instance', None)
+        complainant = instance.complainant
+        #print (pks)
+        #print "Sender: "
+        #print vars(sender)
+        #print "Complainant: "
+        #print vars(complainant)
+        validate_additional_members(complainant, pks)
+        #pass
+
+
 class CaseMembers(models.Model):
     caseNum = models.CharField(max_length=9)
     memberNum = models.TextField()
 
-@receiver(m2m_changed, sender=Case.additionalMembers.through)
 
 
-def additional_member_signal(sender, **kwargs):
-    #print("----------------- SIGNAL CALLED -----------------------")
-    #print("ARGS: " + kwargs.__str__())
-    pks = kwargs.pop('pk_set', None)
-    instance = kwargs.pop('instance', None)
-    complainant = instance.complainant
-    #print (pks)
-    #print "Sender: "
-    #print vars(sender)
-    #print "Complainant: "
-    #print vars(complainant)
-    validate_additional_members(complainant, pks)
-    #pass

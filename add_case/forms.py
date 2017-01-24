@@ -44,9 +44,11 @@ class CaseForm(ModelForm):
 
         error_messages = {
             'complainant': {
+                'invalid': "Complainant cannot be added as an additional member.",
                 'invalid_choice': "Complainant cannot be added as an additional member."
             },
             'additionalMembers': {
-                'invalid': "Complainant cannot be added as an additional member."
+                'invalid': "Complainant cannot be added as an additional member.",
+                'invalid_choice': "Complainant cannot be added as an additional member."
             }
         }
