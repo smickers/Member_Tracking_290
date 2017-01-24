@@ -4,12 +4,13 @@ from add_case.models import Case
 from add_member.models import Person
 from django.test import override_settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.contrib.staticfiles import finders
 from spfa_mt import settings
 import shutil
 import os.path
 
 
-@override_settings(MEDIA_ROOT='/tmp/test')
+@override_settings(MEDIA_ROOT='test/')
 class GrievanceFile_UploadTest(StaticLiveServerTestCase):
     def __init__(self, *args, **kwargs):
         super(GrievanceFile_UploadTest, self).__init__(*args, **kwargs)
@@ -71,49 +72,37 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
         Test if a user can associate a single document to a grievance ruling
         :return: None
         """
-
-        #Open the file using its static directory
-        fp =  open(settings.STATIC_ROOT + "grievance_award_creation/test_files_grievance_docs_upload/Picture.jpg")
-
+        path = (os.path.abspath(settings.STATIC_ROOT + "grievance_award_creation/test_files_grievance_docs_upload/Picture.jpg"))
+        temp = os.open(path, os.O_RDONLY)
+        fp = os.fdopen(temp, "r")
         #Associate the Grievance File object with an actual file
         self.grievance_files.file = File(fp)
-
         #Associate an award witha file
         self.grievance_files.award = self.griev_aw
-
         #Save the file
         self.grievance_files.save()
-
-        #close the file stream
+        #close file stream
         fp.close()
-
         #test if there is a file inside the media root directory
-        self.assertEqual( os.listdir(self._overridden_settings["MEDIA_ROOT"] + "/grievance").__len__() , 1)
+        self.assertTrue( os.listdir(self._overridden_settings["MEDIA_ROOT"] + "/grievance").__len__() > 0)
 
 
 
-    # def test_user_uploaded_document_is_in_the_correct_path_in_the_server(self):
-    #     """
-    #     Test if user's uploaded document exists in the server
-    #     :return: None
-    #     """
-
-
-    def test_user_can_upload_if_the_total_file_size_is_less_than_500MB(self):
+    def test_user_can_upload_if_the_file_size_is_less_than_500MB(self):
         """
         Test if user's uploaded file is less than 500Mb
         :return: None
         """
-
-
-
         #Open the file using its static directory
-        fp =  open(settings.STATIC_ROOT + "grievance_award_creation/test_files_grievance_docs_upload/Picture.jpg")
+        path = (os.path.abspath(settings.STATIC_ROOT + "grievance_award_creation/test_files_grievance_docs_upload/Picture.jpg"))
+
+        temp = os.open(path, os.O_RDONLY)
+
+        fp = os.fdopen(temp, "r")
 
         #Associate the Grievance File object with an actual file
         file_wrap = File(fp)
-        file_wrap.size = settings.MAX_FILE_SIZE -1
-        self.grievance_files.file = file_wrap
+        self.grievance_files.file = File(fp)
 
         #Associate an award with the file
         self.grievance_files.award = self.griev_aw
@@ -134,16 +123,15 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
         :return: None
         """
         #Open the file using its static directory
-        fp =  open(settings.STATIC_ROOT + "grievance_award_creation/test_files_grievance_docs_upload/Picture.jpg")
+        path = (os.path.abspath(settings.STATIC_ROOT + "grievance_award_creation/test_files_grievance_docs_upload/Over500MB.txt"))
 
+        temp = os.open(path, os.O_RDONLY)
 
-        #TODO: ASK ERNESTO ABOUT THIS ONE. EMULATING LARGE FILE SIZE DOESNT WORK SINCE FILE HANDLER LOOKS AT THE
-        #TODO:      ACTUAL DATA CHUNK
+        fp = os.fdopen(temp, "r")
 
         #Associate the Grievance File object with an actual file
         file_wrap = File(fp)
-        file_wrap.size = settings.MAX_FILE_SIZE + 1
-        self.grievance_files.file = file_wrap
+        self.grievance_files.file = File(fp)
 
         #Associate an award with the file
         self.grievance_files.award = self.griev_aw
@@ -153,6 +141,11 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
 
         #close the file stream
         fp.close()
+
+        #test if the file uploaded is less than the specified maximum file size
+        self.assertTrue(self.grievance_files.file.size < settings.MAX_FILE_SIZE)
+
+
 
 
 
@@ -196,5 +189,3 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
 
     def tearDown(self):
         shutil.rmtree(self._overridden_settings["MEDIA_ROOT"])
-
-

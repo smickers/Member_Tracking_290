@@ -13,16 +13,13 @@ class ValidateUploadSize(TemporaryFileUploadHandler):
 
     def receive_data_chunk(self, raw_data, start):
         super(ValidateUploadSize, self).receive_data_chunk(raw_data, start)
-
-
-
-
+        if self.total_size > MAX_FILE_SIZE:
+            raise ValidationError('Upload size limit exceeded exception')
 
     def handle_raw_input(self, input_data, META, content_length, boundary, encoding=None):
         super(ValidateUploadSize, self).handle_raw_input(input_data, META, content_length, boundary, encoding=None)
-        print(content_length)
-        if content_length > MAX_FILE_SIZE:
-            raise ValidationError('Upload size limit exceeded exception')
+        self.total_size = content_length
+
 
 
     def new_file(self, *args, **kwargs):

@@ -62,3 +62,7 @@ class GrievanceFiles(models.Model):
     award = models.ForeignKey(GrievanceAward,blank=True,null=True)
     description = models.CharField(max_length=50,blank=True,null=True)
 
+    def save(self):
+        super(GrievanceFiles, self).save()
+        print(self.__dict__)
+

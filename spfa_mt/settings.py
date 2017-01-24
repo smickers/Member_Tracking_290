@@ -209,7 +209,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = '/tmp/static_files/'
+STATIC_ROOT = 'tmp/static_files/'
 
 #this will cause haystack to update its indexes in realtime
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
