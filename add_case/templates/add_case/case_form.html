@@ -84,6 +84,52 @@
                         $("label[for='id_program']").show();
                     }
                 });
+
+                // Set up functionality to ensure that the complainant cannot be selected
+                // as an additional member
+                $("#id_additionalMembers").change(function()
+                {
+                    console.log("Current value:");
+                    console.log($(this).val());
+                    // Double check to make sure current users aren't the complainant
+                    var currComplainant = $("#id_complainant").val();
+                    // Using a convoluted foreach loop to do this
+                    var newValues = [];
+                    if ($(this).val() !== null)
+                    {
+                       $(this).val().forEach(function(value, index)
+                        {
+                            // Push valid values onto a new array
+                            if (value !== currComplainant)
+                            {
+                                console.log(value + " is not the complainant.");
+                                newValues.push(value);
+                            }
+                            else
+                            {
+                                // TODO: Make sure an invalid additional member's name
+                                // is removed from the list of additional members
+                            }
+                        });
+                    }
+
+                    // Now update the values listed
+                    $(this).val(newValues);
+                });
+
+                var currComplainantID = -1;
+
+                $("#id_complainant").change(function()
+                {
+                    // Make sure that this member doesn't show up in the list of additional members
+                    currComplainantID = $(this).val();
+
+                    // Now update the query to be run, and remove this person from the current
+                    // list of additional members
+                    // This code is courtesy of:
+                    // http://stackoverflow.com/questions/7375491/jquery-select-remove-option
+                    $("#id_additionalMembers option").filter("[value='" + currComplainantID + "']").remove();
+                });
             });
 
 
@@ -93,8 +139,10 @@
     <h1><strong>Create a Case</strong></h1>
     <form class="form form-group" action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
+        {% bootstrap_form_errors form type='fields' %}
+        {% bootstrap_form_errors form type='non_fields' %}
         {% bootstrap_form form %}
-        {% bootstrap_form_errors form %}
+
         {% buttons %}
             <input type="submit" class="btn btn-secondary" name="submit" value="Submit" style="width:15%;
             margin-left:10%; border: 1px black solid;" />

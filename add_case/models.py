@@ -101,6 +101,7 @@ class Case(models.Model):
     def get_absolute_url(self):
         return reverse(viewname='cases:case_detail', kwargs={'pk': self.pk})
 
+
     def clean(self):
         if len(self.status) == 0:
             self.status = 'OPEN'

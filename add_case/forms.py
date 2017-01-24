@@ -52,3 +52,18 @@ class CaseForm(ModelForm):
                 'invalid_choice': "Complainant cannot be added as an additional member."
             }
         }
+
+
+def clean_additional_members(self):
+    cleaned_data = super(CaseMembersForm, self).clean()
+    cn = cleaned_data.get('complainant')
+    additional_members = cleaned_data.get('additionalMembers')
+    print(additional_members)
+
+    for mem in additional_members:
+        # cn cannot be an additional member
+        if mem and cn and mem is cn:
+            msg = "Complainant cannot be added as an additional member."
+            self.add_error("additionalMembers", msg)
+            # raise ValidationError("Complainant cannot be added as an additional member.")
+    return self.initial['additionalMembers'] | self.cleaned_data['additionalMembers']

@@ -17,7 +17,7 @@
     {% elif form.non_field_errors %}
         <ul class="list-unstyled">
             {% for error in form.non_field_errors %}
-            <li class="list-group-item list-group-item-danger"><strong>{{ ferror }}</strong></li>
+            <li class="list-group-item list-group-item-danger"><strong>{{ error }}</strong></li>
             {% endfor %}
         </ul>
     {% endif %}
