@@ -2,8 +2,7 @@ from django.test import TestCase, Client
 from meeting.models import *
 from add_com.models import Committee
 from add_member import Person
-from django.db import IntegrityError
-from django.core.exceptions import ValidationError
+from django.core.exceptions import *
 
 #Test cases for adding a Meeting.
 class MeetingTests(TestCase):
@@ -64,7 +63,7 @@ class MeetingTests(TestCase):
     Function:       Verifies that the meeting is not saved to DB when committee is an invalid option
     '''
     def test_invalid_committee_is_not_saved_to_db(self):
-        with self.assertRaises(IntegrityError):
+        with self.assertRaisesMessage(ValueError, "Must select a valid committee"):
             testMeeting = Meeting()
             testMeeting.committee = None
             testMeeting.liaison = 1234
@@ -95,7 +94,7 @@ class MeetingTests(TestCase):
     Function:       Verifies that a invalid liaison (exceeding 10 digits) is not saved to the database
     '''
     def test_invalid_liaison_is_not_saved_to_db(self):
-        with self.assertRaises(ValidationError):
+        with self.assertRaisesMessage(ValueError, "Liaison must not exceed 10 digits"):
             testMeeting = Meeting()
             testMeeting.committee = self.committee
             testMeeting.liaison = 01234567899
@@ -126,7 +125,7 @@ class MeetingTests(TestCase):
     Function:       Verifies that a invalid date (ex. feb.31) is not saved to the database
     '''
     def test_invalid_meeting_date_is_not_saved_saved_to_db(self):
-        with self.assertRaises(ValidationError):
+        with self.assertRaisesMessage(ValidationError, "Must enter a valid date"):
             testMeeting = Meeting()
             testMeeting.committee = self.committee
             testMeeting.liaison = 1234
@@ -157,7 +156,7 @@ class MeetingTests(TestCase):
     Function:       Verifies that a in valid description is not saved to db (exceeding 1000 characters)
     '''
     def test_invalid_description_is_not_saved_to_db(self):
-        with self.assertRaises(ValidationError):
+        with self.assertRaisesMessage(ValueError, "Description must not exceed 1000 characters"):
             testMeeting = Meeting()
             testMeeting.committee = self.committee
             testMeeting.liaison = 1234
@@ -188,7 +187,7 @@ class MeetingTests(TestCase):
     Function:       Verifies that a invalid person is not added to the meeting and not saved to DB
     '''
     def test_invalid_member_is_not_added_to_meeting_and_not_saved_to_db(self):
-        with self.assertRaises(IntegrityError):
+        with self.assertRaisesMessage(ValueError, "Must select a valid member"):
             testMeeting = Meeting()
             testMeeting.committee = self.committee
             testMeeting.liaison = 1234
@@ -196,6 +195,5 @@ class MeetingTests(TestCase):
             testMeeting.description = 'a' * 500
             testMeeting.full_clean()
             testMeeting.save()
-            testMeeting.members.add(None)
-        #   testMeeting.members.add("hello")
+            testMeeting.members.add(555555)
             testMeeting.save()
