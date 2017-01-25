@@ -19,12 +19,16 @@ from rest_framework import routers
 from add_member.views import MemberSearchView
 from django.conf.urls.static import static
 import settings
+from add_case.views import CaseSearchView
 
 #initialize rest framework's router
 router = routers.DefaultRouter()
 
 #route the member search functionality to 'member_list/view' url path
 router.register('members_list/search', MemberSearchView, base_name='member-search')
+
+#route the case search functionality to 'case_list/view' url
+router.register('case_list/search', CaseSearchView, base_name='case-search')
 
 
 urlpatterns = [
@@ -41,4 +45,4 @@ urlpatterns = [
     url(r'^grievance/', include('grievance_award_creation.urls')),
     url(r'^add_event/', include('create_event.urls')),
     url(r'^add_com/', include('add_com.urls'))
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]

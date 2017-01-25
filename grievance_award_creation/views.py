@@ -17,9 +17,7 @@ class GrievanceAwardCreation(CreateView):
     # Link GrievanceAward to the appropriate grievance award form
     model = GrievanceAward
     form_class = GrievanceAwardForm
-    # form = GrievanceAwardForm()
-
-
+    form = GrievanceAwardForm()
 
 # Class: GrievanceAwardCreationSuccess
 # Purpose: The view that is shown upon successfully creating a grievance award.
@@ -32,20 +30,22 @@ class GrievanceAwardCreationSuccess(DetailView):
     # Define the model
     model = GrievanceAward
 
-    # def get_context_data(self, **kwargs):
-    #     context = super(GrievanceAwardCreationSuccess, self).get_context_data(**kwargs)
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super(GrievanceAwardCreationSuccess, self).get_context_data(**kwargs)
+        return context
 
-# @csrf_exempt
-# def CancelUpload_view(request):
-#     try:
-#         request.upload_handlers=[ CancelUpload(request)]
-#     except:
-#         return JsonResponse({'cancelled': 'false'})
-#     return _CancelUpload_view(request)
-#
-# @csrf_protect
-# def _CancelUpload_view(request):
-#     return JsonResponse({'cancelled': 'true'})
-#
-#
+# Class: GrievanceAwardDetail
+# Purpose: To display the details of an award
+class GrievanceAwardDetail(DetailView):
+    model = GrievanceAward
+    template_name = 'grievance_award_creation/grievanceaward_actual_detail.html'
+
+# This class declares the form for the editing a grievance award
+class GrievanceAwardEditView(UpdateView):
+    model = GrievanceAward
+    form_class = GrievanceAwardForm
+
+# This class declares the form to show a list of current grievance award
+class GrievanceAwardList(ListView):
+    model = GrievanceAward
+    template_name = 'grievance_award/grievanceaward_list.html'
