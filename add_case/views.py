@@ -21,7 +21,7 @@ class CaseSearchView(HaystackViewSet):
     index_models = [Case]
     serializer_class = CaseSearchSerializer
     filter_backends = [HaystackAutocompleteFilter]
-
+    """
     def get_context_data(self, **kwargs):
         request = self.request
         context = super(CaseCreate, self).get_context_data(**kwargs)
@@ -34,3 +34,4 @@ class CaseSearchView(HaystackViewSet):
                     raise ValidationError("C/N cannot be AM.")
         # print request.GET
         return context
+        """

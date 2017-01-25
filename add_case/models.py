@@ -95,10 +95,13 @@ class Case(models.Model):
     logs = models.TextField(blank=True, null=True)
     date = models.DateField(blank=True, null=True, default=datetime.date.today, validators=[validate_date])
 
+    # Default get_absolute_url method
     def get_absolute_url(self):
         return reverse(viewname='cases:case_detail', kwargs={'pk': self.pk})
 
 
+    # clean method
+    # Purpose: Clean data before saving it to the database.
     def clean(self):
         if len(self.status) == 0:
             self.status = 'OPEN'
