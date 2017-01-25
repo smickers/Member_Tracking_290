@@ -51,7 +51,8 @@
                     {
                         return {
                             q: params.term, //The term to be sent
-                            offset: (params.page ) * 10 //Which page of the REST page will be loaded
+                            offset: (params.page ) * 10, //Which page of the REST page will be loaded
+                            id__not: $("#id_complainant").val()
                         }
                     },
                     processResults: function (data, params) {
@@ -109,6 +110,7 @@
                             {
                                 // TODO: Make sure an invalid additional member's name
                                 // is removed from the list of additional members
+                                $("#id_additionalMembers option").filter("[value='" + currComplainantID + "']").remove();
                             }
                         });
                     }

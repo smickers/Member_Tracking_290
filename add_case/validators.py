@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 import re
 import datetime
 
+
 def validate_date(value):
     data = value
 
@@ -114,11 +115,9 @@ def validate_department(value):
     return data
 
 
-'''
-Name:       validate_schools
-Function:   Ensures that the school is a part of the school listing.
-Returns:    The data
-'''
+# Name:       validate_schools
+# Function:   Ensures that the school is a part of the school listing.
+# Returns:    The data
 def validate_school(value):
     data = value
 
@@ -148,8 +147,8 @@ def validate_school(value):
 
 # Validators to ensure that the complainant cannot be/is not entered to the Case
 #   as an additional member.
-def validate_additional_members(complainant, additional_members):
-    for curr_member in additional_members:
-        if curr_member == complainant.id:
-            raise ValidationError("Complainant cannot be added as an additional member.")
+# def validate_additional_members(complainant, additional_members):
+#     for curr_member in additional_members:
+#         if curr_member == complainant.id:
+#             raise ValidationError("Complainant cannot be added as an additional member.")
 
