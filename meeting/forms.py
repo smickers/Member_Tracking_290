@@ -1,7 +1,8 @@
 from django.forms import ModelForm, SelectDateWidget, Textarea, RadioSelect, TextInput, NumberInput
-from .models import MeetingCreation
+from .models import Meeting
 from datetime import date
 from django import forms
+
 
 class MeetingForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -9,7 +10,7 @@ class MeetingForm(ModelForm):
         super(ModelForm, self).__init__(*args, **kwargs)
 
     class Meta:
-        model = MeetingCreation
+        model = Meeting
 
         # Date range is +- 5 years
 
@@ -39,7 +40,7 @@ class MeetingForm(ModelForm):
         labels = {
             'committee': 'Committee',
             'spfa_liason': 'SPFA Liason',
-            'members_attending': 'Memberes Attending',
+            'members_attending': 'Members Attending',
             'description': 'Description',
             'date': 'Meeting Date'
         }
@@ -48,5 +49,9 @@ class MeetingForm(ModelForm):
         widgets = {
             'date': SelectDateWidget(months=MONTHS, years=YEARS),
             'description': Textarea(),
+            'members_attending': forms.SelectMultiple(
+                attrs={'class': 'js-members_attending'}),
+            'committee': forms.Select(
+                attrs={'class': 'js-committee'})
         }
 

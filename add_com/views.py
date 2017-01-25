@@ -5,6 +5,9 @@ from .models import Committee
 from .forms import ComForm
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.urlresolvers import reverse_lazy
+from drf_haystack.viewsets import HaystackViewSet
+from serializer import CommitteeSearchSerializer
+from drf_haystack.filters import HaystackAutocompleteFilter
 
 
 # View for Committee creation:
@@ -40,3 +43,12 @@ class ComList(ListView):
 class ComDetailView(DetailView):
     model = Committee
     template_name = 'add_com/committee_detail.html'
+
+class CommitteeSearchView(HaystackViewSet):
+    """
+    View that connects the committee search serializer.
+    This view will then be used by restframework for routing into a browsable url
+    """
+    index_models = [Committee]
+    serializer_class = CommitteeSearchSerializer
+    filter_backends = [HaystackAutocompleteFilter]

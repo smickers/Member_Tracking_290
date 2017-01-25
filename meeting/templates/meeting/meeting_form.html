@@ -11,6 +11,37 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     {% load bootstrap3 %}
     {% bootstrap_messages %}
+    <script type="text/javascript">
+            $(document).ready(function() {
+                $("#id_department").hide();
+                $("label[for='id_department']").hide();
+
+                var members = $(".js-members_attending");
+
+              members.select2({
+                ajax: {
+                    //a list of all members
+                    url: "/api-root/members_list/search/", //URL of the REST API for querying the members
+                    dataType: 'json',
+                    data: function(params)
+                    {
+                        return {
+                            q: params.term, //The term to be sent
+                            offset: (params.page ) * 10 //Which page of the REST page will be loaded
+                        }
+                    },
+                    processResults: function (data, params) {
+                        return {
+                            results: data.results,
+                            pagination: {
+                                more: true //enables the pagination feature
+                            }
+                        }
+                   },
+                }
+              });
+            });
+            </script>
 </head>
 <body>
 
