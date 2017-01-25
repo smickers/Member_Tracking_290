@@ -4,8 +4,6 @@ from django.db import models
 from django.core.urlresolvers import reverse
 import datetime
 from add_member.models import Person
-# from django.db.models.signals import m2m_changed
-# from django.dispatch import receiver
 
 '''
 Name:       CaseSatellite
@@ -97,12 +95,10 @@ class Case(models.Model):
     logs = models.TextField(blank=True, null=True)
     date = models.DateField(blank=True, null=True, default=datetime.date.today, validators=[validate_date])
 
-    # Default get_absolute_url method
     def get_absolute_url(self):
         return reverse(viewname='cases:case_detail', kwargs={'pk': self.pk})
 
-    # clean method
-    # Purpose: Clean data before saving it to the database.
+
     def clean(self):
         if len(self.status) == 0:
             self.status = 'OPEN'
@@ -111,7 +107,8 @@ class Case(models.Model):
 
     # Default __str__ method
     def __str__(self):
-        return self.complainant.id.__str__()
+        return self.complainant.__str__() + ' - ' + self.date.__str__()
+
 
 
 class CaseMembers(models.Model):

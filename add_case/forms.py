@@ -1,11 +1,17 @@
+from django.forms import ModelForm, NumberInput, ValidationError, SelectDateWidget
+from .models import Case
+from django import  forms
+from datetime import date
 from django.forms import ModelForm, SelectDateWidget
 from .models import *
 from django import forms
 from .fields import ListTextWidget
+import re
 
 
 # Creating the Form data for Cases ...
 class CaseForm(ModelForm):
+
 
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
@@ -14,6 +20,28 @@ class CaseForm(ModelForm):
 
     class Meta:
         model = Case
+        # Date range is +- 5 years
+
+        # Make the range +6 on the high end, because this function doesn't
+        # include the end range value
+        YEARS = range(date.today().year - 5, date.today().year + 6)
+        YEARS.sort()
+
+        # Define months so they're entered as three letters
+        MONTHS = {
+            1: 'Jan',
+            2: 'Feb',
+            3: 'Mar',
+            4: 'Apr',
+            5: 'May',
+            6: 'Jun',
+            7: 'Jul',
+            8: 'Aug',
+            9: 'Sep',
+            10: 'Oct',
+            11: 'Nov',
+            12: 'Dec'
+        }
 
         fields = '__all__'
         labels = {
@@ -32,7 +60,7 @@ class CaseForm(ModelForm):
         }
 
         widgets = {
-            'date': SelectDateWidget(),
+             'date': SelectDateWidget(months=MONTHS, years=YEARS),
             'complainant': forms.Select(
                 attrs={'class': 'js-complainant', 'style': 'width:65%;'}),
             'additionalMembers': forms.SelectMultiple(
@@ -52,18 +80,3 @@ class CaseForm(ModelForm):
                 'invalid_choice': "Complainant cannot be added as an additional member."
             }
         }
-
-
-def clean_additional_members(self):
-    cleaned_data = super(CaseMembersForm, self).clean()
-    cn = cleaned_data.get('complainant')
-    additional_members = cleaned_data.get('additionalMembers')
-    print(additional_members)
-
-    for mem in additional_members:
-        # cn cannot be an additional member
-        if mem and cn and mem is cn:
-            msg = "Complainant cannot be added as an additional member."
-            self.add_error("additionalMembers", msg)
-            # raise ValidationError("Complainant cannot be added as an additional member.")
-    return self.initial['additionalMembers'] | self.cleaned_data['additionalMembers']

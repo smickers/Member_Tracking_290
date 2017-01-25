@@ -8,6 +8,20 @@ import datetime
 #The form used for modifying/adding a member
 class PersonForm(ModelForm):
     class Meta:
+        MONTHS = {
+            1: 'Jan',
+            2: 'Feb',
+            3: 'Mar',
+            4: 'Apr',
+            5: 'May',
+            6: 'Jun',
+            7: 'Jul',
+            8: 'Aug',
+            9: 'Sep',
+            10: 'Oct',
+            11: 'Nov',
+            12: 'Dec'
+        }
 
         model = Person
 
@@ -45,8 +59,8 @@ class PersonForm(ModelForm):
 
         #modifies the date fields to have a valid range
         widgets = {
-            'bDay': SelectDateWidget(years=range(1900, datetime.datetime.now().year + 1)),
-            'hireDate': SelectDateWidget(years=range(1900, datetime.datetime.now().year + 1))
+            'bDay': SelectDateWidget(months=MONTHS, years=range(1900, datetime.datetime.now().year + 1)),
+            'hireDate': SelectDateWidget(months=MONTHS, years=range(1900, datetime.datetime.now().year + 1))
             }
 
 

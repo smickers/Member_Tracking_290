@@ -1,6 +1,7 @@
 from django.forms import ModelForm, SelectDateWidget, Textarea, RadioSelect, TextInput, NumberInput
 from .models import GrievanceAward
 from datetime import date
+from django import forms
 
 # Class: GrievanceAwardForm
 # Purpose: Puts together a form for creating a grievance award
@@ -53,6 +54,8 @@ class GrievanceAwardForm(ModelForm):
             'date': SelectDateWidget(months=MONTHS, years=YEARS),
             'description' : Textarea(),
             'grievanceType' : RadioSelect(),
-            'recipient' : NumberInput(),
-            'case' : NumberInput()
+            'recipient' : forms.Select(
+                attrs={'class': 'js-recipient'}),
+            'case' : forms.Select(
+                attrs={'class': 'js-case'}),
         }

@@ -17,12 +17,16 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework import routers
 from add_member.views import MemberSearchView
+from add_case.views import CaseSearchView
 
 #initialize rest framework's router
 router = routers.DefaultRouter()
 
 #route the member search functionality to 'member_list/view' url path
 router.register('members_list/search', MemberSearchView, base_name='member-search')
+
+#route the case search functionality to 'case_list/view' url
+router.register('case_list/search', CaseSearchView, base_name='case-search')
 
 
 urlpatterns = [
