@@ -207,9 +207,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 
-STATIC_ROOT = 'tmp/static_files/'
+STATIC_ROOT = 'files/tmp/static_files/'
 
 #this will cause haystack to update its indexes in realtime
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

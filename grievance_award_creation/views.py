@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.core.exceptions import ValidationError
 from django.core.files.uploadhandler import StopUpload, SkipFile
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from django.views.generic.list import ListView
 
 # Create your views here.
 # Class: GrievanceAwardCreation
