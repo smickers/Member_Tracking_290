@@ -40,7 +40,7 @@ class CaseForm(ModelForm):
         }
 
         widgets = {
-             'date': SelectDateWidget(months=kvp.MONTHS.iteritems(), years=YEARS),
+             'date': SelectDateWidget(months=kvp.MONTHS, years=YEARS),
              'complainant': forms.Select(
                 attrs={'class': 'js-complainant', 'style': 'width:65%;'}),
              'additionalMembers': forms.SelectMultiple(

@@ -47,7 +47,7 @@ class UpdateCaseView(UpdateView):
 #view for displaying individual member info
 class CaseDetail(DetailView):
     model = Case
-    template_name = 'cases/cases_detail.html'
+    template_name = 'add_case/cases_detail.html'
 
     def get_context_data(self, **kwargs):
         request = self.request
@@ -58,4 +58,4 @@ class CaseDetail(DetailView):
 #view for listing all the members found in the db
 class CaseList(ListView):
     model = Case
-    template_name = 'cases/cases_list.html'
+    template_name = 'add_case/cases_list.html'
