@@ -19,7 +19,14 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
     def setUpClass(cls):
         super(GrievanceFile_UploadTest, cls).setUpClass()
 
+    """
+   Function: init
+   Purpose: Initializes constants and variables for tests
+   :param args:
+   :param kwargs:
+    """
     def __init__(self, *args, **kwargs):
+
         super(GrievanceFile_UploadTest, self).__init__(*args, **kwargs)
         self.CONST_FILE_PATH = settings.STATIC_ROOT + 'grievance_award_creation/test_files_grievance_docs_upload/%s'
         self.person1 = Person()
@@ -31,8 +38,12 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
         self.path_notsolargefile= self.CONST_FILE_PATH % 'notsolarge.txt'
         self.path_picturefile = self.CONST_FILE_PATH % 'Picture.jpg'
 
-
+    """
+    Function: setUp
+    Purpose: Sets up testing a file upload. Sets up a person and a case
+    """
     def setUp(self):
+
         self.person1.memberID = 4204444
         self.person1.firstName = 'First'
         self.person1.middleName = 'Middle'
@@ -88,6 +99,7 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
         f.write("\0")
         f.close()
 
+
     def test_user_can_upload_single_grievance_document(self):
         """
         Test if a user can associate a single document to a grievance ruling
@@ -114,10 +126,9 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
         self.assertTrue( os.listdir(self._overridden_settings["MEDIA_ROOT"] + "/grievance").__len__() > 0)
 
 
-
-    def test_user_can_upload_if_the_file_size_is_less_than_500MB(self):
+    def test_user_can_upload_if_the_file_size_is_less_than_or_equal_500MB(self):
         """
-        Test if user's uploaded file is less than 500Mb
+        Test if user's uploaded file is less than or equal to 500Mb
         :return: None
         """
         path = self.path_notsolargefile
@@ -140,6 +151,7 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
         print(self.grievance_files.file.size)
 
         self.assertTrue(self.grievance_files.file.size <= settings.MAX_FILE_SIZE)
+
 
     def test_user_cannot_upload_if_the_total_file_size_is_greater_than_500MB(self):
         """
@@ -224,7 +236,11 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
 
 
 
-
+    """
+    Function: tearDown
+    Purpose: Deletes Temproary files after tests completed.
+    NOTE: Due to multiple processes running by Django, this only works in Linux
+    """
     def tearDown(self):
         if os.path.exists(self._overridden_settings["MEDIA_ROOT"]):
             shutil.rmtree(self._overridden_settings["MEDIA_ROOT"])

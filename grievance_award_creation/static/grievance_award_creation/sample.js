@@ -70,8 +70,12 @@ function description_handler(file_field, desc)
             //$("button[type=submit]").attr('disabled','');
 
             file_field[0].value = "";
+
+            $(desc).hide();
         }
         else {
+            $(desc).show();
+
             //if no error hide the error field
             if($("#file_error").length > 0);
             {
