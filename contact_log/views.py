@@ -11,7 +11,7 @@ from django.template import loader
 # been successfully created. It will display a success page with
 # the new contact log's PK.
 def success(request, pk):
-    template = loader.get_template('contactLog/success.html')
+    template = loader.get_template('contact_log/success.html')
     context = {
         'pk': int(pk)
     }

@@ -36,7 +36,7 @@ urlpatterns = [
     url(r'^addmember/', include('add_member.urls')),
     url(r'^cases/', include('cases.urls')),
     url(r'^addCase/', include('add_case.urls')),
-    url(r'^contact_log/', include('contactLog.urls')),
+    url(r'^contact_log/', include('contact_log.urls')),
     url(r'^member/', include('add_member.urls')),
     url(r'^event/', include('create_event.urls')),
     #url(r'^add_event/', include('create_event.urls')),
