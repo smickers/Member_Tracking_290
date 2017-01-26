@@ -1,1 +1,43 @@
+<!-- This will apply Bootstrap formatting to error messages re: complainant -->
+{% if form.errors or forms.ValidationError %}
+    {% if form.complainant.errors %}
+            <ul class="list-unstyled">
+                {% for error in form.complainant.errors %}
+                <li class="list-group-item list-group-item-danger" style="width:50%;"><strong>{{ error }}</strong></li>
+                {% endfor %}
+            </ul>
+
+    <!-- This will apply Bootstrap formatting to error messages re: additional members -->
+    {% elif form.additionalMembers.errors %}
+        <ul class="list-unstyled">
+            {% for error in form.additionalMembers.errors %}
+            <li class="list-group-item list-group-item-danger"><strong>{{ error }}</strong></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <ul class="list-unstyled">
+            {% for error in form.errors %}
+            <li class="list-group-item list-group-item-alert"><strong>{{ error }}</strong></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endif %}
+<!-- This will apply Bootstrap formatting to error messages that aren't field related,
+ such as when you try to muck with the code before clicking 'Create'-->
+{% if form.non_field_errors %}
+    <ul class="list-unstyled">
+        {% for error in form.non_field_errors %}
+        <li class="list-group-item list-group-item-danger"><strong>{{ error }}</strong></li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<!-- This will apply Bootstrap formatting to success messages re: case creation -->
+{% if messages %}
+    <ul class="list-unstyled">
+        {% for message in messages %}
+        <li class="list-group-item list-group-item-success">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 {{ form.as_p }}
