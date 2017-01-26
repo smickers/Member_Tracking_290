@@ -100,12 +100,24 @@ class CaseEditTest(TestCase):
 
         assert self.tempCase.complainant == self.person2
 
+    def test_edit_complainant_fail(self):
+        with self.assertRaisesMessage(ValueError, 'Cannot assign "789456": "Case.complainant" must be a "Person" instance.'):
+            self.tempCase.complainant = 789456
+            self.tempCase.full_clean()
+            self.tempCase.save()
+
     def test_edit_campus(self):
         self.tempCase.campus = "Regina"
         self.tempCase.full_clean()
         self.tempCase.save()
 
         assert self.tempCase.campus == "Regina"
+
+    def test_edit_campus_fail(self):
+        with self.assertRaisesMessage(ValidationError, '{\'campus\': [u"Value \'fdsafsad\' is not a valid choice."]}'):
+            self.tempCase.campus = "fdsafsad"
+            self.tempCase.full_clean()
+            self.tempCase.save()
 
     def test_edit_school(self):
         self.tempCase.school = "School of Information and Communications Technology"
@@ -114,12 +126,24 @@ class CaseEditTest(TestCase):
 
         assert self.tempCase.school == "School of Information and Communications Technology"
 
+    def test_edit_school_fail(self):
+        with self.assertRaisesMessage(ValidationError, '{\'school\': [u"Value \'fdsafsad\' is not a valid choice."]}'):
+            self.tempCase.school = "fdsafsad"
+            self.tempCase.full_clean()
+            self.tempCase.save()
+
     def test_edit_program(self):
         self.tempCase.program = self.program2
         self.tempCase.full_clean()
         self.tempCase.save()
 
         assert self.tempCase.program == self.program2
+
+    def test_edit_program_fail(self):
+        with self.assertRaisesMessage(ValueError, 'Cannot assign "\'This si a program\'": "Case.program" must be a "CasePrograms" instance.'):
+            self.tempCase.program = "This si a program"
+            self.tempCase.full_clean()
+            self.tempCase.save()
 
     def test_edit_case_type(self):
         self.tempCase.caseType = "ARBITRATION"
@@ -128,6 +152,12 @@ class CaseEditTest(TestCase):
 
         assert self.tempCase.caseType == "ARBITRATION"
 
+    def test_edit_case_type_fail(self):
+        with self.assertRaisesMessage(ValidationError, '{\'caseType\': [u"Value \'UIOPUI\' is not a valid choice."]}'):
+            self.tempCase.caseType = "UIOPUI"
+            self.tempCase.full_clean()
+            self.tempCase.save()
+
     def test_edit_status(self):
         self.tempCase.status = "CLOSED"
         self.tempCase.full_clean()
@@ -135,8 +165,27 @@ class CaseEditTest(TestCase):
 
         assert self.tempCase.status == "CLOSED"
 
+    def test_edit_status_fail(self):
+        with self.assertRaisesMessage(ValidationError, "{\'status\': [u\"Value \'tesatews\' is not a valid choice.\"]}"):
+            self.tempCase.status = "tesatews"
+            self.tempCase.full_clean()
+            self.tempCase.save()
+
     def test_add_members(self):
         self.tempCase.additionalMembers.add(self.person2)
         self.tempCase.full_clean()
         self.tempCase.save()
+
+    def test_remove_member(self):
+        self.tempCase.additionalMembers.add(self.person2)
+        self.tempCase.full_clean()
+        self.tempCase.save()
+
+        assert self.tempCase.additionalMembers.get(pk=self.person2.pk) == self.person2
+
+        self.tempCase.additionalMembers.remove(self.person2)
+        self.tempCase.full_clean()
+        self.tempCase.save()
+
+        assert self.tempCase.additionalMembers.filter(pk=self.person2.pk).count() == 0
 
