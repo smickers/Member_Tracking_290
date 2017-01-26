@@ -70,8 +70,6 @@ function description_handler(file_field, desc)
             //$("button[type=submit]").attr('disabled','');
 
             file_field[0].value = "";
-
-
         }
         else {
 

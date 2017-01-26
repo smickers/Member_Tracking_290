@@ -14,3 +14,10 @@ whoosh_index/
 spfa_mt/whoosh_index/MAIN_xmrpy3j4m43phlvd.seg
 spfa_mt/whoosh_index/_MAIN_1.toc
 tmp/
+/files/grievance_award_creation/test_files_grievance_docs_upload/dummylarge.txt
+/files/grievance_award_creation/test_files_grievance_docs_upload/notsolarge.txt
+migrations/*.py
+!__init__.py
+files/
+test/
+media/

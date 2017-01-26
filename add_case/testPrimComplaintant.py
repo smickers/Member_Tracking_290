@@ -77,7 +77,7 @@ class CaseTestsPrimComplaintant(TestCase):
 
     # Tests for a blank primary complaintant. Complainant is a required field. Should fail
     def testBlankPrimaryComplaintant(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ValidationError):
             tempCase = Case()
             tempCase.complainant = None
             tempCase.campus = "Saskatoon"

@@ -15,8 +15,8 @@ from django import forms
 class GrievanceAwardForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
-        self.fields['file_field'] = FileField(widget=ClearableFileInput(attrs={'multiple': False, 'accept': FILE_EXT_TO_ACCEPT_STR} ))
-        self.fields['file_description'] = CharField(label='File Description', widget= forms.TextInput(attrs={'type':'', 'size':'100%'}))
+        self.fields['file_field'] = FileField(required=False,widget=ClearableFileInput(attrs={'multiple': False, 'accept': FILE_EXT_TO_ACCEPT_STR} ))
+        self.fields['file_description'] = CharField(required=False, label='File Description', widget= forms.TextInput(attrs={'type':'', 'size':'100%'}))
 
 
     def save(self, commit=False):
@@ -25,24 +25,28 @@ class GrievanceAwardForm(ModelForm):
         except ValidationError:
             return ValidationError
 
-        f = self.files.getlist('file_field')[0]
+        if self.files != {}:
+            f = self.files.getlist('file_field')[0]
+            temp = File(file=f)
+            desc = self.cleaned_data['file_description']
+            griev_file = GrievanceFiles(award=obj, file=temp,
+                                        description=desc)
+            griev_file.save()
 
-        temp = File(file=f)
-        desc = self.cleaned_data['file_description']
-        griev_file = GrievanceFiles(award=obj, file=temp,
-                                    description=desc)
-        griev_file.save()
         return obj
 
     def clean_file_field(self):
-        # print(self.files.getlist('file_field')[0].name)
-        for f in self.files.getlist('file_field'):
-            print(f.size)
-            if(f.size > settings.MAX_FILE_SIZE):
-                raise ValidationError("File exceeds maximum size allowed")
-            if(f.name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT):
-                raise ValidationError("File type is not allowed")
-        return self.cleaned_data['file_field']
+        # print(self.files not None)
+        print(self.files != {})
+        if self.files != {}:
+            # print(self.files.getlist('file_field')[0].name)
+            for f in self.files.getlist('file_field'):
+                print(f.size)
+                if(f.size > settings.MAX_FILE_SIZE):
+                    raise ValidationError("File exceeds maximum size allowed")
+                if(f.name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT):
+                    raise ValidationError("File type is not allowed")
+            return self.cleaned_data['file_field']
 
 
 
@@ -90,12 +94,11 @@ class GrievanceAwardForm(ModelForm):
             'date': SelectDateWidget(months=MONTHS, years=YEARS),
             'description' : Textarea(),
             'grievanceType' : RadioSelect(),
-            'recipient' : NumberInput(),
-            'case' : NumberInput()
+            'recipient' : forms.Select(
+                attrs={'class': 'js-recipient'}),
+            'case' : forms.Select(
+                attrs={'class': 'js-case'}),
         }
-
-
-
 
 
 class GrievanceUploadFileForm(ModelForm):
