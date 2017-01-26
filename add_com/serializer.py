@@ -1,5 +1,5 @@
 from drf_haystack.serializers import HaystackSerializer
-from search_indexes import CommitteeIndex
+from add_com.search_indexes import CommitteeIndex
 
 class CommitteeSearchSerializer(HaystackSerializer):
     """

@@ -12,7 +12,7 @@ from django.core.urlresolvers import reverse
 class Meeting(models.Model):
 
     committee = models.ForeignKey(Committee, null=False, blank=False)
-    spfa_liason = models.CharField(max_length=50, null=False, blank=False)
+    liaison = models.CharField(max_length=10, null=False, blank=False)
     members_attending = models.ManyToManyField(Person)
     description = models.CharField(max_length=1000, null=True, blank=True)
     date = models.DateField(default=date.today())

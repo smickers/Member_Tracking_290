@@ -1,7 +1,7 @@
 from haystack import indexes
-from meeting.models import Committee
+from .models import Committee
 
-# This class creates the index for each case.
+# This class creates the index for each committee.
 class CommitteeIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     id = indexes.IntegerField(use_template=True, indexed=False)
@@ -9,4 +9,4 @@ class CommitteeIndex(indexes.SearchIndex, indexes.Indexable):
 
     # Returns the person.
     def get_model(self):
-        return CommitteeIndex
+        return Committee

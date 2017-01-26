@@ -39,7 +39,7 @@ class MeetingForm(ModelForm):
         fields = '__all__'
         labels = {
             'committee': 'Committee',
-            'spfa_liason': 'SPFA Liason',
+            'liaison': 'SPFA Liason',
             'members_attending': 'Members Attending',
             'description': 'Description',
             'date': 'Meeting Date'

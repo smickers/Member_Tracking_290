@@ -1,10 +1,15 @@
 from django.test import TestCase, Client
 from meeting.models import *
 from add_com.models import Committee
-from add_member import Person
+from add_member.models import Person
 from django.core.exceptions import *
 
-#Test cases for adding a Meeting.
+"""
+Author Jaryd Buck, David Letkeman
+Class: meetingTests
+Purpose: Test Cases for creating a meeting
+Date: Jan 26, 2017
+"""
 class MeetingTests(TestCase):
     committee = Committee()
     person1 = Person()
@@ -15,7 +20,7 @@ class MeetingTests(TestCase):
     '''
     def setUp(self):
         self.committee.name = "Finance"
-        self.committee.status = "ACTIVE"
+        self.committee.status = 1
         self.committee.full_clean()
         self.committee.save()
 
@@ -55,7 +60,7 @@ class MeetingTests(TestCase):
         testMeeting.description = 'a' * 500
         testMeeting.full_clean()
         testMeeting.save()
-        testMeeting.members.add(self.person1)
+        testMeeting.members_attending.add(self.person1)
         testMeeting.save()
 
     '''
@@ -63,7 +68,7 @@ class MeetingTests(TestCase):
     Function:       Verifies that the meeting is not saved to DB when committee is an invalid option
     '''
     def test_invalid_committee_is_not_saved_to_db(self):
-        with self.assertRaisesMessage(ValueError, "Must select a valid committee"):
+        with self.assertRaises(ValidationError):
             testMeeting = Meeting()
             testMeeting.committee = None
             testMeeting.liaison = 1234
@@ -71,7 +76,7 @@ class MeetingTests(TestCase):
             testMeeting.description = 'a' * 500
             testMeeting.full_clean()
             testMeeting.save()
-            testMeeting.members.add(self.person1)
+            testMeeting.members_attending.add(self.person1)
             testMeeting.save()
 
     '''
@@ -86,7 +91,7 @@ class MeetingTests(TestCase):
         testMeeting.description = 'a' * 500
         testMeeting.full_clean()
         testMeeting.save()
-        testMeeting.members.add(self.person1)
+        testMeeting.members_attending.add(self.person1)
         testMeeting.save()
 
     '''
@@ -94,15 +99,15 @@ class MeetingTests(TestCase):
     Function:       Verifies that a invalid liaison (exceeding 10 digits) is not saved to the database
     '''
     def test_invalid_liaison_is_not_saved_to_db(self):
-        with self.assertRaisesMessage(ValueError, "Liaison must not exceed 10 digits"):
+        with self.assertRaisesMessage(ValidationError, "Ensure this value has at most 10 characters (it has 11)."):
             testMeeting = Meeting()
             testMeeting.committee = self.committee
-            testMeeting.liaison = 01234567899
+            testMeeting.liaison = 12345678900
             testMeeting.date = "2016-10-20"
             testMeeting.description = 'a' * 500
             testMeeting.full_clean()
             testMeeting.save()
-            testMeeting.members.add(self.person1)
+            testMeeting.members_attending.add(self.person1)
             testMeeting.save()
 
     '''
@@ -117,7 +122,7 @@ class MeetingTests(TestCase):
         testMeeting.description = 'a' * 500
         testMeeting.full_clean()
         testMeeting.save()
-        testMeeting.members.add(self.person1)
+        testMeeting.members_attending.add(self.person1)
         testMeeting.save()
 
     '''
@@ -125,7 +130,7 @@ class MeetingTests(TestCase):
     Function:       Verifies that a invalid date (ex. feb.31) is not saved to the database
     '''
     def test_invalid_meeting_date_is_not_saved_saved_to_db(self):
-        with self.assertRaisesMessage(ValidationError, "Must enter a valid date"):
+        with self.assertRaisesMessage(ValidationError, "\'2016-02-31\' value has the correct format (YYYY-MM-DD) but it is an invalid date."):
             testMeeting = Meeting()
             testMeeting.committee = self.committee
             testMeeting.liaison = 1234
@@ -133,7 +138,7 @@ class MeetingTests(TestCase):
             testMeeting.description = 'a' * 500
             testMeeting.full_clean()
             testMeeting.save()
-            testMeeting.members.add(self.person1)
+            testMeeting.members_attending.add(self.person1)
             testMeeting.save()
 
     '''
@@ -148,7 +153,7 @@ class MeetingTests(TestCase):
         testMeeting.description = 'a' * 500
         testMeeting.full_clean()
         testMeeting.save()
-        testMeeting.members.add(self.person1)
+        testMeeting.members_attending.add(self.person1)
         testMeeting.save()
 
     '''
@@ -156,7 +161,7 @@ class MeetingTests(TestCase):
     Function:       Verifies that a in valid description is not saved to db (exceeding 1000 characters)
     '''
     def test_invalid_description_is_not_saved_to_db(self):
-        with self.assertRaisesMessage(ValueError, "Description must not exceed 1000 characters"):
+        with self.assertRaisesMessage(ValidationError, "Ensure this value has at most 1000 characters (it has 1001)."):
             testMeeting = Meeting()
             testMeeting.committee = self.committee
             testMeeting.liaison = 1234
@@ -164,7 +169,7 @@ class MeetingTests(TestCase):
             testMeeting.description = 'a' * 1001
             testMeeting.full_clean()
             testMeeting.save()
-            testMeeting.members.add(self.person1)
+            testMeeting.members_attending.add(self.person1)
             testMeeting.save()
 
     '''
@@ -179,7 +184,7 @@ class MeetingTests(TestCase):
         testMeeting.description = 'a' * 500
         testMeeting.full_clean()
         testMeeting.save()
-        testMeeting.members.add(self.person1)
+        testMeeting.members_attending.add(self.person1)
         testMeeting.save()
 
     '''
@@ -187,7 +192,7 @@ class MeetingTests(TestCase):
     Function:       Verifies that a invalid person is not added to the meeting and not saved to DB
     '''
     def test_invalid_member_is_not_added_to_meeting_and_not_saved_to_db(self):
-        with self.assertRaisesMessage(ValueError, "Must select a valid member"):
+        with self.assertRaisesMessage(Person.DoesNotExist, "Person matching query does not exist."):
             testMeeting = Meeting()
             testMeeting.committee = self.committee
             testMeeting.liaison = 1234
@@ -195,5 +200,5 @@ class MeetingTests(TestCase):
             testMeeting.description = 'a' * 500
             testMeeting.full_clean()
             testMeeting.save()
-            testMeeting.members.add(555555)
+            testMeeting.members_attending = Person.objects.get(firstName='Nonexistent member')
             testMeeting.save()
