@@ -72,7 +72,7 @@ function description_handler(file_field, desc)
             file_field[0].value = "";
         }
         else {
-
+            //if no error hide the error field
             if($("#file_error").length > 0);
             {
                 $("#file_error").hide();

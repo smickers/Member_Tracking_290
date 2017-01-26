@@ -19,12 +19,21 @@ class GrievanceAwardForm(ModelForm):
         self.fields['file_description'] = CharField(required=False, label='File Description', widget= forms.TextInput(attrs={'type':'', 'size':'100%'}))
 
 
+
+
     def save(self, commit=False):
+        """
+        Function: save
+        Purpose: When grievance award is saved this method will be called to do some extra validation
+        :param commit:
+        :return: obj - Model Form
+        """
         try:
             obj = super(ModelForm, self).save()
         except ValidationError:
             return ValidationError
 
+        #Files do not have to be uploaded, but if they are, save the file
         if self.files != {}:
             f = self.files.getlist('file_field')[0]
             temp = File(file=f)
@@ -36,8 +45,15 @@ class GrievanceAwardForm(ModelForm):
         return obj
 
     def clean_file_field(self):
+        """
+        Function: clean
+        Purpose: Cleans the models before they are entered into the database
+        :return:
+        """
         # print(self.files not None)
-        print(self.files != {})
+        #print(self.files != {})
+
+        #Clean uploaded files if there are any
         if self.files != {}:
             # print(self.files.getlist('file_field')[0].name)
             for f in self.files.getlist('file_field'):
@@ -101,7 +117,3 @@ class GrievanceAwardForm(ModelForm):
         }
 
 
-class GrievanceUploadFileForm(ModelForm):
-    class Meta:
-        model = GrievanceFiles
-        exclude = ['date_uploaded']
