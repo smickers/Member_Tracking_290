@@ -68,7 +68,23 @@ class MeetingTests(TestCase):
     Function:       Verifies that the meeting is not saved to DB when committee is an invalid option
     '''
     def test_invalid_committee_is_not_saved_to_db(self):
-        with self.assertRaises(ValidationError):
+        with self.assertRaisesMessage(ValueError, 'Meeting.committee" must be a "Committee" instance.'):
+            testMeeting = Meeting()
+            testMeeting.committee = "Hello"
+            testMeeting.liaison = 1234
+            testMeeting.date = "2016-10-20"
+            testMeeting.description = 'a' * 500
+            testMeeting.full_clean()
+            testMeeting.save()
+            testMeeting.members_attending.add(self.person1)
+            testMeeting.save()
+
+    '''
+       Name:           test_invalid_committee_cannot_be_null
+       Function:       Verifies that the meeting is not saved to DB when committee is null
+       '''
+    def test_invalid_committee_cannot_be_null(self):
+        with self.assertRaisesMessage(ValidationError, 'This field cannot be null.'):
             testMeeting = Meeting()
             testMeeting.committee = None
             testMeeting.liaison = 1234
@@ -78,7 +94,6 @@ class MeetingTests(TestCase):
             testMeeting.save()
             testMeeting.members_attending.add(self.person1)
             testMeeting.save()
-
     '''
     Name:           test_valid_liaison_is_saved_to_db
     Function:       Verifies that the liaison is a valid number ( not exceeding 10 digits)

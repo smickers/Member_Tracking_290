@@ -7,16 +7,18 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 # Create your views here.
 
-
+# Class: MeetingCreation
+# Purpose: Links our creation form to a meeting to be shown when the user
+# wants to create a new meeting
 class MeetingCreation(CreateView):
-    # Link GrievanceAward to the appropriate grievance award form
+    # Link Meeting to the appropriate meeting form
     model = Meeting
     form_class = MeetingForm
     form = MeetingForm()
 
 
-# Class: GrievanceAwardCreationSuccess
-# Purpose: The view that is shown upon successfully creating a grievance award.
+# Class: MeetingSuccess
+# Purpose: The view that is shown upon successfully creating a meeting
 class MeetingSuccess(DetailView):
     # Define the model
     model = Meeting

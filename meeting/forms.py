@@ -3,7 +3,8 @@ from .models import Meeting
 from datetime import date
 from django import forms
 
-
+# Class: MeetingForm
+# Purpose: Puts together a form for creating a meeting
 class MeetingForm(ModelForm):
     def __init__(self, *args, **kwargs):
 
