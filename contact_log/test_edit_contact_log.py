@@ -89,7 +89,7 @@ class ContactLogEditTests(TestCase):
         self.person3.save()
 
         # Set up the contact log to be edited
-        self.cLog.relatedMember = self.person1
+        self.cLog.member = self.person1
         self.cLog.date = 'Feb 12 2017'
         self.cLog.description = 'Hello world!'
         self.cLog.full_clean()
@@ -98,7 +98,7 @@ class ContactLogEditTests(TestCase):
     # Test that a valid member can be associated with a contact log
     # Input: Set person2 to be cLog's related member
     def test_validate_related_member_valid(self):
-        self.cLog.relatedMember = self.person2
+        self.cLog.member = self.person2
         self.cLog.full_clean()
         self.cLog.save()
         self.assertTrue(True)
@@ -107,7 +107,7 @@ class ContactLogEditTests(TestCase):
     # Input: Set person4 to be cLog's related member
     def test_validate_related_member_invalid(self):
         with(self.assertRaisesRegexp(ValidationError, "A valid member must be associated with a contact log!")):
-            self.cLog.relatedMember = self.person4
+            self.cLog.member = self.person4
             self.cLog.full_clean()
             self.cLog.save()
 
@@ -115,7 +115,7 @@ class ContactLogEditTests(TestCase):
     # Input: Set cLog's related member to be nobody!
     def test_validate_no_related_member(self):
         with(self.assertRaisesRegexp(ValidationError, "A valid member must be associated with a contact log!")):
-            self.cLog.relatedMember = None
+            self.cLog.member = None
             self.cLog.full_clean()
             self.cLog.save()
 
@@ -145,9 +145,18 @@ class ContactLogEditTests(TestCase):
         self.assertTrue(True)
 
     # Test that a contact log cannot be saved with a description > 150 chars
-    # Input: Set cLog's description to 160 a's
+    # Input: Set cLog's description to 151 a's
     def test_validate_contact_log_description_invalid(self):
         with(self.assertRaisesRegexp(ValidationError, "The description must be 150 characters or less!")):
-            self.cLog.description = 'a' * 160
+            self.cLog.description = 'a' * 151
             self.cLog.full_clean()
             self.cLog.save()
+
+    #todo
+    # Test that a contact log's description can be updated
+    # Input: Set cLog's description to be 150 a's
+    def test_validate_contact_log_description_valid_boundary(self):
+        self.cLog.description = 'a' * 150
+        self.cLog.full_clean()
+        self.cLog.save()
+        self.assertTrue(True)

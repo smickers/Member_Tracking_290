@@ -2,6 +2,7 @@
 # November 7, 2016
 from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
+from add_member.models import Person
 
 
 import datetime
@@ -15,51 +16,9 @@ from .validators import *
 class contactLog(models.Model):
     # A contact log will include a memberID, date of contact,
     # and description
-    memberID = models.IntegerField(validators=[validate_memberID], blank=True, null=True)
+    member = models.ForeignKey(Person, validators=[validate_member], blank=True, null=True)
     date = models.DateField()
     description = models.CharField(max_length=150, blank=True, null=True)
-
-    # Function: validateDate
-    # Purpose: Takes in a date, and ensures
-    # that the entered date is valid.
-    # Parameters:
-    # self - the calling object
-    # toCheck - the entered date to validate
-    # Returns: true/false, depending on whether the
-    # date was valid or not
-    def validateDate(self, toCheck):
-        try:
-            datetime.strptime(toCheck, '%Y-%m-%d')
-            return True
-        except ValueError:
-            return False
-
-    # Function: validateMemberID
-    # Purpose: Verifies that the member ID for the current object
-    # is a valid member ID (meets integer requirements for now)
-    # Parameters:
-    # self - the calling object
-    # Returns: N/A
-    def validateMemberID(self):
-        if self.memberID:
-            if self.memberID > 999999999:
-                raise ValueError("Member ID must be 9 digits or less!")
-            elif self.memberID < 1:
-                raise ValueError("Member ID must be a positive number!")
-
-    # Function: validateDescription
-    # Purpose: Verifies that the description for the current object
-    # Parameters:
-    # self - the calling object
-    # Returns: N/A
-    def validateDescription(self):
-        if self.description:
-            if not self.validateDate(str(self.date)):
-                raise ValueError("An invalid date was entered!")
-            # Contact description validation
-            if self.description:
-                if len(self.description) > 150:
-                    raise ValueError("The description is limited to 150 characters!")
 
     # Function: clean
     # Purpose: Ensures all variables in this object
@@ -70,14 +29,14 @@ class contactLog(models.Model):
     # Returns: Nothing, but can throw an exception
     # if a value doesn't meet its requirements.
     def clean(self):
-
+        print "I'm here!"
         #Member ID validation
-        self.validateMemberID()
+        #self.validateMemberID()
         # Date validation
-        if not self.validateDate(str(self.date)):
-            raise ValueError("An invalid date was entered!")
+        #if not self.validateDate(str(self.date)):
+            #raise ValueError("An invalid date was entered!")
         # Contact description validation
-        self.validateDescription()
+        #self.validateDescription()
 
     # Function: get_absolute_url
     # Purpose: Returns a URL to redirect the user to after submitting

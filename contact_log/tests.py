@@ -10,7 +10,7 @@ class ContactLogTests(TestCase):
     # Expected return: true
     def test_validateDateOne(self):
         tempCLog = contactLog()
-        tempCLog.memberID = 1
+        tempCLog.member = 1
         tempCLog.description = 'Hello World'
         tempCLog.date = '2016-01-01'
         self.assertTrue(tempCLog.validateDate(tempCLog.date))
@@ -20,7 +20,7 @@ class ContactLogTests(TestCase):
     # Expected return: true
     def test_validateDateTwo(self):
         tempCLog = contactLog()
-        tempCLog.memberID = 1
+        tempCLog.member = 1
         tempCLog.description = 'Hello World'
         tempCLog.date = '2016-12-12'
         self.assertTrue(tempCLog.validateDate(tempCLog.date))
@@ -30,7 +30,7 @@ class ContactLogTests(TestCase):
     # Expected return: false
     def test_validateDateThree(self):
         tempCLog = contactLog()
-        tempCLog.memberID = 1
+        tempCLog.member = 1
         tempCLog.description = 'Hello World'
         tempCLog.date = 'January 1, 2016'
         self.assertFalse(tempCLog.validateDate(tempCLog.date))
@@ -40,7 +40,7 @@ class ContactLogTests(TestCase):
     # Expected return: false
     def test_validateDateFour(self):
         tempCLog = contactLog()
-        tempCLog.memberID = 1
+        tempCLog.member = 1
         tempCLog.description = 'Hello World'
         tempCLog.date = '30-02-2016'
         self.assertFalse(tempCLog.validateDate(tempCLog.date))
@@ -50,7 +50,7 @@ class ContactLogTests(TestCase):
     # Expected return: false
     def test_validateDateFive(self):
         tempCLog = contactLog()
-        tempCLog.memberID = 1
+        tempCLog.member = 1
         tempCLog.description = 'Hello World'
         tempCLog.date = '29-02-2015'
         self.assertFalse(tempCLog.validateDate(tempCLog.date))
@@ -60,7 +60,7 @@ class ContactLogTests(TestCase):
     # Expected return: true
     def test_validateDateSix(self):
         tempCLog = contactLog()
-        tempCLog.memberID = 1
+        tempCLog.member = 1
         tempCLog.description = 'Hello World'
         tempCLog.date = '2016-01-30'
         self.assertTrue(tempCLog.validateDate(tempCLog.date))
@@ -70,7 +70,7 @@ class ContactLogTests(TestCase):
     #Expected result: No error
     def test_validateDescriptionOne(self):
         tempCLog = contactLog()
-        tempCLog.memberID = 1
+        tempCLog.member = 1
         tempCLog.description = ''
         tempCLog.date = '2016-01-01'
         try:
@@ -84,7 +84,7 @@ class ContactLogTests(TestCase):
     # Expected result: No error
     def test_validateDescriptionTwo(self):
         tempCLog = contactLog()
-        tempCLog.memberID = 1
+        tempCLog.member = 1
         tempCLog.description = '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678'
         tempCLog.date = '2016-01-01'
         try:
@@ -99,7 +99,7 @@ class ContactLogTests(TestCase):
     # Expected result: No error
     def test_validateDescriptionThree(self):
         tempCLog = contactLog()
-        tempCLog.memberID = 1
+        tempCLog.member = 1
         tempCLog.description = '012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'
         tempCLog.date = '2016-01-01'
         try:
@@ -114,7 +114,7 @@ class ContactLogTests(TestCase):
     # Expected result: An error occurs
     def test_validateDescriptionFour(self):
         tempCLog = contactLog()
-        tempCLog.memberID = 1
+        tempCLog.member = 1
         tempCLog.description = 'A012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'
         tempCLog.date = '2016-01-01'
         try:
@@ -128,7 +128,7 @@ class ContactLogTests(TestCase):
     # Expected result: All checks pass
     def test_validatememberIDOne(self):
         tempCLog = contactLog()
-        tempCLog.memberID = None
+        tempCLog.member = None
         tempCLog.description = ''
         tempCLog.date = '2016-01-01'
         try:
@@ -142,7 +142,7 @@ class ContactLogTests(TestCase):
     # Expected result: All checks pass
     def test_validatememberIDTwo(self):
         tempCLog = contactLog()
-        tempCLog.memberID = '0'
+        tempCLog.member = '0'
         tempCLog.description = 'A'
         tempCLog.date = '2016-01-01'
         try:
@@ -156,7 +156,7 @@ class ContactLogTests(TestCase):
     # Expected result: All checks pass
     def test_validatememberIDThree(self):
         tempCLog = contactLog()
-        tempCLog.memberID = 1
+        tempCLog.member = 1
         tempCLog.description = 'A'
         tempCLog.date = '2016-01-01'
         try:
@@ -171,7 +171,7 @@ class ContactLogTests(TestCase):
     # Expected result: All checks pass
     def test_validatememberIDFour(self):
         tempCLog = contactLog()
-        tempCLog.memberID = 999999999
+        tempCLog.member = 999999999
         tempCLog.description = 'A'
         tempCLog.date = '2016-01-01'
         try:
@@ -186,7 +186,7 @@ class ContactLogTests(TestCase):
     # Expected result: All checks pass
     def test_validatememberIDFive(self):
         tempCLog = contactLog()
-        tempCLog.memberID = 1000000000
+        tempCLog.member = 1000000000
         tempCLog.description = 'A'
         tempCLog.date = '2016-01-01'
         try:

@@ -5,6 +5,10 @@ from .models import contactLog
 from .forms import ContactLogForm
 from django.http import HttpResponse
 from django.template import loader
+from drf_haystack.viewsets import HaystackViewSet
+from add_member.serializer import MemberSearchSerializer
+from drf_haystack.filters import HaystackAutocompleteFilter
+from add_member.models import Person
 
 # View success
 # Purpose: This view will be called whenever a contact log has
@@ -25,3 +29,11 @@ class ContactLogCreate(CreateView):
     model = contactLog
     form_class = ContactLogForm
 
+class CaseSearchView(HaystackViewSet):
+    """
+    View that connects the Member search serializer.
+    This view will then be used by restframework for routing into a browsable url
+    """
+    index_models = [Person]
+    serializer_class = MemberSearchSerializer
+    filter_backends = [HaystackAutocompleteFilter]

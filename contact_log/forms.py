@@ -36,21 +36,20 @@ class ContactLogForm(ModelForm):
 
         # Specifying the fields to be shown in the form
         fields = [
-            'memberID',
+            'member',
             'date',
             'description',
         ]
 
         # Giving labels to fields defined above
         labels = {
-            'memberID' : 'Saskpolytech ID',
+            'member' : 'Saskpolytech ID',
             'date' : 'Date of Contact',
             'description' : 'Contact Description'
         }
 
         # Defining a number input for the memberID
         widgets = {
-            'memberID' : NumberInput(attrs={'min':1,'max':999999999}),
             'date': SelectDateWidget(months=MONTHS, years=range(1959, datetime.now().year + 1))
         }
 
