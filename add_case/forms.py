@@ -1,17 +1,13 @@
-from django.forms import ModelForm, NumberInput, ValidationError, SelectDateWidget
-from .models import Case
-from django import  forms
 from datetime import date
-from django.forms import ModelForm, SelectDateWidget
+from django.forms import ModelForm, SelectDateWidget, ModelMultipleChoiceField
 from .models import *
 from django import forms
 from .fields import ListTextWidget
-import re
+from spfa_mt import kvp
 
 
 # Creating the Form data for Cases ...
 class CaseForm(ModelForm):
-
 
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
@@ -26,22 +22,6 @@ class CaseForm(ModelForm):
         # include the end range value
         YEARS = range(date.today().year - 5, date.today().year + 6)
         YEARS.sort()
-
-        # Define months so they're entered as three letters
-        MONTHS = {
-            1: 'Jan',
-            2: 'Feb',
-            3: 'Mar',
-            4: 'Apr',
-            5: 'May',
-            6: 'Jun',
-            7: 'Jul',
-            8: 'Aug',
-            9: 'Sep',
-            10: 'Oct',
-            11: 'Nov',
-            12: 'Dec'
-        }
 
         fields = '__all__'
         labels = {
@@ -60,14 +40,14 @@ class CaseForm(ModelForm):
         }
 
         widgets = {
-             'date': SelectDateWidget(months=MONTHS, years=YEARS),
-            'complainant': forms.Select(
+             'date': SelectDateWidget(months=kvp.MONTHS.iteritems(), years=YEARS),
+             'complainant': forms.Select(
                 attrs={'class': 'js-complainant', 'style': 'width:65%;'}),
-            'additionalMembers': forms.SelectMultiple(
+             'additionalMembers': forms.SelectMultiple(
                 attrs={'class': 'js-additional_members', 'style': 'width:65%'}),
-            'program': forms.Select(
+             'program': forms.Select(
                 attrs={'style': 'width:50%;'}
-            )
+             )
         }
 
         error_messages = {
@@ -80,3 +60,33 @@ class CaseForm(ModelForm):
                 'invalid_choice': "Complainant cannot be added as an additional member."
             }
         }
+
+
+class CaseMembersForm(ModelForm):
+    class Meta:
+        model = Case
+        fields = ('additionalMembers', 'additionalNonMembers')
+
+    # field from which you will pick additional members to add to the case, after the case has
+    # been created.
+    additionalMembers = ModelMultipleChoiceField(queryset=(), to_field_name="pk", label='Members', required=False)
+
+    # constructor method.
+    def __init__(self, **kwargs):
+        super(CaseMembersForm, self).__init__(**kwargs)
+        self.fields['additionalMembers'].queryset = Person.objects.exclude(case=self.instance)
+
+    # combines the initial and the new set of additional members
+    def clean_additional_members(self):
+        cleaned_data = super(CaseMembersForm, self).clean()
+        cn = cleaned_data.get('complainant')
+        additional_members = cleaned_data.get('additionalMembers')
+        print(additional_members)
+
+        for mem in additional_members:
+            # cn cannot be an additional member
+            if mem and cn and mem is cn:
+                msg = "Complainant cannot be added as an additional member."
+                self.add_error("additionalMembers", msg)
+                # raise ValidationError("Complainant cannot be added as an additional member.")
+        return self.initial['additionalMembers'] | self.cleaned_data['additionalMembers']

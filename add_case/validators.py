@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 import re
 import datetime
-
+from spfa_mt import kvp
 
 def validate_date(value):
     data = value
@@ -18,19 +18,8 @@ def validate_status(value):
         data = 'OPEN'
         return data
 
-    status = [
-        "OPEN",
-        "CLOSED",
-        "PENDING",
-        "ACTION REQ'D - MGMT",
-        "ACTION REQ'D SPFA"
-    ]
 
-    for val in status:
-        if val == data:
-            found = True
-
-    if not found:
+    if not kvp.STATUS_CHOICES.__contains__(data):
         raise ValidationError("Must enter a valid status")
 
     return data
@@ -39,23 +28,7 @@ def validate_status(value):
 def validate_case_type(value):
     data = value
 
-    types = [
-        "GRIEVANCES - INDIVIDUAL",
-        "GRIEVANCES - GROUP",
-        "GRIEVANCES - POLICY",
-        "GRIEVANCES - CLASSIFICATION",
-        "GRIEVANCES - COMPLAINTS",
-        "DISABILITY CLAIMS",
-        "ARBITRATION",
-        "COMPLAINT"
-    ]
-
-    found = False
-    for val in types:
-        if val == data:
-            found = True
-
-    if found is False:
+    if not kvp.TYPE_CHOICES.__contains__(data):
         raise ValidationError("Must enter a valid case type")
 
     return data
@@ -68,19 +41,7 @@ Returns:    The data
 def validate_location(value):
     data = value
 
-    locations = [
-        "Saskatoon",
-        "Regina",
-        "MJ",
-        "PA"
-    ]
-
-    found = False
-    for val in locations:
-        if val == data:
-            found = True
-
-    if found is False:
+    if not kvp.CAMPUS_CHOICES.__contains__(data):
         raise ValidationError("Must select a valid location")
 
     return data
@@ -93,23 +54,7 @@ Returns:    The data
 def validate_department(value):
     data = value
 
-    departments = [
-        "Learning Technologies",
-        "ILDC",
-        "Library",
-        "PLAR",
-        "Simulation Lab",
-        "Student Development",
-        "Learning Services",
-        "Fitness Centre"
-    ]
-
-    found = False
-    for val in departments:
-        if val == data:
-            found = True
-
-    if found is False:
+    if not kvp.DEPARTMENT_CHOICES.__contains__(data):
         raise ValidationError("Must select a valid department")
 
     return data
@@ -121,25 +66,7 @@ def validate_department(value):
 def validate_school(value):
     data = value
 
-    schools = [
-        "School of Business",
-        "School of Construction",
-        "School of Health Sciences",
-        "School of Human Services and Community Safety",
-        "School of Information and Communications Technology",
-        "School of Mining, Energy and Manufacturing",
-        "School of Natural Resources and Built Environment",
-        "School of Nursing",
-        "School of Transportation",
-        "Other",
-    ]
-
-    found = False
-    for val in schools:
-        if val == data:
-            found = True
-
-    if found is False:
+    if not kvp.SCHOOL_CHOICES.__contains__(data):
         raise ValidationError("Must select a valid school")
 
     return data

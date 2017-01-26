@@ -2,7 +2,8 @@ from django.shortcuts import render
 from .models import Case
 from .forms import CaseForm
 from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import *
+from django.views.generic.edit import *
 from drf_haystack.viewsets import HaystackViewSet
 from serializer import CaseSearchSerializer
 from drf_haystack.filters import HaystackAutocompleteFilter
@@ -12,6 +13,7 @@ from django.core.exceptions import ValidationError
 class CaseCreate(CreateView):
     model = Case
     form_class = CaseForm
+
 
 class CaseSearchView(HaystackViewSet):
     """
@@ -35,3 +37,25 @@ class CaseSearchView(HaystackViewSet):
         # print request.GET
         return context
         """
+
+
+class UpdateCaseView(UpdateView):
+    model = Case
+    form_class = CaseForm
+
+
+#view for displaying individual member info
+class CaseDetail(DetailView):
+    model = Case
+    template_name = 'cases/cases_detail.html'
+
+    def get_context_data(self, **kwargs):
+        request = self.request
+        context = super(CaseDetail, self).get_context_data(**kwargs)
+        print request.POST
+        return context
+
+#view for listing all the members found in the db
+class CaseList(ListView):
+    model = Case
+    template_name = 'cases/cases_list.html'
