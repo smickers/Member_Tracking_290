@@ -3,8 +3,10 @@ from add_member.models import Person
 from add_case.models import Case
 from django.db import models
 import validators
+from spfa_mt.settings import MAX_FILE_SIZE, FILE_EXT_TO_ACCEPT
 from django.core.urlresolvers import reverse
 from datetime import date
+from django.core.exceptions import ValidationError
 
 class GrievanceFilesManager(models.Manager):
     def get_files(self, instance):
@@ -57,11 +59,25 @@ class GrievanceAward(models.Model):
 
 
 class GrievanceFiles(models.Model):
+    """
+        Model wrapper for the file uploaded associated with grievance information
+    """
+
     date_uploaded = models.DateTimeField(auto_now=True,blank=True,null=True)
     file = models.FileField(upload_to='grievance/',blank=True,null=True)
     award = models.ForeignKey(GrievanceAward,blank=True,null=True)
     description = models.CharField(max_length=50,blank=True,null=True)
 
     def clean(self):
+        """
+            Responsible for validating/cleaning files.
+            Raises exception if problem occurs
+        """
         super(GrievanceFiles, self).clean()
-        print(self.file.__dict__)
+        if(self.file.size > MAX_FILE_SIZE):
+            """Check if the uploaded file has a valid file size"""
+            raise ValidationError("File is too large")
+
+        if(self.file.name.split(".")[-1] not in FILE_EXT_TO_ACCEPT):
+            """ Check if the uploaded file has a valid file extension """
+            raise ValidationError("Invalid File Extension")

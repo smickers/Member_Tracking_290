@@ -169,10 +169,10 @@ FILE_EXT_TO_ACCEPT_STR = ',.'.join(FILE_EXT_TO_ACCEPT)
 
 MAX_FILE_SIZE = 524288000
 
-MEDIA_ROOT = 'files/'
+MEDIA_ROOT = 'media/'
 
 
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 
 
 
@@ -181,10 +181,3 @@ FILE_UPLOAD_HANDLERS = ["filehandlersample.filehandler.ValidateUploadSize",
     "django.core.files.uploadhandler.MemoryFileUploadHandler",
  "django.core.files.uploadhandler.TemporaryFileUploadHandler"]
 
-#For caching purposes
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': 'c:/foo/',
-    }
-}
