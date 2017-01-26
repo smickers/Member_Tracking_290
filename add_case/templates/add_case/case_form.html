@@ -10,7 +10,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     {% load bootstrap3 %}
-    {% bootstrap_messages %}
        <script type="text/javascript">
             $(document).ready(function() {
                 $("#id_department").hide();
@@ -52,7 +51,8 @@
                     {
                         return {
                             q: params.term, //The term to be sent
-                            offset: (params.page ) * 10 //Which page of the REST page will be loaded
+                            offset: (params.page ) * 10, //Which page of the REST page will be loaded
+                            id__not: $("#id_complainant").val()
                         }
                     },
                     processResults: function (data, params) {
@@ -85,22 +85,70 @@
                         $("label[for='id_program']").show();
                     }
                 });
+
+                // Set up functionality to ensure that the complainant cannot be selected
+                // as an additional member
+                $("#id_additionalMembers").change(function()
+                {
+                    // Double check to make sure current users aren't the complainant
+                    var currComplainant = $("#id_complainant").val();
+                    // Using a convoluted foreach loop to do this
+                    var newValues = [];
+                    if ($(this).val() !== null)
+                    {
+                       $(this).val().forEach(function(value, index)
+                        {
+                            // Push valid values onto a new array
+                            if (value !== currComplainant)
+                            {
+                                // Push the user onto an array if they aren't the complainant
+                                newValues.push(value);
+                            }
+                            else
+                            {
+                                // If user is the current complainant, then remove them
+                                // from the list of additional members
+                                $("#id_additionalMembers option").filter("[value='" + currComplainantID + "']").remove();
+                            }
+                        });
+                    }
+
+                    // Now update the values listed
+                    $(this).val(newValues);
+                });
+
+                // Setting up a variable to be used in the below onchange listener
+                var currComplainantID = -1;
+
+                $("#id_complainant").change(function()
+                {
+                    // Make sure that this member doesn't show up in the list of additional members
+                    currComplainantID = $(this).val();
+
+                    // Now update the query to be run, and remove this person from the current
+                    // list of additional members
+                    // This code is courtesy of:
+                    // http://stackoverflow.com/questions/7375491/jquery-select-remove-option
+                    $("#id_additionalMembers option").filter("[value='" + currComplainantID + "']").remove();
+                });
             });
 
 
      </script>
 </head>
 <body>
-
-    <form action="" method="POST" class="form" enctype="multipart/form-data">
+    <h1><strong>Create a Case</strong></h1>
+    <form class="form form-group" action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
+        {% bootstrap_form_errors form type='fields' %}
+        {% bootstrap_form_errors form type='non_fields' %}
         {% bootstrap_form form %}
-        {% bootstrap_form_errors form %}
+
         {% buttons %}
-            <center>
-            <button class="btn btn-primary" type="submit" style="width: 49%">Submit</button>
-            <button class="btn btn-warning" type="reset" style="width: 49%">Reset</button>
-            </center>
+            <input type="submit" class="btn btn-secondary" name="submit" value="Submit" style="width:15%;
+            margin-left:10%; border: 1px black solid;" />
+            <input type="reset" class="btn btn-secondary" name="reset" value="Reset" style="width:15%;
+            border: 1px black solid;" />
         {% endbuttons %}
     </form>
 </body>

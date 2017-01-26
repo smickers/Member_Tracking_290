@@ -25,10 +25,10 @@ class CasePrograms(models.Model):
     def __str__(self):
         return self.name
 
-'''
-Name:       Case
-Purpose:    This is the model for the case. This is used by the web page to help generate the form. And saves data to the DB.
-'''
+
+# Name:       Case
+# Purpose:    This is the model for the case. This is used by the web page to help generate the form.
+#               Also saves data to the DB.
 class Case(models.Model):
     CAMPUS_CHOICES = [
         ('Saskatoon', 'Saskatoon'),
@@ -95,19 +95,43 @@ class Case(models.Model):
     logs = models.TextField(blank=True, null=True)
     date = models.DateField(blank=True, null=True, default=datetime.date.today, validators=[validate_date])
 
+    # Default get_absolute_url method
     def get_absolute_url(self):
         return reverse(viewname='cases:case_detail', kwargs={'pk': self.pk})
 
 
+    # clean method
+    # Purpose: Clean data before saving it to the database.
     def clean(self):
         if len(self.status) == 0:
             self.status = 'OPEN'
         if self.program is not None:
             self.department = None
 
+    # Default __str__ method
     def __str__(self):
         return self.complainant.__str__() + ' - ' + self.date.__str__()
+
+
 
 class CaseMembers(models.Model):
     caseNum = models.CharField(max_length=9)
     memberNum = models.TextField()
+
+
+#NO LONGER IN S25: Signal for back-end validation
+# @receiver(m2m_changed, sender=Case.additionalMembers.through)
+# def additional_member_signal(sender, **kwargs):
+#     #print("----------------- SIGNAL CALLED -----------------------")
+#     #print("ARGS: " + kwargs.__str__())
+#     pks = kwargs.pop('pk_set', None)
+#     instance = kwargs.pop('instance', None)
+#     complainant = instance.complainant
+#     #print (pks)
+#     #print "Sender: "
+#     #print vars(sender)
+#     #print "Complainant: "
+#     #print vars(complainant)
+#     validate_additional_members(complainant, pks)
+#     #pass
+

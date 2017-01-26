@@ -19,4 +19,10 @@ class CaseDetail(DetailView):
     model = Case
     template_name = 'cases/cases_detail.html'
 
+    def get_context_data(self, **kwargs):
+        request = self.request
+        context = super(CaseDetail, self).get_context_data(**kwargs)
+        print request.POST
+        return context
+
 
