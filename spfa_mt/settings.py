@@ -153,3 +153,4 @@ STATIC_URL = '/static/'
 
 #this will cause haystack to update its indexes in realtime
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+

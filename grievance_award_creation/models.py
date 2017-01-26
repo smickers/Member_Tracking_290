@@ -14,7 +14,6 @@ class GrievanceAward(models.Model):
         ('M', 'Member'),
         ('P', 'Policy')
     ]
-
     # Object properties
     grievanceType = models.CharField(max_length=1, choices=GRIEVANCE_TYPES, validators=[validators.validate_grievance_type], default='M')
     recipient = models.ForeignKey(Person, validators=[validators.validate_recipient])

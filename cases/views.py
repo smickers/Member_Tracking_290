@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic.edit import  UpdateView
+from django.views.generic.edit import UpdateView
 from django.views.generic import ListView, DetailView
 from cases.forms import CaseMembersForm
 from add_case.models import Case
