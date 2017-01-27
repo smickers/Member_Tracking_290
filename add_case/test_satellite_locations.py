@@ -148,7 +148,11 @@ class CaseTests(TestCase):
         source_code = requests.get('http://127.0.0.1:8000/addCase/')
         soup = BeautifulSoup(source_code.text, "html.parser")
         campus_list = "Saskatoon\nRegina\nMoose Jaw\nPrince Albert"
-        self.assertTrue(soup.text.__contains__(campus_list))
+        RE = "Regina"
+        SK = "Saskatoon"
+        MJ = "Moose Jaw"
+        PA = "Prince Albert"
+        self.assertTrue(soup.text.__contains__(RE) & soup.text.__contains__(SK) & soup.text.__contains__(MJ) & soup.text.__contains__(PA))
 
         # Checking the School list
         school_list = "School of Business\nSchool of Construction\nSchool of Health Sciences\nSchool of Human Services and Community Safety"\

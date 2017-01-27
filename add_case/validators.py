@@ -26,7 +26,7 @@ def validate_status(value):
 def validate_case_type(value):
     data = value
 
-    if kvp.TYPE_CHOICES.__contains__(data):
+    if data not in kvp.TYPE_CHOICES:
         raise ValidationError("Must enter a valid case type")
 
     return data
