@@ -47,7 +47,7 @@ class Case(models.Model):
 
     # Default get_absolute_url method
     def get_absolute_url(self):
-        return reverse(viewname='cases:case_detail', kwargs={'pk': self.pk})
+        return reverse(viewname='add_case:case_detail', kwargs={'pk': self.pk})
 
     # clean method
     # Purpose: Clean data before saving it to the database.
