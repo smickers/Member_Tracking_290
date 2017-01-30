@@ -8,5 +8,6 @@ urlpatterns = [
     # Setting up a base URL for creating a contact log
     url(r'^$', views.ContactLogCreate.as_view(), name='contact_log_add'),
     # A URL entry to redirect the user after submitting a contact log
-    url(r'(?P<pk>[-\d]+)', views.success, name='success')
+    url(r'(?P<pk>[-\d]+)', views.success, name='success'),
+    url(r'^list/$', views.ContactLogList.as_view(), name='contact_log_list')
 ]

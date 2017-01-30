@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2>Contact Logs</h2>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Related Member</th>
+            <th>Date</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for curr_cl in object_list %}
+                <tr>
+                    <td>{{ curr_cl.id }}</td>
+                    <td>{{ curr_cl.member }}</td>
+                    <td>{{ curr_cl.date }}</td>
+                    <td>{{ curr_cl.description }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,6 +1,7 @@
 # SPFA MT CST Project
 # November 7, 2016
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic import ListView
 from .models import contactLog
 from .forms import ContactLogForm
 from django.http import HttpResponse
@@ -29,11 +30,19 @@ class ContactLogCreate(CreateView):
     model = contactLog
     form_class = ContactLogForm
 
-class CaseSearchView(HaystackViewSet):
+class ContactLogUpdate(UpdateView):
+    model = contactLog
+    form_class = ContactLogForm
+
+class ContactLogList(ListView):
+    model = contactLog
+
+
+#class ContactLogSearchView(HaystackViewSet):
     """
     View that connects the Member search serializer.
     This view will then be used by restframework for routing into a browsable url
     """
-    index_models = [Person]
-    serializer_class = MemberSearchSerializer
-    filter_backends = [HaystackAutocompleteFilter]
+    # index_models = [Person]
+    # serializer_class = MemberSearchSerializer
+    # filter_backends = [HaystackAutocompleteFilter]
