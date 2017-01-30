@@ -111,9 +111,9 @@ class GrievanceAwardForm(ModelForm):
             'description' : Textarea(),
             'grievanceType' : RadioSelect(),
             'recipient' : forms.Select(
-                attrs={'class': 'js-recipient'}),
+                attrs={'class': 'js-recipient', 'required':''}),
             'case' : forms.Select(
-                attrs={'class': 'js-case'}),
+                attrs={'class': 'js-case', 'required':''}),
         }
 
 
