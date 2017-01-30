@@ -165,13 +165,9 @@ FILE_EXT_TO_ACCEPT = ['xls', 'xlsx', 'pptx', 'docx', 'csv', 'pdf',
                       'txt', 'msg']
 FILE_EXT_TO_ACCEPT_STR = ',.'.join(FILE_EXT_TO_ACCEPT)
 
-
-
-
 MAX_FILE_SIZE = 524288000
 
 MEDIA_ROOT = 'media/'
-
 
 MEDIA_URL = '/media/'
 
