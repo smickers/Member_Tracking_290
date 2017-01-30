@@ -27,3 +27,15 @@ class MeetingSuccess(DetailView):
         context = super(MeetingSuccess, self).get_context_data(**kwargs)
         return context
 
+# Class: MeetingDetail
+# Purpose: To display the details of a meeting
+class MeetingDetail(DetailView):
+
+# Class: MeetingEditView
+# This class declares the form for the editing a meeting
+class MeetingEditView(UpdateView):
+
+
+# Class: MeetingList
+# This class declares the form to show a list of current meetings
+class MeetingList(ListView):
