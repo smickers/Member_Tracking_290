@@ -1,5 +1,5 @@
 # These are the key value pairs to be used my many different classes
-
+# Non-School Departments @ Sask Polytech:
 DEPARTMENT_CHOICES = {
     "Learning Technologies": "Learning Technologies",
     "ILDC": "ILDC",
@@ -11,6 +11,7 @@ DEPARTMENT_CHOICES = {
     "Fitness Centre": "Fitness Centre"
 }
 
+# Sask Polytech Campuses:
 CAMPUS_CHOICES = {
     'Saskatoon': 'Saskatoon',
     'Regina': 'Regina',
@@ -18,6 +19,7 @@ CAMPUS_CHOICES = {
     'PA': 'Prince Albert',
 }
 
+# Type of Case:
 TYPE_CHOICES = {
     "GRIEVANCES - INDIVIDUAL": "GRIEVANCES - INDIVIDUAL",
     "GRIEVANCES - GROUP": "GRIEVANCES - GROUP",
@@ -29,6 +31,7 @@ TYPE_CHOICES = {
     "COMPLAINT": "COMPLAINT"
 }
 
+# List of available statuses for a Case:
 STATUS_CHOICES = {
     "OPEN": "OPEN",
     "CLOSED": "CLOSED",
@@ -37,6 +40,7 @@ STATUS_CHOICES = {
     "ACTION REQ'D SPFA": "ACTION REQ'D SPFA"
 }
 
+# Options for schools for each campus:
 SCHOOL_CHOICES = {
     "School of Business": "School of Business",
     "School of Construction": "School of Construction",
@@ -50,7 +54,7 @@ SCHOOL_CHOICES = {
     "Other": "Other",
 }
 
-# Define months so they're entered as three letters
+# Define months so they're entered as three letters:
 MONTHS = {
     1: 'Jan',
     2: 'Feb',
