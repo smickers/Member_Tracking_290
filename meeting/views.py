@@ -30,12 +30,17 @@ class MeetingSuccess(DetailView):
 # Class: MeetingDetail
 # Purpose: To display the details of a meeting
 class MeetingDetail(DetailView):
+    model = Meeting
+    template_name = 'meeting/meeting_detail.html'
 
 # Class: MeetingEditView
 # This class declares the form for the editing a meeting
 class MeetingEditView(UpdateView):
-
+    model = Meeting
+    form_class = MeetingForm
 
 # Class: MeetingList
 # This class declares the form to show a list of current meetings
 class MeetingList(ListView):
+    model = Meeting
+    template_name = 'meeting/meeting_list.html'
