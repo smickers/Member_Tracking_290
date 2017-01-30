@@ -1,3 +1,4 @@
+{%  load bootstrap3 %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,11 +41,15 @@
     </script>
 </head>
 <body>
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {% include 'contact_log/form-template.html' %}
-        <button type="submit">Create Contact Log</button>
-        <button type="reset">Reset</button>
-    </form>
+    <div class="container">
+        <h1>Contact Log</h1>
+        <form action="" method="post" enctype="multipart/form-data" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <!--{% include 'contact_log/form-template.html' %}-->
+            <button class="btn btn-success" type="submit">Create Contact Log</button>
+            <button class="btn btn-warning" type="reset">Reset</button>
+        </form>
+    </div>
 </body>
 </html>
