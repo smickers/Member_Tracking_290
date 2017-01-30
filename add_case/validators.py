@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
-import re
 import datetime
 from spfa_mt import kvp
+
 
 def validate_date(value):
     data = value
@@ -11,15 +11,13 @@ def validate_date(value):
 
     return data
 
+
 def validate_status(value):
     data = value
-    found = False
     if data == "":
         data = 'OPEN'
         return data
-
-
-    if not kvp.STATUS_CHOICES.__contains__(data):
+    if data not in kvp.STATUS_CHOICES:
         raise ValidationError("Must enter a valid status")
 
     return data
@@ -28,16 +26,15 @@ def validate_status(value):
 def validate_case_type(value):
     data = value
 
-    if not kvp.TYPE_CHOICES.__contains__(data):
+    if data not in kvp.TYPE_CHOICES:
         raise ValidationError("Must enter a valid case type")
 
     return data
 
-'''
-Name:       validate_location
-Function:   Ensures that the location is a part of the location listing.
-Returns:    The data
-'''
+
+# Name:       validate_location
+# Function:   Ensures that the location is a part of the location listing.
+# Returns:    The data
 def validate_location(value):
     data = value
 
@@ -46,11 +43,10 @@ def validate_location(value):
 
     return data
 
-'''
-Name:       validate_departments
-Function:   Ensures that the department is a part of the department listing.
-Returns:    The data
-'''
+
+# Name:       validate_departments
+# Function:   Ensures that the department is a part of the department listing.
+# Returns:    The data
 def validate_department(value):
     data = value
 
@@ -78,4 +74,3 @@ def validate_school(value):
 #     for curr_member in additional_members:
 #         if curr_member == complainant.id:
 #             raise ValidationError("Complainant cannot be added as an additional member.")
-

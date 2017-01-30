@@ -6,20 +6,20 @@
 </head>
 <body>
     <h1>Lead: {{ object.lead }}</h1>
-    <p>Complainant: {{ object.complainant }}</p><br>
-
+    <h2><em>Case Type: {{ object.caseType }}</em></h2>  Status: <em>{{ object.status }}</em><br />
+    <h3>Complainant: <em>{{ object.complainant }}</em></h3>
     <h3>Members: </h3>
     {%  for members in object.additionalMembers.all %}
         <p>
-            <strong>{{ members.memberID }}</strong>: {{ members.firstName }}
+            <strong>{{ members.memberID }}</strong>: {{ members.firstName }} {{ members.lastName }}
         </p>
     {% empty %}
         <p>
             No members associated
         </p>
     {% endfor %}
-
-    <a href="{%  url 'add_case:case_add' %}">Add New Case</a></br>
-    <a href="{%  url 'cases:case_list' %}">View All Cases</a>
+    <a href="{% url 'add_case:case_edit' object.pk %}">Edit This Case</a><br />
+    <a href="{%  url 'add_case:case_add' %}">Add New Case</a><br />
+    <a href="{%  url 'add_case:case_list' %}">View All Cases</a>
 </body>
 </html>

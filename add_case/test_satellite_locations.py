@@ -148,26 +148,30 @@ class CaseTests(TestCase):
         source_code = requests.get('http://127.0.0.1:8000/addCase/')
         soup = BeautifulSoup(source_code.text, "html.parser")
         campus_list = "Saskatoon\nRegina\nMoose Jaw\nPrince Albert"
-        self.assertTrue(soup.text.__contains__(campus_list))
+        RE = "Regina"
+        SK = "Saskatoon"
+        MJ = "Moose Jaw"
+        PA = "Prince Albert"
+        self.assertTrue(soup.text.__contains__(RE) & soup.text.__contains__(SK) & soup.text.__contains__(MJ) & soup.text.__contains__(PA))
 
         # Checking the School list
-        school_list = "School of Business\nSchool of Construction\nSchool of Health Sciences\nSchool of Human Services and Community Safety"\
-            "\nSchool of Information and Communications Technology\nSchool of Mining, Energy and Manufacturing"\
-            "\nSchool of Natural Resources and Built Environment\nSchool of Nursing\nSchool of Transportation\nOther"
-        self.assertTrue(soup.text.__contains__(school_list))
+        self.assertTrue(soup.text.__contains__("School of Business") & soup.text.__contains__("School of Construction") & soup.text.__contains__("School of Health Sciences") \
+            & soup.text.__contains__("School of Human Services and Community Safety") & soup.text.__contains__("School of Information and Communications Technology") \
+            & soup.text.__contains__("School of Mining, Energy and Manufacturing") & soup.text.__contains__("School of Natural Resources and Built Environment") \
+            & soup.text.__contains__("School of Nursing") & soup.text.__contains__("School of Transportation") & soup.text.__contains__("Other"))
 
         # Checking the Department list
-        department_list = "Learning Technologies\nILDC\nLibrary\nPLAR\nSimulation Lab\nStudent Development\nLearning Services\nFitness Centre"
-        self.assertTrue(soup.text.__contains__(department_list))
+        self.assertTrue(soup.text.__contains__("Learning Technologies") & soup.text.__contains__("ILDC") & soup.text.__contains__("Library") & soup.text.__contains__("PLAR")
+            & soup.text.__contains__("Simulation Lab") & soup.text.__contains__("Student Development") & soup.text.__contains__("Learning Services") & soup.text.__contains__("Fitness Centre"))
 
         # Checking the type list
-        type_list = "GRIEVANCES - INDIVIDUAL\nGRIEVANCES - GROUP\nGRIEVANCES - POLICY\nGRIEVANCES - CLASSIFICATION"\
-            "\nGRIEVANCES - COMPLAINTS\nDISABILITY CLAIMS\nARBITRATION\nCOMPLAINT"
-        self.assertTrue(soup.text.__contains__(type_list))
+        self.assertTrue(soup.text.__contains__("GRIEVANCES - INDIVIDUAL") & soup.text.__contains__("GRIEVANCES - GROUP") & soup.text.__contains__("GRIEVANCES - POLICY") \
+            & soup.text.__contains__("GRIEVANCES - CLASSIFICATION") & soup.text.__contains__("GRIEVANCES - COMPLAINTS") & soup.text.__contains__("DISABILITY CLAIMS") \
+            & soup.text.__contains__("ARBITRATION") & soup.text.__contains__("COMPLAINT"))
 
         # Checking the status list
-        status_list = "OPEN\nCLOSED\nPENDING\nACTION REQ'D - MGMT\nACTION REQ'D SPFA"
-        self.assertTrue(soup.text.__contains__(status_list))
+        self.assertTrue(soup.text.__contains__("OPEN") & soup.text.__contains__("CLOSED") & soup.text.__contains__("PENDING") & soup.text.__contains__("ACTION REQ'D - MGMT") \
+            & soup.text.__contains__("ACTION REQ'D SPFA"))
 
 
     '''
