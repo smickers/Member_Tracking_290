@@ -30,7 +30,7 @@ class ContactLogCreate(CreateView):
     model = contactLog
     form_class = ContactLogForm
 
-class ContactLogUpdate(UpdateView):
+class ContactLogEdit(UpdateView):
     model = contactLog
     form_class = ContactLogForm
 

@@ -90,7 +90,7 @@ class ContactLogEditTests(TestCase):
 
         # Set up the contact log to be edited
         self.cLog.member = self.person1
-        self.cLog.date = 'Feb 12 2017'
+        self.cLog.date = '2017-02-12'
         self.cLog.description = 'Hello world!'
         self.cLog.full_clean()
         self.cLog.save()
@@ -106,23 +106,23 @@ class ContactLogEditTests(TestCase):
     # Test that an invalid member cannot be associated with a contact log
     # Input: Set person4 to be cLog's related member
     def test_validate_related_member_invalid(self):
-        with(self.assertRaisesRegexp(ValidationError, "A valid member must be associated with a contact log!")):
-            self.cLog.member = self.person4
+        with self.assertRaisesMessage(Person.DoesNotExist, "Person matching query does not exist."):
+            self.cLog.member = Person.objects.get(firstName='A ridiculous first name!')
             self.cLog.full_clean()
             self.cLog.save()
 
-    # Test that a contact log cannot be saved without a related member
+    # Test that a contact log can be saved without a related member
     # Input: Set cLog's related member to be nobody!
     def test_validate_no_related_member(self):
-        with(self.assertRaisesRegexp(ValidationError, "A valid member must be associated with a contact log!")):
-            self.cLog.member = None
-            self.cLog.full_clean()
-            self.cLog.save()
+        self.cLog.member = None
+        self.cLog.full_clean()
+        self.cLog.save()
+        self.assertTrue(True)
 
     # Test that a contact log's date can be changed
     # Input: Set cLog's contact date to be Feb 15 2017
     def test_validate_contact_date_valid(self):
-        self.cLog.date = '15 Feb 2017'
+        self.cLog.date = '2017-02-15'
         self.cLog.full_clean()
         self.cLog.save()
         self.assertTrue(True)
@@ -131,8 +131,8 @@ class ContactLogEditTests(TestCase):
     # Test that a contact log cannot be saved with an invalid date
     # Input: Set cLog's contact date to Feb 31 2017
     def test_validate_contact_date_invalid(self):
-        with(self.assertRaisesRegexp(ValidationError, "A valid date must be entered!")):
-            self.cLog.date = '31 Feb 2017'
+        with(self.assertRaises(ValidationError)):
+            self.cLog.date = '2017-02-31'
             self.cLog.full_clean()
             self.cLog.save()
 
@@ -147,7 +147,7 @@ class ContactLogEditTests(TestCase):
     # Test that a contact log cannot be saved with a description > 150 chars
     # Input: Set cLog's description to 151 a's
     def test_validate_contact_log_description_invalid(self):
-        with(self.assertRaisesRegexp(ValidationError, "The description must be 150 characters or less!")):
+        with(self.assertRaisesMessage(ValidationError, "{'description': [u'Ensure this value has at most 150 characters (it has 151).']}")):
             self.cLog.description = 'a' * 151
             self.cLog.full_clean()
             self.cLog.save()
