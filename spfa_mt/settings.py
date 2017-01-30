@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'add_com.apps.AddComConfig',
     'cases.apps.casesConfig',
     'add_member.apps.AddMemberConfig',
+    'meeting.apps.MeetingConfig',
     'add_case.apps.AddCaseConfig',
     'create_event.apps.CreateEventConfig',
     'django.contrib.admin',
