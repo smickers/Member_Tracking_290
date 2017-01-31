@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'haystack',
     'drf_haystack',
     'rest_framework',
-    'grievance_award_creation.apps.GrievanceAwardCreationConfig'
+    'grievance_award_creation.apps.GrievanceAwardCreationConfig',
     'award',
 ]
 
