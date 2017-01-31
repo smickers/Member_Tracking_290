@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ['testserver', '127.0.0.1']
 INSTALLED_APPS = [
     'spfa_mt',
     'add_com.apps.AddComConfig',
-    #'cases.apps.casesConfig',
+    'award.apps.eduAwardConfig',
     'add_member.apps.AddMemberConfig',
     'meeting.apps.MeetingConfig',
     'add_case.apps.AddCaseConfig',
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'drf_haystack',
     'rest_framework',
     'grievance_award_creation.apps.GrievanceAwardCreationConfig'
+    'award',
 ]
 
 MIDDLEWARE = [
@@ -67,7 +68,8 @@ ROOT_URLCONF = 'spfa_mt.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        ,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
