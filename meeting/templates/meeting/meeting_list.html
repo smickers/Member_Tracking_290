@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>List of Grievance Awards</title>
+    <title>List of Meetings</title>
 </head>
 <body>
     <h2>List of Meetings</h2>
@@ -14,11 +14,11 @@
         </thead>
 
         <tbody>
-        {% for award in object_list %}
+        {% for meeting in object_list %}
             <tr>
-                <td>{{ award.id }}</td>
-                <td><a href="{% url 'meeting:meeting_detail' award.pk %}">[View Meeting Detail]</a></td>
-                 <td><a href="{% url 'meeting:meeting_edit' award.pk %}">[Edit Meeting]</a></td>
+                <td>{{ meeting.id }}</td>
+                <td><a href="{% url 'meeting:meeting_detail' meeting.pk %}">[View Meeting Detail]</a></td>
+                 <td><a href="{% url 'meeting:meeting_edit' meeting.pk %}">[Edit Meeting]</a></td>
             </tr>
         {% empty %}
             <tr>NO AWARDS YET</tr>

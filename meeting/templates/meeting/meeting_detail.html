@@ -26,7 +26,8 @@
         <p>Description: {{ object.description }}</p>
         <p>Date: {{ object.date }}</p>
         {%  buttons %}
-            <input type="button" value="Back" class="btn btn-primary" onclick="window.history.back()" />
+            <input type="button" value="View Meeting List" class="btn btn-primary" onclick="location.href='{% url 'meeting:meeting_list' %}'" />
+            <input type="button" value="Edit Meeting" class="btn btn-warning" onclick="location.href='{% url "meeting:meeting_edit" object.id %}'" />
         {%  endbuttons %}
 </body>
 </html>
