@@ -44,6 +44,7 @@ class ComDetailView(DetailView):
     model = Committee
     template_name = 'add_com/committee_detail.html'
 
+
 class CommitteeSearchView(HaystackViewSet):
     """
     View that connects the committee search serializer.
@@ -53,6 +54,8 @@ class CommitteeSearchView(HaystackViewSet):
     serializer_class = CommitteeSearchSerializer
     filter_backends = [HaystackAutocompleteFilter]
 
+
 # View for editing a committee
 class ComEditView(UpdateView):
-    pass
+    model = Committee
+    form_class = ComForm

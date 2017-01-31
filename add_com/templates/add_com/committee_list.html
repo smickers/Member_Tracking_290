@@ -10,10 +10,10 @@
 <body>
     <h2>List of Committees</h2>
 
-    <table border="1" table class="table table-bordered" style="width:50%;">
+    <table border="1" table class="table table-bordered" style="width:50%; text-align:center;">
         <thead>
-            <th>Name</th>
-            <th>Action</th>
+            <th style="text-align:center;">Name</th>
+            <th colspan="2" style="text-align:center;">Action</th>
         </thead>
         <tbody>
         <!-- show this if there are committees existing in the DB -->
@@ -21,9 +21,12 @@
         </tbody>
             <tr>
                 <td>{{ committee.name }}</td>
-                <td style="text-align:center;">
+                <td>
                     <!-- Link to committee details, will show meeting info at a later date? -->
                     <a href='{% url "add_com:committee_detail" committee.pk %}'>[View Detail]</a>
+                </td>
+                <td>
+                    <a href='{% url "add_com:committee_edit" committee.pk %}'>[Edit Committee]</a>
                 </td>
             </tr>
         <!-- only appears if no committees exist in the DB -->

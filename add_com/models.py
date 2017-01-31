@@ -27,3 +27,8 @@ class Committee(models.Model):
     # Print the name of the Committee in a user-readable format.
     def __str__(self):
         return self.name
+
+    # This method will redirect the user to the detail page of the current committee.
+    # It is currently only called by editing a committee.
+    def get_absolute_url(self):
+        return reverse(viewname='add_com:committee_detail', kwargs={'pk': self.pk})

@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'add/$', views.ComCreate.as_view(), name='committee_add'),
     url(r'list/$', views.ComList.as_view(), name='committee_list'),
     url(r'^(?P<pk>[-\w]+)/$', views.ComDetailView.as_view(), name='committee_detail'),
+    url(r'^edit/(?P<pk>[-\w]+)/', views.ComEditView.as_view(), name='committee_edit')
 ]
