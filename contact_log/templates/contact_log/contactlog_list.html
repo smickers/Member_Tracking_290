@@ -6,6 +6,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+         thead th, .center {
+        text-align: center;
+    }
+
+
+    </style>
 </head>
 <body>
     <div class="container">
@@ -23,11 +30,11 @@
             <tbody>
                 {% for curr_cl in object_list %}
                     <tr>
-                        <td>{{ curr_cl.pk }}</td>
-                        <td>{{ curr_cl.member }}</td>
-                        <td>{{ curr_cl.date }}</td>
+                        <td class="center">{{ curr_cl.pk }}</td>
+                        <td class="center">{{ curr_cl.member }}</td>
+                        <td class="center">{{ curr_cl.date }}</td>
                         <td>{{ curr_cl.description }}</td>
-                        <td><a href="{% url 'contact_log_creation:contact_log_edit' curr_cl.pk %}">[Edit Contact Log]</a></td>
+                        <td class="center"><a href="{% url 'contact_log_creation:contact_log_edit' curr_cl.pk %}">[Edit Contact Log]</a></td>
                     </tr>
                 {% endfor %}
             </tbody>

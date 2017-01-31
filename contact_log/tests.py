@@ -3,6 +3,9 @@
 from django.test import TestCase
 from add_member.models import Person
 from .models import contactLog
+from django.core.exceptions import ValidationError
+from django.db import DataError
+
 # Create your tests here.
 class ContactLogTests(TestCase):
     person1 = Person()
@@ -40,7 +43,9 @@ class ContactLogTests(TestCase):
         tempCLog.member = self.person1
         tempCLog.description = 'Hello World'
         tempCLog.date = '2016-01-01'
-        self.assertTrue(tempCLog.validateDate(tempCLog.date))
+        tempCLog.clean()
+        tempCLog.save()
+        self.assertTrue(True)
 
     # Test that when a valid date is entered, true is returned
     # Input: 2016-12-12
@@ -50,37 +55,47 @@ class ContactLogTests(TestCase):
         tempCLog.member = self.person1
         tempCLog.description = 'Hello World'
         tempCLog.date = '2016-12-12'
-        self.assertTrue(tempCLog.validateDate(tempCLog.date))
+        tempCLog.clean()
+        tempCLog.save()
+        self.assertTrue(True)
 
     # Test that when an invalid date format is entered, false is returned
     # Input: January 1, 2016
     # Expected return: false
     def test_validateDateThree(self):
-        tempCLog = contactLog()
-        tempCLog.member = self.person1
-        tempCLog.description = 'Hello World'
-        tempCLog.date = 'January 1, 2016'
-        self.assertFalse(tempCLog.validateDate(tempCLog.date))
+        with self.assertRaises(ValidationError):
+            tempCLog = contactLog()
+            tempCLog.member = self.person1
+            tempCLog.description = 'Hello World'
+            tempCLog.date = 'January 1, 2016'
+            tempCLog.clean()
+            tempCLog.save()
 
     # Test that when an invalid date is entered, false is returned
     # Input: 30-02-2016
     # Expected return: false
     def test_validateDateFour(self):
-        tempCLog = contactLog()
-        tempCLog.member = self.person1
-        tempCLog.description = 'Hello World'
-        tempCLog.date = '30-02-2016'
-        self.assertFalse(tempCLog.validateDate(tempCLog.date))
+        with self.assertRaises(ValidationError):
+            tempCLog = contactLog()
+            tempCLog.member = self.person1
+            tempCLog.description = 'Hello World'
+            tempCLog.date = '30-02-2016'
+            tempCLog.clean()
+            tempCLog.save()
+            self.assertTrue(False)
 
     # Test that when an invalid date is entered, false is returned
     # Input: 29-02-2015
     # Expected return: false
     def test_validateDateFive(self):
-        tempCLog = contactLog()
-        tempCLog.member = self.person1
-        tempCLog.description = 'Hello World'
-        tempCLog.date = '29-02-2015'
-        self.assertFalse(tempCLog.validateDate(tempCLog.date))
+        with self.assertRaises(ValidationError):
+            tempCLog = contactLog()
+            tempCLog.member = self.person1
+            tempCLog.description = 'Hello World'
+            tempCLog.date = '29-02-2015'
+            tempCLog.clean()
+            tempCLog.save()
+            self.assertTrue(False)
 
     # Test that when a valid date is entered, true is returned
     # Input: 2016-01-30
@@ -90,7 +105,9 @@ class ContactLogTests(TestCase):
         tempCLog.member = self.person1
         tempCLog.description = 'Hello World'
         tempCLog.date = '2016-01-30'
-        self.assertTrue(tempCLog.validateDate(tempCLog.date))
+        tempCLog.clean()
+        tempCLog.save()
+        self.assertTrue(True)
 
     # Test that an empty description is accepted
     # Input '' (empty string)
@@ -100,11 +117,9 @@ class ContactLogTests(TestCase):
         tempCLog.member = self.person1
         tempCLog.description = ''
         tempCLog.date = '2016-01-01'
-        try:
-            tempCLog.clean()
-            self.assertTrue(True)
-        except ValueError:
-                self.fail("Description 1 failed!")
+        tempCLog.clean()
+        tempCLog.save()
+        self.assertTrue(True)
 
     # Test that a 149 char description is accepted
     # Input '' (empty string)
@@ -114,11 +129,8 @@ class ContactLogTests(TestCase):
         tempCLog.member = self.person1
         tempCLog.description = '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678'
         tempCLog.date = '2016-01-01'
-        try:
-            tempCLog.clean()
-            self.assertTrue(True)
-        except ValueError:
-            self.fail("Description 2 failed!")
+        tempCLog.clean()
+        self.assertTrue(True)
 
 
     # Test that a 150 char description is accepted
@@ -129,26 +141,21 @@ class ContactLogTests(TestCase):
         tempCLog.member = self.person1
         tempCLog.description = '012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'
         tempCLog.date = '2016-01-01'
-        try:
-            tempCLog.clean()
-            self.assertTrue(True)
-        except ValueError:
-            self.fail("Description 3 failed!")
+        tempCLog.clean()
+        self.assertTrue(True)
 
 
     # Test that a 151 char description is rejected
     # Input '' (empty string)
     # Expected result: An error occurs
     def test_validateDescriptionFour(self):
-        tempCLog = contactLog()
-        tempCLog.member = self.person1
-        tempCLog.description = 'A012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'
-        tempCLog.date = '2016-01-01'
-        try:
+        with self.assertRaises(DataError):
+            tempCLog = contactLog()
+            tempCLog.member = self.person1
+            tempCLog.description = 'A012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'
+            tempCLog.date = '2016-01-01'
             tempCLog.clean()
-            self.fail("Description 4 failed!")
-        except ValueError:
-            self.assertTrue(True)
+            tempCLog.save()
 
     # Test that an empty member ID is accepted
     # Input: '' (empty member ID)
@@ -158,11 +165,9 @@ class ContactLogTests(TestCase):
         tempCLog.member = None
         tempCLog.description = ''
         tempCLog.date = '2016-01-01'
-        try:
-            tempCLog.clean()
-            self.assertTrue(True)
-        except ValueError:
-            self.fail("Member ID 1 failed!")
+        tempCLog.clean()
+        tempCLog.save()
+        self.assertTrue(True)
 
     # Test that an invalid member ID is rejected
     # Input: 0
@@ -174,6 +179,7 @@ class ContactLogTests(TestCase):
             tempCLog.description = 'A'
             tempCLog.date = '2016-01-01'
             tempCLog.clean()
+            tempCLog.save()
 
     # Test that a valid member ID is accepted
     # Input: 1
@@ -183,11 +189,9 @@ class ContactLogTests(TestCase):
         tempCLog.member = self.person1
         tempCLog.description = 'A'
         tempCLog.date = '2016-01-01'
-        try:
-            tempCLog.clean()
-            self.assertTrue(True)
-        except ValueError:
-            self.fail("Member ID 3 failed!")
+        tempCLog.clean()
+        tempCLog.save()
+        self.assertTrue(True)
 
 
     # Test that a valid member ID is accepted
@@ -200,6 +204,7 @@ class ContactLogTests(TestCase):
             tempCLog.description = 'A'
             tempCLog.date = '2016-01-01'
             tempCLog.clean()
+            tempCLog.save()
 
     # Test that an invalid member ID is rejected
     # Input: 1000000000
