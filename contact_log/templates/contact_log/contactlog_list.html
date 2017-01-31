@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+         thead th, .center {
+        text-align: center;
+    }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Contact Logs</h2>
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Related Member</th>
+                <th>Date</th>
+                <th class="col-md-7">Description</th>
+                <th>Edit Link</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for curr_cl in object_list %}
+                    <tr>
+                        <td class="center">{{ curr_cl.pk }}</td>
+                        <td class="center">{{ curr_cl.member }}</td>
+                        <td class="center">{{ curr_cl.date }}</td>
+                        <td>{{ curr_cl.description }}</td>
+                        <td class="center"><a href="{% url 'contact_log_creation:contact_log_edit' curr_cl.pk %}">[Edit Contact Log]</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List of Meetings</title>
+</head>
+<body>
+    <h2>List of Meetings</h2>
+    <table border="2">
+        <thead>
+            <th>ID</th>
+            <th>Details</th>
+            <th>Edit</th>
+        </thead>
+
+        <tbody>
+        {% for meeting in object_list %}
+            <tr>
+                <td>{{ meeting.id }}</td>
+                <td><a href="{% url 'meeting:meeting_detail' meeting.pk %}">[View Meeting Detail]</a></td>
+                 <td><a href="{% url 'meeting:meeting_edit' meeting.pk %}">[Edit Meeting]</a></td>
+            </tr>
+        {% empty %}
+            <tr>NO AWARDS YET</tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+
+</body>
+</html>
