@@ -9,7 +9,7 @@ class DateFormatTestCase(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/contact_log/')
+        response = client.get('/contact_log/add/')
         # Get the initial values found in the model & view
         #print(response.context)
         oldresponsevalues = response.context['form']
@@ -23,7 +23,7 @@ class DateFormatTestCase(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/contact_log/')
+        response = client.get('/contact_log/add/')
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form']

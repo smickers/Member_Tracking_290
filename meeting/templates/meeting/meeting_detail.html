@@ -10,11 +10,24 @@
 </head>
 <body>
     <h2>Meeting Detail</h2>
-    <center>
-        <p>Success! Meeting Created</p>
+
+        <h3>Meeting ID: {{ object.id }}</h3>
+        <p>Committee: {{ object.committee }}</p>
+        <p>SPFA Liason: {{ object.liaison }}</p>
+        {%  for members in object.members_attending.all %}
+        <p>
+            Members Attending : {{ members.firstName }} {{ members.lastName }}
+        </p>
+        {% empty %}
+            <h2>
+                No members associated
+            </h2>
+        {% endfor %}
+        <p>Description: {{ object.description }}</p>
+        <p>Date: {{ object.date }}</p>
         {%  buttons %}
-            <input type="button" value="Back" class="btn btn-primary" onclick="window.history.back()" />
+            <input type="button" value="View Meeting List" class="btn btn-primary" onclick="location.href='{% url 'meeting:meeting_list' %}'" />
+            <input type="button" value="Edit Meeting" class="btn btn-warning" onclick="location.href='{% url "meeting:meeting_edit" object.id %}'" />
         {%  endbuttons %}
-    </center>
 </body>
 </html>

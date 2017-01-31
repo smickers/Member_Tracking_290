@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'contactLog.apps.ContactlogConfig',
+    'contact_log.apps.ContactlogConfig',
     'bootstrap3',
     'haystack',
     'drf_haystack',
@@ -138,7 +138,7 @@ REST_FRAMEWORK = {
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
-DATE_FORMAT= 'j, N, Y'
+DATE_FORMAT= 'j, N Y'
 USE_I18N = True
 
 USE_L10N = False
