@@ -127,7 +127,7 @@ class ContactLogTests(TestCase):
     def test_validateDescriptionTwo(self):
         tempCLog = contactLog()
         tempCLog.member = self.person1
-        tempCLog.description = '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678'
+        tempCLog.description = 'a' * 149
         tempCLog.date = '2016-01-01'
         tempCLog.clean()
         self.assertTrue(True)
@@ -139,7 +139,7 @@ class ContactLogTests(TestCase):
     def test_validateDescriptionThree(self):
         tempCLog = contactLog()
         tempCLog.member = self.person1
-        tempCLog.description = '012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'
+        tempCLog.description = 'a' * 150
         tempCLog.date = '2016-01-01'
         tempCLog.clean()
         self.assertTrue(True)
@@ -152,13 +152,13 @@ class ContactLogTests(TestCase):
         with self.assertRaises(DataError):
             tempCLog = contactLog()
             tempCLog.member = self.person1
-            tempCLog.description = 'A012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'
+            tempCLog.description = 'a' * 151
             tempCLog.date = '2016-01-01'
             tempCLog.clean()
             tempCLog.save()
 
-    # Test that an empty member ID is accepted
-    # Input: '' (empty member ID)
+    # Test that an empty member is accepted
+    # Input: no member given
     # Expected result: All checks pass
     def test_validatememberIDOne(self):
         tempCLog = contactLog()
@@ -169,8 +169,8 @@ class ContactLogTests(TestCase):
         tempCLog.save()
         self.assertTrue(True)
 
-    # Test that an invalid member ID is rejected
-    # Input: 0
+    # Test that an invalid member is rejected
+    # Input: fake member
     # Expected result: All checks pass
     def test_validatememberIDTwo(self):
         with self.assertRaisesMessage(Person.DoesNotExist, "Person matching query does not exist."):
@@ -181,8 +181,8 @@ class ContactLogTests(TestCase):
             tempCLog.clean()
             tempCLog.save()
 
-    # Test that a valid member ID is accepted
-    # Input: 1
+    # Test that a valid member is accepted
+    # Input: person1
     # Expected result: All checks pass
     def test_validatememberIDThree(self):
         tempCLog = contactLog()
@@ -193,21 +193,8 @@ class ContactLogTests(TestCase):
         tempCLog.save()
         self.assertTrue(True)
 
-
-    # Test that a valid member ID is accepted
-    # Input: 999999999
-    # Expected result: All checks pass
-    def test_validatememberIDFour(self):
-        with self.assertRaisesMessage(Person.DoesNotExist, "Person matching query does not exist."):
-            tempCLog = contactLog()
-            tempCLog.member = Person.objects.get(firstName='A ridiculous first name!')
-            tempCLog.description = 'A'
-            tempCLog.date = '2016-01-01'
-            tempCLog.clean()
-            tempCLog.save()
-
     # Test that an invalid member ID is rejected
-    # Input: 1000000000
+    # Input: a non-existant member
     # Expected result: All checks pass
     def test_validatememberIDFive(self):
         with self.assertRaisesMessage(Person.DoesNotExist, "Person matching query does not exist."):
