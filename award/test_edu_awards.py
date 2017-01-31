@@ -99,7 +99,7 @@ class EducationAwardTest(TestCase):
 
     # Test that award description cannot exceed the max length of 150 characters:
     def test_edu_award_desc_min(self):
-        #with self.assertRaisesRegexp(ValidationError, "Award description cannot exceed 150 characters in length."):
+        # with self.assertRaisesRegexp(ValidationError, "Award description cannot exceed 150 characters in length."):
             ea = EducationAward()
             ea.description = "This is an award for being just such a smart cookie, like so smart, the smartest cookie" \
                              " there ever was EVER, all other cookies just seem to pale in comparison to your smart " \
