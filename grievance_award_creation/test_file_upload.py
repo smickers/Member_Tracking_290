@@ -34,9 +34,16 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
         self.grievance_files = GrievanceFiles()
         self.griev_aw = None
 
+
+
         self.path_largefile = self.CONST_FILE_PATH % 'dummylarge.txt'
         self.path_notsolargefile= self.CONST_FILE_PATH % 'notsolarge.txt'
         self.path_picturefile = self.CONST_FILE_PATH % 'Picture.jpg'
+        self.path_excelfile = self.CONST_FILE_PATH % 'excel.xlsx'
+        self.path_docfile = self.CONST_FILE_PATH % 'worddoc.docx'
+        self.path_msgfile = self.CONST_FILE_PATH % 'message.msg'
+        self.path_csvfile = self.CONST_FILE_PATH % 'commasep.csv'
+        self.path_pdffile = self.CONST_FILE_PATH % 'adobepdf.pdf'
 
     """
     Function: setUp
@@ -99,6 +106,37 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
         f.write("\0")
         f.close()
 
+        f = open(self.path_excelfile, "wb")
+        f.seek(300)
+        f.write("\0")
+        f.close()
+
+
+        f = open(self.path_docfile, "wb")
+        f.seek(300)
+        f.write("\0")
+        f.close()
+
+        f = open(self.path_msgfile, "wb")
+        f.seek(300)
+        f.write("\0")
+        f.close()
+
+        f = open(self.path_csvfile, "wb")
+        f.seek(300)
+        f.write("\0")
+        f.close()
+
+        f = open(self.path_msgfile, "wb")
+        f.seek(300)
+        f.write("\0")
+        f.close()
+
+
+        f = open(self.path_pdffile, "wb")
+        f.seek(300)
+        f.write("\0")
+        f.close()
 
     def test_user_can_upload_single_grievance_document(self):
         """
@@ -124,6 +162,54 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
 
         # Test if there is a file inside the media root directory
         self.assertTrue( os.listdir(self._overridden_settings["MEDIA_ROOT"] + "/grievance").__len__() > 0)
+
+    def test_files_with_valid_file_extension_can_be_uploaded(self):
+        """
+        Tests if all the file with the valid extension can be uploaded
+        :return:
+        """
+        xlsfile = GrievanceFiles()
+        pdffile = GrievanceFiles()
+        messagefile = GrievanceFiles()
+        commaseparatedfile = GrievanceFiles()
+        documentfile = GrievanceFiles()
+
+
+        path = (self.path_excelfile)
+        fp_xls = open(path, "r")
+        fp_pdf = open(self.path_pdffile, "r")
+        fp_msg = open(self.path_msgfile, "r")
+        fp_csv = open(self.path_csvfile, "r")
+        fp_doc = open(self.path_docfile, "r")
+
+        #Associate the Grievance File object with an actual file
+        xlsfile.file = File(fp_xls)
+        pdffile.file = File(fp_pdf)
+        messagefile.file = File(fp_msg)
+        commaseparatedfile.file = File(fp_csv)
+        documentfile.file = File(fp_doc)
+
+
+        xlsfile.award = self.griev_aw
+        pdffile.award = self.griev_aw
+        messagefile.award = self.griev_aw
+        commaseparatedfile.award = self.griev_aw
+        documentfile.award = self.griev_aw
+
+
+        xlsfile.save()
+        pdffile.save()
+        messagefile.save()
+        commaseparatedfile.save()
+        documentfile.save()
+
+        self.assertTrue(os.path.isfile(self.path_excelfile))
+        self.assertTrue(os.path.isfile(self.path_csvfile))
+        self.assertTrue(os.path.isfile(self.path_docfile))
+        self.assertTrue(os.path.isfile(self.path_msgfile))
+        self.assertTrue(os.path.isfile(self.path_pdffile))
+
+
 
 
     def test_user_can_upload_if_the_file_size_is_less_than_or_equal_500MB(self):
@@ -236,12 +322,13 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
 
 
 
-    """
-    Function: tearDown
-    Purpose: Deletes Temproary files after tests completed.
-    NOTE: Due to multiple processes running by Django, this only works in Linux
-    """
+
     def tearDown(self):
+        """
+        Function: tearDown
+        Purpose: Deletes Temproary files after tests completed.
+        NOTE: Due to multiple processes running by Django, this only works in Linux
+        """
         if os.path.exists(self._overridden_settings["MEDIA_ROOT"]):
             shutil.rmtree(self._overridden_settings["MEDIA_ROOT"])
 
