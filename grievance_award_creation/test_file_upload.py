@@ -39,8 +39,7 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
         self.path_largefile = self.CONST_FILE_PATH % 'dummylarge.txt'
         self.path_notsolargefile= self.CONST_FILE_PATH % 'notsolarge.txt'
         self.path_picturefile = self.CONST_FILE_PATH % 'Picture.jpg'
-        self.path_excelfileXLSX = self.CONST_FILE_PATH % 'ExcelFile.xlsx'
-        self.path_excelfileXLS = self.CONST_FILE_PATH % 'ExcelFile.xls'
+        self.path_excelfile = self.CONST_FILE_PATH % 'ExcelFile.xlsx'
         self.path_docfile = self.CONST_FILE_PATH % 'Document.docx'
         self.path_msgfile = self.CONST_FILE_PATH % 'Message.msg'
         self.path_csvfile = self.CONST_FILE_PATH % 'CSV.csv'
@@ -107,7 +106,11 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
         f.write("\0")
         f.close()
 
+<<<<<<< Updated upstream
         f = open(self.path_excelfileXLSX, "wb")
+=======
+        f = open(self.path_excelfile, "wb")
+>>>>>>> Stashed changes
         f.seek(300)
         f.write("\0")
         f.close()
@@ -375,11 +378,19 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
             # #close file stream
             fp.close()
 
+<<<<<<< Updated upstream
     def test_files_with_valid_file_extension_can_be_uploaded(self):
         """
         Tests if all the file with the valid extension can be uploaded
         :return:
         """
+=======
+    """
+    Tests if all the file with the valid extension can be uploaded
+    """
+    def test_files_with_valid_file_extension_can_be_uploaded(self):
+
+>>>>>>> Stashed changes
         xlsfile = GrievanceFiles()
         pdffile = GrievanceFiles()
         messagefile = GrievanceFiles()
