@@ -1,4 +1,4 @@
-from django.views.generic import ListView
+from django.views.generic import *
 from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from .models import Committee
@@ -52,3 +52,7 @@ class CommitteeSearchView(HaystackViewSet):
     index_models = [Committee]
     serializer_class = CommitteeSearchSerializer
     filter_backends = [HaystackAutocompleteFilter]
+
+# View for editing a committee
+class ComEditView(UpdateView):
+    pass
