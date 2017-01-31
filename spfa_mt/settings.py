@@ -174,7 +174,7 @@ MEDIA_URL = '/media/'
 
 
 
-FILE_UPLOAD_HANDLERS = ["filehandlersample.filehandler.ValidateUploadSize",
+FILE_UPLOAD_HANDLERS = ["file_handler.filehandler.UploadValidator",
     "django.core.files.uploadhandler.MemoryFileUploadHandler",
  "django.core.files.uploadhandler.TemporaryFileUploadHandler"]
 

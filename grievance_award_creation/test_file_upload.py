@@ -11,6 +11,10 @@ import shutil
 import os.path
 
 
+"""
+Class: GrievanceFile_UploadTest
+This class is for testing file uploads for grievance awards
+"""
 
 @override_settings(MEDIA_ROOT='test/')
 class GrievanceFile_UploadTest(StaticLiveServerTestCase):
@@ -22,8 +26,6 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
     """
    Function: init
    Purpose: Initializes constants and variables for tests
-   :param args:
-   :param kwargs:
     """
     def __init__(self, *args, **kwargs):
 
@@ -99,12 +101,11 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
         f.write("\0")
         f.close()
 
-
+    """
+    Test if a user can associate a single document to a grievance ruling
+    """
     def test_user_can_upload_single_grievance_document(self):
-        """
-        Test if a user can associate a single document to a grievance ruling
-        :return: None
-        """
+
         path = (settings.STATIC_ROOT + "grievance_award_creation/test_files_grievance_docs_upload/SmallFile.txt")
         fp = open(path, "r")
 
@@ -125,12 +126,177 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
         # Test if there is a file inside the media root directory
         self.assertTrue( os.listdir(self._overridden_settings["MEDIA_ROOT"] + "/grievance").__len__() > 0)
 
+    """
+    Test if a user can upload a .csv file which is a valid type
+    """
+    def test_user_can_upload_valid_CSV_file(self):
 
+        path = (settings.STATIC_ROOT + "grievance_award_creation/test_files_grievance_docs_upload/CSV.csv")
+        fp = open(path, "r")
+
+        #Associate the Grievance File object with an actual file
+        self.grievance_files.file = File(fp)
+
+        #Associate an award witha file
+        self.grievance_files.award = self.griev_aw
+
+
+        #Save the file
+        self.grievance_files.full_clean()
+        self.grievance_files.save()
+
+        # #close file stream
+        fp.close()
+
+        # Test if there is a file inside the media root directory
+        self.assertTrue( os.listdir(self._overridden_settings["MEDIA_ROOT"] + "/grievance").__len__() > 0)
+
+    """
+    Test if a user can upload a .docx file which is a valid type
+    """
+    def test_user_can_upload_valid_DOCX_file(self):
+        path = (settings.STATIC_ROOT + "grievance_award_creation/test_files_grievance_docs_upload/Document.docx")
+        fp = open(path, "r")
+
+        # Associate the Grievance File object with an actual file
+        self.grievance_files.file = File(fp)
+
+        # Associate an award witha file
+        self.grievance_files.award = self.griev_aw
+
+        # Save the file
+        self.grievance_files.full_clean()
+        self.grievance_files.save()
+
+        # #close file stream
+        fp.close()
+
+        # Test if there is a file inside the media root directory
+        self.assertTrue(os.listdir(self._overridden_settings["MEDIA_ROOT"] + "/grievance").__len__() > 0)
+
+    """
+    Test if a user can upload a .xls file which is a valid type
+    """
+    def test_user_can_upload_valid_XLS_file(self):
+        path = (settings.STATIC_ROOT + "grievance_award_creation/test_files_grievance_docs_upload/ExcelFile.xls")
+        fp = open(path, "r")
+
+        # Associate the Grievance File object with an actual file
+        self.grievance_files.file = File(fp)
+
+        # Associate an award witha file
+        self.grievance_files.award = self.griev_aw
+
+        # Save the file
+        self.grievance_files.full_clean()
+        self.grievance_files.save()
+
+        # #close file stream
+        fp.close()
+
+        # Test if there is a file inside the media root directory
+        self.assertTrue(os.listdir(self._overridden_settings["MEDIA_ROOT"] + "/grievance").__len__() > 0)
+
+    """
+    Test if a user can upload a .xlsx file which is a valid type
+    """
+    def test_user_can_upload_valid_XLSX_file(self):
+        path = (settings.STATIC_ROOT + "grievance_award_creation/test_files_grievance_docs_upload/ExcelFile.xlsx")
+        fp = open(path, "r")
+
+        # Associate the Grievance File object with an actual file
+        self.grievance_files.file = File(fp)
+
+        # Associate an award witha file
+        self.grievance_files.award = self.griev_aw
+
+        # Save the file
+        self.grievance_files.full_clean()
+        self.grievance_files.save()
+
+        # #close file stream
+        fp.close()
+
+        # Test if there is a file inside the media root directory
+        self.assertTrue(os.listdir(self._overridden_settings["MEDIA_ROOT"] + "/grievance").__len__() > 0)
+
+    """
+    Test if a user can upload a .msg file which is a valid type
+    """
+    def test_user_can_upload_valid_MSG_file(self):
+        path = (settings.STATIC_ROOT + "grievance_award_creation/test_files_grievance_docs_upload/Message.msg")
+        fp = open(path, "r")
+
+        # Associate the Grievance File object with an actual file
+        self.grievance_files.file = File(fp)
+
+        # Associate an award witha file
+        self.grievance_files.award = self.griev_aw
+
+        # Save the file
+        self.grievance_files.full_clean()
+        self.grievance_files.save()
+
+        # #close file stream
+        fp.close()
+
+        # Test if there is a file inside the media root directory
+        self.assertTrue(os.listdir(self._overridden_settings["MEDIA_ROOT"] + "/grievance").__len__() > 0)
+
+
+    """
+    Test if a user can upload a .pdf file which is a valid type
+    """
+    def test_user_can_upload_valid_PDF_file(self):
+        path = (settings.STATIC_ROOT + "grievance_award_creation/test_files_grievance_docs_upload/PDF.pdf")
+        fp = open(path, "r")
+
+        # Associate the Grievance File object with an actual file
+        self.grievance_files.file = File(fp)
+
+        # Associate an award witha file
+        self.grievance_files.award = self.griev_aw
+
+        # Save the file
+        self.grievance_files.full_clean()
+        self.grievance_files.save()
+
+        # #close file stream
+        fp.close()
+
+        # Test if there is a file inside the media root directory
+        self.assertTrue(os.listdir(self._overridden_settings["MEDIA_ROOT"] + "/grievance").__len__() > 0)
+
+    """
+    Test if a user can upload a .pptx file which is a valid type
+    """
+    def test_user_can_upload_valid_PPTX_file(self):
+        path = (settings.STATIC_ROOT + "grievance_award_creation/test_files_grievance_docs_upload/PowerPoint.pptx")
+        fp = open(path, "r")
+
+        # Associate the Grievance File object with an actual file
+        self.grievance_files.file = File(fp)
+
+        # Associate an award witha file
+        self.grievance_files.award = self.griev_aw
+
+        # Save the file
+        self.grievance_files.full_clean()
+        self.grievance_files.save()
+
+        # #close file stream
+        fp.close()
+
+        # Test if there is a file inside the media root directory
+        self.assertTrue(os.listdir(self._overridden_settings["MEDIA_ROOT"] + "/grievance").__len__() > 0)
+
+
+
+    """
+    Test if user's uploaded file is less than or equal to 500Mb
+    """
     def test_user_can_upload_if_the_file_size_is_less_than_or_equal_500MB(self):
-        """
-        Test if user's uploaded file is less than or equal to 500Mb
-        :return: None
-        """
+
         path = self.path_notsolargefile
         fp = open(path, "r")
 
@@ -152,13 +318,10 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
 
         self.assertTrue(self.grievance_files.file.size <= settings.MAX_FILE_SIZE)
 
-
+    """
+    Test if users's uploaded file is less than 500MB
+    """
     def test_user_cannot_upload_if_the_total_file_size_is_greater_than_500MB(self):
-        """
-        Test if users's uploaded file is less than 500MB
-        :return: None
-        """
-
         with self.assertRaises(ValidationError):
             """
                 Expects the statement below to throw a validation error
@@ -179,15 +342,12 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
             # #close file stream
             fp.close()
 
-
-
-
+    """
+    Test if user's uploaded file only has the following extension:
+    .docx, .pptx, .xlsx, .csv, .pdf, .txt and .msg
+     """
     def test_user_can_not_upload_files_with_invalid_extension(self):
-        """
-        Test if user's uploaded file only has the following extension:
-        .docx, .pptx, .xlsx, .csv, .pdf, .txt and .msg
-        :return: None
-        """
+
         with self.assertRaises(ValidationError):
             """Expects validation error"""
             path = self.path_picturefile
@@ -206,15 +366,12 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
             # #close file stream
             fp.close()
 
-
-
-
+    """
+    Test if the database tracks the date when the file is uploaded.
+    It must be in the format of DD/MM/YYYY
+    """
     def test_db_tracks_the_file_upload_date(self):
-        """
-        Test if the database tracks the date when the file is uploaded.
-        It must be in the format of DD/MM/YYYY
-        :return: None
-        """
+
         path = self.path_notsolargefile
         fp = open(path, "r")
 

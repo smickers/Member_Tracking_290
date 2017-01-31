@@ -8,13 +8,23 @@ from django.core.urlresolvers import reverse
 from datetime import date
 from django.core.exceptions import ValidationError
 
+"""
+Class: GrievanceFilesManager
+This class returns files belonging to a specific instance of an award
+"""
 class GrievanceFilesManager(models.Manager):
+    """
+    Method: get_files
+    Purpose: returns files belonging to a specific instance of an award
+    """
     def get_files(self, instance):
         return GrievanceFiles.objects.filter(award=instance)
 
 
-# Class: GrievanceAward
-# Purpose: The class for a grievance award.
+"""
+Class: GrievanceAward
+The class for a grievance award model.
+"""
 class GrievanceAward(models.Model):
 
     GRIEVANCE_TYPES = [
@@ -56,22 +66,23 @@ class GrievanceAward(models.Model):
 
 
 
-
+"""
+Class: GrievanceFiles
+Model wrapper for the file uploaded associated with grievance information
+"""
 class GrievanceFiles(models.Model):
-    """
-        Model wrapper for the file uploaded associated with grievance information
-    """
-
     date_uploaded = models.DateTimeField(auto_now=True,blank=True,null=True)
     file = models.FileField(upload_to='grievance/',blank=True,null=True)
     award = models.ForeignKey(GrievanceAward,blank=True,null=True)
     description = models.CharField(max_length=50,blank=True,null=True)
 
-    def clean(self):
-        """
-            Responsible for validating/cleaning files.
+    """
+    Method: clean
+    Purpose: Responsible for validating/cleaning files.
             Raises exception if problem occurs
-        """
+    """
+    def clean(self):
+
         super(GrievanceFiles, self).clean()
         if(self.file.size > MAX_FILE_SIZE):
             """Check if the uploaded file has a valid file size"""
