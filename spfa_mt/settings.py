@@ -33,8 +33,9 @@ ALLOWED_HOSTS = ['testserver', '127.0.0.1']
 INSTALLED_APPS = [
     'spfa_mt',
     'add_com.apps.AddComConfig',
-    'cases.apps.casesConfig',
+    #'cases.apps.casesConfig',
     'add_member.apps.AddMemberConfig',
+    'meeting.apps.MeetingConfig',
     'add_case.apps.AddCaseConfig',
     'create_event.apps.CreateEventConfig',
     'django.contrib.admin',
@@ -152,3 +153,4 @@ STATIC_URL = '/static/'
 
 #this will cause haystack to update its indexes in realtime
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+

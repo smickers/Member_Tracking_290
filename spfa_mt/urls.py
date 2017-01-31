@@ -18,6 +18,7 @@ from django.contrib import admin
 from rest_framework import routers
 from add_member.views import MemberSearchView
 from add_case.views import CaseSearchView
+from add_com.views import CommitteeSearchView
 
 #initialize rest framework's router
 router = routers.DefaultRouter()
@@ -28,13 +29,16 @@ router.register('members_list/search', MemberSearchView, base_name='member-searc
 #route the case search functionality to 'case_list/view' url
 router.register('case_list/search', CaseSearchView, base_name='case-search')
 
+#route the committee search functionality to 'meeting/view' url
+router.register('committee_list/search', CommitteeSearchView, base_name='committee-search')
+
 
 urlpatterns = [
     #rest service's root url
     url(r'^api-root/', include(router.urls)),
     url(r'^admin/', admin.site.urls),
     url(r'^addmember/', include('add_member.urls')),
-    url(r'^cases/', include('cases.urls')),
+    url(r'^meeting/', include('meeting.urls')),
     url(r'^addCase/', include('add_case.urls')),
     url(r'^contact_log/', include('contact_log.urls')),
     url(r'^member/', include('add_member.urls')),

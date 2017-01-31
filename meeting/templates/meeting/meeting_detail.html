@@ -1,0 +1,33 @@
+{%  load bootstrap3 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h2>Meeting Detail</h2>
+
+        <h3>Meeting ID: {{ object.id }}</h3>
+        <p>Committee: {{ object.committee }}</p>
+        <p>SPFA Liason: {{ object.liaison }}</p>
+        {%  for members in object.members_attending.all %}
+        <p>
+            Members Attending : {{ members.firstName }} {{ members.lastName }}
+        </p>
+        {% empty %}
+            <h2>
+                No members associated
+            </h2>
+        {% endfor %}
+        <p>Description: {{ object.description }}</p>
+        <p>Date: {{ object.date }}</p>
+        {%  buttons %}
+            <input type="button" value="View Meeting List" class="btn btn-primary" onclick="location.href='{% url 'meeting:meeting_list' %}'" />
+            <input type="button" value="Edit Meeting" class="btn btn-warning" onclick="location.href='{% url "meeting:meeting_edit" object.id %}'" />
+        {%  endbuttons %}
+</body>
+</html>
