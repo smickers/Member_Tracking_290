@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import *
+from .models import Meeting
 # Register your models here.
 
 #Registering meeting so we can use it in the admin panel
