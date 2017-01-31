@@ -69,3 +69,12 @@ MONTHS = {
     11: 'Nov',
     12: 'Dec'
 }
+
+# bound field choices for STATUS field
+INACTIVE = 0
+ACTIVE = 1
+# The status choices for a committee
+COM_STATUS = [
+        (ACTIVE, 'Active'),
+        (INACTIVE, 'Inactive'),
+    ]
