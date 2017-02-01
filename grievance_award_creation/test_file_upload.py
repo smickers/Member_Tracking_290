@@ -16,6 +16,7 @@ Class: GrievanceFile_UploadTest
 This class is for testing file uploads for grievance awards
 """
 
+
 @override_settings(MEDIA_ROOT='test/')
 class GrievanceFile_UploadTest(StaticLiveServerTestCase):
 
@@ -44,6 +45,8 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
         self.path_msgfile = self.CONST_FILE_PATH % 'Message.msg'
         self.path_csvfile = self.CONST_FILE_PATH % 'CSV.csv'
         self.path_pdffile = self.CONST_FILE_PATH % 'PDF.pdf'
+        self.path_pptx = self.CONST_FILE_PATH % 'PowerPoint.pptx'
+        self.path_xls = self.CONST_FILE_PATH % 'ExcelFile.xls'
 
     """
     Function: setUp
@@ -100,7 +103,6 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
         f.write("\0")
         f.close()
 
-
         f = open(self.path_notsolargefile, "wb")
         f.seek(settings.MAX_FILE_SIZE-1)
         f.write("\0")
@@ -131,11 +133,21 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
         f.write("\0")
         f.close()
 
-
         f = open(self.path_pdffile, "wb")
         f.seek(300)
         f.write("\0")
         f.close()
+
+        f = open(self.path_xls, "wb")
+        f.seek(300)
+        f.write("\0")
+        f.close()
+
+        f = open(self.path_pptx, "wb")
+        f.seek(300)
+        f.write("\0")
+        f.close()
+
 
     """
     Test if a user can associate a single document to a grievance ruling

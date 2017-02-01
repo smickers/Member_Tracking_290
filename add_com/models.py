@@ -2,7 +2,6 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.db import models
 from .validators import *
-from django import forms
 from spfa_mt import kvp
 
 
