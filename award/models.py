@@ -17,3 +17,10 @@ class EducationAward(models.Model):
     # Purpose: Return a string representation of an education award. Shows the description, and the award amount.
     def __str__(self):
         return self.description + " ($" + self.award_amount + ")"
+
+#Model for PD Award
+class PDAward(models.Model):
+    #Fields for creating a pd award
+
+    #Default get_absolute_url_method
+    def get_absolute_url(self):
