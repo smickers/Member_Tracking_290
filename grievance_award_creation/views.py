@@ -4,6 +4,10 @@ from .forms import GrievanceAwardForm
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
+from django.http import JsonResponse
+from django.core.exceptions import ValidationError
+from django.core.files.uploadhandler import StopUpload, SkipFile
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.views.generic.list import ListView
 
 # Create your views here.
@@ -18,6 +22,11 @@ class GrievanceAwardCreation(CreateView):
 
 # Class: GrievanceAwardCreationSuccess
 # Purpose: The view that is shown upon successfully creating a grievance award.
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+
 class GrievanceAwardCreationSuccess(DetailView):
     # Define the model
     model = GrievanceAward

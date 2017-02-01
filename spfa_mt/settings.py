@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ['testserver', '127.0.0.1']
 INSTALLED_APPS = [
     'spfa_mt',
     'add_com.apps.AddComConfig',
-    #'cases.apps.casesConfig',
+    'cases.apps.casesConfig',
     'add_member.apps.AddMemberConfig',
     'meeting.apps.MeetingConfig',
     'add_case.apps.AddCaseConfig',
@@ -151,6 +151,30 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = 'files/'
+
 #this will cause haystack to update its indexes in realtime
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+
+"""
+THIS SECTION IS WHERE WE DEFINE
+THE CONSTANTS TO BE UTILIZED BY OUR PROJECT
+"""
+FILE_EXT_TO_ACCEPT = ['xls', 'xlsx', 'pptx', 'docx', 'csv', 'pdf',
+                      'txt', 'msg']
+FILE_EXT_TO_ACCEPT_STR = ',.'.join(FILE_EXT_TO_ACCEPT)
+
+MAX_FILE_SIZE = 524288000
+
+MEDIA_ROOT = 'media/'
+
+MEDIA_URL = '/media/'
+
+
+
+
+FILE_UPLOAD_HANDLERS = ["file_handler.filehandler.UploadValidator",
+    "django.core.files.uploadhandler.MemoryFileUploadHandler",
+ "django.core.files.uploadhandler.TemporaryFileUploadHandler"]
 

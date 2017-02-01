@@ -17,6 +17,8 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework import routers
 from add_member.views import MemberSearchView
+from django.conf.urls.static import static
+import settings
 from add_case.views import CaseSearchView
 from add_com.views import CommitteeSearchView
 
