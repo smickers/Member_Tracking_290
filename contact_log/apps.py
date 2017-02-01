@@ -6,4 +6,4 @@ from django.apps import AppConfig
 
 
 class ContactlogConfig(AppConfig):
-    name = 'contactLog'
+    name = 'contact_log'

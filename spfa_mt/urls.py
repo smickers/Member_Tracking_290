@@ -17,6 +17,8 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework import routers
 from add_member.views import MemberSearchView
+from django.conf.urls.static import static
+import settings
 from add_case.views import CaseSearchView
 from add_com.views import CommitteeSearchView
 
@@ -40,7 +42,7 @@ urlpatterns = [
     url(r'^addmember/', include('add_member.urls')),
     url(r'^meeting/', include('meeting.urls')),
     url(r'^addCase/', include('add_case.urls')),
-    url(r'^contact_log/', include('contactLog.urls')),
+    url(r'^contact_log/', include('contact_log.urls')),
     url(r'^member/', include('add_member.urls')),
     url(r'^event/', include('create_event.urls')),
     url(r'^award/', include('award.urls')),

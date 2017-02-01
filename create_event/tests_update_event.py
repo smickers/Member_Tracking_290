@@ -14,7 +14,7 @@ class EventTest(TestCase):
 
     def setUp(self):
         """
-        Sets up initial data
+        Sets up initial data(s)
         :return:
         """
         self.testEvent = Event()

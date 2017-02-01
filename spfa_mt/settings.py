@@ -44,13 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'contactLog.apps.ContactlogConfig',
+    'contact_log.apps.ContactlogConfig',
     'bootstrap3',
     'haystack',
     'drf_haystack',
     'rest_framework',
     'grievance_award_creation.apps.GrievanceAwardCreationConfig',
-    #'award',
 ]
 
 MIDDLEWARE = [
@@ -68,8 +67,7 @@ ROOT_URLCONF = 'spfa_mt.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -153,6 +151,30 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = 'files/'
+
 #this will cause haystack to update its indexes in realtime
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+
+"""
+THIS SECTION IS WHERE WE DEFINE
+THE CONSTANTS TO BE UTILIZED BY OUR PROJECT
+"""
+FILE_EXT_TO_ACCEPT = ['xls', 'xlsx', 'pptx', 'docx', 'csv', 'pdf',
+                      'txt', 'msg']
+FILE_EXT_TO_ACCEPT_STR = ',.'.join(FILE_EXT_TO_ACCEPT)
+
+MAX_FILE_SIZE = 524288000
+
+MEDIA_ROOT = 'media/'
+
+MEDIA_URL = '/media/'
+
+
+
+
+FILE_UPLOAD_HANDLERS = ["file_handler.filehandler.UploadValidator",
+    "django.core.files.uploadhandler.MemoryFileUploadHandler",
+ "django.core.files.uploadhandler.TemporaryFileUploadHandler"]
 

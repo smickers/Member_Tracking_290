@@ -145,8 +145,9 @@ class CaseTests(TestCase):
     def test_that_lists_have_correct_values(self):
         # WARNING, THIS TEST REQUIRES THE SERVER TO BE STARTED
         # This first part checks for the campus list
-        source_code = requests.get('http://127.0.0.1:8000/addCase/')
-        soup = BeautifulSoup(source_code.text, "html.parser")
+        client = Client()
+        source_code = client.get('http://127.0.0.1:8000/addCase/')
+        soup = BeautifulSoup(source_code.content, "html.parser")
         campus_list = "Saskatoon\nRegina\nMoose Jaw\nPrince Albert"
         RE = "Regina"
         SK = "Saskatoon"

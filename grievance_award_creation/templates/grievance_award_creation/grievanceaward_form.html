@@ -4,11 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Grievance Ruling Creation</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <link href="https://raw.githubusercontent.com/t0m/select2-bootstrap-css/bootstrap3/select2-bootstrap.css"  rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    {% load static %}
+    <script src="{% static 'grievance_award_creation/sample.js' %}" type="text/javascript"></script>
     <style>
         .radio {
             display: inline;
@@ -73,9 +76,11 @@
 <body>
     <form action="" method="POST" enctype="multipart/form-data" class="form">
         {% csrf_token %}
-        {% bootstrap_form form %}
+{#        {% bootstrap_form form %}#}
+        {{  form.as_p }}
         {% buttons %}
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button id="cancel_upload">Cancel</button>
+            <button type="submit" class="btn btn-primary">Create Ruling</button>
             <button type="reset" class="btn btn-warning">Reset</button>
         {% endbuttons %}
     </form>
