@@ -155,26 +155,26 @@ class CaseTests(TestCase):
         self.assertTrue(True)
 
     # Test that the complianant cannot also be added to a case as an additional member.
+    # Expected result: pass, person1 isn't added to the database
     def test_cn_cannot_be_add_member(self):
         """Can't have CN be selectable in list, validator should grab this."""
-        with self.assertRaisesRegexp(ValidationError, "Complainant cannot be added as an additional member."):
-       #with self.assertRaisesRegexp(ValidationError, "Complainant cannot be added as an additional member."):
-            temp_case = Case()
-            temp_case.lead = 123456789
-            temp_case.complainant = self.person1
-            temp_case.campus = "Saskatoon"
-            temp_case.school = "School of Business"
-            temp_case.program = self.prog
-            temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
-            temp_case.status = "OPEN"
-            temp_case.docs = None
-            temp_case.logs = None
-            temp_case.date = "2016-10-20"
-            temp_case.full_clean()
-            temp_case.save()
-            temp_case.additionalMembers.add(self.person1)
-            temp_case.save()
+        temp_case = Case()
+        temp_case.lead = 123456789
+        temp_case.complainant = self.person1
+        temp_case.campus = "Saskatoon"
+        temp_case.school = "School of Business"
+        temp_case.program = self.prog
+        temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
+        temp_case.status = "OPEN"
+        temp_case.docs = None
+        temp_case.logs = None
+        temp_case.date = "2016-10-20"
+        temp_case.full_clean()
+        temp_case.save()
+        temp_case.additionalMembers.add(self.person1)
+        temp_case.save()
 
+        self.assertFalse(temp_case.additionalMembers.filter(pk=self.person1.id).exists())
 
     # Test that a complainant and additional member that have the same name, can both
     #   be added to the case (as they will have different IDs in the system).
