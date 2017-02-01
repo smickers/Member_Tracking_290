@@ -56,6 +56,7 @@ class Case(models.Model):
             self.status = 'OPEN'
         if self.program is not None:
             self.department = None
+        # do a check on the complainant to see if additional members contains it
 
     # Default __str__ method
     def __str__(self):
