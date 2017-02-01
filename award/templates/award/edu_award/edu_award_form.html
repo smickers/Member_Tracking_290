@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create an Education Award</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
+    </script>
+    {% load bootstrap3 %}
+</head>
+<body>
+    <h2><strong>Create An Education Award</strong></h2>
+    <form class="form form-group" action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form_errors form type='fields' %}
+        {% bootstrap_form_errors form type='non_fields' %}
+        {% bootstrap_form form %}
+
+        {% buttons %}
+            <input type="submit" class="btn btn-secondary" name="submit" value="Submit" style="width:15%;
+            margin-left:10%; border: 1px black solid;" />
+            <input type="reset" class="btn btn-secondary" name="reset" value="Reset" style="width:15%;
+            border: 1px black solid;" />
+        {% endbuttons %}
+    </form>
+</body>
+</html>

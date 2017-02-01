@@ -2,7 +2,9 @@ from django.forms import ModelForm
 from .models import EducationAward
 
 
+###
 # Form for creating an Education Award:
+###
 class EducationAwardForm(ModelForm):
 
     class Meta:
@@ -10,7 +12,7 @@ class EducationAwardForm(ModelForm):
         fields = '__all__'
         labels = {
             'description': 'Description',
-            'award_amount': 'Award Amount $'
+            'award_amount': 'Award Amount'
         }
         error_messages = {
             'description': {

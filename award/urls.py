@@ -1,10 +1,14 @@
 from django.conf.urls import url
 from . import views
 
-app_name = 'education_award_creation'
-
+app_name = 'award'
+# NOTE FOR UPKEEP:
+# When adding awards, please make sure that you leave a comment before your new URLs.
+# As well, ensure that you have an appropriate abbreviation in your regex: for example, education awards redirect to
+#   '/edu/' and then whatever the specific regex is.
 urlpatterns = [
-    # url(r'^$', views.EducationAwardCreation.as_view(), name='create_grievance_award'),
-    # url(r'^detail/(?P<pk>[-\d]+)$', views.EducationAwardDetail.as_view(), name='grievance_award_actual_detail'),
-    # url(r'^list/$', views.GrievanceAwardList.as_view(), name='grievance_award_list'),
+    # Education Awards:
+    url(r'edu/create/$', views.EducationAwardCreation.as_view(), name='award_edu_create'),
+   # url(r'/edu/(?P<pk>[-\d]+)', views.EducationAwardCreationSuccess.as_view(), name='award_edu_success'),
+    url(r'^/edu/detail/(?P<pk>[-\w]+)/$', views.EducationAwardDetail.as_view(), name='award_edu_detail'),
 ]

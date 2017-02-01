@@ -6,12 +6,12 @@ from django.db import models
 # Models for Education Awards
 class EducationAward(models.Model):
     """Fields for data entry re: education awards"""
-    description = models.CharField(max_length=150, null=True, help_text="Enter a description here.")
-    award_amount = models.IntegerField(max_length=5, null=True, help_text="1250")
+    description = models.CharField(max_length=150, null=True)
+    award_amount = models.IntegerField(max_length=5, null=True)
 
     # Default get_absolute_url method
     def get_absolute_url(self):
-        return reverse(viewname='awards:create_edu_award_success', kwargs={'pk': self.pk})
+        return reverse(viewname='award:create_edu_award_detail/', kwargs={'pk': self.pk})
 
     # Method: __str__ (toString)
     # Purpose: Return a string representation of an education award. Shows the description, and the award amount.
