@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 import datetime
 from add_member.models import Person
 from spfa_mt import kvp
+from spfa_mt import settings
 
 
 # Name:       CaseSatellite
@@ -67,18 +68,29 @@ class CaseMembers(models.Model):
     caseNum = models.CharField(max_length=9)
     memberNum = models.TextField()
 
-# NO LONGER IN S25: Signal for back-end validation
-# @receiver(m2m_changed, sender=Case.additionalMembers.through)
-# def additional_member_signal(sender, **kwargs):
-#     #print("----------------- SIGNAL CALLED -----------------------")
-#     #print("ARGS: " + kwargs.__str__())
-#     pks = kwargs.pop('pk_set', None)
-#     instance = kwargs.pop('instance', None)
-#     complainant = instance.complainant
-#     #print (pks)
-#     #print "Sender: "
-#     #print vars(sender)
-#     #print "Complainant: "
-#     #print vars(complainant)
-#     validate_additional_members(complainant, pks)
-#     #pass
+"""
+Class: CaseFiles
+Model wrapper for files uploaded and associated with a case.
+"""
+class CaseFiles(models.Model):
+
+    date_uploaded = models.DateTimeField(auto_now=True)
+    file = models.FileField(upload_to='case/')
+    case = models.ForeignKey(Case)
+    description = models.CharField(max_length=50,blank=True,null=True)
+
+    """
+    Method: clean
+    Purpose: Responsible for validating/cleaning files.
+            Raises exception if problem occurs
+    """
+    def clean(self):
+
+        super(CaseFiles, self).clean()
+        if(self.file.size > settings.MAX_FILE_SIZE):
+            """Check if the uploaded file has a valid file size"""
+            raise ValidationError("File is too large")
+
+        if(self.file.name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT):
+            """ Check if the uploaded file has a valid file extension """
+            raise ValidationError("Invalid File Extension")
