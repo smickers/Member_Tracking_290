@@ -15,4 +15,6 @@ urlpatterns = [
     #Professional Development Awards
     url(r'pd/create/$', views.PDAwardCreation.as_view(), name='award_pd_create'),
     url(r'^/pd/detail/(?P<pk>[-\w]+)/$', views.PDAwardDetail.as_view(), name='award_pd_detail'),
+    url(r'edu/create/$', views.EducationAwardCreate.as_view(), name='edu_create'),
+    url(r'^(?P<pk>[-\w]+)$', views.EducationAwardDetail.as_view(), name='edu_detail'),
 ]

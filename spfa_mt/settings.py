@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ['testserver', '127.0.0.1']
 INSTALLED_APPS = [
     'spfa_mt',
     'add_com.apps.AddComConfig',
-    'award.apps.EduAwardConfig',
+    'award.apps.AwardConfig',
     'add_member.apps.AddMemberConfig',
     'meeting.apps.MeetingConfig',
     'add_case.apps.AddCaseConfig',
@@ -138,7 +138,7 @@ REST_FRAMEWORK = {
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
-DATE_FORMAT= 'j, N Y'
+DATE_FORMAT = 'j, N Y'
 USE_I18N = True
 
 USE_L10N = False
@@ -153,7 +153,7 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = 'files/'
 
-#this will cause haystack to update its indexes in realtime
+# this will cause haystack to update its indexes in realtime
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 
@@ -171,10 +171,6 @@ MEDIA_ROOT = 'media/'
 
 MEDIA_URL = '/media/'
 
-
-
-
 FILE_UPLOAD_HANDLERS = ["file_handler.filehandler.UploadValidator",
-    "django.core.files.uploadhandler.MemoryFileUploadHandler",
- "django.core.files.uploadhandler.TemporaryFileUploadHandler"]
-
+                        "django.core.files.uploadhandler.MemoryFileUploadHandler",
+                        "django.core.files.uploadhandler.TemporaryFileUploadHandler"]
