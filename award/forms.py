@@ -1,6 +1,7 @@
 from django.forms import ModelForm, SelectDateWidget
 from datetime import date
 from .models import EducationAward, PDAward
+from django import forms
 
 
 ###
@@ -55,5 +56,8 @@ class PDAwardForm(ModelForm):
             12: 'Dec'
         }
         widgets = {
-            'date': SelectDateWidget(months=MONTHS)
+            'startDate': SelectDateWidget(months=MONTHS),
+            'endDate': SelectDateWidget(months=MONTHS),
+            'memberAwarded': forms.Select(
+                attrs={'class': 'js-membersAwarded'}),
         }

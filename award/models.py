@@ -25,7 +25,7 @@ class PDAward(models.Model):
     #Fields for creating a pd award
     awardName = models.CharField(max_length=50)
     memberAwarded = models.ForeignKey(Person)
-    awardCost = models.FloatField(min(.01), max(99999))
+    awardCost = models.FloatField()
     startDate = models.DateField(default=date.today())
     endDate = models.DateField(default=date.today())
 

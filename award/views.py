@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import EducationAward, PDAward
-from .forms import EducationAwardForm
+from .forms import EducationAwardForm, PDAwardForm
 from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 ###
@@ -38,8 +38,10 @@ class EducationAwardDetail(DetailView):
 
 class PDAwardCreation(CreateView):
     model=PDAward
+    form_class = PDAwardForm
+    form = PDAwardForm()
     template_name = 'award/pd_award/pd_award_form.html'
 
-class PDAwardDetails(DetailView):
+class PDAwardDetail(DetailView):
     model = PDAward
     template_name = 'award/pd_award/pd_award_detail.html'
