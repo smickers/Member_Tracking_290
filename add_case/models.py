@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 from .validators import *
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import *
 from django.core.urlresolvers import reverse
 import datetime
 from add_member.models import Person
@@ -30,7 +32,7 @@ class CasePrograms(models.Model):
 #               Also saves data to the DB.
 class Case(models.Model):
     lead = models.IntegerField(max_length=9)
-    complainant = models.ForeignKey(Person, related_name='case_complainant')
+    complainant = models.ForeignKey(Person, related_name='case_complainant', validators=[validate_complainant])
     campus = models.CharField(choices=kvp.CAMPUS_CHOICES.iteritems(), max_length=25, validators=[validate_location],
                               default="Saskatoon")
     satellite = models.CharField(max_length=50, default=None, null=True, blank=True)
@@ -67,18 +69,13 @@ class CaseMembers(models.Model):
     caseNum = models.CharField(max_length=9)
     memberNum = models.TextField()
 
-# NO LONGER IN S25: Signal for back-end validation
-# @receiver(m2m_changed, sender=Case.additionalMembers.through)
-# def additional_member_signal(sender, **kwargs):
-#     #print("----------------- SIGNAL CALLED -----------------------")
-#     #print("ARGS: " + kwargs.__str__())
-#     pks = kwargs.pop('pk_set', None)
-#     instance = kwargs.pop('instance', None)
-#     complainant = instance.complainant
-#     #print (pks)
-#     #print "Sender: "
-#     #print vars(sender)
-#     #print "Complainant: "
-#     #print vars(complainant)
-#     validate_additional_members(complainant, pks)
-#     #pass
+
+# This is called when the form submits and the many to many field has been changed
+# It checks to see if the complainant is in the additionalMembers field and if so
+# it removes it.
+@receiver(m2m_changed, sender=Case.additionalMembers.through)
+def additional_member_signal(sender, **kwargs):
+    pks = kwargs.pop('pk_set', None)
+    instance = kwargs.pop('instance', None)
+    if instance.complainant.id in pks:
+        pks.remove(instance.complainant.id)
