@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from add_member.models import Person
 from datetime import date
+import validators
 
 
 # Models for Education Awards
@@ -25,10 +26,15 @@ class PDAward(models.Model):
     #Fields for creating a pd award
     awardName = models.CharField(max_length=50)
     memberAwarded = models.ForeignKey(Person)
-    awardCost = models.FloatField()
+    awardCost = models.FloatField(validators=[validators.validate_award_amt])
     startDate = models.DateField(default=date.today())
     endDate = models.DateField(default=date.today())
 
     #Default get_absolute_url_method
     def get_absolute_url(self):
-        return reverse(viewname='award:create_pd_award_detail', kwargs={'pk':self.pk})
+        return reverse(viewname='award:award_pd_detail', kwargs={'pk':self.pk})
+
+    #def clean(self):
+    #    if self.endDate < self.startDate:
+    #        raise ValidationError("End Date must be the same as or come after start date")
+

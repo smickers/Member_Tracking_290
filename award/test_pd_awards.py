@@ -1,9 +1,11 @@
 from django.test import TestCase
 from add_member.models import Person
 from django.core.exceptions import ValidationError
+from models import PDAward, Person
 
 class TestPDAward(TestCase):
     tempPerson = Person()
+
     def setUp(self):
         # Set up a Member for testing
         self.tempPerson.memberID = 1
@@ -34,88 +36,91 @@ class TestPDAward(TestCase):
     # Test that a PD Award is created when all fields are valid
     def test_valid_pd_creation(self):
         self.pdAward1 = PDAward()
-        self.pdAward1.name = "Excelence Award"
-        self.pdAward1.member = tempPerson()
-        self.pdAward1.cost = 100
+        self.pdAward1.awardName= "Excelence Award"
+        self.pdAward1.memberAwarded = self.tempPerson
+        self.pdAward1.awardCost = 100
         self.pdAward1.startDate = "2017-02-01"
         self.pdAward1.endDate = "2017-02-01"
         self.pdAward1.full_clean()
-        self.pdAwar1.save()
+        self.pdAward1.save()
 
     # test_invalid_award_name
     # Test that a PD Award is not created when an invalid name is given
     def test_invalid_award_name(self):
-        with self.assertRaisesMessage(ValidationError, "Award name must be less than 50 characters (it has 51)"):
+        with self.assertRaisesMessage(ValidationError, "Ensure this value has at most 50 characters (it has 51)"):
             self.pdAward1 = PDAward()
-            self.pdAward1.name = 'a' * 51
-            self.pdAward1.member = tempPerson()
-            self.pdAward1.cost = 100
+            self.pdAward1.awardName = 'a' * 51
+            self.pdAward1.memberAwarded = self.tempPerson
+            self.pdAward1.awardCost = 100
             self.pdAward1.startDate = "2017-02-01"
             self.pdAward1.endDate = "2017-02-01"
             self.pdAward1.full_clean()
-            self.pdAwar1.save()
+            self.pdAward1.save()
 
     # test_invalid_member
     # Test that a PD award is not created when an invalid member is given
     def test_invalid_member(self):
-        with self.assertRaisesMessage(ValidationError, "Member must be a valid member"):
+        with self.assertRaisesMessage(ValueError, 'Cannot assign "\'Hello\'": "PDAward.memberAwarded" must be a "Person" instance.'):
             self.pdAward1 = PDAward()
-            self.pdAward1.name = "Excellence Award"
-            self.pdAward1.member = "Hello"
-            self.pdAward1.cost = 100
+            self.pdAward1.awardName = "Excellence Award"
+            self.pdAward1.memberAwarded = "Hello"
+            self.pdAward1.awardCost = 100
             self.pdAward1.startDate = "2017-02-01"
             self.pdAward1.endDate = "2017-02-01"
             self.pdAward1.full_clean()
-            self.pdAwar1.save()
+            self.pdAward1.save()
 
     # test_invali_cost
     # Test that a PD award is not created when an invalid cost is given
     def test_invalid_cost(self):
-        with self.assertRaisesMessage(ValueError, "Cost must be less than 999999"):
+        with self.assertRaisesMessage(ValidationError, "Cost must be between .01 and 999999"):
             self.pdAward1 = PDAward()
-            self.pdAward1.name = "Excelence Award"
-            self.pdAward1.member = tempPerson()
-            self.pdAward1.cost = 100000
+            self.pdAward1.awardName = "Excelence Award"
+            self.pdAward1.memberAwarded = self.tempPerson
+            self.pdAward1.awardCost = 100000
             self.pdAward1.startDate = "2017-02-01"
             self.pdAward1.endDate = "2017-02-01"
             self.pdAward1.full_clean()
-            self.pdAwar1.save()
+            self.pdAward1.save()
 
     # test_invalid_start_date
     # Test that a PD award is not created when an invalid start date is given
     def test_invalid_start_date(self):
-        with self.assertRaisesMessage(ValidationError, "Start Date must be a valid date"):
+        with self.assertRaisesMessage(ValidationError, "\'2017-02-31\' value has the correct format (YYYY-MM-DD) but it is an invalid date."):
             self.pdAward1 = PDAward()
-            self.pdAward1.name = "Excelence Award"
-            self.pdAward1.member = tempPerson()
-            self.pdAward1.cost = 100
+            self.pdAward1.awardName = "Excelence Award"
+            self.pdAward1.memberAwarded = self.tempPerson
+            self.pdAward1.awardCost = 100
             self.pdAward1.startDate = "2017-02-31"
             self.pdAward1.endDate = "2017-03-01"
             self.pdAward1.full_clean()
-            self.pdAwar1.save()
+            self.pdAward1.save()
 
     # test_invalid_end_date
     # Test that a PD award is not created when an invalid end date is given
     def test_invalid_end_date(self):
-        with self.assertRaisesMessage(ValidationError, "End Date must be a valid date"):
+        with self.assertRaisesMessage(ValidationError, "\'2017-02-31\' value has the correct format (YYYY-MM-DD) but it is an invalid date."):
             self.pdAward1 = PDAward()
-            self.pdAward1.name = "Excelence Award"
-            self.pdAward1.member = tempPerson()
-            self.pdAward1.cost = 100
+            self.pdAward1.awardName = "Excelence Award"
+            self.pdAward1.memberAwarded = self.tempPerson
+            self.pdAward1.awardCost = 100
             self.pdAward1.startDate = "2017-02-01"
             self.pdAward1.endDate = "2017-02-31"
             self.pdAward1.full_clean()
-            self.pdAwar1.save()
+            self.pdAward1.save()
 
     # test_that_start_date_comes_before_end_date
     # Test that a PD award is not created when end date coems before start date
     def test_that_start_date_comes_before_end_date(self):
-        with self.assertRaisesMessage(ValidationError, "End Date must be the same as or come after start date"):
+        #with self.assertRaisesMessage(ValidationError, "End Date must be the same as or come after start date"):
+         with self.assertRaises(ValidationError):
             self.pdAward1 = PDAward()
-            self.pdAward1.name = "Excelence Award"
-            self.pdAward1.member = tempPerson()
-            self.pdAward1.cost = 100
-            self.pdAward1.startDate = "2017-02-01"
-            self.pdAward1.endDate = "2017-01-01"
+            self.pdAward1.awardName = "Excellence Award"
+            self.pdAward1.memberAwarded = self.tempPerson
+            self.pdAward1.awardCost = 100
+            self.pdAward1.startDate = "2017-02-02"
+            self.pdAward1.endDate = "2016-01-01"
             self.pdAward1.full_clean()
-            self.pdAwar1.save()
+            self.pdAward1.save()
+            print(self.pdAward1.startDate.__str__() + " " + self.pdAward1.endDate.__str__())
+        #self.assertRaises(ValidationError)
