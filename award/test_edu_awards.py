@@ -91,6 +91,7 @@ class EducationAwardTest(TestCase):
         ea.award_amount = 1250
         ea.save()
 
+    #Test that special characters are not permitted unless specified:
     def test_edu_award_no_special_chars(self):
         with self.assertRaises(ValidationError):
             ea = EducationAward()

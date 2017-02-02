@@ -19,9 +19,8 @@ class EducationAwardCreate(CreateView):
 class EducationAwardDetail(DetailView):
     model = EducationAward
     template_name = 'award/edu_award/edu_award_detail.html'
-
+    
     def get_context_data(self, **kwargs):
         request = self.request
         context = super(EducationAwardDetail, self).get_context_data(**kwargs)
-        print request.POST
         return context

@@ -1,7 +1,11 @@
 from django.core.exceptions import ValidationError
 import re
+###
+# Education Award Validators
+###
 
 
+# Validator for ensuring a valid description has been entered:
 def validate_desc(value):
     # null and whitespace validation
     if not (value and not value.isspace()):
@@ -12,6 +16,7 @@ def validate_desc(value):
         raise ValidationError("Description may only contain letters, numbers, spaces, hyphens, and apostrophes.")
 
 
+# Validator for ensuring a valid award amount has been entered:
 def validate_amt(value):
     # 5 digits or less
     if len(str(value)) > 5:
