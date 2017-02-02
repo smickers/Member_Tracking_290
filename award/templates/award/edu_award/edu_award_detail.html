@@ -12,8 +12,11 @@
     {% load bootstrap3 %}
 </head>
 <body>
-    <h1>Award #{{ object.id }}: {{ object.description }}</h1>
+    <h1><strong>Award #{{ object.id }}: {{ object.description }}</strong></h1>
     <h3>Award Amount: ${{ object.award_amount }}.00</h3>
-<input type="button" value="Back" onclick="window.history.back()" />
+    <br /><br />
+    {% buttons %}
+    <input type="button" class="btn btn-primary" value="Back" onclick="window.history.back()" style="width:15%;" />
+    {% endbuttons %}
 </body>
 </html>

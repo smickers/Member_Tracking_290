@@ -91,6 +91,14 @@ class EducationAwardTest(TestCase):
         ea.award_amount = 1250
         ea.save()
 
+    def test_edu_award_no_special_chars(self):
+        with self.assertRaises(ValidationError):
+            ea = EducationAward()
+            ea.description = "!@#$$%*^&^(&%*(///...````````~"
+            ea.award_amount = 1250
+            ea.full_clean()
+            ea.save()
+
     # Test that award description cannot exceed the max length of 150 characters:
     def test_edu_award_desc_too_max(self):
         with self.assertRaises(DataError):
