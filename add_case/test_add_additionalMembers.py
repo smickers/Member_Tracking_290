@@ -137,16 +137,16 @@ class TestAddMember(TestCase):
         self.temp_case.additionalMembers.add(self.person2)
         self.assertTrue(self.temp_case.additionalMembers.count() == 1)
 
-    def test_can_add_many_members(self):
-        """Can add multiple Members to the Case"""
-        self.temp_case.additionalMembers.add(self.person2, self.person1)
-        self.assertTrue(self.temp_case.additionalMembers.count() == 2)
-
     # won't work since person 1 is a complainant. They cannot also be an additional member.
-    # def test_can_add_boundary_members(self):
-    #     """Can add Members at the memberID boundary to the Case"""
-    #     self.temp_case.additionalMembers.add(self.boundary_person1, self.boundary_person2)
+    # def test_can_add_many_members(self):
+    #     """Can add multiple Members to the Case"""
+    #     self.temp_case.additionalMembers.add(self.person2, self.person1)
     #     self.assertTrue(self.temp_case.additionalMembers.count() == 2)
+
+    def test_can_add_boundary_members(self):
+        """Can add Members at the memberID boundary to the Case"""
+        self.temp_case.additionalMembers.add(self.boundary_person1, self.boundary_person2)
+        self.assertTrue(self.temp_case.additionalMembers.count() == 2)
 
     def test_cannot_add_outside_boundary_members(self):
         """Cannot add Members exceeding the memberID boundary to the Case"""
