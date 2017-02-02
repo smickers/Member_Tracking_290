@@ -1,5 +1,6 @@
-from django.forms import ModelForm
-from .models import EducationAward
+from django.forms import ModelForm, SelectDateWidget
+from datetime import date
+from .models import EducationAward, PDAward
 
 
 ###
@@ -26,4 +27,33 @@ class EducationAwardForm(ModelForm):
                 'max_value': 'Amount must be greater than $0 and less than $10,000.',
                 'min_value': 'Amount must be greater than $0 and less than $10,000.'
             }
+        }
+
+class PDAwardForm(ModelForm):
+    class Meta:
+        model=PDAward
+        fields='__all__'
+        labels={
+            'awardName':'Award Name',
+            'memberAwarded':'Member Awarded',
+            'awardCost':'Award Cost',
+            'startDate': 'Start Date',
+            'endDate': 'End Date'
+        }
+        MONTHS = {
+            1: 'Jan',
+            2: 'Feb',
+            3: 'Mar',
+            4: 'Apr',
+            5: 'May',
+            6: 'Jun',
+            7: 'Jul',
+            8: 'Aug',
+            9: 'Sep',
+            10: 'Oct',
+            11: 'Nov',
+            12: 'Dec'
+        }
+        widgets = {
+            'date': SelectDateWidget(months=MONTHS)
         }
