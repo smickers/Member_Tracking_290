@@ -87,7 +87,7 @@ class EducationAwardTest(TestCase):
     #NOTE: This can't be cleaned because it sees the math and throws a validationError.
     def test_edu_award_desc_max(self):
         ea = EducationAward()
-        ea.description = "a" * 150
+        ea.description = 'a' * 150
         ea.award_amount = 1250
         ea.save()
 
