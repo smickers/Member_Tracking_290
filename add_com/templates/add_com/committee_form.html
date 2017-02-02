@@ -8,11 +8,16 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
+{% if form.instance.id %}
+    <h2><strong>Edit Committee</strong></h2>
+{% else %}
     <h2><strong>Create A New Committee</strong></h2>
+{% endif %}
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {% include 'add_com/form_template.html' %}
-        <button type="submit">Submit</button>
+        <button type="submit">Save</button><br />
+        <a href="{%  url 'add_com:committee_list' %}">View All Committees</a>
     </form>
 </body>
 </html>

@@ -3,6 +3,9 @@ import datetime
 from spfa_mt import kvp
 
 
+def validate_complainant(value):
+    complainant = value
+
 def validate_date(value):
     data = value
 
@@ -70,7 +73,7 @@ def validate_school(value):
 
 # Validators to ensure that the complainant cannot be/is not entered to the Case
 #   as an additional member.
-# def validate_additional_members(complainant, additional_members):
-#     for curr_member in additional_members:
-#         if curr_member == complainant.id:
+# def validate_additional_members(value):
+#     for curr_member in value:
+#         if curr_member == complainant:
 #             raise ValidationError("Complainant cannot be added as an additional member.")

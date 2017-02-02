@@ -12,5 +12,8 @@
     <!-- Note: this isn't the most ideal (not great if other statuses are implemented)
     however it works for what we need. -->
     <h3>Status: {% if not object.status == 1 %}Inactive{% else %}Active{% endif %}</h3>
+    <a href="{% url 'add_com:committee_edit' object.pk %}">Edit This Committee</a><br />
+    <a href="{%  url 'add_com:committee_add' %}">Add New Committee</a><br />
+    <a href="{%  url 'add_com:committee_list' %}">View All Committees</a>
 </body>
 </html>
