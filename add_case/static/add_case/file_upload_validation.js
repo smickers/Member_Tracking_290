@@ -8,12 +8,14 @@ $(document).ready(function(){
     file_field[0].value = null;
 
 
+    // Hide the cancel upload button until the user submits the form
     $("#cancel_upload").hide();
 
 
+    // This method contains the main logic for validation
     description_handler(file_field, desc);
 
-
+    // Call the main logic every time the file selected changes
     file_field.change(function(){
         description_handler(file_field, desc);
     });
@@ -21,7 +23,8 @@ $(document).ready(function(){
 
 
 
-     $("button[type=submit]").click(function(){
+    // Show a cancel upload button when the user clicks Submit
+     $("input[type=submit]").click(function(){
          if(file_field[0].files.length > 0)
          {
              $("#cancel_upload").show();
@@ -58,8 +61,6 @@ function description_handler(file_field, desc)
         if (file_field[0].files[0].size > 524288000) {
             //append an error message
             $("#id_file_description").before("<p style='color:red' id='file_error'>File has been removed. File is larger than the allowed maximum size. </p>");
-
-            //$("button[type=submit]").attr('disabled','');
 
             file_field[0].value = "";
 

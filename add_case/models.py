@@ -15,6 +15,9 @@ from spfa_mt.settings import MAX_FILE_SIZE, FILE_EXT_TO_ACCEPT
 class CaseSatellite(models.Model):
     name = models.CharField(max_length=50, blank=True, null=True)
 
+    # Name: __str__
+    # Purpose: toString method
+    # Returns: A string representation of the object.
     def __str__(self):
         return self.name
 
@@ -24,6 +27,9 @@ class CaseSatellite(models.Model):
 class CasePrograms(models.Model):
     name = models.CharField(max_length=200, blank=True, null=True)
 
+    # Name: __str__
+    # Purpose: toString method
+    # Returns: A string representation of the object.
     def __str__(self):
         return self.name
 
@@ -60,17 +66,20 @@ class Case(models.Model):
         if self.program is not None:
             self.department = None
 
-    # Default __str__ method
+    # Name: __str__
+    # Purpose: toString method
+    # Returns: A string representation of the object.
     def __str__(self):
         return self.complainant.__str__() + ' - ' + self.date.__str__()
 
-
-# Joining class for Members to a Case:
+# Class: CaseMembers
+# Purpose: Joining class for Members to a Case.
 class CaseMembers(models.Model):
     caseNum = models.CharField(max_length=9)
     memberNum = models.TextField()
 
-# File wrapper for case files
+# Class: CaseFiles
+# Purpose: File wrapper for case files.
 class CaseFiles(models.Model):
     date_uploaded = models.DateTimeField(auto_now=True,blank=True,null=True)
     file = models.FileField(upload_to='case/',blank=True,null=True)

@@ -11,8 +11,11 @@ import os, shutil
 
 
 """
+    Class: CaseFileUpload
     This class contains tests for file uploads on a case information
 """
+# This will change the location of uploaded files, so that test files aren't stored alongside
+# live data
 @override_settings(MEDIA_ROOT='test/')
 class CaseFileUpload(StaticLiveServerTestCase):
 
@@ -77,8 +80,6 @@ class CaseFileUpload(StaticLiveServerTestCase):
         self.case.date = "2016-10-20"
         self.case.full_clean()
         self.case.save()
-
-        #TODO: add a python command that will create files/addcase/test_case_file_upload folder.
 
         f = open(self.small_text, "wb")
         f.seek(300)
@@ -197,11 +198,7 @@ class CaseFileUpload(StaticLiveServerTestCase):
         self.assertTrue(os.path.isfile(path_to_a_500_file))
 
     """
-<<<<<<< Updated upstream
-    Test if user's uploaded file is less than or equal to 500Mb
-=======
     Test if user cannot upload a file over 500 MB in size
->>>>>>> Stashed changes
     """
     def test_user_cannot_upload_if_file_size_is_greater_than_500MB(self):
 
