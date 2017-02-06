@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 from .validators import *
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import *
 from django.core.urlresolvers import reverse
 import datetime
 from add_member.models import Person
@@ -68,29 +70,13 @@ class CaseMembers(models.Model):
     caseNum = models.CharField(max_length=9)
     memberNum = models.TextField()
 
-"""
-Class: CaseFiles
-Model wrapper for files uploaded and associated with a case.
-"""
-class CaseFiles(models.Model):
 
-    date_uploaded = models.DateTimeField(auto_now=True)
-    file = models.FileField(upload_to='case/')
-    case = models.ForeignKey(Case)
-    description = models.CharField(max_length=50,blank=True,null=True)
-
-    """
-    Method: clean
-    Purpose: Responsible for validating/cleaning files.
-            Raises exception if problem occurs
-    """
-    def clean(self):
-
-        super(CaseFiles, self).clean()
-        if(self.file.size > settings.MAX_FILE_SIZE):
-            """Check if the uploaded file has a valid file size"""
-            raise ValidationError("File is too large")
-
-        if(self.file.name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT):
-            """ Check if the uploaded file has a valid file extension """
-            raise ValidationError("Invalid File Extension")
+# This is called when the form submits and the many to many field has been changed
+# It checks to see if the complainant is in the additionalMembers field and if so
+# it removes it.
+@receiver(m2m_changed, sender=Case.additionalMembers.through)
+def additional_member_signal(sender, **kwargs):
+    pks = kwargs.pop('pk_set', None)
+    instance = kwargs.pop('instance', None)
+    if instance.complainant.id in pks:
+        pks.remove(instance.complainant.id)
