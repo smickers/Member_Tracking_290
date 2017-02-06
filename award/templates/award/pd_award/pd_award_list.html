@@ -1,10 +1,34 @@
+{%  load bootstrap3 %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>PD Award List</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
-$END$
+<h2>List of Meetings</h2>
+    <table border="2">
+        <thead>
+            <th>ID</th>
+            <th>Details</th>
+            <th>Edit</th>
+        </thead>
+
+        <tbody>
+        {% for pdaward in object_list %}
+            <tr>
+                <td>{{ pdaward.id }}</td>
+                <td><a href="{% url 'award:award_pd_detail' pdaward.pk %}">[View PD Award Detail]</a></td>
+                 <td><a href="{% url 'award:award_pd_edit' pdaward.pk %}">[Edit PD Award]</a></td>
+            </tr>
+        {% empty %}
+            <tr>NO AWARDS YET</tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
 </body>
 </html>

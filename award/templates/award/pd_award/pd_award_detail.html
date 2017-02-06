@@ -1,10 +1,24 @@
+{%  load bootstrap3 %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>PD Award Detail</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
+    <h2>Professional Development Award Deails</h2>
 
+        <h3>Award Name: {{ object.awardName }}</h3>
+        <p>Member Awarded: {{ object.memberAwarded }}</p>
+        <p>Award Cost: {{ object.awardCost }}</p>
+        <p>Start Date: {{ object.startDate }}</p>
+        <p>End Date: {{ object.endDate }}</p>
+        {%  buttons %}
+            <input type="button" value="View PD Award List" class="btn btn-primary" onclick="location.href='{% url 'award:award_pd_list' %}'" />
+            <input type="button" value="Edit PD Award" class="btn btn-warning" onclick="location.href='{% url "award:award_pd_edit" object.id %}'" />
+        {%  endbuttons %}
 </body>
 </html>

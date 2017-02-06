@@ -3,8 +3,9 @@ from .forms import EducationAwardForm
 from django.shortcuts import render
 from .models import EducationAward, PDAward
 from .forms import EducationAwardForm, PDAwardForm
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
 
 
 ###
@@ -24,6 +25,9 @@ class EducationAwardDetail(DetailView):
     template_name = 'award/edu_award/edu_award_detail.html'
 
 
+
+#PD AWARDS
+
 class PDAwardCreation(CreateView):
     model=PDAward
     form_class = PDAwardForm
@@ -33,8 +37,16 @@ class PDAwardCreation(CreateView):
 class PDAwardDetail(DetailView):
     model = PDAward
     template_name = 'award/pd_award/pd_award_detail.html'
-    def get_context_data(self, **kwargs):
-        request = self.request
-        context = super(EducationAwardDetail, self).get_context_data(**kwargs)
-        print request.POST
-        return context
+
+# Class: MeetingEditView
+# This class declares the form for the editing a meeting
+class EditPDAwardView(UpdateView):
+    model = PDAward
+    form_class = PDAwardForm
+    template_name = 'award/pd_award/pd_award_form.html'
+
+# Class: MeetingList
+# This class declares the form to show a list of current meetings
+class PDAwardList(ListView):
+    model = PDAward
+    template_name = 'award/pd_award/pd_award_list.html'
