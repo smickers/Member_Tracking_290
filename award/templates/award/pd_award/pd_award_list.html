@@ -9,20 +9,23 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
-<h2>List of Meetings</h2>
+<h2>List of Professional Development Awards</h2>
     <table border="2">
         <thead>
             <th>ID</th>
+            <th>Award Name</th>
             <th>Details</th>
             <th>Edit</th>
         </thead>
 
         <tbody>
         {% for pdaward in object_list %}
+
             <tr>
                 <td>{{ pdaward.id }}</td>
+                <td>{{ pdaward.awardName }}</td>
                 <td><a href="{% url 'award:award_pd_detail' pdaward.pk %}">[View PD Award Detail]</a></td>
-                 <td><a href="{% url 'award:award_pd_edit' pdaward.pk %}">[Edit PD Award]</a></td>
+                <td><a href="{% url 'award:award_pd_edit' pdaward.pk %}">[Edit PD Award]</a></td>
             </tr>
         {% empty %}
             <tr>NO AWARDS YET</tr>

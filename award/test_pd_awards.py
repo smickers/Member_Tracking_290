@@ -2,9 +2,11 @@ from django.test import TestCase
 from add_member.models import Person
 from django.core.exceptions import ValidationError
 from models import PDAward, Person
+from forms import PDAwardForm
 
 class TestPDAward(TestCase):
     tempPerson = Person()
+    form = PDAwardForm()
 
     def setUp(self):
         # Set up a Member for testing
@@ -112,15 +114,12 @@ class TestPDAward(TestCase):
     # test_that_start_date_comes_before_end_date
     # Test that a PD award is not created when end date coems before start date
     def test_that_start_date_comes_before_end_date(self):
-        #with self.assertRaisesMessage(ValidationError, "End Date must be the same as or come after start date"):
-         with self.assertRaises(ValidationError):
-            self.pdAward1 = PDAward()
-            self.pdAward1.awardName = "Excellence Award"
-            self.pdAward1.memberAwarded = self.tempPerson
-            self.pdAward1.awardCost = 100
-            self.pdAward1.startDate = "2017-02-02"
-            self.pdAward1.endDate = "2016-01-01"
-            self.pdAward1.full_clean()
-            self.pdAward1.save()
-            print(self.pdAward1.startDate.__str__() + " " + self.pdAward1.endDate.__str__())
-        #self.assertRaises(ValidationError)
+        self.pdAward1 = PDAward()
+        self.pdAward1.awardName = "Excellence Award"
+        self.pdAward1.memberAwarded = self.tempPerson
+        self.pdAward1.awardCost = 100
+        self.pdAward1.startDate = "2017-02-02"
+        self.pdAward1.endDate = "2016-01-01"
+        self.pdAward1.full_clean()
+        self.pdAward1.save()
+        self.assertGreaterEqual(self.pdAward1.startDate, self.pdAward1.endDate)
