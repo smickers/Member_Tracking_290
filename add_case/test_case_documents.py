@@ -3,10 +3,10 @@ from django.core.exceptions import ValidationError
 from spfa_mt import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core.files import File
-from .models import Case
+from .models import Case, CaseFiles, CasePrograms
 from add_member.models import Person
 from django.test import override_settings
-import os
+import os, shutil
 
 
 
@@ -25,9 +25,6 @@ class CaseFileUpload(StaticLiveServerTestCase):
                 * description
                 * case
     """
-
-
-
     """
         Set up function
     """
@@ -65,13 +62,14 @@ class CaseFileUpload(StaticLiveServerTestCase):
         self.person1.full_clean()
         self.person1.save()
 
-
+        program = CasePrograms(name="Computer Systems Technology")
+        program.save()
         self.case = Case()
         self.case.lead = 123456789
         self.case.complainant = self.person1
         self.case.campus = "Saskatoon"
         self.case.school = "School of Business"
-        self.case.program = self.prog
+        self.case.program = program
         self.case.caseType = "GRIEVANCES - CLASSIFICATION"
         self.case.status = "OPEN"
         self.case.docs = None
@@ -105,6 +103,9 @@ class CaseFileUpload(StaticLiveServerTestCase):
 
         #Associate Case File object with a case
         self.sample_casefile.case = self.case
+
+        # Call the clean method of the model
+        self.sample_casefile.clean()
 
         #Save the Case File object
         self.sample_casefile.save()
@@ -150,6 +151,9 @@ class CaseFileUpload(StaticLiveServerTestCase):
             # Associate Case File object with a case
             self.sample_casefile.case = self.case
 
+            # Call the clean method of the model
+            self.sample_casefile.clean()
+
             # Save the Case File object
             self.sample_casefile.save()
 
@@ -190,11 +194,14 @@ class CaseFileUpload(StaticLiveServerTestCase):
         fp.close()
 
         # Test if there is a file inside the media root directory
-
         self.assertTrue(os.path.isfile(path_to_a_500_file))
 
     """
+<<<<<<< Updated upstream
     Test if user's uploaded file is less than or equal to 500Mb
+=======
+    Test if user cannot upload a file over 500 MB in size
+>>>>>>> Stashed changes
     """
     def test_user_cannot_upload_if_file_size_is_greater_than_500MB(self):
 
@@ -216,6 +223,9 @@ class CaseFileUpload(StaticLiveServerTestCase):
 
             #Associate Case File object with a case
             self.sample_casefile.case = self.case
+
+            # Call the clean method of the model
+            self.sample_casefile.clean()
 
             #Save the Case File object
             self.sample_casefile.save()
@@ -239,6 +249,9 @@ class CaseFileUpload(StaticLiveServerTestCase):
         #Associate Case File object with a case
         self.sample_casefile.case = self.case
 
+        # Call the clean method of the model
+        self.sample_casefile.clean()
+
         #Save the Case File object
         self.sample_casefile.save()
 
@@ -252,17 +265,11 @@ class CaseFileUpload(StaticLiveServerTestCase):
 
 
 
-    # """
-    # Function: tearDown
-    # Purpose: Deletes Temproary files after tests completed.
-    # NOTE: Due to multiple processes running by Django, this only works in Linux
-    # """
-    # def tearDown(self):
-    #     if os.path.exists(self._overridden_settings["MEDIA_ROOT"]):
-    #         shutil.rmtree(self._overridden_settings["MEDIA_ROOT"])
-    #
-    #     """Doesnt work on windows"""
-    #     # dummyfiles = ['dummylarge.txt', 'notsolarge.txt']
-    #     # for i in dummyfiles:
-    #     #     if os.path.exists(self.CONST_FILE_PATH%i):
-    #     #         os.remove(self.CONST_FILE_PATH%i)
+    """
+    Function: tearDown
+    Purpose: Deletes Temproary files after tests completed.
+    NOTE: Due to multiple processes running by Django, this only works in Linux
+    """
+    def tearDown(self):
+        if os.path.exists(self._overridden_settings["MEDIA_ROOT"]):
+            shutil.rmtree(self._overridden_settings["MEDIA_ROOT"])

@@ -58,9 +58,9 @@ class CaseForm(ModelForm):
             # print(self.files.getlist('file_field')[0].name)
             for f in self.files.getlist('file_field'):
                 #print(f.size)
-                if(f.size > settings.MAX_FILE_SIZE):
+                if(f.size > MAX_FILE_SIZE):
                     raise ValidationError("File exceeds maximum size allowed")
-                if(f.name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT):
+                if(f.name.split(".")[-1] not in FILE_EXT_TO_ACCEPT):
                     raise ValidationError("File type is not allowed")
             return self.cleaned_data['file_field']
 

@@ -18,15 +18,7 @@ $(document).ready(function(){
         description_handler(file_field, desc);
     });
 
-    // $("#cancel_upload").click(function(){
-    //     $.ajax({
-    //         url: "http://127.0.0.1:8000/grievance/cancel/",
-    //         dataType: "json",
-    //         success: function(json){
-    //             console.log(json);
-    //         }
-    //     });
-    // });
+
 
 
      $("button[type=submit]").click(function(){
