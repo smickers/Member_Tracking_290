@@ -64,8 +64,8 @@ class PDAwardForm(ModelForm):
                 attrs={'class': 'js-membersAwarded'}),
         }
 
-    def clean(self):
-        form_startDate = self.cleaned_data.get('startDate')
-        form_endDate = self.cleaned_data.get('endDate')
-        if form_endDate < form_startDate:
-            raise forms.ValidationError("End Date must be the same as or come after start date")
+    #def clean(self):
+    #    form_startDate = self.cleaned_data.get('startDate')
+     #   form_endDate = self.cleaned_data.get('endDate')
+     #   if form_endDate < form_startDate:
+     #       raise forms.ValidationError("End Date must be the same as or come after start date")

@@ -13,7 +13,7 @@ urlpatterns = [
 
     # Professional Development Awards
     url(r'pd/create/$', views.PDAwardCreation.as_view(), name='award_pd_create'),
-    # Edit page url record
+    #Edit page url record
     url(r'^pd/edit/(?P<pk>[-\d]+)/$', views.EditPDAwardView.as_view(), name='award_pd_edit'),
     # List page url record
     url(r'^pd/list/$', views.PDAwardList.as_view(), name='award_pd_list'),

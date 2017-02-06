@@ -35,7 +35,7 @@ class PDAward(models.Model):
     def get_absolute_url(self):
         return reverse(viewname='award:award_pd_detail', kwargs={'pk':self.pk})
 
-    #def clean(self):
-    #    if self.endDate < self.startDate:
-    #        raise ValidationError("End Date must be the same as or come after start date")
+    def clean(self):
+       if self.endDate.__str__() < self.startDate.__str__():
+            raise ValidationError("End Date must be the same as or come after start date")
 

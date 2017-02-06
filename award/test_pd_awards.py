@@ -4,6 +4,8 @@ from django.core.exceptions import ValidationError
 from models import PDAward, Person
 from forms import PDAwardForm
 
+#Class: TestPDAward
+#This class is for testing PD Awards
 class TestPDAward(TestCase):
     tempPerson = Person()
     form = PDAwardForm()
@@ -114,12 +116,12 @@ class TestPDAward(TestCase):
     # test_that_start_date_comes_before_end_date
     # Test that a PD award is not created when end date coems before start date
     def test_that_start_date_comes_before_end_date(self):
-        self.pdAward1 = PDAward()
-        self.pdAward1.awardName = "Excellence Award"
-        self.pdAward1.memberAwarded = self.tempPerson
-        self.pdAward1.awardCost = 100
-        self.pdAward1.startDate = "2017-02-02"
-        self.pdAward1.endDate = "2016-01-01"
-        self.pdAward1.full_clean()
-        self.pdAward1.save()
-        self.assertGreaterEqual(self.pdAward1.startDate, self.pdAward1.endDate)
+        with self.assertRaisesMessage(ValidationError,"End Date must be the same as or come after start date"):
+            self.pdAward1 = PDAward()
+            self.pdAward1.awardName = "Excellence Award"
+            self.pdAward1.memberAwarded = self.tempPerson
+            self.pdAward1.awardCost = 100
+            self.pdAward1.startDate = "2017-02-02"
+            self.pdAward1.endDate = "2016-01-01"
+            self.pdAward1.full_clean()
+            self.pdAward1.save()

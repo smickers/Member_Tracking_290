@@ -1,13 +1,20 @@
 from django.core.exceptions import ValidationError
 import re
 
-
+#PD AWARDS
 # Ensure award amount exists, is at least 1, and is less than 10,000:
 def validate_award_amt(amount):
-    if amount >= 1 and amount <= 99999:
+    if amount >= .01 and amount <= 99999:
         return True
     else:
         raise ValidationError("Cost must be between .01 and 999999")
+
+#def validate_end_date(endDate, startDate):
+#    if endDate < startDate:
+ #       raise ValidationError("End Date must be the same as or come after start date")
+
+#EDUCATION AWARDS
+# Validator for ensuring a valid description has been entered:
 def validate_desc(value):
     # null and whitespace validation
     if not (value and not value.isspace()):
@@ -17,11 +24,7 @@ def validate_desc(value):
     if not sc_regex.match(str(value)):
         raise ValidationError("Description may only contain letters, numbers, spaces, hyphens, and apostrophes.")
 
-
-# Ensure description exists, and is less than 150 characters:
-def validate_description(description):
-    """"""
-
+#Validators for PD Award
 def validate_amt(value):
     # 5 digits or less
     if len(str(value)) > 5:

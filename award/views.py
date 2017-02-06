@@ -26,27 +26,31 @@ class EducationAwardDetail(DetailView):
 
 
 
-#PD AWARDS
+#PD AWARD VIEW CLASSES
 
+#Class: PDAwardCreation
+#This class is for defining the view for creating a PD Award
 class PDAwardCreation(CreateView):
     model=PDAward
     form_class = PDAwardForm
     form = PDAwardForm()
     template_name = 'award/pd_award/pd_award_form.html'
 
+#Class: PDAwardDetail
+#This class is for defining the view for a detail page of a PD Award
 class PDAwardDetail(DetailView):
     model = PDAward
     template_name = 'award/pd_award/pd_award_detail.html'
 
-# Class: MeetingEditView
-# This class declares the form for the editing a meeting
+# Class: EditPDAwardView
+# This class is for defining the view for editing a PD Award
 class EditPDAwardView(UpdateView):
     model = PDAward
     form_class = PDAwardForm
     template_name = 'award/pd_award/pd_award_form.html'
 
-# Class: MeetingList
-# This class declares the form to show a list of current meetings
+# Class: PDAwardList
+# This class is for defining the view for the list of all PD Awards
 class PDAwardList(ListView):
     model = PDAward
     template_name = 'award/pd_award/pd_award_list.html'
