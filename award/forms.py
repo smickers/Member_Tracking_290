@@ -9,6 +9,7 @@ from django import forms
 ###
 class EducationAwardForm(ModelForm):
 
+    # Does the bulk of the heavy lifting
     class Meta:
         model = EducationAward
         fields = '__all__'
@@ -16,6 +17,7 @@ class EducationAwardForm(ModelForm):
             'description': 'Description',
             'award_amount': 'Award Amount'
         }
+        # Custom error messages, when errors are thrown:
         error_messages = {
             'description': {
                 'required': 'An award description is required.',

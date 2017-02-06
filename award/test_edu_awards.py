@@ -87,9 +87,18 @@ class EducationAwardTest(TestCase):
     #NOTE: This can't be cleaned because it sees the math and throws a validationError.
     def test_edu_award_desc_max(self):
         ea = EducationAward()
-        ea.description = "a" * 150
+        ea.description = 'a' * 150
         ea.award_amount = 1250
         ea.save()
+
+    #Test that special characters are not permitted unless specified:
+    def test_edu_award_no_special_chars(self):
+        with self.assertRaises(ValidationError):
+            ea = EducationAward()
+            ea.description = "!@#$$%*^&^(&%*(///...````````~"
+            ea.award_amount = 1250
+            ea.full_clean()
+            ea.save()
 
     # Test that award description cannot exceed the max length of 150 characters:
     def test_edu_award_desc_too_max(self):
