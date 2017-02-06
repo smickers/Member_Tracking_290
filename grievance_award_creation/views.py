@@ -39,6 +39,7 @@ class GrievanceAwardCreationSuccess(DetailView):
 # Purpose: To display the details of an award
 class GrievanceAwardDetail(DetailView):
     model = GrievanceAward
+    model.files.get_files(model.pk)
     template_name = 'grievance_award_creation/grievanceaward_actual_detail.html'
 
 # This class declares the form for the editing a grievance award

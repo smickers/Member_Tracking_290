@@ -168,11 +168,18 @@ class FileViewTests(TestCase):
     def test_user_sees_the_file_associated_to_the_award(self):
         client = Client()
         response = client.get('/grievance/detail/{}'.format(self.ga.id))
-        file_name = self.grievance_files.file.split('/')
-        self.assertTrue(file_name[1] in response.body)
+        file_name = self.grievance_files.file.__str__().split('/')
+        self.assertTrue(file_name[4] in response.content)
+        self.assertTrue(response.content.__contains__("Documents:"))
+        self.assertTrue(response.content.__contains__("Document Description:"))
+        self.assertTrue(response.content.__contains__("Document Upload Date:"))
 
     # Checking to see that the user doesn't see a file when an award doesn't have one
     def test_award_with_no_file_shows_no_file(self):
         client = Client()
         response = client.get('/grievance/detail/{}'.format(self.ga2.id))
-        self.assertFalse(response.body.search('(?:\.(txt|exe|com)?'))
+        self.assertFalse(response.content.__contains__("Documents:"))
+        self.assertFalse(response.content.__contains__("Document Description:"))
+        self.assertFalse(response.content.__contains__("Document Upload Date:"))
+
+    # Make a test to check that the icon is being displayed to the use

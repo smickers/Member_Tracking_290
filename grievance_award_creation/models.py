@@ -18,7 +18,7 @@ class GrievanceFilesManager(models.Manager):
     Purpose: returns files belonging to a specific instance of an award
     """
     def get_files(self, instance):
-        return GrievanceFiles.objects.filter(award=instance)
+        return GrievanceFiles.objects.filter(award_id=instance)
 
 
 """
@@ -41,8 +41,6 @@ class GrievanceAward(models.Model):
     description = models.CharField(max_length=1000, null=True,blank=True, validators=[validators.validate_description])
     date = models.DateField(default=date.today())
     files = GrievanceFilesManager()
-
-
 
     # Default get_absolute_url method
     def get_absolute_url(self):
