@@ -1,3 +1,4 @@
+use gamma;
 replace into add_case_caseprograms (name) values ("Aboriginal Policing Preparation - Certificate");
 replace into add_case_caseprograms (name) values ("Accounting - Certificate");
 replace into add_case_caseprograms (name) values ("Addictions Counselling - Diploma");

@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 import datetime
 from add_member.models import Person
 from spfa_mt import kvp
+from spfa_mt.settings import MAX_FILE_SIZE, FILE_EXT_TO_ACCEPT
 
 
 # Name:       CaseSatellite
@@ -14,6 +15,9 @@ from spfa_mt import kvp
 class CaseSatellite(models.Model):
     name = models.CharField(max_length=50, blank=True, null=True)
 
+    # Name: __str__
+    # Purpose: toString method
+    # Returns: A string representation of the object.
     def __str__(self):
         return self.name
 
@@ -23,6 +27,9 @@ class CaseSatellite(models.Model):
 class CasePrograms(models.Model):
     name = models.CharField(max_length=200, blank=True, null=True)
 
+    # Name: __str__
+    # Purpose: toString method
+    # Returns: A string representation of the object.
     def __str__(self):
         return self.name
 
@@ -32,7 +39,7 @@ class CasePrograms(models.Model):
 #               Also saves data to the DB.
 class Case(models.Model):
     lead = models.IntegerField(max_length=9)
-    complainant = models.ForeignKey(Person, related_name='case_complainant', validators=[validate_complainant])
+    complainant = models.ForeignKey(Person, related_name='case_complainant')
     campus = models.CharField(choices=kvp.CAMPUS_CHOICES.iteritems(), max_length=25, validators=[validate_location],
                               default="Saskatoon")
     satellite = models.CharField(max_length=50, default=None, null=True, blank=True)
@@ -59,15 +66,41 @@ class Case(models.Model):
         if self.program is not None:
             self.department = None
 
-    # Default __str__ method
+    # Name: __str__
+    # Purpose: toString method
+    # Returns: A string representation of the object.
     def __str__(self):
         return self.complainant.__str__() + ' - ' + self.date.__str__()
 
-
-# Joining class for Members to a Case:
+# Class: CaseMembers
+# Purpose: Joining class for Members to a Case.
 class CaseMembers(models.Model):
     caseNum = models.CharField(max_length=9)
     memberNum = models.TextField()
+
+# Class: CaseFiles
+# Purpose: File wrapper for case files.
+class CaseFiles(models.Model):
+    date_uploaded = models.DateTimeField(auto_now=True,blank=True,null=True)
+    file = models.FileField(upload_to='case/',blank=True,null=True)
+    case = models.ForeignKey(Case,blank=True,null=True)
+    description = models.CharField(max_length=50,blank=True,null=True)
+
+
+    """
+    Method: clean
+    Purpose: Responsible for validating/cleaning files.
+            Raises exception if problem occurs
+    """
+    def clean(self):
+        super(CaseFiles, self).clean()
+        if (self.file.size > MAX_FILE_SIZE):
+            """Check if the uploaded file has a valid file size"""
+            raise ValidationError("File is too large")
+
+        if (self.file.name.split(".")[-1] not in FILE_EXT_TO_ACCEPT):
+            """ Check if the uploaded file has a valid file extension """
+            raise ValidationError("Invalid File Extension")
 
 
 # This is called when the form submits and the many to many field has been changed

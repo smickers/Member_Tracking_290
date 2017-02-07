@@ -6,7 +6,6 @@ from django.db import DataError
 import datetime
 from add_member.models import Person
 from django.test import Client, SimpleTestCase, TestCase, LiveServerTestCase
-import requests
 from bs4 import BeautifulSoup
 
 
