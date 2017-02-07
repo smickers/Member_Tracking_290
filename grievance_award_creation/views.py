@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import GrievanceAward
+from .models import *
 from .forms import GrievanceAwardForm
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -31,16 +31,22 @@ class GrievanceAwardCreationSuccess(DetailView):
     # Define the model
     model = GrievanceAward
 
-    def get_context_data(self, **kwargs):
-        context = super(GrievanceAwardCreationSuccess, self).get_context_data(**kwargs)
-        return context
 
 # Class: GrievanceAwardDetail
 # Purpose: To display the details of an award
 class GrievanceAwardDetail(DetailView):
     model = GrievanceAward
-    model.files.get_files(model)
+    manager = GrievanceFilesManager()
+    model.files = manager.get_files()
     template_name = 'grievance_award_creation/grievanceaward_actual_detail.html'
+
+    # def get_context_data(self, **kwargs):
+    #     context = super(GrievanceAwardDetail, self).get_context_data(**kwargs)
+    #     # context["files"] = GrievanceFiles.objects.all().model.file
+    #     context["files"] = "hello"
+    #     return context
+
+
 
 # This class declares the form for the editing a grievance award
 class GrievanceAwardEditView(UpdateView):

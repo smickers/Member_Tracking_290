@@ -18,7 +18,7 @@ class GrievanceFilesManager(models.Manager):
     Purpose: returns files belonging to a specific instance of an award
     """
     def get_files(self, instance):
-        return GrievanceFiles.objects.filter(award_id=instance)
+        return GrievanceFiles.objects.get(award=instance)
 
 
 """
@@ -89,3 +89,6 @@ class GrievanceFiles(models.Model):
         if(self.file.name.split(".")[-1] not in FILE_EXT_TO_ACCEPT):
             """ Check if the uploaded file has a valid file extension """
             raise ValidationError("Invalid File Extension")
+
+    def __str__(self):
+        return str(self.file.name)
