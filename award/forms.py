@@ -37,9 +37,9 @@ class PDAwardForm(ModelForm):
         model=PDAward
         fields='__all__'
         labels={
-            'awardName':'Award Name',
+            'awardName':'Professional Development Description',
             'memberAwarded':'Member Awarded',
-            'awardCost':'Award Cost',
+            'awardCost':'Professionsal Development Cost',
             'startDate': 'Start Date',
             'endDate': 'End Date'
         }
