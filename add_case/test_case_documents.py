@@ -210,7 +210,7 @@ class CaseFileUpload(StaticLiveServerTestCase):
 
 
         # Test will expect a validation error to occur:
-        with self.assertRaises(ValidationError):
+        with self.assertRaisesRegexp(ValidationError, "File is too large"):
             # Open the file
             fp = open(path_to_over_500_MB_file, "r")
 
