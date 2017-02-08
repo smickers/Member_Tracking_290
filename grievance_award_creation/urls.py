@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^edit/(?P<pk>[-\d]+)$', views.GrievanceAwardEditView.as_view(), name='grievance_award_edit'),
     url(r'^list/$', views.GrievanceAwardList.as_view(), name='grievance_award_list'),
     url(r'(?P<pk>[-\d]+)', views.GrievanceAwardCreationSuccess.as_view(), name='create_grievance_award_success'),
+    url(r'^file/(?P<files>[\w.@\d+-]+)$', views.file_download, name='grievance_file_download')
     # url(r'cancel/$', views.CancelUpload_view, name='cancel_grievance_upload')
 
 ]

@@ -40,7 +40,6 @@ class GrievanceAward(models.Model):
     awardAmount = models.FloatField(default=500.00, validators=[validators.validate_award_amt])
     description = models.CharField(max_length=1000, null=True,blank=True, validators=[validators.validate_description])
     date = models.DateField(default=date.today())
-    # files = GrievanceFilesManager()
 
     # Default get_absolute_url method
     def get_absolute_url(self):
