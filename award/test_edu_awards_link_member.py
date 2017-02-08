@@ -109,3 +109,15 @@ class TestEduAwardLinkMember(TestCase):
         eduAward1 = EducationAward()
         eduAward1.description = 'Test'
         eduAward1.award_amount = 5000
+
+    #Tests that if a member is selected, a recipient also has to be entered
+    def test_award_is_not_saved_with_member_selected_no_recipient(self):
+        with self.assertRaisesMessage(ValueError, 'Cannot assign an award with only a member'):
+            self.eduAward1.related_member = self.tempPerson1
+            self.eduAward1.save()
+
+    #Tests that if a recipient is entered a member also has to be selected
+    def test_award_is_not_saved_with_member_selected_no_recipient(self):
+        with self.assertRaisesMessage(ValueError, 'Cannot assign an award without an associcated member'):
+            self.eduAward2.recipient = 'Tim Jr2.'
+            self.eduAward1.save()
