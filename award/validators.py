@@ -35,3 +35,6 @@ def validate_amt(value):
     # No decimals
     if not isinstance(value, int):
         raise ValidationError("Award value must be a whole number (no decimals).")
+
+def validate_recipient(recepient, member):
+    ''
