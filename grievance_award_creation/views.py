@@ -34,11 +34,10 @@ class GrievanceAwardCreationSuccess(DetailView):
 
 # Class: GrievanceAwardDetail
 # Purpose: To display the details of an award
-class GrievanceAwardDetail(DetailView):
-    model = GrievanceAward
-    manager = GrievanceFilesManager()
-    model.files = manager.get_files()
-    template_name = 'grievance_award_creation/grievanceaward_actual_detail.html'
+# class GrievanceAwardDetail(DetailView):
+#     model = GrievanceAward
+#     template_name = 'grievance_award_creation/grievanceaward_actual_detail.html'
+
 
     # def get_context_data(self, **kwargs):
     #     context = super(GrievanceAwardDetail, self).get_context_data(**kwargs)
@@ -46,7 +45,11 @@ class GrievanceAwardDetail(DetailView):
     #     context["files"] = "hello"
     #     return context
 
-
+def grievance_award_detail(request, pk):
+    gw = GrievanceAward.objects.get(id=pk)
+    manager = GrievanceFilesManager()
+    gw.files = str(manager.get_files(pk)).split('/')[1]
+    return render(request, 'grievance_award_creation/grievanceaward_actual_detail.html', {'object': gw})
 
 # This class declares the form for the editing a grievance award
 class GrievanceAwardEditView(UpdateView):
