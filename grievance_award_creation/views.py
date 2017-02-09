@@ -9,6 +9,9 @@ from django.core.exceptions import ValidationError
 from django.core.files.uploadhandler import StopUpload, SkipFile
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.views.generic.list import ListView
+from spfa_mt import settings
+from django.http import HttpResponse
+
 
 # Create your views here.
 # Class: GrievanceAwardCreation
@@ -50,17 +53,30 @@ class GrievanceAwardCreationSuccess(DetailView):
 def grievance_award_detail(request, pk):
     gw = GrievanceAward.objects.get(id=pk)
     manager = GrievanceFilesManager()
-    file = manager.get_files(pk)
-    gw.file_name = str(file).split('/')[1]
-    gw.file_desc = file.description
-    gw.file_date_uploaded = file.date_uploaded
+    try:
+        file = manager.get_files(pk)
+        gw.file_name = str(file).split('/')[1]
+        gw.file_desc = file.description
+        gw.file_date_uploaded = file.date_uploaded
+    # if the grievance award has no files associated, empty the fields and dont display the html
+    except:
+        gw.file_name = ""
+        gw.file_desc = ""
+        gw.file_date_uploaded = ""
 
     return render(request, 'grievance_award_creation/grievanceaward_actual_detail.html', {'object': gw})
 
 # Function: file_download
 # Purpose: function to allow the user to download a file from a grievance award
-def file_download(request, pk):
-    pass
+def file_download(request,file_name):
+    file_path = settings.MEDIA_ROOT +'/'+ file_name
+    file_wrapper = FileWrapper(file(file_path,'rb'))
+    file_mimetype = mimetypes.guess_type(file_path)
+    response = HttpResponse(file_wrapper, content_type=file_mimetype )
+    response['X-Sendfile'] = file_path
+    response['Content-Length'] = os.stat(file_path).st_size
+    response['Content-Disposition'] = 'attachment; filename=%s/' % smart_str(file_name)
+    return response
 
 # This class declares the form for the editing a grievance award
 class GrievanceAwardEditView(UpdateView):
