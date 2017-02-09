@@ -14,9 +14,9 @@
     <h2>Date: {{ object.date }}</h2>
     {% block document %}
         {% if object.file_name %}
-            <h2>Document: <a href="{% url 'grievance_award_creation:grievance_file_download' object.file_name %}">{{ object.file_name }}</a></h2>
+            <h2>Document: <a id="download" target="_blank" href="../../media/grievance/{{ object.file_name }}">{{ object.file_name }}</a></h2>
             <h2>Document Description: {{ object.file_desc }}</h2>
-            <h2>Document Upload Date: {{ object.file_date_uploaded }}</h2>
+            <h2>Document Upload Date: {{ object.file_date_uploaded|date:"d, M. Y" }}</h2>
         {% endif %}
     {% endblock %}
 <input type="button" value="Back" onclick="window.history.back()" />
