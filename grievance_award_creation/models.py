@@ -13,8 +13,6 @@ Class: GrievanceFilesManager
 This class returns files belonging to a specific instance of an award
 """
 class GrievanceFilesManager(models.Manager):
-    def count(self, id):
-        return GrievanceFilesManager.get_queryset(self).filter(award_id=id).count()
 
     """
     Method: get_files

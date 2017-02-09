@@ -61,7 +61,7 @@ class Case(models.Model):
 
     # Default __str__ method
     def __str__(self):
-        return self.complainant.__str__() + ' - ' + self.date.__str__()
+        return self.complainant.__str__() + ' - ' + self.date.strftime("%d, %b. %Y")
 
 
 # Joining class for Members to a Case:
