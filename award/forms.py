@@ -1,4 +1,4 @@
-from django.forms import ModelForm, SelectDateWidget
+from django.forms import ModelForm, SelectDateWidget, TextInput
 from datetime import date
 from .models import EducationAward, PDAward
 from django import forms
@@ -12,7 +12,7 @@ class EducationAwardForm(ModelForm):
     # Does the bulk of the heavy lifting
     class Meta:
         model = EducationAward
-        fields = '__all__'
+        fields = ('description', 'awardAmount')
         labels = {
             'description': 'Description',
             "awardAmount": 'Award Amount'
@@ -30,6 +30,42 @@ class EducationAwardForm(ModelForm):
                 'max_value': 'Amount must be greater than $0 and less than $10,000.',
                 'min_value': 'Amount must be greater than $0 and less than $10,000.'
             }
+        }
+
+
+class EducationAwardUpdateForm(ModelForm):
+
+    # Does the bulk of the heavy lifting
+    class Meta:
+        model = EducationAward
+        fields = '__all__'
+        labels = {
+            'description': 'Description',
+            "awardAmount": 'Award Amount',
+            'awardedMember': 'Awarded Member',
+            'awardRecipient' : 'Award Recipient',
+            'awardType' : 'Award Type',
+            'yearAwarded' : 'Year',
+        }
+        # Custom error messages, when errors are thrown:
+        error_messages = {
+            'description': {
+                'required': 'An award description is required.',
+                'max_length': 'Award description cannot exceed 150 characters in length.',
+                'min_length': 'Award description cannot be left blank.'
+            },
+            "awardAmount": {
+                'required': 'An award value is required.',
+                'invalid': 'Award value must be a whole number (no decimals).',
+                'max_value': 'Amount must be greater than $0 and less than $10,000.',
+                'min_value': 'Amount must be greater than $0 and less than $10,000.'
+            }
+        }
+        widgets={
+            'description': TextInput(attrs={'readonly':'readonly'}),
+            "awardAmount": TextInput(attrs={'readonly':'readonly'}),
+            'awardedMember': forms.Select(
+                attrs={'class': 'js-eduAward'}),
         }
 
 class PDAwardForm(ModelForm):

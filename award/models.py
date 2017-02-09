@@ -20,7 +20,7 @@ class EducationAward(models.Model):
     awardedMember = models.ForeignKey(Person, null=True, blank=True)
     awardRecipient = models.CharField(max_length=60, null=True, blank=True)
     awardType = models.CharField(max_length=8, choices=kvp.EDU_AWARD_TYPES, null=True, blank=True)
-    yearAwarded = models.IntegerField(max_length=4, choices=kvp.EDU_YEAR_CHOICES, null=True, blank=True, default=date.today().year)
+    yearAwarded = models.IntegerField(max_length=4, choices=kvp.EDU_YEAR_CHOICES, null=True, blank=True)
 
     # Default get_absolute_url method
     def get_absolute_url(self):
@@ -35,19 +35,13 @@ class EducationAward(models.Model):
     #Purpose Cleans the model before submitting to database
     def clean(self):
             # First, ensure both the member and recipient have been entered
-            if self.awardedMember != None and self.awardRecipient != None:
-                print("Member and recipient both exist")
-                if EducationAward.objects.all().filter(awardedMember=self.awardedMember).filter(awardRecipient=self.awardRecipient).count() > 0:
+            if (self.awardedMember != None and self.awardRecipient != None and self.awardRecipient != ""):
+                if EducationAward.objects.exclude(id=self.id).filter(awardedMember=self.awardedMember).filter(awardRecipient=self.awardRecipient).count() > 0:
                     raise ValidationError('Cannot assign recipient to more than one award')
             else:
-                print("In else")
-                print("Awarded member exists? " + (self.awardedMember != None).__str__())
-                print("Recipient exists? " + (self.awardRecipient != None).__str__())
-                if self.awardedMember != None and self.awardRecipient == None:
-                    print("Related member is " + self.awardedMember.__str__())
+                if self.awardedMember != None and (self.awardRecipient == None or self.awardRecipient == ""):
                     raise ValidationError('Cannot assign an award with only a member')
-                elif self.awardedMember == None and self.awardRecipient != None:
-                    print("Recipient is " + self.awardRecipient.__str__())
+                elif self.awardedMember == None and (self.awardRecipient != None or self.awardRecipient != ""):
                     raise ValidationError('Cannot assign an award without an associcated member')
 
 

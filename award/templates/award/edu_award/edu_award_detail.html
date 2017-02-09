@@ -13,10 +13,22 @@
 </head>
 <body>
     <h1><strong>Award #{{ object.id }}: {{ object.description }}</strong></h1>
-    <h3>Award Amount: ${{ object.award_amount }}.00</h3>
+    <h3>Award Amount: ${{ object.awardAmount }}.00</h3>
+
+    {% if object.awardedMember %}
+        <h3>Award Member: {{ object.awardedMember }}</h3>
+        <h3>Award Recipient: {{ object.awardRecipient}}</h3>
+        <h3>Award Type: {{ object.awardType }}</h3>
+        <h3>Year Awarded: {{ object.yearAwarded }}</h3>
+    {% endif %}
+
     <br /><br />
     {% buttons %}
     <input type="button" class="btn btn-primary" value="Back" onclick="window.history.back()" style="width:15%;" />
     {% endbuttons %}
+    <hr>
+    <a href="{% url 'award:edu_edit' object.id %}">[Edit Educational Award]</a>
+    <a href="{% url 'award:edu_create' %}">[Create New Educational Award]</a>
+    <a href="{% url 'award:edu_list' %}">[View List of Educational Award]</a>
 </body>
 </html>

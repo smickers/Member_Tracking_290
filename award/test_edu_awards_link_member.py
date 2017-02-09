@@ -131,10 +131,10 @@ class TestEduAwardLinkMember(TestCase):
 
     #Tests that if a dependent has the same name as some other dependent in the model,
     #if they have a different related member, they should be able to have an award
-    # def test_another_member_with_same_dependent_name_can_be_linked_to_award(self):
-    #     eduAward1 = EducationAward()
-    #     eduAward1.description = 'Test'
-    #     eduAward1.award_amount = 5000
+    def test_another_member_with_same_dependent_name_can_be_linked_to_award(self):
+        eduAward1 = EducationAward()
+        eduAward1.description = 'Test'
+        eduAward1.award_amount = 5000
 
     #Tests that if a member is selected, a recipient also has to be entered
     def test_award_is_not_saved_with_member_selected_no_recipient(self):

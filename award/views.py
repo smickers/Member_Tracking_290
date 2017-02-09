@@ -2,11 +2,10 @@ from .models import EducationAward
 from .forms import EducationAwardForm
 from django.shortcuts import render
 from .models import EducationAward, PDAward
-from .forms import EducationAwardForm, PDAwardForm
+from .forms import EducationAwardForm, PDAwardForm, EducationAwardUpdateForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-
 
 ###
 # Views for Education Awards
@@ -24,7 +23,14 @@ class EducationAwardDetail(DetailView):
     model = EducationAward
     template_name = 'award/edu_award/edu_award_detail.html'
 
+class EduationAwardUpdate(UpdateView):
+    model=EducationAward
+    form_class = EducationAwardUpdateForm
+    template_name = 'award/edu_award/edu_award_form.html'
 
+class EduationAwardList(ListView):
+    model=EducationAward
+    template_name = 'award/edu_award/edu_award_list.html'
 
 #PD AWARD VIEW CLASSES
 
