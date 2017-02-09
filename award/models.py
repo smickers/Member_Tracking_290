@@ -22,6 +22,11 @@ class EducationAward(models.Model):
     def __str__(self):
         return self.description.__str__()
 
+    #Method: clean
+    #Purpose Cleans the model before submitting to database
+    def clean(self):
+        ''
+
 #Model for PD Award
 class PDAward(models.Model):
     #Fields for creating a pd award
