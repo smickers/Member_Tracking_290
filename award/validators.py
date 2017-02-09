@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 import re
+#from .models import EducationAward
 
 #PD AWARDS
 # Ensure award amount exists, is at least 1, and is less than 10,000:
@@ -36,5 +37,5 @@ def validate_amt(value):
     if not isinstance(value, int):
         raise ValidationError("Award value must be a whole number (no decimals).")
 
-def validate_recipient(recepient, member):
-    ''
+# def validate_recipient(recipient, relatedMember):
+#         # ensure recipient combo is unique

@@ -15,7 +15,7 @@ class EducationAwardForm(ModelForm):
         fields = '__all__'
         labels = {
             'description': 'Description',
-            'award_amount': 'Award Amount'
+            "awardAmount": 'Award Amount'
         }
         # Custom error messages, when errors are thrown:
         error_messages = {
@@ -24,7 +24,7 @@ class EducationAwardForm(ModelForm):
                 'max_length': 'Award description cannot exceed 150 characters in length.',
                 'min_length': 'Award description cannot be left blank.'
             },
-            'award_amount': {
+            "awardAmount": {
                 'required': 'An award value is required.',
                 'invalid': 'Award value must be a whole number (no decimals).',
                 'max_value': 'Amount must be greater than $0 and less than $10,000.',

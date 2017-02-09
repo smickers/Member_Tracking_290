@@ -5,13 +5,22 @@ from .validators import *
 from add_member.models import Person
 from datetime import date
 import validators
+from spfa_mt import kvp
+import datetime
 
 
 # Models for Education Awards
 class EducationAward(models.Model):
+
+
+
     """Fields for data entry re: education awards"""
     description = models.CharField(max_length=150, null=True, validators=[validate_desc])
-    award_amount = models.IntegerField(max_length=5, null=True, validators=[validate_amt])
+    awardAmount = models.IntegerField(max_length=5, null=True, validators=[validate_amt])
+    awardedMember = models.ForeignKey(Person, null=True, blank=True)
+    awardRecipient = models.CharField(max_length=60, null=True, blank=True)
+    awardType = models.CharField(max_length=8, choices=kvp.EDU_AWARD_TYPES, null=True, blank=True)
+    yearAwarded = models.IntegerField(max_length=4, choices=kvp.EDU_YEAR_CHOICES, null=True, blank=True, default=date.today().year)
 
     # Default get_absolute_url method
     def get_absolute_url(self):
@@ -25,7 +34,22 @@ class EducationAward(models.Model):
     #Method: clean
     #Purpose Cleans the model before submitting to database
     def clean(self):
-        ''
+            # First, ensure both the member and recipient have been entered
+            if self.awardedMember != None and self.awardRecipient != None:
+                print("Member and recipient both exist")
+                if EducationAward.objects.all().filter(awardedMember=self.awardedMember).filter(awardRecipient=self.awardRecipient).count() > 0:
+                    raise ValidationError('Cannot assign recipient to more than one award')
+            else:
+                print("In else")
+                print("Awarded member exists? " + (self.awardedMember != None).__str__())
+                print("Recipient exists? " + (self.awardRecipient != None).__str__())
+                if self.awardedMember != None and self.awardRecipient == None:
+                    print("Related member is " + self.awardedMember.__str__())
+                    raise ValidationError('Cannot assign an award with only a member')
+                elif self.awardedMember == None and self.awardRecipient != None:
+                    print("Recipient is " + self.awardRecipient.__str__())
+                    raise ValidationError('Cannot assign an award without an associcated member')
+
 
 #Model for PD Award
 class PDAward(models.Model):
