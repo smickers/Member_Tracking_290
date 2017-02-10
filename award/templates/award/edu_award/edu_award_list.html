@@ -9,31 +9,33 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
-<h2>List of Professional Development Funding</h2>
-    <table border="2">
-        <thead>
-            <th>ID</th>
-            <th>Award Name</th>
-            <th>Details</th>
-            <th>Edit</th>
-        </thead>
+<div class="container">
+    <h2>List of Professional Development Funding</h2>
+        <table class="table table-striped">
+            <thead>
+                <th>ID</th>
+                <th>Award Name</th>
+                <th>Details</th>
+                <th>Edit</th>
+            </thead>
 
-        <tbody>
-        {% for edaward in object_list %}
+            <tbody>
+            {% for edaward in object_list %}
 
-            <tr>
-                <td>{{ object.id }}</td>
-                <td>${{ object.description}}</td>
-                <td><a href="{% url 'award:edu_detail' edaward.pk %}">[View PD Funding Detail]</a></td>
-                <td><a href="{% url 'award:edu_edit' edaward.pk %}">[Edit PD Funding]</a></td>
-            </tr>
-        {% empty %}
-            <tr>NO AWARDS YET</tr>
-        {% endfor %}
-        </tbody>
+                <tr>
+                    <td>{{ edaward.id }}</td>
+                    <td>{{ edaward.description}}</td>
+                    <td><a href="{% url 'award:edu_detail' edaward.pk %}">[View PD Funding Detail]</a></td>
+                    <td><a href="{% url 'award:edu_edit' edaward.pk %}">[Edit PD Funding]</a></td>
+                </tr>
+            {% empty %}
+                <tr>NO AWARDS YET</tr>
+            {% endfor %}
+            </tbody>
 
-    </table>
-    <hr>
-    <a href="{% url 'award:edu_create' %}">[Create New Educational Award]</a>
+        </table>
+        <hr>
+        <a href="{% url 'award:edu_create' %}">[Create New Educational Award]</a>
+    </div>
 </body>
 </html>
