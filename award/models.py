@@ -8,7 +8,7 @@ import validators
 from spfa_mt import kvp
 import datetime
 
-
+ 
 # Models for Education Awards
 class EducationAward(models.Model):
 
