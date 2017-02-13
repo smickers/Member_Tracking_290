@@ -53,6 +53,7 @@ class EducationAward(models.Model):
                     raise ValidationError('Cannot assign an award without an associcated member. Recipient value: [' + self.awardRecipient.__str__() + ']')
 
 
+
 #Model for PD Award
 class PDAward(models.Model):
     #Fields for creating a pd award
