@@ -66,17 +66,6 @@ def grievance_award_detail(request, pk):
 
     return render(request, 'grievance_award_creation/grievanceaward_actual_detail.html', {'object': gw})
 
-# Function: file_download
-# Purpose: function to allow the user to download a file from a grievance award
-def file_download(request,file_name):
-    file_path = settings.MEDIA_ROOT +'/'+ file_name
-    file_wrapper = FileWrapper(file(file_path,'rb'))
-    file_mimetype = mimetypes.guess_type(file_path)
-    response = HttpResponse(file_wrapper, content_type=file_mimetype )
-    response['X-Sendfile'] = file_path
-    response['Content-Length'] = os.stat(file_path).st_size
-    response['Content-Disposition'] = 'attachment; filename=%s/' % smart_str(file_name)
-    return response
 
 # This class declares the form for the editing a grievance award
 class GrievanceAwardEditView(UpdateView):

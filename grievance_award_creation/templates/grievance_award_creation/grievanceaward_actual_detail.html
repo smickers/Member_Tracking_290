@@ -11,7 +11,7 @@
     <h2>Grievance Type: {{ object.grieveanceType }}</h2>
     <h2>Award Amount: {{ object.awardAmount }}</h2>
     <h2>Description: {{ object.description }}</h2>
-    <h2>Date: {{ object.date }}</h2>
+    <h2>Date: {{ object.date|date:"d, M. Y" }}</h2>
     {% block document %}
         {% if object.file_name %}
             <h2>Document: <a id="download" target="_blank" href="../../media/grievance/{{ object.file_name }}">{{ object.file_name }}</a></h2>
