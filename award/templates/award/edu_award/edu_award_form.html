@@ -2,26 +2,82 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Create an Education Award</title>
+    {% if form.instance.id %}
+        <title>Update Education Award</title>
+    {% else %}
+        <title>Create Education Award</title>
+    {% endif %}
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
     </script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     {% load bootstrap3 %}
+    {% bootstrap_messages %}
+        <script type="text/javascript">
+            $(document).ready(function() {
+
+                //Search functionality for members attending a committee
+                var members = $(".js-eduAward");
+
+              members.select2({
+                ajax: {
+                    //a list of all members
+                    url: "/api-root/members_list/search/", //URL of the REST API for querying the members
+                    dataType: 'json',
+                    data: function(params)
+                    {
+                        return {
+                            q: params.term, //The term to be sent
+                            offset: (params.page ) * 10 //Which page of the REST page will be loaded
+                        }
+                    },
+                    processResults: function (data, params) {
+                        return {
+                            results: data.results,
+                            pagination: {
+                                more: true //enables the pagination feature
+                            }
+                        }
+                   },
+                }
+              });
+            });//end ready
+            </script>
 </head>
 <body>
-    <h2><strong>Create An Education Award</strong></h2>
-    <form class="form form-group" action="" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {% bootstrap_form_errors form type='fields' %}
-        {% bootstrap_form_errors form type='non_fields' %}
-        {% bootstrap_form form %}
-        {% buttons %}
-            <input type="submit" class="btn btn-primary" name="submit" value="Submit" style="width:15%;" />
-            <input type="reset" class="btn btn-warning" name="reset" value="Reset" style="width:15%;" />
-        {% endbuttons %}
-    </form>
+    <div class="container">
+        {# Same deal as with the page title above #}
+        {% if form.instance.id %}
+            <h2>Update Education Award</h2>
+        {% else %}
+            <h2>Create Education Award</h2>
+        {% endif %}
+        <form class="form form-group" action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {# With these next two lines enabled, errors seem to be displayed twice. It's something worth looking into #}
+            {# in another story. #}
+    {#        {% bootstrap_form_errors form type='fields' %}#}
+    {#        {% bootstrap_form_errors form type='non_fields' %}#}
+            {% bootstrap_form form %}
+            {% buttons %}
+                {% if form.instance.id %}
+                    <input type="submit" class="btn btn-primary" name="submit" value="Update Award" />
+                {% else %}
+                    <input type="submit" class="btn btn-primary" name="submit" value="Create Award"/>
+                {% endif %}
+
+                <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
+            {% endbuttons %}
+        </form>
+
+        <hr>
+            <center>
+                <a href="{% url 'award:edu_list' %}">View List of Educational Awards</a>
+            </center>
+    </div>
 </body>
 </html>

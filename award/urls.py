@@ -9,7 +9,9 @@ app_name = 'award'
 urlpatterns = [
     # Education Awards:
     url(r'edu/create/$', views.EducationAwardCreate.as_view(), name='edu_create'),
-    url(r'^(?P<pk>[-\w]+)$', views.EducationAwardDetail.as_view(), name='edu_detail'),
+    url(r'edu/detail/(?P<pk>[-\w]+)$', views.EducationAwardDetail.as_view(), name='edu_detail'),
+    url(r'^edu/list/$', views.EduationAwardList.as_view(), name='edu_list'),
+    url(r'^edu/edit/(?P<pk>[-\d]+)/$', views.EduationAwardUpdate.as_view(), name='edu_edit'),
 
     # Professional Development Awards
     url(r'pd/create/$', views.PDAwardCreation.as_view(), name='award_pd_create'),

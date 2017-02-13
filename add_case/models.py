@@ -70,7 +70,7 @@ class Case(models.Model):
     # Purpose: toString method
     # Returns: A string representation of the object.
     def __str__(self):
-        return self.complainant.__str__() + ' - ' + self.date.__str__()
+        return self.complainant.__str__() + ' - ' + self.date.strftime("%d, %b. %Y")
 
 # Class: CaseMembers
 # Purpose: Joining class for Members to a Case.

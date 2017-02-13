@@ -15,6 +15,8 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+SECURE_SSL_REDIRECT = False
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -162,7 +164,7 @@ THIS SECTION IS WHERE WE DEFINE
 THE CONSTANTS TO BE UTILIZED BY OUR PROJECT
 """
 FILE_EXT_TO_ACCEPT = ['xls', 'xlsx', 'pptx', 'docx', 'csv', 'pdf',
-                      'txt', 'msg']
+                      'txt', 'msg', 'ppt']
 FILE_EXT_TO_ACCEPT_STR = ',.'.join(FILE_EXT_TO_ACCEPT)
 
 MAX_FILE_SIZE = 524288000
