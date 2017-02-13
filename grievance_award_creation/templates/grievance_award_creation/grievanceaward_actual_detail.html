@@ -5,13 +5,20 @@
     <title>Grievance Award Detail</title>
 </head>
 <body>
-    <h1>Award ID: {{ object.id }}</h1>
+    <h1 id="award">Award ID: {{ object.id }}</h1>
     <h2>Recipient: {{ object.recipient }}</h2>
     <h2>Related Case: {{ object.case }}</h2>
     <h2>Grievance Type: {{ object.grieveanceType }}</h2>
     <h2>Award Amount: {{ object.awardAmount }}</h2>
     <h2>Description: {{ object.description }}</h2>
     <h2>Date: {{ object.date }}</h2>
+    {% block document %}
+        {% if object.file_name %}
+            <h2>Document: <a id="download" target="_blank" href="../../media/grievance/{{ object.file_name }}">{{ object.file_name }}</a></h2>
+            <h2>Document Description: {{ object.file_desc }}</h2>
+            <h2>Document Upload Date: {{ object.file_date_uploaded|date:"d, M. Y" }}</h2>
+        {% endif %}
+    {% endblock %}
 <input type="button" value="Back" onclick="window.history.back()" />
 </body>
 </html>
