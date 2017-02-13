@@ -15,8 +15,8 @@ class EducationAward(models.Model):
 
 
     """Fields for data entry re: education awards"""
-    description = models.CharField(max_length=150, null=True, validators=[validate_desc])
-    awardAmount = models.IntegerField(max_length=5, null=True, validators=[validate_amt])
+    description = models.CharField(max_length=150, null=True, validators=[validate_eduaward_desc])
+    awardAmount = models.IntegerField(max_length=5, null=True, validators=[validate_eduaward_amt])
     awardedMember = models.ForeignKey(Person, null=True, blank=True)
     awardRecipient = models.CharField(max_length=60, null=True, blank=True)
     awardType = models.CharField(max_length=8, choices=kvp.EDU_AWARD_TYPES, null=True, blank=True)
@@ -58,7 +58,7 @@ class PDAward(models.Model):
     #Fields for creating a pd award
     awardName = models.CharField(max_length=50)
     memberAwarded = models.ForeignKey(Person)
-    awardCost = models.FloatField(validators=[validators.validate_award_amt])
+    awardCost = models.FloatField(validators=[validators.validate_pdaward_amt])
     startDate = models.DateField(default=date.today())
     endDate = models.DateField(default=date.today())
 

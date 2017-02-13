@@ -23,11 +23,13 @@ class EducationAwardDetail(DetailView):
     model = EducationAward
     template_name = 'award/edu_award/edu_award_detail.html'
 
+#View shown for updating an educational award
 class EduationAwardUpdate(UpdateView):
     model=EducationAward
     form_class = EducationAwardUpdateForm
     template_name = 'award/edu_award/edu_award_form.html'
 
+#View shown for List of Educational Awards
 class EduationAwardList(ListView):
     model=EducationAward
     template_name = 'award/edu_award/edu_award_list.html'
