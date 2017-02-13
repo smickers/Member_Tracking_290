@@ -12,3 +12,4 @@ six==1.10.0
 Whoosh==2.7.4
 request==0.0.12
 bs4==0.0.1
+selenium

@@ -1,6 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.test import SimpleTestCase
-from .models import Case
+from .models import Committee
 from add_member.models import Person
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -53,7 +53,7 @@ class TestNav(SimpleTestCase):
 
     # Test to show we can move from one page to another within an app
     def test_we_can_nav_to_page_within_case_app(self):
-        response = self.client.get(reverse('add_case:case_list'))
+        response = self.client.get(reverse('add_com:com_list'))
         self.assertContains(response, "List of Cases")
         # Using post was not allowed, switching to using get returned the web page
         # assertRedirect was looking for response code 302 meaning the page was found
