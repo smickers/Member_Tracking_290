@@ -18,7 +18,7 @@
             <tr>
                 <td>{{ award.id }}</td>
                 <td><a href="{% url 'grievance_award_creation:grievance_award_actual_detail' award.pk %}">[View Award Detail]</a></td>
-                 <td><a href="{% url 'grievance_award_creation:grievance_award_edit' award.pk %}">[Edit Grievance Award]</a></td>
+                <td><a href="{% url 'grievance_award_creation:grievance_award_edit' award.pk %}">[Edit Grievance Award]</a></td>
             </tr>
         {% empty %}
             <tr>NO AWARDS YET</tr>

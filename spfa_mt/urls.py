@@ -22,6 +22,7 @@ import settings
 from add_case.views import CaseSearchView
 from add_com.views import CommitteeSearchView
 
+
 #initialize rest framework's router
 router = routers.DefaultRouter()
 
@@ -49,4 +50,4 @@ urlpatterns = [
     url(r'^grievance/', include('grievance_award_creation.urls')),
     url(r'^add_event/', include('create_event.urls')),
     url(r'^add_com/', include('add_com.urls'))
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

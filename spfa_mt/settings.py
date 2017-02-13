@@ -164,7 +164,7 @@ THIS SECTION IS WHERE WE DEFINE
 THE CONSTANTS TO BE UTILIZED BY OUR PROJECT
 """
 FILE_EXT_TO_ACCEPT = ['xls', 'xlsx', 'pptx', 'docx', 'csv', 'pdf',
-                      'txt', 'msg']
+                      'txt', 'msg', 'ppt']
 FILE_EXT_TO_ACCEPT_STR = ',.'.join(FILE_EXT_TO_ACCEPT)
 
 MAX_FILE_SIZE = 524288000

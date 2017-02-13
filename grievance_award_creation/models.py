@@ -13,12 +13,13 @@ Class: GrievanceFilesManager
 This class returns files belonging to a specific instance of an award
 """
 class GrievanceFilesManager(models.Manager):
+
     """
     Method: get_files
     Purpose: returns files belonging to a specific instance of an award
     """
     def get_files(self, instance):
-        return GrievanceFiles.objects.filter(award=instance)
+        return GrievanceFiles.objects.get(award_id=instance)
 
 
 """
@@ -40,9 +41,6 @@ class GrievanceAward(models.Model):
     awardAmount = models.FloatField(default=500.00, validators=[validators.validate_award_amt])
     description = models.CharField(max_length=1000, null=True,blank=True, validators=[validators.validate_description])
     date = models.DateField(default=date.today())
-    files = GrievanceFilesManager()
-
-
 
     # Default get_absolute_url method
     def get_absolute_url(self):
@@ -63,8 +61,6 @@ class GrievanceAward(models.Model):
         # Get the complainant
         complainant = Person.objects.get(id=self.recipient)
         return self.id.__str__() + " - " + complainant.firstName + " " + complainant.lastName
-
-
 
 """
 Class: GrievanceFiles
@@ -91,3 +87,6 @@ class GrievanceFiles(models.Model):
         if(self.file.name.split(".")[-1] not in FILE_EXT_TO_ACCEPT):
             """ Check if the uploaded file has a valid file extension """
             raise ValidationError("Invalid File Extension")
+
+    def __str__(self):
+        return str(self.file.name)
