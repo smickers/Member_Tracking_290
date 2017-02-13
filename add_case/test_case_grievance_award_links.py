@@ -11,8 +11,15 @@ class CaseLinksToGrievanceAwards(TestCase):
         Setup method to initialize essential Objects
         :return: None
         """
-
-
+        """
+        TODO: modify Case to have its case type to be an Integer. This enables us to use conditional statements
+        based on the case type's numerical value.
+        For example:
+            GRIEVANCE AWARD case types should be mapped to value greater than 3
+            and other case types less than 3
+            amazing right? Not really, because now we are going to modify every single test case that uses
+            the Case class. YAYYYYYYYYYkillmeYAYYYYY
+        """
         pass
 
 
