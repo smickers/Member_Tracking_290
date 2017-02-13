@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.test import SimpleTestCase
 from add_member.models import Person
+from models import contactLog
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -34,35 +35,42 @@ class TestNav(SimpleTestCase):
         self.tempPerson.gender = 'MALE'
         self.tempPerson.save()
 
+        tempCLog = contactLog()
+        tempCLog.member = self.tempPerson
+        tempCLog.description = 'Hello World'
+        tempCLog.date = '2016-01-01'
+        tempCLog.clean()
+        tempCLog.save()
+
     # Test to show we can move from one page to another within an app
-    def test_we_can_nav_to_page_within_members_app(self):
-        response = self.client.get(reverse('add_member:member_list'))
-        self.assertContains(response, "LIST OF MEMBERS")
+    def test_we_can_nav_to_page_within_Contact_Log_app(self):
+        response = self.client.get(reverse('contact_log_creation:contact_log_list_default'))
+        self.assertContains(response, "Contact Logs")
         # Using post was not allowed, switching to using get returned the web page
         # assertRedirect was looking for response code 302 meaning the page was found
         # using get actually gets the page and will tell you if it exists returning response code 200
         # so compare response code to 200 to make sure it went to the page
-        response = self.client.get(reverse('add_member:member_detail', args='1'))
+        response = self.client.get(reverse('contact_log_creation:contact_log_edit', args='1'))
         self.assertEquals(response.status_code, 200)
 
     # Test to show we can move from one page to another page in a different app
-    def test_we_can_navigate_to_a_page_outside_members_app(self):
-        response = self.client.get(reverse('add_member:member_list'))
-        self.assertContains(response, "LIST OF MEMBERS")
+    def test_we_can_navigate_to_a_page_outside_Contact_Log_app(self):
+        response = self.client.get(reverse('contact_log_creation:contact_log_list_default'))
+        self.assertContains(response, "Contact Logs")
         response = self.client.get(reverse('add_com:committee_list'))
         self.assertEquals(response.status_code, 200)
 
     # Test to show that we can get to a landing page from any other pages
     def test_we_can_navigate_to_a_landing_page(self):
-        response = self.client.get(reverse('add_member:member_list'))
-        self.assertContains(response, "LIST OF MEMBERS")
+        response = self.client.get(reverse('contact_log_creation:contact_log_list_default'))
+        self.assertContains(response, "Contact Logs")
         response = self.client.get("http://127.0.0.1:8000")
         self.assertEquals(response.status_code, 200)
 
     # Test to prove that e cannot navigate to a page that doesn't exist
     def test_we_cannot_navigate_to_a_page_that_doesnt_exist(self):
-        response = self.client.get(reverse('add_member:member_list'))
-        self.assertContains(response, "LIST OF MEMBERS")
+        response = self.client.get(reverse('contact_log_creation:contact_log_list_default'))
+        self.assertContains(response, "Contact Logs")
         response = self.client.get("add_member:member_edit_list")
         self.assertEquals(response.status_code, 404)
 
@@ -72,25 +80,25 @@ class TestNav(SimpleTestCase):
             # Only test that uses Selenium
             ch = webdriver.Chrome()
             # Test that it exists on the case list
-            ch.get(reverse('add_member:member_list'))
+            ch.get(reverse('contact_log:contact_log_list_default'))
             try:
                 element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
             finally:
                 self.ch.quit()
             # Test for the nav on the edit page for an individual Case (pk=1)
-            ch.get(reverse('add_member:member_edit', args='1'))
+            ch.get(reverse('contact_log:contact_log_edit', args='1'))
             try:
                 element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
             finally:
                 self.ch.quit()
             # Test for the nav on the details page for an individual Case (pk=1)
-            ch.get(reverse('add_member:member_detail', args='1'))
+            ch.get(reverse('contact_log:contact_log_list', args='1'))
             try:
                 element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
             finally:
                 self.ch.quit()
             # Test for the nav on the 'add a case' page
-            ch.get(reverse('add_member:member_add'))
+            ch.get(reverse('contact_log:contact_log_add'))
             try:
                 element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
             finally:

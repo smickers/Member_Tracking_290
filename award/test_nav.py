@@ -38,7 +38,7 @@ class TestNav(SimpleTestCase):
 
         ea = EducationAward()
         ea.description = "SPFA Education Award - Fall 2015"
-        ea.award_amount = 1250
+        ea.awardAmount = 1250
         ea.full_clean()
         ea.save()
 
@@ -54,7 +54,7 @@ class TestNav(SimpleTestCase):
     ##PD TESTS
 
     # Test to show we can move from one page to another within an app
-    def test_we_can_nav_to_page_within_case_app(self):
+    def test_we_can_nav_to_page_within_pd_award_app(self):
         response = self.client.get(reverse('award:award_pd_list'))
         self.assertContains(response, "List of Professional Development Funding")
         # Using post was not allowed, switching to using get returned the web page
@@ -65,28 +65,28 @@ class TestNav(SimpleTestCase):
         self.assertEquals(response.status_code, 200)
 
     # Test to show we can move from one page to another page in a different app
-    def test_we_can_navigate_to_a_page_outside_case_app(self):
+    def test_we_can_navigate_to_a_page_outside_pd_award_app(self):
         response = self.client.get(reverse('award:award_pd_list'))
         self.assertContains(response, "List of Professional Development Funding")
         response = self.client.get(reverse('add_com:committee_list'))
         self.assertEquals(response.status_code, 200)
 
     # Test to show that we can get to a landing page from any other pages
-    def test_we_can_navigate_to_a_landing_page(self):
+    def test_we_can_navigate_to_a_landing_page_from_pd(self):
         response = self.client.get(reverse('award:award_pd_list'))
         self.assertContains(response, "List of Professional Development Funding")
         response = self.client.get("http://127.0.0.1:8000")
         self.assertEquals(response.status_code, 200)
 
     # Test to prove that e cannot navigate to a page that doesn't exist
-    def test_we_cannot_navigate_to_a_page_that_doesnt_exist(self):
+    def test_we_cannot_navigate_to_a_page_that_doesnt_exist_from_pd(self):
         response = self.client.get(reverse('award:award_pd_list'))
         self.assertContains(response, "List of Professional Development Funding")
         response = self.client.get("add_member:member_edit_list")
         self.assertEquals(response.status_code, 404)
 
     # Test that the navigation bar menu exists on all pages in the Case app
-    def test_nav_bar_exists_on_all_case_pages(self):
+    def test_nav_bar_exists_on_all_pd_case_pages(self):
         with self.assertEquals(self, True):
             # Only test that uses Selenium
             ch = webdriver.Chrome()
@@ -97,19 +97,19 @@ class TestNav(SimpleTestCase):
             finally:
                 self.ch.quit()
             # Test for the nav on the edit page for an individual Case (pk=1)
-            ch.get(reverse('award:award_pd_list_edit', args='1'))
+            ch.get(reverse('award:award_pd_edit', args='1'))
             try:
                 element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
             finally:
                 self.ch.quit()
             # Test for the nav on the details page for an individual Case (pk=1)
-            ch.get(reverse('award:award_pd_list_detail', args='1'))
+            ch.get(reverse('award:award_pd_detail', args='1'))
             try:
                 element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
             finally:
                 self.ch.quit()
             # Test for the nav on the 'add a case' page
-            ch.get(reverse('award:award_pd_list_create'))
+            ch.get(reverse('award:award_pd_create'))
             try:
                 element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
             finally:
@@ -118,9 +118,9 @@ class TestNav(SimpleTestCase):
     ## Education Award Tests
 
     # Test to show we can move from one page to another within an app
-    def test_we_can_nav_to_page_within_case_app(self):
-        response = self.client.get(reverse('award:award_pd_list'))
-        self.assertContains(response, "List of Professional Development Funding")
+    def test_we_can_nav_to_page_within_edu_award_app(self):
+        response = self.client.get(reverse('award:edu_list'))
+        self.assertContains(response, "Educational Awards")
         # Using post was not allowed, switching to using get returned the web page
         # assertRedirect was looking for response code 302 meaning the page was found
         # using get actually gets the page and will tell you if it exists returning response code 200
@@ -129,54 +129,54 @@ class TestNav(SimpleTestCase):
         self.assertEquals(response.status_code, 200)
 
     # Test to show we can move from one page to another page in a different app
-    def test_we_can_navigate_to_a_page_outside_case_app(self):
-        response = self.client.get(reverse('award:award_pd_list'))
-        self.assertContains(response, "List of Professional Development Funding")
+    def test_we_can_navigate_to_a_page_outside__edu_award_app(self):
+        response = self.client.get(reverse('award:edu_list'))
+        self.assertContains(response, "Educational Awards")
         response = self.client.get(reverse('add_com:committee_list'))
         self.assertEquals(response.status_code, 200)
 
     # Test to show that we can get to a landing page from any other pages
-    def test_we_can_navigate_to_a_landing_page(self):
-        response = self.client.get(reverse('award:award_pd_list'))
-        self.assertContains(response, "List of Professional Development Funding")
+    def test_we_can_navigate_to_a_landing_page_from_edu(self):
+        response = self.client.get(reverse('award:edu_list'))
+        self.assertContains(response, "Educational Awards")
         response = self.client.get("http://127.0.0.1:8000")
         self.assertEquals(response.status_code, 200)
 
     # Test to prove that e cannot navigate to a page that doesn't exist
-    def test_we_cannot_navigate_to_a_page_that_doesnt_exist(self):
-        response = self.client.get(reverse('award:award_pd_list'))
-        self.assertContains(response, "List of Professional Development Funding")
+    def test_we_cannot_navigate_to_a_page_that_doesnt_exist_from_edu(self):
+        response = self.client.get(reverse('award:edu_list'))
+        self.assertContains(response, "Educational Awards")
         response = self.client.get("add_member:member_edit_list")
         self.assertEquals(response.status_code, 404)
 
     # Test that the navigation bar menu exists on all pages in the Case app
-    def test_nav_bar_exists_on_all_case_pages(self):
+    def test_nav_bar_exists_on_all__edu_award_pages(self):
         with self.assertEquals(self, True):
             # Only test that uses Selenium
             ch = webdriver.Chrome()
             # Test that it exists on the case list
-            ch.get(reverse('award:award_pd_list'))
+            ch.get(reverse('award:edu_list'))
             try:
                 element = WebDriverWait(self.ch, 10).until(
                     EC.presence_of_element_located(By.ID, "main_navbar"))
             finally:
                 self.ch.quit()
             # Test for the nav on the edit page for an individual Case (pk=1)
-            ch.get(reverse('award:award_pd_list_edit', args='1'))
+            ch.get(reverse('award:edu_edit', args='1'))
             try:
                 element = WebDriverWait(self.ch, 10).until(
                     EC.presence_of_element_located(By.ID, "main_navbar"))
             finally:
                 self.ch.quit()
             # Test for the nav on the details page for an individual Case (pk=1)
-            ch.get(reverse('award:award_pd_list_detail', args='1'))
+            ch.get(reverse('award:edu_detail', args='1'))
             try:
                 element = WebDriverWait(self.ch, 10).until(
                     EC.presence_of_element_located(By.ID, "main_navbar"))
             finally:
                 self.ch.quit()
             # Test for the nav on the 'add a case' page
-            ch.get(reverse('award:award_pd_list_create'))
+            ch.get(reverse('award:edu_create'))
             try:
                 element = WebDriverWait(self.ch, 10).until(
                     EC.presence_of_element_located(By.ID, "main_navbar"))
