@@ -1,3 +1,5 @@
+from datetime import date
+
 # These are the key value pairs to be used my many different classes
 # Non-School Departments @ Sask Polytech:
 DEPARTMENT_CHOICES = {
@@ -78,3 +80,13 @@ COM_STATUS = [
         (ACTIVE, 'Active'),
         (INACTIVE, 'Inactive'),
     ]
+
+# Educational Award Types
+EDU_AWARD_TYPES = [
+    ('Internal', 'Internal'),
+    ('External', 'External')
+]
+
+EDU_YEAR_CHOICES = [(r, r) for r in range(1980, date.today().year + 1)]
+# Reversing the list so that the latest year is shown first
+EDU_YEAR_CHOICES.reverse()

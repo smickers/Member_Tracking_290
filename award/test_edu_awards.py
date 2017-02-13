@@ -11,7 +11,7 @@ class EducationAwardTest(TestCase):
     def test_valid_entry(self):
         ea = EducationAward()
         ea.description = "SPFA Education Award - Fall 2015"
-        ea.award_amount = 1250
+        ea.awardAmount = 1250
         ea.full_clean()
         ea.save()
 
@@ -19,7 +19,7 @@ class EducationAwardTest(TestCase):
     def test_low_value_award(self):
         ea = EducationAward()
         ea.description = "SPFA Education Award - Winter 2016"
-        ea.award_amount = 1
+        ea.awardAmount = 1
         ea.full_clean()
         ea.save()
 
@@ -27,7 +27,7 @@ class EducationAwardTest(TestCase):
     def test_high_value_award(self):
         ea = EducationAward()
         ea.description = "SPFA Education Award - Spring 2016"
-        ea.award_amount = 99999
+        ea.awardAmount = 99999
         ea.save()
         self.assertTrue(True)
 
@@ -36,7 +36,7 @@ class EducationAwardTest(TestCase):
         with self.assertRaises(ValidationError):
             ea = EducationAward()
             ea.description = "SPFA Education Award - Fall 2016"
-            ea.award_amount = 0.01
+            ea.awardAmount = 0.01
             ea.full_clean()
             ea.save()
 
@@ -45,7 +45,7 @@ class EducationAwardTest(TestCase):
         with self.assertRaises(ValidationError):
             ea = EducationAward()
             ea.description = "SPFA Education Award - Winter 2017"
-            ea.award_amount = None
+            ea.awardAmount = None
             ea.full_clean()
             ea.save()
 
@@ -54,7 +54,7 @@ class EducationAwardTest(TestCase):
         with self.assertRaises(ValidationError):
             ea = EducationAward()
             ea.description = "SPFA Education Award - Spring 2017"
-            ea.award_amount = 0
+            ea.awardAmount = 0
             ea.full_clean()
             ea.save()
 
@@ -63,7 +63,7 @@ class EducationAwardTest(TestCase):
         with self.assertRaises(ValidationError):
             ea = EducationAward()
             ea.description = "SPFA Education Award - Fall 2017"
-            ea.award_amount = 100000
+            ea.awardAmount = 100000
             ea.full_clean()
             ea.save()
 
@@ -72,7 +72,7 @@ class EducationAwardTest(TestCase):
         with self.assertRaises(ValidationError):
             ea = EducationAward()
             ea.description = None
-            ea.award_amount = 1250
+            ea.awardAmount = 1250
             ea.full_clean()
             ea.save()
 
@@ -80,7 +80,7 @@ class EducationAwardTest(TestCase):
     def test_edu_award_desc_min(self):
         ea = EducationAward()
         ea.description = 'a'
-        ea.award_amount = 1250
+        ea.awardAmount = 1250
         ea.save()
 
     # Test that award description can reach the max length, 150 characters:
@@ -88,7 +88,7 @@ class EducationAwardTest(TestCase):
     def test_edu_award_desc_max(self):
         ea = EducationAward()
         ea.description = 'a' * 150
-        ea.award_amount = 1250
+        ea.awardAmount = 1250
         ea.save()
 
     #Test that special characters are not permitted unless specified:
@@ -96,7 +96,7 @@ class EducationAwardTest(TestCase):
         with self.assertRaises(ValidationError):
             ea = EducationAward()
             ea.description = "!@#$$%*^&^(&%*(///...````````~"
-            ea.award_amount = 1250
+            ea.awardAmount = 1250
             ea.full_clean()
             ea.save()
 
@@ -105,5 +105,5 @@ class EducationAwardTest(TestCase):
         with self.assertRaises(DataError):
             ea = EducationAward()
             ea.description = 'a' * 151
-            ea.award_amount = 1250
+            ea.awardAmount = 1250
             ea.save()

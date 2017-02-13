@@ -21,7 +21,7 @@ class TestNav(SimpleTestCase):
         self.testCom.save()
 
     # Test to show we can move from one page to another within an app
-    def test_we_can_nav_to_page_within_case_app(self):
+    def test_we_can_nav_to_page_within_committee_app(self):
         response = self.client.get(reverse('add_com:committee_list'))
         self.assertContains(response, "List of Committees")
         # Using post was not allowed, switching to using get returned the web page
@@ -32,7 +32,7 @@ class TestNav(SimpleTestCase):
         self.assertEquals(response.status_code, 200)
 
     # Test to show we can move from one page to another page in a different app
-    def test_we_can_navigate_to_a_page_outside_case_app(self):
+    def test_we_can_navigate_to_a_page_outside_committe_app(self):
         response = self.client.get(reverse('add_com:committee_list'))
         self.assertContains(response, "List of Committees")
         response = self.client.get(reverse('add_member:member_list'))
@@ -53,7 +53,7 @@ class TestNav(SimpleTestCase):
         self.assertEquals(response.status_code, 404)
 
     # Test that the navigation bar menu exists on all pages in the Case app
-    def test_nav_bar_exists_on_all_case_pages(self):
+    def test_nav_bar_exists_on_all_committee_pages(self):
         with self.assertEquals(self, True):
             # Only test that uses Selenium
             ch = webdriver.Chrome()
