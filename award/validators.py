@@ -21,7 +21,7 @@ def validate_desc(value):
     if not (value and not value.isspace()):
         raise ValidationError("Award description cannot be left blank.")
     # A-Z in both cases, numbers, hyphen, space, apostrophe. Not in Acceptance Tests, but good to have.
-    sc_regex = re.compile(r'^[a-zA-Z0-9\-\s\']{1,40}$')
+    sc_regex = re.compile(r'^[a-zA-Z0-9\-\s\']{1,150}$')
     if not sc_regex.match(str(value)):
         raise ValidationError("Description may only contain letters, numbers, spaces, hyphens, and apostrophes.")
 

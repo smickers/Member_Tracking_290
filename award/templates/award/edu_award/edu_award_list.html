@@ -10,13 +10,13 @@
 </head>
 <body>
 <div class="container">
-    <h2>List of Professional Development Funding</h2>
+    <h2>Educational Awards</h2>
         <table class="table table-striped">
             <thead>
                 <th>ID</th>
                 <th>Award Name</th>
                 <th>Details</th>
-                <th>Edit</th>
+                <th>Update</th>
             </thead>
 
             <tbody>
@@ -25,8 +25,8 @@
                 <tr>
                     <td>{{ edaward.id }}</td>
                     <td>{{ edaward.description}}</td>
-                    <td><a href="{% url 'award:edu_detail' edaward.pk %}">[View PD Funding Detail]</a></td>
-                    <td><a href="{% url 'award:edu_edit' edaward.pk %}">[Edit PD Funding]</a></td>
+                    <td><a href="{% url 'award:edu_detail' edaward.pk %}">Details</a></td>
+                    <td><a href="{% url 'award:edu_edit' edaward.pk %}">Update</a></td>
                 </tr>
             {% empty %}
                 <tr>NO AWARDS YET</tr>
@@ -35,7 +35,9 @@
 
         </table>
         <hr>
-        <a href="{% url 'award:edu_create' %}">[Create New Educational Award]</a>
+        <center>
+            <a href="{% url 'award:edu_create' %}">[Create New Educational Award]</a>
+        </center>
     </div>
 </body>
 </html>

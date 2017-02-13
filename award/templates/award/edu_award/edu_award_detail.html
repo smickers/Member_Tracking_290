@@ -9,26 +9,79 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
     </script>
+    <style>
+        #awardNotGiven {
+            font-style: italic;
+            text-align: center;
+        }
+    </style>
     {% load bootstrap3 %}
 </head>
 <body>
-    <h1><strong>Award #{{ object.id }}: {{ object.description }}</strong></h1>
-    <h3>Award Amount: ${{ object.awardAmount }}.00</h3>
+    <div class="container">
+        <h2>Award #{{ object.id }}: {{ object.description }}</h2>
 
-    {% if object.awardedMember %}
-        <h3>Award Member: {{ object.awardedMember }}</h3>
-        <h3>Award Recipient: {{ object.awardRecipient}}</h3>
-        <h3>Award Type: {{ object.awardType }}</h3>
-        <h3>Year Awarded: {{ object.yearAwarded }}</h3>
-    {% endif %}
+        {% if object.awardedMember %}
+            {# I'm including ID and description attributes here so that it's clear what #}
+            {# the ID and description of the award are. #}
+            <table class="table table-striped">
+                <tr>
+                    <th>Award ID</th>
+                    <td>{{ object.pk }}</td>
+                </tr>
+                <tr>
+                    <th>Award Description</th>
+                    <td>{{ object.description }}</td>
+                </tr>
+                <tr>
+                    <th>Awarded Member</th>
+                    <td>{{ object.awardedMember }}</td>
+                </tr>
+                <tr>
+                    <th>Award Recipient</th>
+                    <td>{{ object.awardRecipient }}</td>
+                </tr>
+                <tr>
+                    <th>Award Amount</th>
+                    <td>${{ object.awardAmount }}.00</td>
+                </tr>
+                <tr>
+                    <th>Award Type</th>
+                    <td>{{ object.awardType }}</td>
+                </tr>
+                <tr>
+                    <th>Year Awarded</th>
+                    <td>{{ object.yearAwarded }}</td>
+                </tr>
+            </table>
+        {% else %}
+        {# The award hasn't been given out yet, so just shown general info. #}
+            <h4 id="awardNotGiven" class="bg-warning">This award has not been awarded yet.</h4>
+            <table class="table table-striped">
+            <tr>
+                <th>Award ID</th>
+                <td>{{ object.pk }}</td>
+            </tr>
+            <tr>
+                <th>Award Description</th>
+                <td>{{ object.description }}</td>
+            </tr>
+            <tr>
+                <th>Award Amount</th>
+                <td>${{ object.awardAmount }}.00</td>
+            </tr>
+            </table>
+        {% endif %}
 
-    <br /><br />
-    {% buttons %}
-    <input type="button" class="btn btn-primary" value="Back" onclick="window.history.back()" style="width:15%;" />
-    {% endbuttons %}
-    <hr>
-    <a href="{% url 'award:edu_edit' object.id %}">[Edit Educational Award]</a>
-    <a href="{% url 'award:edu_create' %}">[Create New Educational Award]</a>
-    <a href="{% url 'award:edu_list' %}">[View List of Educational Award]</a>
+        {% buttons %}
+        <input type="button" class="btn btn-primary" value="Back" onclick="window.history.back()" />
+        {% endbuttons %}
+        <hr>
+        <center>
+            <a href="{% url 'award:edu_edit' object.id %}">Edit this Award</a> |
+            <a href="{% url 'award:edu_create' %}">Create New Educational Award</a> |
+            <a href="{% url 'award:edu_list' %}">View List of Educational Awards</a>
+        </center>
+    </div>
 </body>
 </html>

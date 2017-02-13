@@ -77,7 +77,6 @@ class TestEduAwardLinkMember(TestCase):
 
     #Tests successfully linking a member and dependent to an existing award
     def test_linking_existing_member_to_award(self):
-        print("In unit test one\n\n\n\n\n")
         self.eduAward1.awardedMember = self.tempPerson1
         self.eduAward1.awardRecipient = 'Tim Jr.'
         self.eduAward1.clean()

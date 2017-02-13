@@ -88,3 +88,5 @@ EDU_AWARD_TYPES = [
 ]
 
 EDU_YEAR_CHOICES = [(r, r) for r in range(1980, date.today().year + 1)]
+# Reversing the list so that the latest year is shown first
+EDU_YEAR_CHOICES.reverse()
