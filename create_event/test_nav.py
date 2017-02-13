@@ -20,7 +20,7 @@ class TestNav(SimpleTestCase):
     # setup
     def setUp(self):
         self.testEvent = Event()
-        self.testEvent.name = "Sample Name"
+        self.testEvent.name = "Fun Event"
         self.testEvent.description = ""
         self.testEvent.date = "2016-12-25"
         self.testEvent.location = "Saskatoon"
@@ -77,40 +77,32 @@ class TestNav(SimpleTestCase):
         self.tempPerson2.full_clean()
         self.tempPerson2.save()
 
-        testEvent = Event()
-        testEvent.name = "Fun Event"
-        testEvent.description = ""
-        testEvent.date = "2016-12-25"
-        testEvent.location = "Saskatoon"
-        testEvent.full_clean()
-        testEvent.save()
-
     # Test to show we can move from one page to another within an app
     def test_we_can_nav_to_page_within_meeting_app(self):
-        response = self.client.get(reverse('grievance_award_creation:grievance_award_list'))
-        self.assertContains(response, "List of Grievance Awards")
-        response = self.client.get(reverse('grievance_award_creation:grievance_award_actual_detail', args='1'))
+        response = self.client.get(reverse('create_event:list_event'))
+        self.assertContains(response, "List of Events")
+        response = self.client.get(reverse('create_event:event_detail', args='1'))
         self.assertEquals(response.status_code, 200)
 
     # Test to show we can move from one page to another page in a different app
     def test_we_can_navigate_to_a_page_outside_case_app(self):
-        response = self.client.get(reverse('grievance_award_creation:grievance_award_list'))
-        self.assertContains(response, "List of Grievance Awards")
+        response = self.client.get(reverse('create_event:list_event'))
+        self.assertContains(response, "List of Events")
         response = self.client.get(reverse('add_member:member_list'))
         self.assertEquals(response.status_code, 200)
 
     # Test to show that we can get to a landing page from any other pages
     def test_we_can_navigate_to_a_landing_page(self):
-        response = self.client.get(reverse('grievance_award_creation:grievance_award_list'))
-        self.assertContains(response, "List of Grievance Awards")
+        response = self.client.get(reverse('create_event:list_event'))
+        self.assertContains(response, "List of Events")
         response = self.client.get("http://127.0.0.1:8000")
         self.assertEquals(response.status_code, 200)
 
     # Test to prove that e cannot navigate to a page that doesn't exist
     def test_we_cannot_navigate_to_a_page_that_doesnt_exist(self):
-        response = self.client.get(reverse('grievance_award_creation:grievance_award_list'))
-        self.assertContains(response, "List of Grievance Awards")
-        response = self.client.get("grievance_award_creation:,grievance_award_edit_list")
+        response = self.client.get(reverse('create_event:list_event'))
+        self.assertContains(response, "List of Events")
+        response = self.client.get("create_event: event_edit_list")
         self.assertEquals(response.status_code, 404)
 
     # Test that the navigation bar menu exists on all pages in the Case app
@@ -119,25 +111,31 @@ class TestNav(SimpleTestCase):
             # Only test that uses Selenium
             ch = webdriver.Chrome()
             # Test that it exists on the case list
-            ch.get(reverse('grievance_award_creation:grievance_award_list'))
+            ch.get(reverse('create_event:list_event'))
             try:
                 element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
             finally:
                 self.ch.quit()
             # Test for the nav on the edit page for an individual Meeting (pk=1)
-            ch.get(reverse('grievance_award_creation:grievance_award_edit', args='1'))
+            ch.get(reverse('create_event:event_edit', args='1'))
             try:
                 element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
             finally:
                 self.ch.quit()
             # Test for the nav on the details page for an individual meeting (pk=1)
-            ch.get(reverse('grievance_award_creation:grievance_award_actual_detail', args='1'))
+            ch.get(reverse('create_event:event_detail', args='1'))
             try:
                 element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
             finally:
                 self.ch.quit()
             # Test for the nav on the 'add a meeting' page
-            ch.get(reverse('grievance_award_creation:create_grievance_award'))
+            ch.get(reverse('create_event:add_event'))
+            try:
+                element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
+            finally:
+                self.ch.quit()
+            # Test for the nav on the 'add a member to event' page
+            ch.get(reverse('create_event:event_add_member'))
             try:
                 element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
             finally:
