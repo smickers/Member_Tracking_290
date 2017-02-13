@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 import settings
 from add_case.views import CaseSearchView
 from add_com.views import CommitteeSearchView
-
+from . import views
 
 #initialize rest framework's router
 router = routers.DefaultRouter()
@@ -37,6 +37,8 @@ router.register('committee_list/search', CommitteeSearchView, base_name='committ
 
 
 urlpatterns = [
+    url(r'^index.html$', views.spfaView.as_view(), name='index_default'),
+    url(r'^$', views.spfaView.as_view(), name='index'),
     #rest service's root url
     url(r'^api-root/', include(router.urls)),
     url(r'^admin/', admin.site.urls),
