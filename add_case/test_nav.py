@@ -60,7 +60,7 @@ class TestNav(SimpleTestCase):
         response = self.client.get(reverse('add_case:case_list'))
         self.assertContains(response, "List of Cases", count=1)
         response = self.client.post(reverse('add_case:case_detail', args=('pk', 1)), follow=True)
-        self.assertRedirects(response, reverse('add_case:case_detail', args=('pk', 1)))
+        self.assertRedirects(response, reverse('add_case:case_detail', args=('pk', 1)))    
 
 
         # response = self.client.get('/addCase/list/', follow=True)
