@@ -63,4 +63,16 @@ class CaseLinksToGrievanceAwards(TestCase):
         """
         pass
 
+    def test_case_eval_cases_types_returns_the_instance_of_the_case_type_it_is_related_to(self):
+        """
 
+        :return:
+        """
+        pass
+
+    def test_case_cannot_exists_without_the_case_type_being_specified(self):
+        """
+
+        :return:
+        """
+        pass
