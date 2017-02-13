@@ -14,6 +14,7 @@ class AwardTest(TestCase):
     tempCase = Case()
     case_pk = -1
     program = CasePrograms()
+
     def setUp(self):
         self.program.name = "Computer Systems Technology - Diploma"
         self.program.full_clean()
