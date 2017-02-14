@@ -104,33 +104,3 @@ class TestNav(SimpleTestCase):
         self.assertContains(response, "List of Grievance Awards")
         response = self.client.get("grievance_award_creation:,grievance_award_edit_list")
         self.assertEquals(response.status_code, 404)
-
-    # Test that the navigation bar menu exists on all pages in the Case app
-    def test_nav_bar_exists_on_all_case_pages(self):
-        with self.assertEquals(self, True):
-            # Only test that uses Selenium
-            ch = webdriver.Chrome()
-            # Test that it exists on the case list
-            ch.get(reverse('grievance_award_creation:grievance_award_list'))
-            try:
-                element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
-            finally:
-                self.ch.quit()
-            # Test for the nav on the edit page for an individual Meeting (pk=1)
-            ch.get(reverse('grievance_award_creation:grievance_award_edit', args='1'))
-            try:
-                element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
-            finally:
-                self.ch.quit()
-            # Test for the nav on the details page for an individual meeting (pk=1)
-            ch.get(reverse('grievance_award_creation:grievance_award_actual_detail', args='1'))
-            try:
-                element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
-            finally:
-                self.ch.quit()
-            # Test for the nav on the 'add a meeting' page
-            ch.get(reverse('grievance_award_creation:create_grievance_award'))
-            try:
-                element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
-            finally:
-                self.ch.quit()

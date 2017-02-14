@@ -51,33 +51,3 @@ class TestNav(SimpleTestCase):
         self.assertContains(response, "List of Committees")
         response = self.client.get("add_com:committee_edit_list")
         self.assertEquals(response.status_code, 404)
-
-    # Test that the navigation bar menu exists on all pages in the Case app
-    def test_nav_bar_exists_on_all_committee_pages(self):
-        with self.assertEquals(self, True):
-            # Only test that uses Selenium
-            ch = webdriver.Chrome()
-            # Test that it exists on the case list
-            ch.get(reverse('add_com:committee_list'))
-            try:
-                element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
-            finally:
-                self.ch.quit()
-            # Test for the nav on the edit page for an individual Case (pk=1)
-            ch.get(reverse('add_com:committee_edit', args='1'))
-            try:
-                element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
-            finally:
-                self.ch.quit()
-            # Test for the nav on the details page for an individual Case (pk=1)
-            ch.get(reverse('add_com:committee_detail', args='1'))
-            try:
-                element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
-            finally:
-                self.ch.quit()
-            # Test for the nav on the 'add a case' page
-            ch.get(reverse('add_com:committee_add'))
-            try:
-                element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
-            finally:
-                self.ch.quit()

@@ -1,10 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.test import SimpleTestCase
 from add_member.models import Person
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 
 # class for testing the HTML navbar navigation within this app, and between this app and others.
@@ -37,7 +33,7 @@ class TestNav(SimpleTestCase):
     # Test to show we can move from one page to another within an app
     def test_we_can_nav_to_page_within_members_app(self):
         response = self.client.get(reverse('add_member:member_list'))
-        self.assertContains(response, "LIST OF MEMBERS")
+        self.assertContains(response, "List of Members")
         # Using post was not allowed, switching to using get returned the web page
         # assertRedirect was looking for response code 302 meaning the page was found
         # using get actually gets the page and will tell you if it exists returning response code 200
@@ -48,50 +44,20 @@ class TestNav(SimpleTestCase):
     # Test to show we can move from one page to another page in a different app
     def test_we_can_navigate_to_a_page_outside_members_app(self):
         response = self.client.get(reverse('add_member:member_list'))
-        self.assertContains(response, "LIST OF MEMBERS")
+        self.assertContains(response, "List of Members")
         response = self.client.get(reverse('add_com:committee_list'))
         self.assertEquals(response.status_code, 200)
 
     # Test to show that we can get to a landing page from any other pages
     def test_we_can_navigate_to_a_landing_page(self):
         response = self.client.get(reverse('add_member:member_list'))
-        self.assertContains(response, "LIST OF MEMBERS")
+        self.assertContains(response, "List of Members")
         response = self.client.get("http://127.0.0.1:8000")
         self.assertEquals(response.status_code, 200)
 
     # Test to prove that e cannot navigate to a page that doesn't exist
     def test_we_cannot_navigate_to_a_page_that_doesnt_exist(self):
         response = self.client.get(reverse('add_member:member_list'))
-        self.assertContains(response, "LIST OF MEMBERS")
+        self.assertContains(response, "List of Members")
         response = self.client.get("add_member:member_edit_list")
         self.assertEquals(response.status_code, 404)
-
-    # Test that the navigation bar menu exists on all pages in the Case app
-    def test_nav_bar_exists_on_all_member_pages(self):
-        with self.assertEquals(self, True):
-            # Only test that uses Selenium
-            ch = webdriver.Chrome()
-            # Test that it exists on the case list
-            ch.get(reverse('add_member:member_list'))
-            try:
-                element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
-            finally:
-                self.ch.quit()
-            # Test for the nav on the edit page for an individual Case (pk=1)
-            ch.get(reverse('add_member:member_edit', args='1'))
-            try:
-                element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
-            finally:
-                self.ch.quit()
-            # Test for the nav on the details page for an individual Case (pk=1)
-            ch.get(reverse('add_member:member_detail', args='1'))
-            try:
-                element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
-            finally:
-                self.ch.quit()
-            # Test for the nav on the 'add a case' page
-            ch.get(reverse('add_member:member_add'))
-            try:
-                element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
-            finally:
-                self.ch.quit()

@@ -2,10 +2,6 @@ from django.core.urlresolvers import reverse
 from django.test import SimpleTestCase
 from .models import Case
 from add_member.models import Person
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 
 # class for testing the HTML navbar navigation within this app, and between this app and others.
@@ -82,33 +78,3 @@ class TestNav(SimpleTestCase):
         self.assertContains(response, "List of Cases")
         response = self.client.get("add_case:case_edit_list")
         self.assertEquals(response.status_code, 404)
-
-    # Test that the navigation bar menu exists on all pages in the Case app
-    def test_nav_bar_exists_on_all_case_pages(self):
-        with self.assertEquals(self, True):
-            # Only test that uses Selenium
-            ch = webdriver.Chrome()
-            # Test that it exists on the case list
-            ch.get(reverse('add_case:case_list'))
-            try:
-                element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
-            finally:
-                self.ch.quit()
-            # Test for the nav on the edit page for an individual Case (pk=1)
-            ch.get(reverse('add_case:case_edit', args='1'))
-            try:
-                element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
-            finally:
-                self.ch.quit()
-            # Test for the nav on the details page for an individual Case (pk=1)
-            ch.get(reverse('add_case:case_detail', args='1'))
-            try:
-                element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
-            finally:
-                self.ch.quit()
-            # Test for the nav on the 'add a case' page
-            ch.get(reverse('add_case:case_add'))
-            try:
-                element = WebDriverWait(self.ch, 10).until(EC.presence_of_element_located(By.ID, "main_navbar"))
-            finally:
-                self.ch.quit()

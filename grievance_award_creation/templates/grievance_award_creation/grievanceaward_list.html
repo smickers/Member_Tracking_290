@@ -4,10 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <title>List of Grievance Awards</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
 </head>
 <body>
     <h2>List of Grievance Awards</h2>
-    <table border="2">
+    <a href="{% url 'grievance_award_creation:create_grievance_award' %}">Create a New Grievance Award</a><br />
+    <table border="2" class="table table-bordered" style="width:50%;">
         <thead>
             <th>ID</th>
             <th>Details</th>
@@ -22,7 +28,7 @@
                 <td><a href="{% url 'grievance_award_creation:grievance_award_edit' award.pk %}">[Edit Grievance Award]</a></td>
             </tr>
         {% empty %}
-            <tr>NO AWARDS YET</tr>
+            <tr>No Grievance Awards exist yet.</tr><br />
         {% endfor %}
         </tbody>
 

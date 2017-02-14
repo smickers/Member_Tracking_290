@@ -6,14 +6,10 @@ from add_member.models import Person
 from datetime import date
 import validators
 from spfa_mt import kvp
-import datetime
 
 
 # Models for Education Awards
 class EducationAward(models.Model):
-
-
-
     """Fields for data entry re: education awards"""
     description = models.CharField(max_length=150, null=True, validators=[validate_eduaward_desc])
     awardAmount = models.IntegerField(max_length=5, null=True, validators=[validate_eduaward_amt])
@@ -50,7 +46,7 @@ class EducationAward(models.Model):
                 # or the recipient is an empty string
                 elif self.awardRecipient != None and self.awardRecipient != "":
                 #elif self.awardRecipient != None:# or self.awardRecipient != "":
-                    raise ValidationError('Cannot assign an award without an associated member. Recipient value: [' + self.awardRecipient.__str__() + ']')
+                    raise ValidationError('Cannot assign an award without an associated member.')
 
 
 
