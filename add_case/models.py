@@ -46,7 +46,7 @@ class Case(models.Model):
     school = models.CharField(choices=kvp.SCHOOL_CHOICES.iteritems(), max_length=255)
     program = models.ForeignKey(CasePrograms, default=None, null=True, blank=True)
     department = models.CharField(choices=kvp.DEPARTMENT_CHOICES.iteritems(), max_length=255, null=True, default=None, blank=True)
-    caseType = models.CharField(choices=kvp.TYPE_CHOICES.iteritems(), max_length=50, validators=[validate_case_type])
+    caseType = models.CharField(choices=kvp.TYPE_CHOICES.iteritems(), max_length=50, validators=[validate_case_type]) #TODO: Change to IntegerField
     status = models.CharField(choices=kvp.STATUS_CHOICES.iteritems(), max_length=50, blank=True, validators=[validate_status])
     additionalMembers = models.ManyToManyField(Person, default=None, null=True, blank=True)
     additionalNonMembers = models.TextField(blank=True, null=True)
@@ -71,6 +71,13 @@ class Case(models.Model):
     # Returns: A string representation of the object.
     def __str__(self):
         return self.complainant.__str__() + ' - ' + self.date.strftime("%d, %b. %Y")
+
+    #TODO: Code this property to return the instance of the related Case Type (eg. Grivance Instance)
+    """
+    @property #Denotes that this a property
+    def eval_case_types(self):
+        pass
+    """
 
 # Class: CaseMembers
 # Purpose: Joining class for Members to a Case.
