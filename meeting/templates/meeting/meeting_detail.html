@@ -1,3 +1,4 @@
+{% include 'nav.html' %}
 {%  load bootstrap3 %}
 <!DOCTYPE html>
 <html lang="en">
@@ -30,4 +31,5 @@
             <input type="button" value="Edit Meeting" class="btn btn-warning" onclick="location.href='{% url "meeting:meeting_edit" object.id %}'" />
         {%  endbuttons %}
 </body>
+{% include 'footer.html' %}
 </html>

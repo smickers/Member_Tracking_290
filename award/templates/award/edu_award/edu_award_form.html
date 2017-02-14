@@ -1,3 +1,4 @@
+{% include 'nav.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,9 +76,8 @@
         </form>
 
         <hr>
-            <center>
                 <a href="{% url 'award:edu_list' %}">View List of Educational Awards</a>
-            </center>
     </div>
 </body>
+{% include 'footer.html' %}
 </html>

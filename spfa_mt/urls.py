@@ -1,17 +1,4 @@
-"""spfa_mt URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.10/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.conf.urls import url, include
-    2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
+""" spfa_mt URL Configuration
 """
 from django.conf.urls import url, include
 from django.contrib import admin
@@ -23,16 +10,16 @@ from add_case.views import CaseSearchView
 from add_com.views import CommitteeSearchView
 from . import views
 
-#initialize rest framework's router
+# initialize rest framework's router
 router = routers.DefaultRouter()
 
-#route the member search functionality to 'member_list/view' url path
+# route the member search functionality to 'member_list/view' url path
 router.register('members_list/search', MemberSearchView, base_name='member-search')
 
-#route the case search functionality to 'case_list/view' url
+# route the case search functionality to 'case_list/view' url
 router.register('case_list/search', CaseSearchView, base_name='case-search')
 
-#route the committee search functionality to 'meeting/view' url
+# route the committee search functionality to 'meeting/view' url
 router.register('committee_list/search', CommitteeSearchView, base_name='committee-search')
 
 

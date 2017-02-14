@@ -1,3 +1,4 @@
+{% include 'nav.html' %}
 {%  load bootstrap3 %}
 <!DOCTYPE html>
 <html lang="en">
@@ -76,8 +77,8 @@
 <body>
     <form action="" method="POST" enctype="multipart/form-data" class="form">
         {% csrf_token %}
-{#        {% bootstrap_form form %}#}
-        {{  form.as_p }}
+        {% bootstrap_form form %}
+{#        {{  form.as_p }}#}
         {% buttons %}
             <button id="cancel_upload">Cancel</button>
             <button type="submit" class="btn btn-primary">Create Ruling</button>
@@ -85,4 +86,5 @@
         {% endbuttons %}
     </form>
 </body>
+{% include 'footer.html' %}
 </html>

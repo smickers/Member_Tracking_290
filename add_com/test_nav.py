@@ -32,7 +32,7 @@ class TestNav(SimpleTestCase):
         self.assertEquals(response.status_code, 200)
 
     # Test to show we can move from one page to another page in a different app
-    def test_we_can_navigate_to_a_page_outside_committe_app(self):
+    def test_we_can_navigate_to_a_page_outside_committee_app(self):
         response = self.client.get(reverse('add_com:committee_list'))
         self.assertContains(response, "List of Committees")
         response = self.client.get(reverse('add_member:member_list'))
@@ -41,7 +41,7 @@ class TestNav(SimpleTestCase):
     # Test to show that we can get to a landing page from any other pages
     def test_we_can_navigate_to_a_landing_page(self):
         response = self.client.get(reverse('add_com:committee_list'))
-        self.assertContains(response, "List of Commitees")
+        self.assertContains(response, "List of Committees")
         response = self.client.get("http://127.0.0.1:8000")
         self.assertEquals(response.status_code, 200)
 

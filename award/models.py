@@ -50,7 +50,7 @@ class EducationAward(models.Model):
                 # or the recipient is an empty string
                 elif self.awardRecipient != None and self.awardRecipient != "":
                 #elif self.awardRecipient != None:# or self.awardRecipient != "":
-                    raise ValidationError('Cannot assign an award without an associcated member. Recipient value: [' + self.awardRecipient.__str__() + ']')
+                    raise ValidationError('Cannot assign an award without an associated member. Recipient value: [' + self.awardRecipient.__str__() + ']')
 
 
 

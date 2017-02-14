@@ -147,7 +147,6 @@ USE_L10N = False
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
@@ -164,7 +163,7 @@ THIS SECTION IS WHERE WE DEFINE
 THE CONSTANTS TO BE UTILIZED BY OUR PROJECT
 """
 FILE_EXT_TO_ACCEPT = ['xls', 'xlsx', 'pptx', 'docx', 'csv', 'pdf',
-                      'txt', 'msg', 'ppt']
+                      'txt', 'msg', 'ppt', 'png']
 FILE_EXT_TO_ACCEPT_STR = ',.'.join(FILE_EXT_TO_ACCEPT)
 
 MAX_FILE_SIZE = 524288000

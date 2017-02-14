@@ -1,1 +1,18 @@
-{# HTML will go here for the index page. #}
+{% include 'nav.html' %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SPFA Member Tracking</title>
+</head>
+<body>
+{% bootstrap_messages %}
+<div class="container">
+    <h1>Welcome!</h1>
+	<h3>Please use the navigation above to access different features in the application.</h3>
+</div>
+</body>
+</html>
