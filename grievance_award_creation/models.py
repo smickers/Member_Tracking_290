@@ -34,7 +34,7 @@ class GrievanceAward(models.Model):
     ]
     # Object properties
     grievanceType = models.CharField(max_length=1, choices=GRIEVANCE_TYPES, validators=[validators.validate_grievance_type], default='M')
-    recipient = models.ForeignKey(Person, validators=[validators.validate_recipient])
+    recipient = models.ForeignKey(Person, validators=[validators.validate_recipient]) #TODO: change to manytomany
     #recipient = models.CharField(max_length=50, validators=[validators.validate_recipient])
     case = models.ForeignKey(Case, validators=[validators.validate_case])
     #case = models.CharField(max_length=50, validators=[validators.validate_case],blank=True, null=True)
