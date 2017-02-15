@@ -35,12 +35,14 @@ class TestNav(SimpleTestCase):
         person1.programChoice = 'Sample Program'
         person1.full_clean()
         person1.save()
+
+
         temp_case = Case()
         temp_case.pk = 1
         temp_case.lead = 123456789
         temp_case.complainant = person1
         temp_case.school = "School of Business"
-        temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
+        temp_case.caseType = 3
         temp_case.status = "OPEN"
         temp_case.docs = None
         temp_case.logs = None

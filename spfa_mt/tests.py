@@ -44,27 +44,35 @@ class TestAllSPFAMTElements(SimpleTestCase):
         person1.programChoice = 'Sample Program'
         person1.full_clean()
         person1.save()
+
+
         temp_case = Case()
         temp_case.pk = 1
         temp_case.lead = 123456789
         temp_case.complainant = person1
         temp_case.school = "School of Business"
-        temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
+        temp_case.caseType = 3
         temp_case.status = "OPEN"
         temp_case.docs = None
         temp_case.logs = None
         temp_case.date = "2016-10-20"
         temp_case.save()
+
+
         testCom = Committee()
         testCom.name = "Test Committee"
         testCom.status = 1
         testCom.full_clean()
         testCom.save()
+
+
         ea = EducationAward()
         ea.description = "SPFA Education Award - Fall 2015"
         ea.awardAmount = 1250
         ea.full_clean()
         ea.save()
+
+
         pdAward1 = PDAward()
         pdAward1.awardName = "Excellence Award"
         pdAward1.memberAwarded = person1
