@@ -31,3 +31,10 @@ class contactLog(models.Model):
     # Returns: A string representing the current object
     def __str__(self):
         return self.member.__str__() + " - " + self.description + " " + self.date.__str__()
+
+
+class ContactLogFile(models.Model):
+
+    fileName = models.CharField()
+    description = models.CharField()
+    relatedCase = models.ForeignKey(contactLog)

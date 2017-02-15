@@ -8,6 +8,7 @@ from add_member.models import Person
 from django.core.exceptions import ValidationError
 from spfa_mt import kvp
 from django.test import override_settings
+from django.core.files import File
 
 
 # Make sure we aren't writing crap data to the same location
@@ -47,11 +48,11 @@ class ContactLogEditTests(TestCase):
         self.person1.save()
 
         # Set up the contact log to be edited
-        # self.cLog.member = self.person1
-        # self.cLog.date = '2017-02-12'
-        # self.cLog.description = 'Hello world!'
-        # self.cLog.full_clean()
-        # self.cLog.save()
+        self.cLog.member = self.person1
+        self.cLog.date = '2017-02-12'
+        self.cLog.description = 'Hello world!'
+        self.cLog.full_clean()
+        self.cLog.save()
 
         # Put together some sample files
         self.CONST_FILE_PATH = settings.STATIC_ROOT + 'add_case/test_case_file_upload/%s'
@@ -74,11 +75,6 @@ class ContactLogEditTests(TestCase):
         f.write("\0")
         f.close()
         pass
-
-
-
-
-
 
     # Test 1: Ensure all valid contact codes are accepted
     def test_valid_contact_codes(self):
@@ -108,4 +104,104 @@ class ContactLogEditTests(TestCase):
 
     # Test 3: Ensure all valid file extensions are accepted
     def test_valid_file_extension_are_accepted(self):
-        print("ayy")
+        for extension in kvp.CONTACT_LOG_FILE_EXTENSIONS:
+            file_name = self.CONST_FILE_PATH % "important_data" % extension
+            f = open(file_name, "wb")
+            f.seek(5)
+            f.write("\0")
+            f.close()
+
+            contact_log_file = contactLogFile()
+
+            fp = open(file_name, "r")
+
+            contact_log_file.file = File(fp)
+
+            # Associate Case File object with a case
+            contact_log_file.contactLog = self.cLog
+
+            # Save the Case File object
+            contact_log_file.save()
+
+            # close file stream
+            fp.close()
+
+        self.assertTrue(True)
+
+    # Test 4: Ensure an invalid file extension is rejected
+    def test_invalid_file_extension_is_rejected(self):
+        with self.assertRaisesMessage("The file extension specified is not allowed."):
+            file_name = self.CONST_FILE_PATH % "important_data.gif"
+            f = open(file_name, "wb")
+            f.seek(5)
+            f.write("\0")
+            f.close()
+
+            contact_log_file = contactLogFile()
+
+            fp = open(file_name, "r")
+
+            contact_log_file.file = File(fp)
+
+            # Associate Case File object with a case
+            contact_log_file.contactLog = self.cLog
+
+            # Save the Case File object
+            contact_log_file.save()
+
+            # close file stream
+            fp.close()
+
+            self.assertTrue(True)
+
+    # Test 5: Ensure that a file that is less than 500MB can be uploaded.
+    def test_ensure_a_lower_than_500mb_file_can_be_uploaded(self):
+        file_name = self.CONST_FILE_PATH % "important_data.pdf"
+        f = open(file_name, "wb")
+        f.seek(5)
+        f.write("\0")
+        f.close()
+
+        contact_log_file = contactLogFile()
+
+        fp = open(file_name, "r")
+
+        contact_log_file.file = File(fp)
+
+        # Associate Case File object with a case
+        contact_log_file.contactLog = self.cLog
+
+        # Save the Case File object
+        contact_log_file.save()
+
+        # close file stream
+        fp.close()
+
+        self.assertTrue(True)
+
+
+    # Test 6: Ensure that a file that over 500MB cannot be uploaded.
+    def test_ensure_a_file_larger_than_500mb_file_cannot_be_uploaded(self):
+        with self.assertRaisesMessage(ValidationError, "Files over 500MB cannot be uploaded."):
+            file_name = self.CONST_FILE_PATH % "important_data.pdf"
+            f = open(file_name, "wb")
+            f.seek(settings.MAX_FILE_SIZE + 5)
+            f.write("\0")
+            f.close()
+
+            contact_log_file = contactLogFile()
+
+            fp = open(file_name, "r")
+
+            contact_log_file.file = File(fp)
+
+            # Associate Case File object with a case
+            contact_log_file.contactLog = self.cLog
+
+            # Save the Case File object
+            contact_log_file.save()
+
+            # close file stream
+            fp.close()
+
+            self.assertTrue(True)
