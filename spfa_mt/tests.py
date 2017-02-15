@@ -153,4 +153,4 @@ class TestAllSPFAMTElements(SimpleTestCase):
             soup.prettify()
             self.assertTrue(soup.find("nav"))
             self.assertTrue(soup.find("div", attrs={"class": "footer"}))
-            self.assertTrue(soup.find("img"))
+            self.assertTrue(soup.find("img", attrs={"class": "img-responsive"}))
