@@ -1,3 +1,4 @@
+{% include 'nav.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +10,7 @@
 </head>
 <body>
     <h2>List of Committees</h2>
-
+    <a href="{%  url 'add_com:committee_add' %}">Add New Committee</a><br />
     <table border="1" table class="table table-bordered" style="width:50%; text-align:center;">
         <thead>
             <th style="text-align:center;">Name</th>
@@ -35,4 +36,5 @@
         {% endfor %}
     </table>
 </body>
+{% include 'footer.html' %}
 </html>

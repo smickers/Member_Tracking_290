@@ -1,3 +1,4 @@
+{% include 'nav.html' %}
 {%  load bootstrap3 %}
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +11,8 @@
 </head>
 <body>
 <h2>List of Professional Development Funding</h2>
-    <table border="2">
+    <a href="{% url 'award:award_pd_create' %}">Create New Professional Development Funding</a>
+    <table border="2" class="table table-bordered" style="width:50%;">
         <thead>
             <th>ID</th>
             <th>Professional Development Description</th>
@@ -27,11 +29,10 @@
                 <td><a href="{% url 'award:award_pd_detail' pdaward.pk %}">[View PD Funding Detail]</a></td>
                 <td><a href="{% url 'award:award_pd_edit' pdaward.pk %}">[Edit PD Funding]</a></td>
             </tr>
-        {% empty %}
-            <tr>NO AWARDS YET</tr>
         {% endfor %}
         </tbody>
 
     </table>
 </body>
+{% include 'footer.html' %}
 </html>

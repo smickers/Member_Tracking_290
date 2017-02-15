@@ -68,6 +68,7 @@ class EducationAwardUpdateForm(ModelForm):
                 attrs={'class': 'js-eduAward'}),
         }
 
+
 class PDAwardForm(ModelForm):
     class Meta:
         model=PDAward
