@@ -6,6 +6,7 @@ from add_member.models import Person
 from datetime import date
 from django.db import models
 
+
 # Contact Log Class
 # Purpose: This class will hold a contact log, and
 # all attributes associated with a contact log. This
@@ -38,3 +39,6 @@ class ContactLogFile(models.Model):
     fileName = models.CharField()
     description = models.CharField()
     relatedCase = models.ForeignKey(contactLog)
+
+    # Leaving the stub here, unused ATM but it will be used later on to clean our uploaded files.
+    # def clean(self):

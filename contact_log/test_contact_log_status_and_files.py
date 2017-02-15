@@ -3,7 +3,7 @@
 # Cameron Auser
 from spfa_mt import settings
 from django.test import TestCase
-from .models import contactLog
+from .models import contactLog, ContactLogFile
 from add_member.models import Person
 from django.core.exceptions import ValidationError
 from spfa_mt import kvp
@@ -20,6 +20,7 @@ class ContactLogEditTests(TestCase):
     person1 = Person()
     person2 = Person()
     person3 = Person()
+
     # Unit test setup method
     def setUp(self):
         # Set up our people
@@ -94,7 +95,7 @@ class ContactLogEditTests(TestCase):
 
     # Test 2: Ensure an invalid contact code is not accepted
     def test_invalid_contact_code(self):
-        with (self.assertRaisesMessage(ValidationError, "Select an option from the list of choices.")):
+        with self.assertRaisesMessage(ValidationError, 'Please select an option from the list of choices.'):
             self.cLog.member = self.person1
             self.cLog.date = '2017-01-01'
             self.cLog.description = 'Example Entry'
@@ -111,7 +112,7 @@ class ContactLogEditTests(TestCase):
             f.write("\0")
             f.close()
 
-            contact_log_file = contactLogFile()
+            contact_log_file = ContactLogFile()
 
             fp = open(file_name, "r")
 
@@ -130,14 +131,14 @@ class ContactLogEditTests(TestCase):
 
     # Test 4: Ensure an invalid file extension is rejected
     def test_invalid_file_extension_is_rejected(self):
-        with self.assertRaisesMessage("The file extension specified is not allowed."):
+        with self.assertRaisesMessage(ValidationError, "The file extension specified is not allowed."):
             file_name = self.CONST_FILE_PATH % "important_data.gif"
             f = open(file_name, "wb")
             f.seek(5)
             f.write("\0")
             f.close()
 
-            contact_log_file = contactLogFile()
+            contact_log_file = ContactLogFile()
 
             fp = open(file_name, "r")
 
@@ -162,7 +163,7 @@ class ContactLogEditTests(TestCase):
         f.write("\0")
         f.close()
 
-        contact_log_file = contactLogFile()
+        contact_log_file = ContactLogFile()
 
         fp = open(file_name, "r")
 
@@ -179,7 +180,6 @@ class ContactLogEditTests(TestCase):
 
         self.assertTrue(True)
 
-
     # Test 6: Ensure that a file that over 500MB cannot be uploaded.
     def test_ensure_a_file_larger_than_500mb_file_cannot_be_uploaded(self):
         with self.assertRaisesMessage(ValidationError, "Files over 500MB cannot be uploaded."):
@@ -189,7 +189,7 @@ class ContactLogEditTests(TestCase):
             f.write("\0")
             f.close()
 
-            contact_log_file = contactLogFile()
+            contact_log_file = ContactLogFile()
 
             fp = open(file_name, "r")
 
