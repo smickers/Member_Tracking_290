@@ -83,7 +83,7 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
         self.temp_case.campus = "Saskatoon"
         self.temp_case.school = "School of Business"
         self.temp_case.department = "ILDC"
-        self.temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
+        self.temp_case.caseType = 3
         self.temp_case.status = "OPEN"
         self.temp_case.additionalNonMembers = ""
         self.temp_case.docs = None

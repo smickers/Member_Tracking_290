@@ -46,9 +46,9 @@ class Case(models.Model):
     school = models.CharField(choices=kvp.SCHOOL_CHOICES.iteritems(), max_length=255)
     program = models.ForeignKey(CasePrograms, default=None, null=True, blank=True)
     department = models.CharField(choices=kvp.DEPARTMENT_CHOICES.iteritems(), max_length=255, null=True, default=None, blank=True)
-    caseType = models.CharField(choices=kvp.TYPE_CHOICES.iteritems(), max_length=50, validators=[validate_case_type]) #TODO: Change to IntegerField
-    status = models.CharField(choices=kvp.STATUS_CHOICES.iteritems(), max_length=50, blank=True, validators=[validate_status])
-    additionalMembers = models.ManyToManyField(Person, default=None, null=True, blank=True)
+    caseType = models.IntegerField(choices=kvp.TYPE_CHOICES)
+    status = models.CharField(choices=kvp.STATUS_CHOICES, default="OPEN", max_length=15)
+    additionalMembers = models.ManyToManyField(Person, default=None, blank=True)
     additionalNonMembers = models.TextField(blank=True, null=True)
     docs = models.TextField(blank=True, null=True)
     logs = models.TextField(blank=True, null=True)
@@ -61,10 +61,11 @@ class Case(models.Model):
     # clean method
     # Purpose: Clean data before saving it to the database.
     def clean(self):
-        if len(self.status) == 0:
-            self.status = 'OPEN'
-        if self.program is not None:
-            self.department = None
+        # if len(self.status) == 0:
+        #     self.status = 'OPEN'
+        # if self.program is not None:
+        #     self.department = None
+        pass
 
     # Name: __str__
     # Purpose: toString method

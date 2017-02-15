@@ -51,7 +51,7 @@ class AwardTest(TestCase):
         self.tempCase.campus = "Saskatoon"
         self.tempCase.school = "School of Business"
         self.tempCase.program = self.program
-        self.tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+        self.tempCase.caseType = 3
         self.tempCase.status = "OPEN"
         #self.tempCase.additionalMembers = 0
         #self.tempCase.additionalNonMembers = ""

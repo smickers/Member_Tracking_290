@@ -33,11 +33,9 @@ class GrievanceAward(models.Model):
         ('P', 'Policy')
     ]
     # Object properties
-    grievanceType = models.CharField(max_length=1, choices=GRIEVANCE_TYPES, validators=[validators.validate_grievance_type], default='M')
-    recipient = models.ForeignKey(Person, validators=[validators.validate_recipient]) #TODO: change to manytomany
-    #recipient = models.CharField(max_length=50, validators=[validators.validate_recipient])
-    case = models.ForeignKey(Case, validators=[validators.validate_case])
-    #case = models.CharField(max_length=50, validators=[validators.validate_case],blank=True, null=True)
+    grievanceType = models.CharField(max_length=1, choices=GRIEVANCE_TYPES, default='M')
+    recipient = models.ManyToManyField(Person)
+    case = models.ForeignKey(Case)
     awardAmount = models.FloatField(default=500.00, validators=[validators.validate_award_amt])
     description = models.CharField(max_length=1000, null=True,blank=True, validators=[validators.validate_description])
     date = models.DateField(default=date.today())
@@ -49,11 +47,12 @@ class GrievanceAward(models.Model):
     # Method: clean
     # Purpose: Validate attribute values.
     def clean(self):
-        validators.validate_grievance_type(self.grievanceType)
+        # validators.validate_grievance_type(self.grievanceType)
         #validators.validate_recipient(self.recipient)
         #validators.validate_case(self.case)
-        validators.validate_award_amt(self.awardAmount)
-        validators.validate_description(self.description)
+        # validators.validate_award_amt(self.awardAmount)
+        # validators.validate_description(self.description)
+        pass
 
     # Method: __str__ (toString)
     # Purpose: Return a string representation of this object.

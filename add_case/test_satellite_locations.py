@@ -64,7 +64,7 @@ class CaseTests(TestCase):
         tempCase.satellite = self.satellite
         tempCase.school = "School of Information and Communications Technology"
         tempCase.program = self.program
-        tempCase.caseType = "COMPLAINT"
+        tempCase.caseType = 0
         tempCase.status = "OPEN"
         tempCase.docs = None
         tempCase.logs = None
@@ -86,7 +86,7 @@ class CaseTests(TestCase):
         tempCase.satellite = 'a' * 50
         tempCase.school = "School of Information and Communications Technology"
         tempCase.program = self.program
-        tempCase.caseType = "COMPLAINT"
+        tempCase.caseType = 0
         tempCase.status = "OPEN"
         tempCase.docs = None
         tempCase.logs = None
@@ -109,7 +109,7 @@ class CaseTests(TestCase):
             tempCase.satellite = 'a' * 51
             tempCase.school = "School of Information and Communications Technology"
             tempCase.program = self.program
-            tempCase.caseType = "COMPLAINT"
+            tempCase.caseType = 0
             tempCase.status = "OPEN"
             tempCase.docs = None
             tempCase.logs = None
@@ -129,7 +129,7 @@ class CaseTests(TestCase):
         tempCase.satellite = None
         tempCase.school = "School of Information and Communications Technology"
         tempCase.program = self.program
-        tempCase.caseType = "COMPLAINT"
+        tempCase.caseType = 0
         tempCase.status = "OPEN"
         tempCase.docs = None
         tempCase.logs = None
@@ -186,7 +186,7 @@ class CaseTests(TestCase):
         tempCase.satellite = None
         tempCase.school = "Other"
         tempCase.department = "Learning Technologies"
-        tempCase.caseType = "COMPLAINT"
+        tempCase.caseType = 0
         tempCase.status = "OPEN"
         tempCase.docs = None
         tempCase.logs = None
@@ -208,7 +208,7 @@ class CaseTests(TestCase):
         tempCase.satellite = None
         tempCase.school = "Other"
         tempCase.program = self.program
-        tempCase.caseType = "COMPLAINT"
+        tempCase.caseType = 0
         tempCase.status = "OPEN"
         tempCase.docs = None
         tempCase.logs = None

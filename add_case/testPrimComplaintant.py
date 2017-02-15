@@ -46,7 +46,7 @@ class CaseTestsPrimComplaintant(TestCase):
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.program = "Business Certificate"
-            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.caseType = 3
             tempCase.status = "OPEN"
             tempCase.additionalNonMembers = ""
             tempCase.docs = None
@@ -83,7 +83,7 @@ class CaseTestsPrimComplaintant(TestCase):
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
            # tempCase.program = "Business Certificate"
-            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.caseType = 3
             tempCase.status = "OPEN"
             tempCase.additionalNonMembers = ""
             tempCase.docs = None

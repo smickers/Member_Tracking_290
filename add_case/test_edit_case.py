@@ -78,7 +78,7 @@ class CaseEditTest(TestCase):
         self.tempCase.campus = "Saskatoon"
         self.tempCase.school = "School of Business"
         self.tempCase.program = self.program
-        self.tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+        self.tempCase.caseType=3
         self.tempCase.status = "OPEN"
         self.tempCase.additionalNonMembers = ""
         self.tempCase.docs = None
@@ -159,16 +159,16 @@ class CaseEditTest(TestCase):
 
     # tests that you can edit a case type
     def test_edit_case_type(self):
-        self.tempCase.caseType = "ARBITRATION"
+        self.tempCase.caseType=3
         self.tempCase.full_clean()
         self.tempCase.save()
 
-        assert self.tempCase.caseType == "ARBITRATION"
+        assert self.tempCase.caseType == 3
 
     # tests that you can't edit a case type with invalid data
     def test_edit_case_type_fail(self):
-        with self.assertRaisesMessage(ValidationError, '{\'caseType\': [u"Value \'UIOPUI\' is not a valid choice."]}'):
-            self.tempCase.caseType = "UIOPUI"
+        with self.assertRaises(ValidationError):
+            self.tempCase.caseType=8
             self.tempCase.full_clean()
             self.tempCase.save()
 

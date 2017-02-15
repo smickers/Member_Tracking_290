@@ -16,11 +16,11 @@ class EducationAward(models.Model):
 
     """Fields for data entry re: education awards"""
     description = models.CharField(max_length=150, null=True, validators=[validate_eduaward_desc])
-    awardAmount = models.IntegerField(max_length=5, null=True, validators=[validate_eduaward_amt])
+    awardAmount = models.IntegerField(null=True, validators=[validate_eduaward_amt])
     awardedMember = models.ForeignKey(Person, null=True, blank=True)
     awardRecipient = models.CharField(max_length=60, null=True, blank=True)
     awardType = models.CharField(max_length=8, choices=kvp.EDU_AWARD_TYPES, null=True, blank=True)
-    yearAwarded = models.IntegerField(max_length=4, choices=kvp.EDU_YEAR_CHOICES, null=True, blank=True)
+    yearAwarded = models.IntegerField(choices=kvp.EDU_YEAR_CHOICES, null=True, blank=True)
 
     # Default get_absolute_url method
     def get_absolute_url(self):

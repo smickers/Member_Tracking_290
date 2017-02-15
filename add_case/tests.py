@@ -52,7 +52,7 @@ class CaseTests(TestCase):
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,"
             tempCase.school = "School of Business"
             tempCase.program = self.program
-            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.caseType = 3
             tempCase.status = "OPEN"
             tempCase.docs = None
             tempCase.logs = None
@@ -71,7 +71,7 @@ class CaseTests(TestCase):
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.program = self.program
-        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+        tempCase.caseType = 3
         tempCase.status = "OPEN"
         tempCase.additionalNonMembers = ""
         tempCase.docs = None
@@ -94,7 +94,7 @@ class CaseTests(TestCase):
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
             tempCase.school = "School of Business"
             tempCase.program = self.program
-            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.caseType = 3
             tempCase.status = "OPEN"
             tempCase.additionalNonMembers = ""
             tempCase.docs = None
@@ -121,7 +121,7 @@ class CaseTests(TestCase):
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
             tempCase.school = "School of Business"
             tempCase.program = self.program
-            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.caseType = 3
             tempCase.status = "OPEN"
             tempCase.additionalNonMembers = ""
             tempCase.docs = None
@@ -141,7 +141,7 @@ class CaseTests(TestCase):
     #                       "natoque penatibus et magnis dis parturient montes, nascetur " \
     #                       "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,"
     #     tempCase.program = self.program
-    #     tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+    #     tempCase.caseType = 3
     #     tempCase.status = "OPEN"
     #     tempCase.additionalNonMembers = ""
     #     tempCase.docs = None
@@ -158,7 +158,7 @@ class CaseTests(TestCase):
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.program = self.program
-        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+        tempCase.caseType = 3
         tempCase.status = "OPEN"
         tempCase.additionalNonMembers = ""
         tempCase.docs = None
@@ -179,7 +179,7 @@ class CaseTests(TestCase):
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
             tempCase.program = self.program
-            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.caseType = 3
             tempCase.status = "OPEN"
 
             tempCase.additionalNonMembers = ""
@@ -205,7 +205,7 @@ class CaseTests(TestCase):
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
                               "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,,"
             tempCase.program = self.program
-            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.caseType = 3
             tempCase.status = "OPEN"
 
             tempCase.additionalNonMembers = ""
@@ -245,7 +245,7 @@ class CaseTests(TestCase):
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.program = self.program
-        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+        tempCase.caseType = 3
         tempCase.status = "OPEN"
 
         tempCase.additionalNonMembers = ""
@@ -312,7 +312,7 @@ class CaseTests(TestCase):
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.program = self.program
-            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.caseType = 3
             tempCase.status = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                                 "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                                 "natoque penatibus et magnis dis parturient montes, nascetur " \
@@ -333,7 +333,7 @@ class CaseTests(TestCase):
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.program = self.program
-        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+        tempCase.caseType = 3
         tempCase.status = "OPEN"
 
         tempCase.additionalNonMembers = ""
@@ -352,7 +352,7 @@ class CaseTests(TestCase):
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.program = self.program
-            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.caseType = 3
             tempCase.status = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
@@ -378,7 +378,7 @@ class CaseTests(TestCase):
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.program = self.program
-            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.caseType = 3
             tempCase.status = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " \
                               "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " \
                               "natoque penatibus et magnis dis parturient montes, nascetur " \
@@ -411,7 +411,7 @@ class CaseTests(TestCase):
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.program = self.program
-        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+        tempCase.caseType = 3
         tempCase.status = "OPEN"
 
         tempCase.additionalNonMembers = ""
@@ -430,7 +430,7 @@ class CaseTests(TestCase):
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.program = self.program
-            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.caseType = 3
             tempCase.status = "OPEN"
 
             tempCase.additionalNonMembers = ""
@@ -449,7 +449,7 @@ class CaseTests(TestCase):
             tempCase.campus = ""
             tempCase.school = "School of Business"
             tempCase.program = self.program
-            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.caseType = 3
             tempCase.status = "OPEN"
 
             tempCase.additionalNonMembers = ""
@@ -468,7 +468,7 @@ class CaseTests(TestCase):
             tempCase.campus = "Saskatoon"
             tempCase.school = ""
             tempCase.program = self.program
-            tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+            tempCase.caseType = 3
             tempCase.status = "OPEN"
 
             tempCase.additionalNonMembers = ""
@@ -487,7 +487,6 @@ class CaseTests(TestCase):
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
             tempCase.program = self.program
-            tempCase.caseType = ""
             tempCase.status = "OPEN"
 
             tempCase.additionalNonMembers = ""
@@ -505,8 +504,7 @@ class CaseTests(TestCase):
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.program = self.program
-        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
-        tempCase.status = ""
+        tempCase.caseType = 3
         tempCase.additionalNonMembers = ""
         tempCase.docs = None
         tempCase.logs = None
@@ -523,7 +521,7 @@ class CaseTests(TestCase):
         tempCase.campus = "Saskatoon"
         tempCase.school = "School of Business"
         tempCase.program = self.program
-        tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+        tempCase.caseType = 3
         tempCase.status = "OPEN"
 
         tempCase.additionalNonMembers = ""

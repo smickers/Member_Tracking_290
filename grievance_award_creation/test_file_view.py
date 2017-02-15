@@ -100,7 +100,7 @@ class FileViewTests(TestCase):
         self.tempCase.campus = "Saskatoon"
         self.tempCase.school = "School of Business"
         self.tempCase.program = self.program
-        self.tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+        self.tempCase.caseType = 3
         self.tempCase.status = "OPEN"
         self.tempCase.date = "2016-10-20"
         self.tempCase.full_clean()
@@ -113,7 +113,7 @@ class FileViewTests(TestCase):
         self.tempCase2.campus = "Saskatoon"
         self.tempCase2.school = "School of Business"
         self.tempCase2.program = self.program
-        self.tempCase2.caseType = "GRIEVANCES - CLASSIFICATION"
+        self.tempCase2.caseType = 3
         self.tempCase2.status = "OPEN"
         self.tempCase2.date = "2016-10-20"
         self.tempCase2.full_clean()
