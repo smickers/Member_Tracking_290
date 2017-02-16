@@ -59,18 +59,20 @@ class MonetaryFormatTest(TestCase):
         ea.save()
 
     def test_new_upper_out_of_scope_for_edu_award(self):
-        ea = EducationAward()
-        ea.description = "SPFA Education Award - Fall 2015"
-        ea.awardAmount = 1000000.00
-        ea.full_clean()
-        ea.save()
+        with self.assertRaisesMessage(ValidationError, "Amount must be greater than $0 and less than $1,000,000."):
+            ea = EducationAward()
+            ea.description = "SPFA Education Award - Fall 2015"
+            ea.awardAmount = 1000000.00
+            ea.full_clean()
+            ea.save()
 
     def test_new_lower_out_of_scope_for_edu_award(self):
-        ea = EducationAward()
-        ea.description = "SPFA Education Award - Fall 2015"
-        ea.awardAmount = 0.00
-        ea.full_clean()
-        ea.save()
+        with self.assertRaisesMessage(ValidationError, "Amount must be greater than $0 and less than $1,000,000."):
+            ea = EducationAward()
+            ea.description = "SPFA Education Award - Fall 2015"
+            ea.awardAmount = 0.00
+            ea.full_clean()
+            ea.save()
 
     def test_new_valid_monetary_format_for_a_pd_funding(self):
         pdAward1 = PDAward()
@@ -103,21 +105,42 @@ class MonetaryFormatTest(TestCase):
         pdAward1.save()
 
     def test_new_upper_out_of_scope_for_a_pd_funding(self):
-        pdAward1 = PDAward()
-        pdAward1.awardName = "Excelence Award"
-        pdAward1.memberAwarded = self.tempPerson
-        pdAward1.awardCost = 1000000.00
-        pdAward1.startDate = "2017-02-01"
-        pdAward1.endDate = "2017-02-01"
-        pdAward1.full_clean()
-        pdAward1.save()
+        with self.assertRaisesMessage(ValidationError, "Amount must be greater than $0 and less than $1,000,000."):
+            pdAward1 = PDAward()
+            pdAward1.awardName = "Excelence Award"
+            pdAward1.memberAwarded = self.tempPerson
+            pdAward1.awardCost = 1000000.00
+            pdAward1.startDate = "2017-02-01"
+            pdAward1.endDate = "2017-02-01"
+            pdAward1.full_clean()
+            pdAward1.save()
 
     def test_new_lower_out_of_scope_for_a_pd_funding(self):
-        pdAward1 = PDAward()
-        pdAward1.awardName = "Excelence Award"
-        pdAward1.memberAwarded = self.tempPerson
-        pdAward1.awardCost = 0.00
-        pdAward1.startDate = "2017-02-01"
-        pdAward1.endDate = "2017-02-01"
-        pdAward1.full_clean()
-        pdAward1.save()
+        with self.assertRaisesMessage(ValidationError, "Amount must be greater than $0 and less than $1,000,000."):
+            pdAward1 = PDAward()
+            pdAward1.awardName = "Excelence Award"
+            pdAward1.memberAwarded = self.tempPerson
+            pdAward1.awardCost = 0.00
+            pdAward1.startDate = "2017-02-01"
+            pdAward1.endDate = "2017-02-01"
+            pdAward1.full_clean()
+            pdAward1.save()
+
+    def test_more_than_two_decimals_rounds_to_two_for_pd_award(self):
+            pdAward1 = PDAward()
+            pdAward1.awardName = "Excelence Award"
+            pdAward1.memberAwarded = self.tempPerson
+            pdAward1.awardCost = 123.125
+            pdAward1.startDate = "2017-02-01"
+            pdAward1.endDate = "2017-02-01"
+            pdAward1.clean()
+            pdAward1.save()
+            self.assertEqual(pdAward1.awardCost, 123.13)
+
+    def test_more_than_two_decimals_rounds_to_two_for_edu_award(self):
+            ea = EducationAward()
+            ea.description = "SPFA Education Award - Fall 2015"
+            ea.awardAmount = 123.456789
+            ea.full_clean()
+            ea.save()
+            self.assertEqual(ea.awardAmount, 123.46)

@@ -12,7 +12,7 @@ from spfa_mt import kvp
 class EducationAward(models.Model):
     """Fields for data entry re: education awards"""
     description = models.CharField(max_length=150, null=True, validators=[validate_eduaward_desc])
-    awardAmount = models.IntegerField(max_length=5, null=True, validators=[validate_eduaward_amt])
+    awardAmount = models.FloatField(max_length=5, null=True, validators=[validate_award_amt])
     awardedMember = models.ForeignKey(Person, null=True, blank=True)
     awardRecipient = models.CharField(max_length=60, null=True, blank=True)
     awardType = models.CharField(max_length=8, choices=kvp.EDU_AWARD_TYPES, null=True, blank=True)
@@ -47,6 +47,7 @@ class EducationAward(models.Model):
                 elif self.awardRecipient != None and self.awardRecipient != "":
                 #elif self.awardRecipient != None:# or self.awardRecipient != "":
                     raise ValidationError('Cannot assign an award without an associated member.')
+            self.awardAmount = round(self.awardAmount, 2);
 
 
 
@@ -55,7 +56,7 @@ class PDAward(models.Model):
     #Fields for creating a pd award
     awardName = models.CharField(max_length=50)
     memberAwarded = models.ForeignKey(Person)
-    awardCost = models.FloatField(validators=[validators.validate_pdaward_amt])
+    awardCost = models.FloatField(validators=[validators.validate_award_amt])
     startDate = models.DateField(default=date.today())
     endDate = models.DateField(default=date.today())
 
@@ -67,3 +68,4 @@ class PDAward(models.Model):
        if self.endDate.__str__() < self.startDate.__str__():
             raise ValidationError("End Date must be the same as or come after start date")
 
+       self.awardCost = round(self.awardCost, 2)
