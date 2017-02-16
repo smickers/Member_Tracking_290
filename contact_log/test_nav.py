@@ -2,10 +2,6 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from add_member.models import Person
 from models import contactLog
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from django.test import Client
 
 # class for testing the HTML navbar navigation within this app, and between this app and others.
@@ -57,7 +53,7 @@ class TestNav(TestCase):
         # assertRedirect was looking for response code 302 meaning the page was found
         # using get actually gets the page and will tell you if it exists returning response code 200
         # so compare response code to 200 to make sure it went to the page
-        response = self.client.get(reverse('contact_log_creation:contact_log_edit', args=self.tempCLog.pk))
+        response = self.client.get(reverse('contact_log_creation:contact_log_edit', args=[self.tempCLog.pk]))
         self.assertEquals(response.status_code, 200)
 
     # Test to show we can move from one page to another page in a different app
