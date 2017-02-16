@@ -5,6 +5,8 @@ from django.core.urlresolvers import reverse
 from add_member.models import Person
 from datetime import date
 from django.db import models
+from spfa_mt import kvp, settings
+from django.core.exceptions import ValidationError
 
 
 # Contact Log Class
@@ -17,6 +19,7 @@ class contactLog(models.Model):
     member = models.ForeignKey(Person, blank=True, null=True)
     date = models.DateField(default=date.today())
     description = models.CharField(max_length=150, blank=True, null=True)
+    contactCode = models.CharField(max_length=12, choices=kvp.CONTACT_LOG_STATUSES.iteritems(), default='Phone')
 
     # Function: get_absolute_url
     # Purpose: Returns a URL to redirect the user to after submitting
@@ -36,9 +39,26 @@ class contactLog(models.Model):
 
 class ContactLogFile(models.Model):
 
-    fileName = models.CharField()
-    description = models.CharField()
+    fileName = models.FileField(upload_to='contactlogs/', blank=True, null=True)
+    description = models.CharField(max_length=50, blank=True, null=True)
     relatedCase = models.ForeignKey(contactLog)
 
-    # Leaving the stub here, unused ATM but it will be used later on to clean our uploaded files.
-    # def clean(self):
+    """
+       Method: clean
+       Purpose: Responsible for validating/cleaning files.
+               Raises exception if problem occurs
+       """
+
+    def clean(self):
+
+        super(ContactLogFile, self).clean()
+        if (self.file.size > settings.MAX_FILE_SIZE):
+            """Check if the uploaded file has a valid file size"""
+            raise ValidationError("File is too large")
+
+        if (self.file.name.split(".")[-1] not in kvp.CONTACT_LOG_FILE_EXTENSIONS):
+            """ Check if the uploaded file has a valid file extension """
+            raise ValidationError("Invalid File Extension")
+
+    def __str__(self):
+        return str(self.file.name)

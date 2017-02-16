@@ -7,6 +7,7 @@ from spfa_mt import settings
 from django.core.exceptions import ValidationError
 from django.core.files import File
 from django import forms
+from spfa_mt import kvp
 
 
 
@@ -78,22 +79,6 @@ class GrievanceAwardForm(ModelForm):
         YEARS = range(date.today().year - 5, date.today().year + 6)
         YEARS.sort()
 
-        # Define months so they're entered as three letters
-        MONTHS = {
-            1: 'Jan',
-            2: 'Feb',
-            3: 'Mar',
-            4: 'Apr',
-            5: 'May',
-            6: 'Jun',
-            7: 'Jul',
-            8: 'Aug',
-            9: 'Sep',
-            10: 'Oct',
-            11: 'Nov',
-            12: 'Dec'
-        }
-
         # Show all fields and set up labels
         fields = '__all__'
         labels = {
@@ -107,7 +92,7 @@ class GrievanceAwardForm(ModelForm):
 
         # Use some special widgets for certain fields
         widgets = {
-            'date': SelectDateWidget(months=MONTHS, years=YEARS),
+            'date': SelectDateWidget(months=kvp.MONTHS, years=YEARS),
             'description' : Textarea(),
             'grievanceType' : RadioSelect(),
             'recipient' : forms.Select(
