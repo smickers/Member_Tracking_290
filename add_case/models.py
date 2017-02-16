@@ -60,12 +60,13 @@ class Case(models.Model):
 
     # clean method
     # Purpose: Clean data before saving it to the database.
-    def clean(self):
-        # if len(self.status) == 0:
-        #     self.status = 'OPEN'
-        # if self.program is not None:
-        #     self.department = None
-        pass
+    def clean(self, *args, **kwargs):
+        print(self.__dict__)
+        super(Case, self).clean(*args, **kwargs)
+
+        # if self.caseType == 7 and self.additionalMembers.all().count() > 0:
+        #     raise ValueError("Individual cannot allow multiple members")
+
 
     # Name: __str__
     # Purpose: toString method

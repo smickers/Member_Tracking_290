@@ -7,6 +7,7 @@ from spfa_mt.settings import MAX_FILE_SIZE, FILE_EXT_TO_ACCEPT
 from django.core.urlresolvers import reverse
 from datetime import date
 from django.core.exceptions import ValidationError
+from spfa_mt import kvp
 
 """
 Class: GrievanceFilesManager
@@ -47,11 +48,6 @@ class GrievanceAward(models.Model):
     # Method: clean
     # Purpose: Validate attribute values.
     def clean(self):
-        # validators.validate_grievance_type(self.grievanceType)
-        #validators.validate_recipient(self.recipient)
-        #validators.validate_case(self.case)
-        # validators.validate_award_amt(self.awardAmount)
-        # validators.validate_description(self.description)
         pass
 
     # Method: __str__ (toString)
@@ -60,6 +56,22 @@ class GrievanceAward(models.Model):
         # Get the complainant
         complainant = Person.objects.get(id=self.recipient)
         return self.id.__str__() + " - " + complainant.firstName + " " + complainant.lastName
+
+    def save(self, *args, **kwargs):
+        """
+        Documentation: https://docs.djangoproject.com/en/1.10/ref/models/instances/
+        """
+        super(GrievanceAward, self).save(*args, **kwargs)
+        if self.case.caseType > 2:             # if it is a type of grievance
+            self.recipient.add(self.case.complainant)
+            if self.case.caseType != 7:        # if the grievance type is for policy
+                for single_member in self.case.additionalMembers.all():
+                    self.recipient.add(single_member)
+                self.grievanceType = 'P'
+            else:
+                self.grievanceType = 'M'
+
+
 
 """
 Class: GrievanceFiles

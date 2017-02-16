@@ -13,20 +13,16 @@ class CaseLinksToGrievanceAwards(TestCase):
         self.person1 = Person()
         self.person2 = Person()
         self.tempCase = Case()
+        self.tempCase2 = Case()
+        self.ga2 = GrievanceAward()
         self.ga = GrievanceAward()
+
 
 
     def setUp(self):
         """
         Setup method to initialize essential Objects
         :return: None
-        """
-        """
-        TODO: modify Case to have its case type to be an Integer. This enables us to use conditional statements
-        based on the case type's numerical value.
-        For example:
-            GRIEVANCE AWARD case types should be mapped to value greater than 3
-            and other case types less than 3
         """
         self.person1.memberID = 4204444
         self.person1.firstName = 'First'
@@ -81,7 +77,7 @@ class CaseLinksToGrievanceAwards(TestCase):
         self.tempCase.campus = "Saskatoon"
         self.tempCase.school = "School of Business"
         self.tempCase.program = CasePrograms(name="Computer Systems Technology").save()
-        self.tempCase.caseType=3
+        self.tempCase.caseType = 7
         self.tempCase.status = "OPEN"
         self.tempCase.additionalNonMembers = ""
         self.tempCase.docs = None
@@ -92,15 +88,37 @@ class CaseLinksToGrievanceAwards(TestCase):
         self.tempCase.additionalMembers.add(self.person1)
         self.tempCase.save()
 
-        #TODO: Implement an automatic association of GrievanceAward and Case
-        # # self.ga.grievanceType = "M"
-        # # self.ga.recipient = self.person2
-        # self.ga.case = self.tempCase
-        # self.ga.awardAmount = 500.00
-        # self.ga.description = ""
-        # self.ga.date = '2016-12-01'
-        # self.ga.full_clean()
-        # self.ga.save()
+
+        self.tempCase2.lead = 123456789
+        self.tempCase2.complainant = self.person1
+        self.tempCase2.campus = "Saskatoon"
+        self.tempCase2.school = "School of Business"
+        self.tempCase2.program = CasePrograms(name="Computer Systems Technology").save()
+        self.tempCase2.caseType = 3
+        self.tempCase2.status = "OPEN"
+        self.tempCase2.additionalNonMembers = ""
+        self.tempCase2.docs = None
+        self.tempCase2.logs = None
+        self.tempCase2.date = "2016-10-20"
+        self.tempCase2.full_clean()
+        self.tempCase2.save()
+        self.tempCase2.additionalMembers.add(self.person1)
+        self.tempCase2.save()
+
+        self.ga.case = self.tempCase
+        self.ga.awardAmount = 500.00
+        self.ga.description = ""
+        self.ga.date = '2016-12-01'
+        self.ga.full_clean()
+        self.ga.save()
+
+        self.ga2.case = self.tempCase2
+        self.ga2.awardAmount = 500.00
+        self.ga2.description = ""
+        self.ga2.date = '2016-12-01'
+        self.ga2.full_clean()
+        self.ga2.save()
+
 
 
     def test_grievance_award_can_be_associated_with_a_single_member_if_grievance_award_type_is_of_member(self):
@@ -109,37 +127,35 @@ class CaseLinksToGrievanceAwards(TestCase):
         member
         :return:
         """
-        # if(self.ga.case is not None and self.ga.caseType='M'):
-        #     self.assertTrue(self.ga.recipient.get(Person=self.person1) == self.tempCase.complainant)
-        pass
+        self.assertTrue(self.ga.recipient.all().count() == 1)
 
-    def test_grievance__award_cannot_be_associated_with_a_single_member_if_grievance_award_type_is_not_of_member(self):
-        """
-        Purpose: test to see if grievance award can only be associated with a single member if it is of type
-        member
-        :return:
-        """
-        # if (self.ga.case is not None and self.ga.caseType='M'):
-        #     self.assertFalse(self.ga.recipient.get(Person=self.person1) == self.tempCase.complainant)
-        pass
 
-    def test_grievance_award_can_be_associated_with_multiple_member_if_grievance_award_type_is_of_policy(self):
-        """
-        Purpose: test to see if grievance award can only be associated with a multiple member if it is of type
-        policy
-        :return:
-        """
-        # if (self.ga.case is not None and self.ga.caseType='P'):
-        #     self.assertEquals(list(self.ga.recipient), list(self.case.additionalMembers) + self.case.complainant)
-        pass
 
-    def test_grievance_award_cannot_be_associated_with_multiple_members_if_griev_aw_type_isnt_of_policy(self):
-        """
-        Purpose: test to see if grievance award can only be associated with a multiple member if it is of type
-        policy
-        :return:
-        """
-        # if(self.ga.case is not None and self.ga.caseType='M'):
-        #     self.assertTrue(self.ga.recipient.all().count == 1)
 
-        pass
+    # def test_grievance__award_cannot_be_associated_with_multiple_member_if_grievance_award_type_is_member(self):
+    #     """
+    #     Purpose: test to see if grievance award can only be associated with a single member if it is of type
+    #     member
+    #     :return:
+    #     """
+    #     pass
+    # def test_grievance_award_can_be_associated_with_multiple_member_if_grievance_award_type_is_of_policy(self):
+    #     """
+    #     Purpose: test to see if grievance award can only be associated with a multiple member if it is of type
+    #     policy
+    #     :return:
+    #     """
+    #     # if (self.ga.case is not None and self.ga.caseType='P'):
+    #     #     self.assertEquals(list(self.ga.recipient), list(self.case.additionalMembers) + self.case.complainant)
+    #     pass
+    #
+    # def test_grievance_award_cannot_be_associated_with_multiple_members_if_griev_aw_type_isnt_of_policy(self):
+    #     """
+    #     Purpose: test to see if grievance award can only be associated with a multiple member if it is of type
+    #     policy
+    #     :return:
+    #     """
+    #     # if(self.ga.case is not None and self.ga.caseType='M'):
+    #     #     self.assertTrue(self.ga.recipient.all().count == 1)
+    #
+    #     pass
