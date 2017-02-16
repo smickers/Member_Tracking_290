@@ -41,7 +41,7 @@ class ContactLogFile(models.Model):
 
     fileName = models.FileField(upload_to='contactlogs/', blank=True, null=True)
     description = models.CharField(max_length=50, blank=True, null=True)
-    relatedCase = models.ForeignKey(contactLog)
+    relatedContactLog = models.ForeignKey(contactLog)
 
     """
        Method: clean
@@ -52,11 +52,11 @@ class ContactLogFile(models.Model):
     def clean(self):
 
         super(ContactLogFile, self).clean()
-        if (self.file.size > settings.MAX_FILE_SIZE):
+        if self.file.size > settings.MAX_FILE_SIZE:
             """Check if the uploaded file has a valid file size"""
             raise ValidationError("File is too large")
 
-        if (self.file.name.split(".")[-1] not in kvp.CONTACT_LOG_FILE_EXTENSIONS):
+        if self.file.name.split(".")[-1] not in kvp.CONTACT_LOG_FILE_EXTENSIONS:
             """ Check if the uploaded file has a valid file extension """
             raise ValidationError("Invalid File Extension")
 

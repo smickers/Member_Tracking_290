@@ -12,6 +12,8 @@ from django.core.exceptions import ValidationError
 Class: GrievanceFilesManager
 This class returns files belonging to a specific instance of an award
 """
+
+
 class GrievanceFilesManager(models.Manager):
 
     """
@@ -26,6 +28,8 @@ class GrievanceFilesManager(models.Manager):
 Class: GrievanceAward
 The class for a grievance award model.
 """
+
+
 class GrievanceAward(models.Model):
 
     GRIEVANCE_TYPES = [
@@ -33,13 +37,12 @@ class GrievanceAward(models.Model):
         ('P', 'Policy')
     ]
     # Object properties
-    grievanceType = models.CharField(max_length=1, choices=GRIEVANCE_TYPES, validators=[validators.validate_grievance_type], default='M')
+    grievanceType = models.CharField(max_length=1, choices=GRIEVANCE_TYPES,
+                                     validators=[validators.validate_grievance_type], default='M')
     recipient = models.ForeignKey(Person, validators=[validators.validate_recipient])
-    #recipient = models.CharField(max_length=50, validators=[validators.validate_recipient])
     case = models.ForeignKey(Case, validators=[validators.validate_case])
-    #case = models.CharField(max_length=50, validators=[validators.validate_case],blank=True, null=True)
     awardAmount = models.FloatField(default=500.00, validators=[validators.validate_award_amt])
-    description = models.CharField(max_length=1000, null=True,blank=True, validators=[validators.validate_description])
+    description = models.CharField(max_length=1000, null=True, blank=True, validators=[validators.validate_description])
     date = models.DateField(default=date.today())
 
     # Default get_absolute_url method
@@ -50,8 +53,6 @@ class GrievanceAward(models.Model):
     # Purpose: Validate attribute values.
     def clean(self):
         validators.validate_grievance_type(self.grievanceType)
-        #validators.validate_recipient(self.recipient)
-        #validators.validate_case(self.case)
         validators.validate_award_amt(self.awardAmount)
         validators.validate_description(self.description)
 
@@ -66,11 +67,13 @@ class GrievanceAward(models.Model):
 Class: GrievanceFiles
 Model wrapper for the file uploaded associated with grievance information
 """
+
+
 class GrievanceFiles(models.Model):
-    date_uploaded = models.DateTimeField(auto_now=True,blank=True,null=True)
-    file = models.FileField(upload_to='grievance/',blank=True,null=True)
-    award = models.ForeignKey(GrievanceAward,blank=True,null=True)
-    description = models.CharField(max_length=50,blank=True,null=True)
+    date_uploaded = models.DateTimeField(auto_now=True, blank=True, null=True)
+    file = models.FileField(upload_to='grievance/', blank=True, null=True)
+    award = models.ForeignKey(GrievanceAward, blank=True, null=True)
+    description = models.CharField(max_length=50, blank=True, null=True)
 
     """
     Method: clean
@@ -80,11 +83,11 @@ class GrievanceFiles(models.Model):
     def clean(self):
 
         super(GrievanceFiles, self).clean()
-        if(self.file.size > MAX_FILE_SIZE):
+        if self.file.size > MAX_FILE_SIZE:
             """Check if the uploaded file has a valid file size"""
             raise ValidationError("File is too large")
 
-        if(self.file.name.split(".")[-1] not in FILE_EXT_TO_ACCEPT):
+        if self.file.name.split(".")[-1] not in FILE_EXT_TO_ACCEPT:
             """ Check if the uploaded file has a valid file extension """
             raise ValidationError("Invalid File Extension")
 

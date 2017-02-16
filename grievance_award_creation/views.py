@@ -72,6 +72,7 @@ class GrievanceAwardEditView(UpdateView):
     model = GrievanceAward
     form_class = GrievanceAwardForm
 
+
 # This class declares the form to show a list of current grievance award
 class GrievanceAwardList(ListView):
     model = GrievanceAward

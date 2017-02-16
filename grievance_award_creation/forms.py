@@ -19,9 +19,6 @@ class GrievanceAwardForm(ModelForm):
         self.fields['file_field'] = FileField(required=False,widget=ClearableFileInput(attrs={'multiple': False, 'accept': FILE_EXT_TO_ACCEPT_STR} ))
         self.fields['file_description'] = CharField(required=False, label='File Description', widget= forms.TextInput(attrs={'type':'', 'size':'100%'}))
 
-
-
-
     def save(self, commit=False):
         """
         Function: save
@@ -34,7 +31,7 @@ class GrievanceAwardForm(ModelForm):
         except ValidationError:
             return ValidationError
 
-        #Files do not have to be uploaded, but if they are, save the file
+        # Files do not have to be uploaded, but if they are, save the file
         if self.files != {}:
             f = self.files.getlist('file_field')[0]
             temp = File(file=f)

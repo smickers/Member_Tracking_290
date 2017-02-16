@@ -1,6 +1,6 @@
 # SPFA MT CST Project
 # November 7, 2016
-from django.forms import ModelForm, SelectDateWidget,FileField, ClearableFileInput, CharField
+from django.forms import ModelForm, SelectDateWidget, FileField, ClearableFileInput, CharField
 from .models import contactLog, ContactLogFile
 from django import forms
 from django.forms import Textarea
@@ -9,13 +9,17 @@ from spfa_mt import kvp, settings
 from django.core.exceptions import ValidationError
 from django.core.files import File
 
+
 # Purpose: This class is used to build up a form, that
 # can be used to enter a new contact log
 class ContactLogForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
-        self.fields['file_field'] = FileField(required=False,widget=ClearableFileInput(attrs={'multiple': False, 'accept': kvp.CONTACT_LOG_FILE_EXTENSIONS} ))
-        self.fields['file_description'] = CharField(required=False, label='File Description', widget= forms.TextInput(attrs={'type':'', 'size':'100%'}))
+        self.fields['file_field'] = FileField(required=False,
+                                              widget=ClearableFileInput(
+                                                  attrs={'multiple': False, 'accept': kvp.CONTACT_LOG_FILE_EXTENSIONS}))
+        self.fields['file_description'] = CharField(required=False, label='File Description',
+                                                    widget=forms.TextInput(attrs={'type': '', 'size': '100%'}))
 
     def save(self, commit=False):
         """
@@ -34,13 +38,10 @@ class ContactLogForm(ModelForm):
             f = self.files.getlist('file_field')[0]
             temp = File(file=f)
             desc = self.cleaned_data['file_description']
-            # TODO Change attributes here
-            cl_file = ContactLogFile(award=obj, file=temp,
-                                        description=desc)
+            cl_file = ContactLogFile(relatedContactLog=obj, fileName=temp, description=desc)
             cl_file.save()
 
         return obj
-
 
     def clean_file_field(self):
         """
@@ -48,17 +49,13 @@ class ContactLogForm(ModelForm):
         Purpose: Cleans the models before they are entered into the database
         :return:
         """
-        # print(self.files not None)
-        # print(self.files != {})
-
         # Clean uploaded files if there are any
         if self.files != {}:
-            # print(self.files.getlist('file_field')[0].name)
             for f in self.files.getlist('file_field'):
-                print(f.size)
-                if (f.size > settings.MAX_FILE_SIZE):
+                print f.size
+                if f.size > settings.MAX_FILE_SIZE:
                     raise ValidationError("File exceeds maximum size allowed")
-                if (f.name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT):
+                if f.name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT:
                     raise ValidationError("File type is not allowed")
             return self.cleaned_data['file_field']
 
@@ -68,24 +65,6 @@ class ContactLogForm(ModelForm):
     #                    datetime.now().year + 1)), initial=datetime.now)
     class Meta:
         model = contactLog
-        # Define months so they're entered as three letters
-        MONTHS = {
-            1: 'Jan',
-            2: 'Feb',
-            3: 'Mar',
-            4: 'Apr',
-            5: 'May',
-            6: 'Jun',
-            7: 'Jul',
-            8: 'Aug',
-            9: 'Sep',
-            10: 'Oct',
-            11: 'Nov',
-            12: 'Dec'
-        }
-
-
-
         # Specifying the fields to be shown in the form
         fields = [
             'member',
@@ -93,20 +72,17 @@ class ContactLogForm(ModelForm):
             'contactCode',
             'date'
         ]
-
         # Giving labels to fields defined above
         labels = {
-            'member' : 'Saskpolytech Member',
-            'description' : 'Contact Description',
-            'contactCode' : 'Contact Code',
+            'member': 'Saskpolytech Member',
+            'description': 'Contact Description',
+            'contactCode': 'Contact Code',
             'date': 'Date of Contact'
         }
-
         # Defining a number input for the memberID
         widgets = {
             'member': forms.Select(
-                attrs={'class': 'js-member', 'id':'member_select'}),
-            'date': SelectDateWidget(months=MONTHS, years=range(datetime.now().year - 5, datetime.now().year + 6)),
+                attrs={'class': 'js-member', 'id': 'member_select'}),
+            'date': SelectDateWidget(months=kvp.MONTHS, years=range(datetime.now().year - 5, datetime.now().year + 6)),
             'description': Textarea(attrs={'rows': '2'})
         }
-
