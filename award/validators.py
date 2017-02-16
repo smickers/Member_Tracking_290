@@ -4,11 +4,8 @@ import re
 
 #PD AWARDS
 # Ensure award amount exists, is at least 1, and is less than 10,000:
-def validate_pdaward_amt(amount):
-    if amount >= .01 and amount <= 99999:
-        return True
-    else:
-        raise ValidationError("Cost must be between .01 and 999999")
+def validate_award_amt(amount):
+
 
 #def validate_end_date(endDate, startDate):
 #    if endDate < startDate:
@@ -25,14 +22,3 @@ def validate_eduaward_desc(value):
     if not sc_regex.match(str(value)):
         raise ValidationError("Description may only contain letters, numbers, spaces, hyphens, and apostrophes.")
 
-#Validators for PD Award
-def validate_eduaward_amt(value):
-    # 5 digits or less
-    if len(str(value)) > 5:
-        raise ValidationError("Amount must be greater than $0 and less than $10,000.")
-    # Required
-    if len(str(value)) == 0 or value <= 0:
-        raise ValidationError("Award value is required.")
-    # No decimals
-    if not isinstance(value, int):
-        raise ValidationError("Award value must be a whole number (no decimals).")
