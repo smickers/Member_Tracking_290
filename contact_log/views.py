@@ -2,7 +2,7 @@
 # November 7, 2016
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import ListView
-from .models import contactLog
+from .models import contactLog, ContactLogFile
 from .forms import ContactLogForm
 
 # View ContactLogCreate

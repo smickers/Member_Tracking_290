@@ -76,6 +76,14 @@
         These next few lines are used to determine whether
         a create or modify heading should be shown
         {% endcomment %}
+
+            Number of files associated: [{{ form.instance.containsfile }}]<br />
+            CL ID: {{ form.instance }}
+{#            {% if object.returnTrue %}#}
+{#                <h2>A file is associated with this contact log!</h2>#}
+{#            {% else %}#}
+{#                <h2>No file associated</h2>#}
+{#            {% endif %}#}
         <h3 class="sub-heading"><i><strong>Modify</strong></i></h3>
         {% else %}
         <h3 class="sub-heading"><i><strong>Creation</strong></i></h3>
