@@ -33,26 +33,30 @@ class contactLog(models.Model):
     # Function: __str__
     # Purpose: toString method for a contactLog object
     # Returns: A string representing the current object
-    if __name__ == '__main__':
-        def __str__(self):
-            return self.member.__str__() + " - " + self.description + " " + self.date.__str__()
+    #if __name__ == '__main__':
+    def __str__(self):
+        return self.member.__str__() + " - " + self.description + " " + self.date.__str__()
 
 
         # Function: containsFile
         # Purpose: Returns true or false, based on whether or not a file is associated with this
         # contact log
         # Returns: boolean
-        @property
-        def containsfile(self):
-            #return ContactLogFile.objects.filter(relatedContactLog=self.id).count() > 0
-            #return "Hello world"
-            return 5
+    @property
+    def containsfile(self):
+        #return ContactLogFile.objects.filter(relatedContactLog=self.id).count() > 0
+        #return "Hello world"
+        return 5
 
-        @property
-        def returnTrue(self):
-            print("\n\n\n\n\nreturning true!\n\n\n\n")
-            return True
+class contactLogFileCounter(models.Manager):
 
+    def get_files(self, instanceID):
+        print "Instance ID = " + str(instanceID)
+        print "Number of files"
+        print ContactLogFile.objects.get(relatedContactLog=contactLog.objects.get(id=instanceID))
+        #return ContactLogFile.objects.get(relatedConactLog=instance)
+        #return ContactLogFile.objects.get(relatedContactLog=instance)
+        return ContactLogFile.objects.get(relatedContactLog=contactLog.objects.get(id=instanceID)).fileName.name
 
 class ContactLogFile(models.Model):
 
@@ -78,4 +82,4 @@ class ContactLogFile(models.Model):
             raise ValidationError("Invalid File Extension")
 
     def __str__(self):
-        return str(self.file.name)
+        return str(self.fileName.name)
