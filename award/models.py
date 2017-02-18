@@ -10,7 +10,7 @@ from spfa_mt import kvp
 
 # Models for Education Awards
 class EducationAward(models.Model):
-    """Fields for data entry re: education awards"""
+    """Fields for data entry re: education awards""" 
     description = models.CharField(max_length=150, null=True, validators=[validate_eduaward_desc])
     awardAmount = models.IntegerField(max_length=5, null=True, validators=[validate_eduaward_amt])
     awardedMember = models.ForeignKey(Person, null=True, blank=True)
