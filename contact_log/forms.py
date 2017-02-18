@@ -59,10 +59,6 @@ class ContactLogForm(ModelForm):
                     raise ValidationError("File type is not allowed")
             return self.cleaned_data['file_field']
 
-    # Defining the date field up here, because we were 
-    # getting errors with it in the widgets section
-    # date=forms.DateField(months=MONTHS, widget=forms.SelectDateWidget(years=range(1959,
-    #                    datetime.now().year + 1)), initial=datetime.now)
     class Meta:
         model = contactLog
         # Specifying the fields to be shown in the form

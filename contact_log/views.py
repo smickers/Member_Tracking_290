@@ -29,13 +29,9 @@ def contactLogDetail(request, pk):
         print("Reading file [0]!")
         relatedFile = manager.get_files(cl.pk)
         print("Reading file!")
-        #cl.file_name = file.fileName
-        #cl.file_name = "Some junk"
         cl.file_name = relatedFile
         # if the grievance award has no files associated, empty the fields and dont display the html
     except:
-        cl.file_name = "hello world"
-        cl.file_desc = ""
-        #cl.file_date_uploaded = ""
+        cl.file_name = ""
 
     return render(request, 'contact_log/contactlog_edit.html', {'object' : cl})

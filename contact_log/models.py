@@ -44,9 +44,9 @@ class contactLog(models.Model):
         # Returns: boolean
     @property
     def containsfile(self):
-        #return ContactLogFile.objects.filter(relatedContactLog=self.id).count() > 0
+        return ContactLogFile.objects.filter(relatedContactLog=self.id).count() > 0
         #return "Hello world"
-        return 5
+        #return 5
 
 class contactLogFileCounter(models.Manager):
 

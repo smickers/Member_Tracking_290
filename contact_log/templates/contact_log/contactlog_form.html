@@ -3,6 +3,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% if form.instance.id and object.containsfile %}
+            <meta containsfile="true">
+    {% endif %}
     <meta charset="UTF-8">
     <title>Contact Log Creation</title>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
@@ -23,6 +26,12 @@
     <script>
         $(document).ready(function()
         {
+            // Hide the document upload functionality, if a document has previously
+            // been uploaded
+            if ($("[containsfile='true']"))
+            {
+                $("#id_file_field").parent().parent().parent().hide();
+            }
             // These next lines will ensure that the member select element
             // is sized correctly. It's run with a delay, because other
             // JS code seems to be changing the size settings on us
@@ -60,15 +69,6 @@
     </script>
 </head>
 <body>
-
-<!-- CODE TO USE FOR DETERMINING WHETHER TO SHOW FILE UPLOAD OR NOT -->
-
-
-<!-- ContactLogFile.objects.filter(relatedContactLog_id=4).count() -->
-
-
-
-
     <div class="container">
         <h1 class="main-heading">Contact Log</h1>
         {% if form.instance.id %}
@@ -76,14 +76,6 @@
         These next few lines are used to determine whether
         a create or modify heading should be shown
         {% endcomment %}
-
-            Number of files associated: [{{ form.instance.containsfile }}]<br />
-            CL ID: {{ form.instance }}
-{#            {% if object.returnTrue %}#}
-{#                <h2>A file is associated with this contact log!</h2>#}
-{#            {% else %}#}
-{#                <h2>No file associated</h2>#}
-{#            {% endif %}#}
         <h3 class="sub-heading"><i><strong>Modify</strong></i></h3>
         {% else %}
         <h3 class="sub-heading"><i><strong>Creation</strong></i></h3>
