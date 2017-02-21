@@ -45,7 +45,8 @@ class Case(models.Model):
     satellite = models.CharField(max_length=50, default=None, null=True, blank=True)
     school = models.CharField(choices=kvp.SCHOOL_CHOICES.iteritems(), max_length=255)
     program = models.ForeignKey(CasePrograms, default=None, null=True, blank=True)
-    department = models.CharField(choices=kvp.DEPARTMENT_CHOICES.iteritems(), max_length=255, null=True, default=None, blank=True)
+    department = models.CharField(choices=kvp.DEPARTMENT_CHOICES.iteritems(), max_length=255, null=True, default=None,
+                                  blank=True)
     caseType = models.IntegerField(choices=kvp.TYPE_CHOICES)
     status = models.CharField(choices=kvp.STATUS_CHOICES, default="OPEN", max_length=15)
     additionalMembers = models.ManyToManyField(Person, default=None, blank=True)
@@ -61,11 +62,7 @@ class Case(models.Model):
     # clean method
     # Purpose: Clean data before saving it to the database.
     def clean(self, *args, **kwargs):
-        print(self.__dict__)
-        super(Case, self).clean(*args, **kwargs)
-
-        # if self.caseType == 7 and self.additionalMembers.all().count() > 0:
-        #     raise ValueError("Individual cannot allow multiple members")
+        pass
 
 
     # Name: __str__
@@ -73,13 +70,6 @@ class Case(models.Model):
     # Returns: A string representation of the object.
     def __str__(self):
         return self.complainant.__str__() + ' - ' + self.date.strftime("%d, %b. %Y")
-
-    #TODO: Code this property to return the instance of the related Case Type (eg. Grivance Instance)
-    """
-    @property #Denotes that this a property
-    def eval_case_types(self):
-        pass
-    """
 
 # Class: CaseMembers
 # Purpose: Joining class for Members to a Case.

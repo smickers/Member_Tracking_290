@@ -132,13 +132,15 @@ class CaseLinksToGrievanceAwards(TestCase):
 
 
 
-    # def test_grievance__award_cannot_be_associated_with_multiple_member_if_grievance_award_type_is_member(self):
-    #     """
-    #     Purpose: test to see if grievance award can only be associated with a single member if it is of type
-    #     member
-    #     :return:
-    #     """
-    #     pass
+    def test_grievance_award_cannot_be_associated_with_multiple_member_if_grievance_award_type_is_member(self):
+        """
+        Purpose: test to see if grievance award can only be associated with a single member if it is of type
+        member
+        :return:
+        """
+        pass
+
+
     # def test_grievance_award_can_be_associated_with_multiple_member_if_grievance_award_type_is_of_policy(self):
     #     """
     #     Purpose: test to see if grievance award can only be associated with a multiple member if it is of type
