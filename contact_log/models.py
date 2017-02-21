@@ -19,7 +19,7 @@ class contactLog(models.Model):
     member = models.ForeignKey(Person, blank=True, null=True)
     date = models.DateField(default=date.today())
     description = models.CharField(max_length=150, blank=True, null=True)
-    contactCode = models.CharField(max_length=12, choices=kvp.CONTACT_LOG_STATUSES.iteritems(), default='Phone')
+    contactCode = models.CharField(max_length=12, choices=kvp.CONTACT_LOG_STATUSES, default='Phone')
 
     # Function: get_absolute_url
     # Purpose: Returns a URL to redirect the user to after submitting

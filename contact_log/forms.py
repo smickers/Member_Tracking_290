@@ -16,12 +16,14 @@ class ContactLogForm(ModelForm):
     def __init__(self, *args, **kwargs):
         ## WORKING HERE
         super(ModelForm, self).__init__(*args, **kwargs)
-        if not contactLog.id or ContactLogFile.id.count() == 0:
-            self.fields['file_field'] = FileField(required=False,
-                                                  widget=ClearableFileInput(
-                                                      attrs={'multiple': False, 'accept': kvp.CONTACT_LOG_FILE_EXTENSIONS}))
-            self.fields['file_description'] = CharField(required=False, label='File Description',
-                                                        widget=forms.TextInput(attrs={'type': '', 'size': '100%'}))
+        #print contactLog.pk.__str__()
+        # print contactLog.containsfile()
+        #if not contactLog.pk  contactLog.id or ContactLogFile.id.count() == 0:
+        self.fields['file_field'] = FileField(required=False,
+                                              widget=ClearableFileInput(
+                                                  attrs={'multiple': False, 'accept': kvp.CONTACT_LOG_FILE_EXTENSIONS}))
+        self.fields['file_description'] = CharField(required=False, label='File Description',
+                                                    widget=forms.TextInput(attrs={'type': '', 'size': '100%'}))
 
     def save(self, commit=False):
         """

@@ -3,10 +3,6 @@ from django.test import SimpleTestCase
 from .models import Meeting
 from add_com.models import Committee
 from add_member.models import Person
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 
 # class for testing the HTML navbar navigation within this app, and between this app and others.

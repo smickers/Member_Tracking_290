@@ -28,11 +28,12 @@
         {
             // Hide the document upload functionality, if a document has previously
             // been uploaded
-{#            if ($("[containsfile='true']"))#}
-{#            {#}
-{#                console.log("File hiding running");#}
-{#                $("#id_file_field").parent().parent().parent().hide();#}
-{#            }#}
+            if ($("[containsfile='true']").length > 0)
+            {
+                $("#id_file_field").parent().parent().parent().hide();
+                $("#id_file_description").parent().hide();
+            }
+
             // These next lines will ensure that the member select element
             // is sized correctly. It's run with a delay, because other
             // JS code seems to be changing the size settings on us
