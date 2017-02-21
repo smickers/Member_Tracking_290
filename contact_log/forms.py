@@ -14,11 +14,7 @@ from django.core.files import File
 # can be used to enter a new contact log
 class ContactLogForm(ModelForm):
     def __init__(self, *args, **kwargs):
-        ## WORKING HERE
         super(ModelForm, self).__init__(*args, **kwargs)
-        #print contactLog.pk.__str__()
-        # print contactLog.containsfile()
-        #if not contactLog.pk  contactLog.id or ContactLogFile.id.count() == 0:
         self.fields['file_field'] = FileField(required=False,
                                               widget=ClearableFileInput(
                                                   attrs={'multiple': False, 'accept': kvp.CONTACT_LOG_FILE_EXTENSIONS}))

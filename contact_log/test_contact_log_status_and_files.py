@@ -195,9 +195,9 @@ class ContactLogEditTests(TestCase):
             fp = open(file_name, "r")
 
             contact_log_file.file = File(fp)
-
+            # TODO IntegrityError: (1048, "Column 'relatedContactLog_id' cannot be null")
             # Associate Case File object with a case
-            contact_log_file.contactLog = self.cLog
+            contact_log_file.contactLog = self.cLog.pk
 
             # Save the Case File object
             contact_log_file.save()
