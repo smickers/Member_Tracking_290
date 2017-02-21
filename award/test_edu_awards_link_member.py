@@ -1,5 +1,5 @@
 from django.test import TestCase
-from models import Person, EducationAward
+from models import Person
 from models import EducationAward
 from django.core.exceptions import ValidationError
 from django.db import DataError
@@ -64,15 +64,14 @@ class TestEduAwardLinkMember(TestCase):
         self.tempPerson2.save()
 
         self.eduAward1.description = 'Test'
-        self.eduAward1.awardAmount = 5000
+        self.eduAward1.awardAmount = 5000.00
         self.eduAward1.clean()
         self.eduAward1.save()
 
-        self.eduAward1 = EducationAward()
         self.eduAward2.description = 'Test2'
         self.eduAward2.awardRecipient = None
         self.eduAward2.awardedMember = None
-        self.eduAward2.award_amount = 5000
+        self.eduAward2.awardAmount = 5000.00
         self.eduAward2.clean()
         self.eduAward2.save()
 
@@ -82,7 +81,7 @@ class TestEduAwardLinkMember(TestCase):
         self.eduAward1.awardRecipient = 'Tim Jr.'
         self.eduAward1.awardType = 'Internal'
         self.eduAward1.yearAwarded = 2017
-        self.eduAward1.clean()
+        self.eduAward1.full_clean()
         self.eduAward1.save()
         self.assertTrue(True)
 
@@ -93,14 +92,14 @@ class TestEduAwardLinkMember(TestCase):
         self.eduAward1.awardRecipient = 'Tim Jr.'
         self.eduAward1.awardType = 'Internal'
         self.eduAward1.yearAwarded = 2017
-        self.eduAward1.clean()
+        self.eduAward1.full_clean()
         self.eduAward1.save()
         with self.assertRaisesMessage(ValidationError,'Cannot assign recipient to more than one award'):
             self.eduAward2.awardedMember = self.tempPerson1
             self.eduAward2.awardRecipient = 'Tim Jr.'
             self.eduAward1.awardType = 'Internal'
             self.eduAward1.yearAwarded = 2017
-            self.eduAward2.clean()
+            self.eduAward2.full_clean()
             self.eduAward2.save()
 
     #Tests that an award can be linked to a member with a different dependent
@@ -142,7 +141,7 @@ class TestEduAwardLinkMember(TestCase):
             self.eduAward1.awardedMember = self.tempPerson1
             self.eduAward1.awardType = 'Internal'
             self.eduAward1.yearAwarded = 2017
-            self.eduAward1.clean()
+            self.eduAward1.full_clean()
             self.eduAward1.save()
 
     #Tests that if a recipient is entered a member also has to be selected

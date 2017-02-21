@@ -44,7 +44,7 @@
                 </tr>
                 <tr>
                     <th>Award Amount</th>
-                    <td>${{ object.awardAmount }}.00</td>
+                    <td>{{ object.awardAmount|floatformat:2 }}</td>
                 </tr>
                 <tr>
                     <th>Award Type</th>
@@ -69,7 +69,7 @@
             </tr>
             <tr>
                 <th>Award Amount</th>
-                <td>${{ object.awardAmount }}.00</td>
+                <td>{{ object.awardAmount|floatformat:2 }}</td>
             </tr>
             </table>
         {% endif %}
