@@ -14,12 +14,14 @@ from django.core.files import File
 # can be used to enter a new contact log
 class ContactLogForm(ModelForm):
     def __init__(self, *args, **kwargs):
+        ## WORKING HERE
         super(ModelForm, self).__init__(*args, **kwargs)
-        self.fields['file_field'] = FileField(required=False,
-                                              widget=ClearableFileInput(
-                                                  attrs={'multiple': False, 'accept': kvp.CONTACT_LOG_FILE_EXTENSIONS}))
-        self.fields['file_description'] = CharField(required=False, label='File Description',
-                                                    widget=forms.TextInput(attrs={'type': '', 'size': '100%'}))
+        if not contactLog.id or ContactLogFile.id.count() == 0:
+            self.fields['file_field'] = FileField(required=False,
+                                                  widget=ClearableFileInput(
+                                                      attrs={'multiple': False, 'accept': kvp.CONTACT_LOG_FILE_EXTENSIONS}))
+            self.fields['file_description'] = CharField(required=False, label='File Description',
+                                                        widget=forms.TextInput(attrs={'type': '', 'size': '100%'}))
 
     def save(self, commit=False):
         """
@@ -66,19 +68,19 @@ class ContactLogForm(ModelForm):
             'member',
             'description',
             'contactCode',
-            'date'
+            'date',
         ]
         # Giving labels to fields defined above
         labels = {
             'member': 'Saskpolytech Member',
             'description': 'Contact Description',
             'contactCode': 'Contact Code',
-            'date': 'Date of Contact'
+            'date': 'Date of Contact',
         }
         # Defining a number input for the memberID
         widgets = {
             'member': forms.Select(
                 attrs={'class': 'js-member', 'id': 'member_select'}),
             'date': SelectDateWidget(months=kvp.MONTHS, years=range(datetime.now().year - 5, datetime.now().year + 6)),
-            'description': Textarea(attrs={'rows': '2'})
+            'description': Textarea(attrs={'rows': '2'}),
         }

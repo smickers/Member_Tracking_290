@@ -2,7 +2,7 @@
 # November 7, 2016
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import ListView
-from .models import contactLog, ContactLogFile, contactLogFileCounter
+from .models import contactLog, ContactLogFile
 from .forms import ContactLogForm
 from django.shortcuts import render
 
@@ -20,18 +20,18 @@ class ContactLogEdit(UpdateView):
 class ContactLogList(ListView):
     model = contactLog
 
-def contactLogDetail(request, pk):
-    cl = contactLog.objects.get(id=pk)
-    print "Contact Log: " + cl.__str__()
-    manager = contactLogFileCounter()
-    try:
-        #cl.file_name = "testing"
-        print("Reading file [0]!")
-        relatedFile = manager.get_files(cl.pk)
-        print("Reading file!")
-        cl.file_name = relatedFile
-        # if the grievance award has no files associated, empty the fields and dont display the html
-    except:
-        cl.file_name = ""
-
-    return render(request, 'contact_log/contactlog_edit.html', {'object' : cl})
+# def contactLogDetail(request, pk):
+#     cl = contactLog.objects.get(id=pk)
+#     print "Contact Log: " + cl.__str__()
+#     manager = contactLogFileCounter()
+#     try:
+#         #cl.file_name = "testing"
+#         print("Reading file [0]!")
+#         relatedFile = manager.get_files(cl.pk)
+#         print("Reading file!")
+#         cl.file_name = relatedFile
+#         # if the grievance award has no files associated, empty the fields and dont display the html
+#     except:
+#         cl.file_name = ""
+#
+#     return render(request, 'contact_log/contactlog_edit.html', {'object' : cl})

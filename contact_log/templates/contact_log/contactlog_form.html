@@ -28,10 +28,11 @@
         {
             // Hide the document upload functionality, if a document has previously
             // been uploaded
-            if ($("[containsfile='true']"))
-            {
-                $("#id_file_field").parent().parent().parent().hide();
-            }
+{#            if ($("[containsfile='true']"))#}
+{#            {#}
+{#                console.log("File hiding running");#}
+{#                $("#id_file_field").parent().parent().parent().hide();#}
+{#            }#}
             // These next lines will ensure that the member select element
             // is sized correctly. It's run with a delay, because other
             // JS code seems to be changing the size settings on us
@@ -92,6 +93,13 @@
             {% else %}
                 <button class="btn btn-success" type="submit">Create Contact Log</button>
             {% endif %}
+            {% comment %}
+            Next if block: if a filename exists on this
+            {% endcomment %}
+{#            {% if form.instance.containsfile %}#}
+{#                {{ form.fileName.hidden_widget }}#}
+{#                {{ form.description.hidden_widget }}#}
+{#            {% endif %}#}
             <button class="btn btn-warning" type="reset">Reset</button>
         </form>
     </div>

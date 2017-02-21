@@ -92,9 +92,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'gamma',
-        'HOST': '192.168.1.244',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
-        'PASSWORD': 'password',
+        'PASSWORD': 'bitnami',
         'USER': 'root',
         'OPTIONS': {
             'sql_mode': 'traditional',

@@ -44,24 +44,24 @@ class contactLog(models.Model):
         # Returns: boolean
     @property
     def containsfile(self):
-        return ContactLogFile.objects.filter(relatedContactLog=self.id).count() > 0
+        return ContactLogFile.objects.filter(relatedContactLog=self.id).count() != 0
         #return "Hello world"
         #return 5
 
-class contactLogFileCounter(models.Manager):
-
-    def get_files(self, instanceID):
-        print "Instance ID = " + str(instanceID)
-        print "Number of files"
-        print ContactLogFile.objects.get(relatedContactLog=contactLog.objects.get(id=instanceID))
-        #return ContactLogFile.objects.get(relatedConactLog=instance)
-        #return ContactLogFile.objects.get(relatedContactLog=instance)
-        return ContactLogFile.objects.get(relatedContactLog=contactLog.objects.get(id=instanceID)).fileName.name
+# class contactLogFileCounter(models.Manager):
+#
+#     def get_files(self, instanceID):
+#         print "Instance ID = " + str(instanceID)
+#         print "Number of files"
+#         print ContactLogFile.objects.get(relatedContactLog=contactLog.objects.get(id=instanceID))
+#         #return ContactLogFile.objects.get(relatedConactLog=instance)
+#         #return ContactLogFile.objects.get(relatedContactLog=instance)
+#         return ContactLogFile.objects.get(relatedContactLog=contactLog.objects.get(id=instanceID)).fileName.name
 
 class ContactLogFile(models.Model):
 
     fileName = models.FileField(upload_to='contactlogs/', blank=True, null=True)
-    description = models.CharField(max_length=50, blank=True, null=True)
+    fileDesc = models.CharField(max_length=50, blank=True, null=True)
     relatedContactLog = models.ForeignKey(contactLog)
 
     """
