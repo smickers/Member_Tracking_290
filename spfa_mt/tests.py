@@ -77,6 +77,7 @@ class TestAllSPFAMTElements(SimpleTestCase):
         tempCLog.member = person1
         tempCLog.description = 'Hello World'
         tempCLog.date = '2016-01-01'
+        tempCLog.contactCode = 'E'
         tempCLog.clean()
         tempCLog.save()
         testEvent = Event()

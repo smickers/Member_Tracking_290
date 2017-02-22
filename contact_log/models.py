@@ -44,18 +44,17 @@ class contactLog(models.Model):
     def containsfile(self):
         return ContactLogFile.objects.filter(relatedContactLog=self.id).count() != 0
 
-    # TODO need to override our clean method in the ContactLog model, so we can validate the contactCode
+    # Overrides the clean method to ensure contact code validation.
     def clean(self):
-        for status in kvp.CONTACT_LOG_STATUSES:
-            if status[0] == self.contactCode:
-                pass
-                break
-            else:
-                raise ValidationError("Please select an option from the list of choices.")
+        # If the code, being a single-character string, is not in the first part of the tuple, in the list of tuples,
+        if self.contactCode not in kvp.CONTACT_LOG_STATUSES[0]:
+            # raise an error
+            raise ValidationError("Please select an option from the list of choices.")
 
 
+# Class that creates a ContactLogFile object, which lets us associate a file (document) to a contact log
 class ContactLogFile(models.Model):
-
+    # Related fields:
     fileName = models.FileField(upload_to='contactlogs/', blank=True, null=True)
     fileDesc = models.CharField(max_length=50, blank=True, null=True)
     relatedContactLog = models.ForeignKey(contactLog)
@@ -65,9 +64,7 @@ class ContactLogFile(models.Model):
        Purpose: Responsible for validating/cleaning files.
                Raises exception if problem occurs
        """
-
     def clean(self):
-
         super(ContactLogFile, self).clean()
         if self.fileName.size > settings.MAX_FILE_SIZE:
             """Check if the uploaded file has a valid file size"""

@@ -7,18 +7,19 @@ from django.core.exceptions import ValidationError
 from spfa_mt import kvp
 from django.test import override_settings
 from django.core.files import File
-import os, shutil
+import os
+import shutil
+
 
 # Make sure we aren't writing crap data to the same location
 # as where the real data lives
 @override_settings(MEDIA_ROOT='test/')
+# Class to test adding a document/file to a contact log
 class ContactLogEditTests(TestCase):
-
     cLog = contactLog()
     person1 = Person()
     person2 = Person()
     person3 = Person()
-
     # Unit test setup method
     def setUp(self):
         # Set up our people
@@ -52,7 +53,6 @@ class ContactLogEditTests(TestCase):
         self.cLog.description = 'Hello world!'
         self.cLog.contactCode = 'E'
         self.cLog.clean()
-        print "TEST CONTACT CODE IS: " + self.cLog.contactCode
         self.cLog.save()
 
         # Put together some sample files
@@ -63,38 +63,39 @@ class ContactLogEditTests(TestCase):
         self.undersizeFile = self.CONST_FILE_PATH % "COSC195.docx"
         self.invalidFile = self.CONST_FILE_PATH % "my_C_program.exe"
 
+        # Create a file that exceeds max file size, for testing
         f = open(self.oversizeFile, "wb")
         f.seek(settings.MAX_FILE_SIZE + 1)
         f.write("\0")
         f.close()
 
+        # Create a file that does not exceed max file size, for testing
         f = open(self.undersizeFile, "wb")
         f.seek(settings.MAX_FILE_SIZE - 1)
         f.write("\0")
         f.close()
 
+        # Create a file with an invalid file type, for testing
         f = open(self.invalidFile, "wb")
         f.seek(564)
         f.write("\0")
         f.close()
-        pass
 
     # Test 1: Ensure all valid contact codes are accepted
     def test_valid_contact_codes(self):
-        # Loop through all the valid status codes
-        for status in kvp.CONTACT_LOG_STATUSES:
+        # Loop through all the valid status codes, ensure we can save it
+        for status in kvp.CONTACT_LOG_STATUSES[0]:
             self.cLog = contactLog()
             self.cLog.member = self.person1
             self.cLog.date = '2017-01-01'
             self.cLog.description = 'Example Entry'
-            self.cLog.contactCode = status
+            self.cLog.contactCode = status[0]
             self.cLog.clean()
             self.cLog.save()
 
-
     # Test 2: Ensure an invalid contact code is not accepted
     def test_invalid_contact_code(self):
-        with self.assertRaisesMessage(ValidationError, 'Please select an option from the list of choices.'):
+        with self.assertRaisesRegexp(ValidationError, 'Please select an option from the list of choices.'):
             self.cLog.member = self.person1
             self.cLog.date = '2017-01-01'
             self.cLog.description = 'Example Entry'
@@ -128,6 +129,7 @@ class ContactLogEditTests(TestCase):
             contact_log_file.save()
             # close file stream
             fp.close()
+            # Validate that this file actually exists
             self.assertTrue(os.path.isfile(file_path))
 
     # Test 4: Ensure an invalid file extension is rejected
@@ -189,7 +191,7 @@ class ContactLogEditTests(TestCase):
             # close file stream
             fp.close()
 
-
+    # If we created a file, ditch it.
     def tearDown(self):
         if os.path.exists(self._overridden_settings["MEDIA_ROOT"]):
             shutil.rmtree(self._overridden_settings["MEDIA_ROOT"])

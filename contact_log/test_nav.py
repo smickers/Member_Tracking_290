@@ -35,6 +35,7 @@ class TestNav(SimpleTestCase):
         tempCLog.member = self.tempPerson
         tempCLog.description = 'Hello World'
         tempCLog.date = '2016-01-01'
+        tempCLog.contactCode = 'E'
         tempCLog.clean()
         tempCLog.save()
 
