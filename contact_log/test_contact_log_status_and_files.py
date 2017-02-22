@@ -1,6 +1,4 @@
 # SPFA MT CST Project
-# February 15, 2017
-# Cameron Auser
 from spfa_mt import settings
 from django.test import TestCase
 from .models import contactLog, ContactLogFile
@@ -9,7 +7,7 @@ from django.core.exceptions import ValidationError
 from spfa_mt import kvp
 from django.test import override_settings
 from django.core.files import File
-
+import os, shutil
 
 # Make sure we aren't writing crap data to the same location
 # as where the real data lives
@@ -53,10 +51,13 @@ class ContactLogEditTests(TestCase):
         self.cLog.date = '2017-02-12'
         self.cLog.description = 'Hello world!'
         self.cLog.contactCode = 'E'
-        self.cLog.full_clean()
+        self.cLog.clean()
+        print "TEST CONTACT CODE IS: " + self.cLog.contactCode
         self.cLog.save()
 
         # Put together some sample files
+        # This is nabbing the same test files that were used to test document upload for cases.
+        # No need to clog the system with extra test files if they already exist, yeah?
         self.CONST_FILE_PATH = settings.STATIC_ROOT + 'add_case/test_case_file_upload/%s'
         self.oversizeFile = self.CONST_FILE_PATH % "COSA190.docx"
         self.undersizeFile = self.CONST_FILE_PATH % "COSC195.docx"
@@ -80,7 +81,6 @@ class ContactLogEditTests(TestCase):
 
     # Test 1: Ensure all valid contact codes are accepted
     def test_valid_contact_codes(self):
-
         # Loop through all the valid status codes
         for status in kvp.CONTACT_LOG_STATUSES:
             self.cLog = contactLog()
@@ -91,8 +91,6 @@ class ContactLogEditTests(TestCase):
             self.cLog.clean()
             self.cLog.save()
 
-        # If no exception was raised, this test passed
-        self.assertTrue(True)
 
     # Test 2: Ensure an invalid contact code is not accepted
     def test_invalid_contact_code(self):
@@ -100,109 +98,98 @@ class ContactLogEditTests(TestCase):
             self.cLog.member = self.person1
             self.cLog.date = '2017-01-01'
             self.cLog.description = 'Example Entry'
-            self.cLog.contactCode = 'Telegram'
+            self.cLog.contactCode = 'X'
             self.cLog.clean()
             self.cLog.save()
 
     # Test 3: Ensure all valid file extensions are accepted
     def test_valid_file_extension_are_accepted(self):
-        for extension in kvp.CONTACT_LOG_FILE_EXTENSIONS:
-            file_name = self.CONST_FILE_PATH % "important_data" % extension
-            f = open(file_name, "wb")
+        accepted_file_extensions = settings.FILE_EXT_TO_ACCEPT
+        for extension in accepted_file_extensions:
+            # Create a file name for each extension in the list
+            file_name = "important_data.%s" % extension
+            # build the file path and create the file
+            file_path = self.CONST_FILE_PATH % file_name
+            f = open(file_path, "wb")
             f.seek(5)
             f.write("\0")
             f.close()
-
+            # Create a new ContactLogFile object
             contact_log_file = ContactLogFile()
-
-            fp = open(file_name, "r")
-
-            contact_log_file.file = File(fp)
-
-            # Associate Case File object with a case
-            contact_log_file.contactLog = self.cLog
-
+            # Open the actual file
+            fp = open(file_path, "r")
+            # Associate the ContactLogFile, with a real file
+            contact_log_file.fileName = File(fp)
+            # Associate ContactLogFile object with a contact log
+            contact_log_file.relatedContactLog = self.cLog
+            # Call the clean() method to ensure validation
+            contact_log_file.clean()
             # Save the Case File object
             contact_log_file.save()
-
             # close file stream
             fp.close()
-
-        self.assertTrue(True)
+            self.assertTrue(os.path.isfile(file_path))
 
     # Test 4: Ensure an invalid file extension is rejected
     def test_invalid_file_extension_is_rejected(self):
-        with self.assertRaisesMessage(ValidationError, "The file extension specified is not allowed."):
-            file_name = self.CONST_FILE_PATH % "important_data.gif"
-            f = open(file_name, "wb")
-            f.seek(5)
-            f.write("\0")
-            f.close()
-
+        with self.assertRaisesRegexp(ValidationError, "Invalid File Extension."):
+            # Use the invalidFile we created in setUp
+            file_name = self.invalidFile
+            # Create a new instance of a ContactLogFile to associate the File to
             contact_log_file = ContactLogFile()
-
+            # Open our oversize file
             fp = open(file_name, "r")
-
-            contact_log_file.file = File(fp)
-
-            # Associate Case File object with a case
-            contact_log_file.contactLog = self.cLog
-
-            # Save the Case File object
+            # Associate the contact log file, with the correctly sized file we opened
+            contact_log_file.fileName = File(fp)
+            # Associate ContactLogFile object with a contact log (required)
+            contact_log_file.relatedContactLog = self.cLog
+            # Call the clean method of the model
+            contact_log_file.clean()
+            # Save the ContactLogFile object
             contact_log_file.save()
-
             # close file stream
             fp.close()
-
-            self.assertTrue(True)
 
     # Test 5: Ensure that a file that is less than 500MB can be uploaded.
     def test_ensure_a_lower_than_500mb_file_can_be_uploaded(self):
-        file_name = self.CONST_FILE_PATH % "important_data.pdf"
-        f = open(file_name, "wb")
-        f.seek(5)
-        f.write("\0")
-        f.close()
-
+        # We created an undersizeFile in our setUp method:
+        file_name = self.undersizeFile
+        # Create a new instance of a ContactLogFile to associate the File to
         contact_log_file = ContactLogFile()
-
+        # Open our oversize file
         fp = open(file_name, "r")
-
+        # Associate the contact log file, with the correctly sized file we opened
         contact_log_file.fileName = File(fp)
-
-        # Associate Case File object with a case
+        # Associate ContactLogFile object with a contact log (required)
         contact_log_file.relatedContactLog = self.cLog
-
-        # Save the Case File object
+        # Call the clean method of the model
+        contact_log_file.clean()
+        # Save the ContactLogFile object
         contact_log_file.save()
-
         # close file stream
         fp.close()
 
-        self.assertTrue(True)
-
     # Test 6: Ensure that a file that over 500MB cannot be uploaded.
     def test_ensure_a_file_larger_than_500mb_file_cannot_be_uploaded(self):
-        with self.assertRaisesMessage(ValidationError, "Files over 500MB cannot be uploaded."):
-            file_name = self.CONST_FILE_PATH % "important_data.pdf"
-            f = open(file_name, "wb")
-            f.seek(settings.MAX_FILE_SIZE + 5)
-            f.write("\0")
-            f.close()
-
-            contact_log_file = ContactLogFile()
-
+        with self.assertRaisesRegexp(ValidationError, "File is too large."):
+            # Use the oversized file we created in setUp:
+            file_name = self.oversizeFile
+            # open our over-sized, exception-throwing file
             fp = open(file_name, "r")
-
-            contact_log_file.file = File(fp)
-            # TODO IntegrityError: (1048, "Column 'relatedContactLog_id' cannot be null")
-            # Associate Case File object with a case
-            contact_log_file.contactLog = self.cLog.pk
-
-            # Save the Case File object
+            # Create a new instance of a ContactLogFile to associate the File to
+            contact_log_file = ContactLogFile()
+            # Associate the contact log file, with the oversized file we opened
+            contact_log_file.fileName = File(fp)
+            # Associate ContactLogFile object with a contact log
+            contact_log_file.relatedContactLog = self.cLog
+            # Call the clean method of the model
+            contact_log_file.clean()
+            # Save the ContactLogFile object
             contact_log_file.save()
-
             # close file stream
             fp.close()
 
-            self.assertTrue(True)
+
+    def tearDown(self):
+        if os.path.exists(self._overridden_settings["MEDIA_ROOT"]):
+            shutil.rmtree(self._overridden_settings["MEDIA_ROOT"])

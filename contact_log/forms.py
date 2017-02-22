@@ -17,7 +17,7 @@ class ContactLogForm(ModelForm):
         super(ModelForm, self).__init__(*args, **kwargs)
         self.fields['file_field'] = FileField(required=False,
                                               widget=ClearableFileInput(
-                                                  attrs={'multiple': False, 'accept': kvp.CONTACT_LOG_FILE_EXTENSIONS}))
+                                                  attrs={'multiple': False, 'accept': settings.FILE_EXT_TO_ACCEPT}))
         self.fields['file_description'] = CharField(required=False, label='File Description',
                                                     widget=forms.TextInput(attrs={'type': '', 'size': '100%'}))
 

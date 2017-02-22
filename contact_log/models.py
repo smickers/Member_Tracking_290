@@ -45,6 +45,13 @@ class contactLog(models.Model):
         return ContactLogFile.objects.filter(relatedContactLog=self.id).count() != 0
 
     # TODO need to override our clean method in the ContactLog model, so we can validate the contactCode
+    def clean(self):
+        for status in kvp.CONTACT_LOG_STATUSES:
+            if status[0] == self.contactCode:
+                pass
+                break
+            else:
+                raise ValidationError("Please select an option from the list of choices.")
 
 
 class ContactLogFile(models.Model):
@@ -62,11 +69,11 @@ class ContactLogFile(models.Model):
     def clean(self):
 
         super(ContactLogFile, self).clean()
-        if self.file.size > settings.MAX_FILE_SIZE:
+        if self.fileName.size > settings.MAX_FILE_SIZE:
             """Check if the uploaded file has a valid file size"""
             raise ValidationError("File is too large")
 
-        if self.file.name.split(".")[-1] not in kvp.CONTACT_LOG_FILE_EXTENSIONS:
+        if self.fileName.name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT:
             """ Check if the uploaded file has a valid file extension """
             raise ValidationError("Invalid File Extension")
 
