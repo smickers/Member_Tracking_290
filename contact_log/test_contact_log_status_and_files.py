@@ -168,10 +168,10 @@ class ContactLogEditTests(TestCase):
 
         fp = open(file_name, "r")
 
-        contact_log_file.file = File(fp)
+        contact_log_file.fileName = File(fp)
 
         # Associate Case File object with a case
-        contact_log_file.contactLog = self.cLog
+        contact_log_file.relatedContactLog = self.cLog
 
         # Save the Case File object
         contact_log_file.save()
