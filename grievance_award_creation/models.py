@@ -35,7 +35,6 @@ class GrievanceAward(models.Model):
     ]
     # Object properties
     grievanceType = models.CharField(max_length=1, choices=GRIEVANCE_TYPES, default='M')
-    recipient = models.ManyToManyField(Person, related_name="ga_recipient")
     case = models.ForeignKey(Case, related_name="ga_case")
     awardAmount = models.FloatField(default=500.00, validators=[validators.validate_award_amt])
     description = models.CharField(max_length=1000, null=True,blank=True, validators=[validators.validate_description])
@@ -45,28 +44,38 @@ class GrievanceAward(models.Model):
     def get_absolute_url(self):
         return reverse(viewname='grievance_award_creation:create_grievance_award_success', kwargs={'pk': self.pk})
 
-
+    @property
+    def recipient(self):
+        """
+        Returns the recipient of a case
+        :return: recipients/recipient related to the case
+        """
+        if self.case.caseType == 7: #return the primary complainant
+            return self.case.complainant
+        else:
+            # combine additional members to the primary complainant
+            return list(self.case.additionalMembers.all()).append(self.case.complainant)
 
     # Method: __str__ (toString)
     # Purpose: Return a string representation of this object.
     def __str__(self):
-        pass
+        return "Grievance Type: " + self.grievanceType + "\nDescription: " + self.description
 
-    def clean(self, *args, **kwargs):
-        """
-        Documentation: https://docs.djangoproject.com/en/1.10/ref/models/instances/
-        """
-
-        # if self.case.caseType > 2:             # if it is a type of grievance
-        #     self.recipient.add(self.case.complainant)
-        #     if self.case.caseType != 7:        # if the grievance type is for policy
-        #         for single_member in self.case.additionalMembers.all():
-        #             self.recipient.add(single_member)
-        #         self.grievanceType = 'P'
-        #     else:
-        #         self.grievanceType = 'M'
-
-        super(GrievanceAward, self).clean(*args, **kwargs)
+    # def clean(self, *args, **kwargs):
+    #     """
+    #     Documentation: https://docs.djangoproject.com/en/1.10/ref/models/instances/
+    #     """
+    #
+    #     # if self.case.caseType > 2:             # if it is a type of grievance
+    #     #     self.recipient.add(self.case.complainant)
+    #     #     if self.case.caseType != 7:        # if the grievance type is for policy
+    #     #         for single_member in self.case.additionalMembers.all():
+    #     #             self.recipient.add(single_member)
+    #     #         self.grievanceType = 'P'
+    #     #     else:
+    #     #         self.grievanceType = 'M'
+    #     )
+    #     super(GrievanceAward, self).clean(*args, **kwargs
 
 
 """

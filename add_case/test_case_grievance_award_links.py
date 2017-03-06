@@ -85,7 +85,7 @@ class CaseLinksToGrievanceAwards(TestCase):
         self.tempCase.date = "2016-10-20"
         self.tempCase.full_clean()
         self.tempCase.save()
-        self.tempCase.additionalMembers.add(self.person1)
+        # self.tempCase.additionalMembers.add(self.person1)
         self.tempCase.save()
 
 
@@ -127,18 +127,19 @@ class CaseLinksToGrievanceAwards(TestCase):
         member
         :return:
         """
-        self.assertTrue(self.ga.recipient.all().count() == 1)
+        print (self.ga.recipient.firstName)
+        self.assertTrue(self.ga.recipient == self.person1)
 
 
 
-
-    def test_grievance_award_cannot_be_associated_with_multiple_member_if_grievance_award_type_is_member(self):
-        """
-        Purpose: test to see if grievance award can only be associated with a single member if it is of type
-        member
-        :return:
-        """
-        pass
+    #
+    # def test_grievance_award_cannot_be_associated_with_multiple_member_if_grievance_award_type_is_member(self):
+    #     """
+    #     Purpose: test to see if grievance award can only be associated with a single member if it is of type
+    #     member
+    #     :return:
+    #     """
+    #     pass
 
 
     # def test_grievance_award_can_be_associated_with_multiple_member_if_grievance_award_type_is_of_policy(self):
