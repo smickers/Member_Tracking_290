@@ -49,7 +49,7 @@ class Case(models.Model):
                                   blank=True)
     caseType = models.IntegerField(choices=kvp.TYPE_CHOICES)
     status = models.CharField(choices=kvp.STATUS_CHOICES, default="OPEN", max_length=15)
-    additionalMembers = models.ManyToManyField(Person, default=None, blank=True)
+    additionalMembers = models.ManyToManyField(Person, blank=True, )
     additionalNonMembers = models.TextField(blank=True, null=True)
     docs = models.TextField(blank=True, null=True)
     logs = models.TextField(blank=True, null=True)
@@ -58,11 +58,6 @@ class Case(models.Model):
     # Default get_absolute_url method
     def get_absolute_url(self):
         return reverse(viewname='add_case:case_detail', kwargs={'pk': self.pk})
-
-    # clean method
-    # Purpose: Clean data before saving it to the database.
-    def clean(self, *args, **kwargs):
-        pass
 
 
     # Name: __str__

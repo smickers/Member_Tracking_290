@@ -2,6 +2,7 @@ from django.test import TestCase
 from grievance_award_creation.models import GrievanceAward
 from add_member.models import Person
 from add_case.models import Case, CasePrograms
+from spfa_mt import kvp
 
 class CaseLinksToGrievanceAwards(TestCase):
     """
@@ -16,7 +17,6 @@ class CaseLinksToGrievanceAwards(TestCase):
         self.tempCase2 = Case()
         self.ga2 = GrievanceAward()
         self.ga = GrievanceAward()
-
 
 
     def setUp(self):
@@ -85,7 +85,6 @@ class CaseLinksToGrievanceAwards(TestCase):
         self.tempCase.date = "2016-10-20"
         self.tempCase.full_clean()
         self.tempCase.save()
-        # self.tempCase.additionalMembers.add(self.person1)
         self.tempCase.save()
 
 
@@ -94,7 +93,7 @@ class CaseLinksToGrievanceAwards(TestCase):
         self.tempCase2.campus = "Saskatoon"
         self.tempCase2.school = "School of Business"
         self.tempCase2.program = CasePrograms(name="Computer Systems Technology").save()
-        self.tempCase2.caseType = 3
+        self.tempCase2.caseType = 5
         self.tempCase2.status = "OPEN"
         self.tempCase2.additionalNonMembers = ""
         self.tempCase2.docs = None
@@ -102,7 +101,7 @@ class CaseLinksToGrievanceAwards(TestCase):
         self.tempCase2.date = "2016-10-20"
         self.tempCase2.full_clean()
         self.tempCase2.save()
-        self.tempCase2.additionalMembers.add(self.person1)
+        self.tempCase2.additionalMembers.add(self.person2)
         self.tempCase2.save()
 
         self.ga.case = self.tempCase
@@ -125,33 +124,34 @@ class CaseLinksToGrievanceAwards(TestCase):
         """
         Purpose: test to see if grievance award can only be associated with a single member if it is of type
         member
-        :return:
+        :return: None
         """
-        print (self.ga.recipient.firstName)
-        self.assertTrue(self.ga.recipient == self.person1)
+        self.assertTrue( isinstance(self.ga.recipient, Person))
 
 
 
-    #
-    # def test_grievance_award_cannot_be_associated_with_multiple_member_if_grievance_award_type_is_member(self):
-    #     """
-    #     Purpose: test to see if grievance award can only be associated with a single member if it is of type
-    #     member
-    #     :return:
-    #     """
-    #     pass
+
+    def test_grievance_award_cannot_be_associated_with_multiple_member_if_grievance_award_type_is_member(self):
+        """
+        Purpose: test to see if grievance award can only be associated with a single member if it is of type
+        member
+        :return: None
+        """
+
+        self.assertTrue( isinstance(self.ga.recipient, Person)) #checks to see if recipient is a single person object
 
 
-    # def test_grievance_award_can_be_associated_with_multiple_member_if_grievance_award_type_is_of_policy(self):
-    #     """
-    #     Purpose: test to see if grievance award can only be associated with a multiple member if it is of type
-    #     policy
-    #     :return:
-    #     """
-    #     # if (self.ga.case is not None and self.ga.caseType='P'):
-    #     #     self.assertEquals(list(self.ga.recipient), list(self.case.additionalMembers) + self.case.complainant)
-    #     pass
-    #
+    def test_grievance_award_can_be_associated_with_multiple_member_if_grievance_award_type_is_of_policy(self):
+        """
+        Purpose: test to see if grievance award can only be associated with a multiple member if it is of type
+        policy
+        :return: None
+        """
+        self.assertTrue(self.ga2.case.caseType == kvp.TYPE_CHOICES[2][0])
+        print(self.ga2.recipient)
+        self.assertTrue( len(self.ga2.recipient) == 2)
+
+
     # def test_grievance_award_cannot_be_associated_with_multiple_members_if_griev_aw_type_isnt_of_policy(self):
     #     """
     #     Purpose: test to see if grievance award can only be associated with a multiple member if it is of type
@@ -160,5 +160,3 @@ class CaseLinksToGrievanceAwards(TestCase):
     #     """
     #     # if(self.ga.case is not None and self.ga.caseType='M'):
     #     #     self.assertTrue(self.ga.recipient.all().count == 1)
-    #
-    #     pass

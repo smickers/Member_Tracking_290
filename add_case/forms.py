@@ -44,6 +44,9 @@ class CaseForm(ModelForm):
 
         return obj
 
+    def clean_additionalMembers(self):
+        pass
+
     def clean_file_field(self):
         """
         Function: clean

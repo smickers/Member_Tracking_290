@@ -38,7 +38,6 @@ class CaseSearchView(HaystackViewSet):
         return context
         """
 
-
 class UpdateCaseView(UpdateView):
     model = Case
     form_class = CaseForm

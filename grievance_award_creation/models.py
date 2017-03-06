@@ -34,7 +34,6 @@ class GrievanceAward(models.Model):
         ('P', 'Policy')
     ]
     # Object properties
-    grievanceType = models.CharField(max_length=1, choices=GRIEVANCE_TYPES, default='M')
     case = models.ForeignKey(Case, related_name="ga_case")
     awardAmount = models.FloatField(default=500.00, validators=[validators.validate_award_amt])
     description = models.CharField(max_length=1000, null=True,blank=True, validators=[validators.validate_description])
@@ -50,32 +49,28 @@ class GrievanceAward(models.Model):
         Returns the recipient of a case
         :return: recipients/recipient related to the case
         """
-        if self.case.caseType == 7: #return the primary complainant
+        print(self.case.caseType)
+        if self.case.caseType == kvp.TYPE_CHOICES[0][0]: #return the primary complainant
             return self.case.complainant
         else:
             # combine additional members to the primary complainant
-            return list(self.case.additionalMembers.all()).append(self.case.complainant)
+            q_set = list(self.case.additionalMembers.all())
+            q_set .append(self.case.complainant)
+            return q_set
+
+    @property
+    def grievanceType(self):
+        if self.case.caseType == kvp.TYPE_CHOICES[0][0]:
+            return GrievanceAward.GRIEVANCE_TYPES[0][0]
+        else:
+            return GrievanceAward.GRIEVANCE_TYPES[1][0]
+
 
     # Method: __str__ (toString)
     # Purpose: Return a string representation of this object.
     def __str__(self):
         return "Grievance Type: " + self.grievanceType + "\nDescription: " + self.description
 
-    # def clean(self, *args, **kwargs):
-    #     """
-    #     Documentation: https://docs.djangoproject.com/en/1.10/ref/models/instances/
-    #     """
-    #
-    #     # if self.case.caseType > 2:             # if it is a type of grievance
-    #     #     self.recipient.add(self.case.complainant)
-    #     #     if self.case.caseType != 7:        # if the grievance type is for policy
-    #     #         for single_member in self.case.additionalMembers.all():
-    #     #             self.recipient.add(single_member)
-    #     #         self.grievanceType = 'P'
-    #     #     else:
-    #     #         self.grievanceType = 'M'
-    #     )
-    #     super(GrievanceAward, self).clean(*args, **kwargs
 
 
 """
