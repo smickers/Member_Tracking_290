@@ -28,7 +28,7 @@ class contactLog(models.Model):
     # self - the calling object
     # Returns: a URL to redirect the user to after submitting the form.
     def get_absolute_url(self):
-        return reverse(viewname='contact_log_creation:contact_log_list_default', kwargs={})
+        return reverse(viewname='contact_log_creation:details', kwargs={'pk': self.pk})
 
     # Function: __str__
     # Purpose: toString method for a contactLog object

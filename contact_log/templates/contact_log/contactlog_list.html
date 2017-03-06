@@ -27,7 +27,8 @@
                 <th class="col-md-7">Description</th>
                 <!--<th>Edit Link</th>-->
                 <th>Contact Code</th>
-                <th>Edit Link</th>
+                <th>View</th>
+                <th>Edit</th>
             </tr>
             </thead>
             <tbody>
@@ -38,7 +39,8 @@
                         <td class="center">{{ curr_cl.date }}</td>
                         <td>{{ curr_cl.description }}</td>
                         <td> {{  curr_cl.get_contactCode_display }}</td>
-                        <td class="center"><a href="{% url 'contact_log_creation:contact_log_edit' curr_cl.pk %}">[Edit Contact Log]</a></td>
+                        <td class="center"><a href="{% url 'contact_log_creation:details' curr_cl.pk %}">[View]</a></td>
+                        <td class="center"><a href="{% url 'contact_log_creation:contact_log_edit' curr_cl.pk %}">[Edit]</a></td>
                     </tr>
                 {% endfor %}
             </tbody>

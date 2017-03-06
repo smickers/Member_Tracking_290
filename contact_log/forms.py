@@ -82,3 +82,20 @@ class ContactLogForm(ModelForm):
             'date': SelectDateWidget(months=kvp.MONTHS, years=range(datetime.now().year - 5, datetime.now().year + 6)),
             'description': Textarea(attrs={'rows': '2'}),
         }
+
+class ContactLogDetailsForm(ModelForm):
+    model = contactLog
+    # Specifying the fields to be shown in the form
+    fields = [
+        'member',
+        'description',
+        'contactCode',
+        'date',
+    ]
+    # Giving labels to fields defined above
+    labels = {
+        'member': 'Saskpolytech Member',
+        'description': 'Contact Description',
+        'contactCode': 'Contact Code',
+        'date': 'Date of Contact',
+    }
