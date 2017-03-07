@@ -63,8 +63,8 @@ class Case(models.Model):
     # Name: __str__
     # Purpose: toString method
     # Returns: A string representation of the object.
-    def __str__(self):
-        return self.complainant.__str__() + ' - ' + self.date.strftime("%d, %b. %Y")
+    # def __str__(self):
+    #     return self.complainant.__str__() + ' - ' + self.date.strftime("%d, %b. %Y")
 
 # Class: CaseMembers
 # Purpose: Joining class for Members to a Case.

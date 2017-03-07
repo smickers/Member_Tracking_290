@@ -44,8 +44,12 @@ class CaseForm(ModelForm):
 
         return obj
 
-    def clean_additionalMembers(self):
-        pass
+    def clean(self):
+        super(CaseForm, self).clean()
+
+        if self.cleaned_data['caseType'] == 7 and self.cleaned_data['additionalMembers'].all().count():
+            raise ValidationError("You can only select 1 member if a grievance type is INDIVIDUAL")
+        return self.cleaned_data
 
     def clean_file_field(self):
         """
@@ -113,6 +117,7 @@ class CaseForm(ModelForm):
                 'invalid_choice': "Complainant cannot be added as an additional member."
             }
         }
+
 
 
 class CaseMembersForm(ModelForm):
