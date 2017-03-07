@@ -77,11 +77,11 @@ class TestPDAward(TestCase):
     # test_invali_cost
     # Test that a PD award is not created when an invalid cost is given
     def test_invalid_cost(self):
-        with self.assertRaisesMessage(ValidationError, "Cost must be between .01 and 999999"):
+        with self.assertRaisesMessage(ValidationError, "Amount must be greater than $0 and less than $1,000,000."):
             self.pdAward1 = PDAward()
             self.pdAward1.awardName = "Excelence Award"
             self.pdAward1.memberAwarded = self.tempPerson
-            self.pdAward1.awardCost = 100000
+            self.pdAward1.awardCost = 1000000
             self.pdAward1.startDate = "2017-02-01"
             self.pdAward1.endDate = "2017-02-01"
             self.pdAward1.full_clean()
