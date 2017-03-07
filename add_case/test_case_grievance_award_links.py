@@ -87,7 +87,6 @@ class CaseLinksToGrievanceAwards(TestCase):
         self.tempCase.save()
         self.tempCase.save()
 
-
         self.tempCase2.lead = 123456789
         self.tempCase2.complainant = self.person1
         self.tempCase2.campus = "Saskatoon"
@@ -126,9 +125,7 @@ class CaseLinksToGrievanceAwards(TestCase):
         member
         :return: None
         """
-        self.assertTrue( isinstance(self.ga.recipient, Person))
-
-
+        self.assertTrue(isinstance(self.ga.recipient, Person))
 
 
     def test_grievance_award_cannot_be_associated_with_multiple_member_if_grievance_award_type_is_member(self):
@@ -137,8 +134,7 @@ class CaseLinksToGrievanceAwards(TestCase):
         member
         :return: None
         """
-
-        self.assertTrue( isinstance(self.ga.recipient, Person)) #checks to see if recipient is a single person object
+        self.assertTrue(isinstance(self.ga.recipient, Person))  # checks to see if recipient is a single person object
 
 
     def test_grievance_award_can_be_associated_with_multiple_member_if_grievance_award_type_is_of_policy(self):
@@ -149,14 +145,5 @@ class CaseLinksToGrievanceAwards(TestCase):
         """
         self.assertTrue(self.ga2.case.caseType == kvp.TYPE_CHOICES[2][0])
         print(self.ga2.recipient)
-        self.assertTrue( len(self.ga2.recipient) == 2)
+        self.assertTrue(len(self.ga2.recipient) == 2)
 
-
-    # def test_grievance_award_cannot_be_associated_with_multiple_members_if_griev_aw_type_isnt_of_policy(self):
-    #     """
-    #     Purpose: test to see if grievance award can only be associated with a multiple member if it is of type
-    #     policy
-    #     :return:
-    #     """
-    #     # if(self.ga.case is not None and self.ga.caseType='M'):
-    #     #     self.assertTrue(self.ga.recipient.all().count == 1)

@@ -1,3 +1,5 @@
+from encodings.punycode import selective_find
+
 from django.shortcuts import render
 from .models import *
 from .forms import GrievanceAwardForm
@@ -11,6 +13,7 @@ from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.views.generic.list import ListView
 from spfa_mt import settings
 from django.http import HttpResponse
+from add_case.models import Case
 
 
 # Create your views here.
@@ -21,7 +24,16 @@ class GrievanceAwardCreation(CreateView):
     # Link GrievanceAward to the appropriate grievance award form
     model = GrievanceAward
     form_class = GrievanceAwardForm
-    form = GrievanceAwardForm()
+
+
+    def get_context_data(self, **kwargs):
+        context = super(GrievanceAwardCreation, self).get_context_data(**kwargs)
+        context['case'] = Case.objects.get(pk=self.kwargs['pk'])
+        return context
+
+    def get_form(self, form_class=None):
+        form = GrievanceAwardForm(initial={'case': self.kwargs['pk'] })
+        return form
 
 # Class: GrievanceAwardCreationSuccess
 # Purpose: The view that is shown upon successfully creating a grievance award.

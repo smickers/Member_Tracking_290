@@ -75,6 +75,27 @@
     </script>
 </head>
 <body>
+    <div class="container">
+        <h1>Case Information</h1>
+        <table>
+            <tr>
+                <td>Lead:</td>
+                <td>{{ case.lead }}</td>
+            </tr>
+            <tr>
+                <td>Department:</td>
+                <td>{{ case.department }}</td>
+            </tr>
+            <tr>
+                <td>Case Type:</td>
+                <td>{{ case.caseType }}</td>
+            </tr>
+            <tr>
+                <td>Status:</td>
+                <td>{{ case.status }}</td>
+            </tr>
+        </table>
+    </div>
     <form action="" method="POST" enctype="multipart/form-data" class="form">
         {% csrf_token %}
         {% bootstrap_form form %}

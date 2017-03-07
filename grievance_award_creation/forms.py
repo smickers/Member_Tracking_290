@@ -112,8 +112,7 @@ class GrievanceAwardForm(ModelForm):
             'grievanceType' : RadioSelect(),
             'recipient' : forms.Select(
                 attrs={'class': 'js-recipient', 'required':''}),
-            'case' : forms.Select(
-                attrs={'class': 'js-case', 'required':''}),
+            'case' : forms.HiddenInput()
         }
 
 

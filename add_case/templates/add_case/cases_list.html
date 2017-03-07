@@ -24,6 +24,7 @@
                 <td style="text-align:center;">{{ case.lead }}</td>
                 <td style="text-align:center;"><a href="{% url 'add_case:case_edit' case.pk %}">[Add Member]</a></td>
                 <td style="text-align:center;"><a href='{% url "add_case:case_detail" case.pk %}'>[View Detail]</a></td>
+                <td style="text-align:center;"><a href='{% url "grievance_award_creation:create_grievance_award" case.pk %}'>[Add Award]</a></td>
             </tr>
 
         <!-- only appears if no committees exist in the DB -->

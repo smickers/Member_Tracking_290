@@ -41,7 +41,7 @@ class GrievanceAward(models.Model):
 
     # Default get_absolute_url method
     def get_absolute_url(self):
-        return reverse(viewname='grievance_award_creation:create_grievance_award_success', kwargs={'pk': self.pk})
+        return reverse(viewname='add_case:case_add', kwargs={'pk': self.pk})
 
     @property
     def recipient(self):
@@ -49,21 +49,22 @@ class GrievanceAward(models.Model):
         Returns the recipient of a case
         :return: recipients/recipient related to the case
         """
-        print(self.case.caseType)
-        if self.case.caseType == kvp.TYPE_CHOICES[0][0]: #return the primary complainant
-            return self.case.complainant
-        else:
-            # combine additional members to the primary complainant
-            q_set = list(self.case.additionalMembers.all())
-            q_set .append(self.case.complainant)
-            return q_set
+        # print(self.case.caseType)
+        # if self.case.caseType == kvp.TYPE_CHOICES[0][0]:  # return the primary complainant
+        #     return self.case.complainant
+        # else:
+        #     # combine additional members to the primary complainant
+        #     q_set = list(self.case.additionalMembers.all())
+        #     q_set .append(self.case.complainant)
+        #     return q_set
+        return self.case.members
 
     @property
     def grievanceType(self):
-        if self.case.caseType == kvp.TYPE_CHOICES[0][0]:
-            return GrievanceAward.GRIEVANCE_TYPES[0][0]
+        if self.case.caseType == kvp.TYPE_CHOICES[0][0]:  # if caseType is individual
+            return GrievanceAward.GRIEVANCE_TYPES[0][0]   # GA type must be "member"
         else:
-            return GrievanceAward.GRIEVANCE_TYPES[1][0]
+            return GrievanceAward.GRIEVANCE_TYPES[1][0]   # otherwise, "policy"
 
 
     # Method: __str__ (toString)

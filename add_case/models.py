@@ -59,6 +59,19 @@ class Case(models.Model):
     def get_absolute_url(self):
         return reverse(viewname='add_case:case_detail', kwargs={'pk': self.pk})
 
+    @property
+    def members(self):
+        """
+
+        """
+        if self.caseType == kvp.TYPE_CHOICES[0][0]:  # return the primary complainant
+            return self.complainant
+        else:
+            # combine additional members to the primary complainant
+            q_set = list(self.additionalMembers.all())
+            q_set.append(self.complainant)
+            return q_set
+
 
     # Name: __str__
     # Purpose: toString method
