@@ -73,6 +73,9 @@
 <body>
     <div class="container">
         <h1 class="main-heading">Contact Log</h1>
+{#        {% if form.instance.id and object.containsfile %}#}
+{#                {{ object.getfilename }}#}
+{#        {% endif %}#}
         {% if form.instance.id %}
         {%  comment %}
         These next few lines are used to determine whether

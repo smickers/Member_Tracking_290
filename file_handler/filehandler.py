@@ -32,7 +32,9 @@ class UploadValidator(TemporaryFileUploadHandler):
     """
     def file_complete(self, file_size):
         if file_size > MAX_FILE_SIZE:
+            print("File_complete running!")
             raise ValidationError('Upload size limit exceeded exception')
+        return super(UploadValidator, self).file_complete(file_size)
 
     """
     Method: receive_data_chunk

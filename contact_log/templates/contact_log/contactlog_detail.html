@@ -31,8 +31,14 @@
             </tr>
             <tr>
                 <th>Contact Code</th>
-                <td>{{ object.contactCode }}</td>
+                <td>{{ object.get_contactCode_display }}</td>
             </tr>
+        {% if object.containsfile %}
+            <tr>
+                <th>File Name</th>
+                <td>{{ object.getfilename }}</td>
+            </tr>
+        {% endif %}
         </table>
 
         {% buttons %}

@@ -29,7 +29,9 @@ class ContactLogForm(ModelForm):
         :return: obj - Model Form
         """
         try:
+            print("Saving object")
             obj = super(ModelForm, self).save()
+            print("Saved object")
         except ValidationError:
             return ValidationError
 
@@ -85,6 +87,14 @@ class ContactLogForm(ModelForm):
 
 class ContactLogDetailsForm(ModelForm):
     model = contactLog
+
+    # Get contact log
+    # If contact log has associated file
+        # Set a flag to send to the form, and send the file to the form too
+    # Otherwise
+        # Set a flag saying that no file is associated with the contact log
+
+
     # Specifying the fields to be shown in the form
     fields = [
         'member',

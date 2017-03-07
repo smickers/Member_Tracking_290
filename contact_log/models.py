@@ -42,12 +42,29 @@ class contactLog(models.Model):
     # Returns: boolean
     @property
     def containsfile(self):
+        #self.getfilename()
         return ContactLogFile.objects.filter(relatedContactLog=self.id).count() != 0
+
+    # Function: getfilename
+    # Purpose: Returns the name of the file associated with this contact log.
+    # Assumption: containsfile has already been called and has returned True.
+    @property
+    def getfilename(self):
+        # First, get the name from the DB
+        fullname = str(ContactLogFile.objects.filter(relatedContactLog_id=self.id)[0].fileName)
+        # Determine if slashes need to be taken out
+        if fullname.find('/') != -1:
+            # If so, return the full name from after the slash's index to the very end
+            # The plus one is there so that the slash isn't included in the return value (duh)
+            return fullname[fullname.find('/') + 1:]
+        else:
+            # If no slashes are found, just return the original name
+            return fullname
 
     # Overrides the clean method to ensure contact code validation.
     def clean(self):
         # If the code, being a single-character string, is not in the first part of the tuple, in the list of tuples,
-        if self.contactCode not in kvp.CONTACT_LOG_STATUSES[0]:
+        if self.get_contactCode_display() not in kvp.CONTACT_LOG_STATUSES[1]:
             # raise an error
             raise ValidationError("Please select an option from the list of choices.")
 
