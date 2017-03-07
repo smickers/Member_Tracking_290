@@ -19,6 +19,22 @@ class UploadValidator(TemporaryFileUploadHandler):
         self.total_size = None
 
     """
+    Method: file_complete
+    Purpose: This method is run after a file has been uploaded. The file's size is
+    passed to this method, so we're using this method to validate that a file is
+    small enough to be stored in the system.
+
+    THIS CHECK USED TO BE DONE IN receive_data_chunk. However, I moved it here because
+    raising an exception in receive_data_chunk would give Connection Reset errors in the
+    browser. By raising the validation in this method, we can display a nice error on the
+    screen after the user has uploaded the file, rather than giving connection reset errors
+    with no debug information as soon as the upload begins.
+    """
+    def file_complete(self, file_size):
+        if file_size > MAX_FILE_SIZE:
+            raise ValidationError('Upload size limit exceeded exception')
+
+    """
     Method: receive_data_chunk
     Purpose: Receives a chunk of data from the file upload.
     """
@@ -29,7 +45,8 @@ class UploadValidator(TemporaryFileUploadHandler):
             """
                 Raises exception if the file size is invalid
             """
-            raise ValidationError('Upload size limit exceeded exception')
+            # This is where the upload size exception *used* to be thrown
+            # raise ValidationError('Upload size limit exceeded exception')
 
     """
     Method: handle_raw_input

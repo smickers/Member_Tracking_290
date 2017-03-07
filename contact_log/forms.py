@@ -38,7 +38,7 @@ class ContactLogForm(ModelForm):
             f = self.files.getlist('file_field')[0]
             temp = File(file=f)
             desc = self.cleaned_data['file_description']
-            cl_file = ContactLogFile(relatedContactLog=obj, fileName=temp, description=desc)
+            cl_file = ContactLogFile(relatedContactLog=obj, fileName=temp, fileDesc=desc)
             cl_file.save()
 
         return obj
