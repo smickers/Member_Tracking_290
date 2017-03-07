@@ -7,7 +7,7 @@ from datetime import date
 from django.db import models
 from spfa_mt import kvp, settings
 from django.core.exceptions import ValidationError
-
+from itertools import chain
 
 # Contact Log Class
 # Purpose: This class will hold a contact log, and
@@ -63,10 +63,12 @@ class contactLog(models.Model):
 
     # Overrides the clean method to ensure contact code validation.
     def clean(self):
-        # If the code, being a single-character string, is not in the first part of the tuple, in the list of tuples,
-        if self.get_contactCode_display() not in kvp.CONTACT_LOG_STATUSES[1]:
-            # raise an error
-            raise ValidationError("Please select an option from the list of choices.")
+        found = False
+        for status in kvp.CONTACT_LOG_STATUSES:
+            if self.get_contactCode_display() in status[1]:
+                found = True
+        if not found:
+                raise ValidationError("Please select an option from the list of choices.")
 
 
 # Class that creates a ContactLogFile object, which lets us associate a file (document) to a contact log
@@ -85,7 +87,7 @@ class ContactLogFile(models.Model):
         super(ContactLogFile, self).clean()
         if self.fileName.size > settings.MAX_FILE_SIZE:
             """Check if the uploaded file has a valid file size"""
-            raise ValidationError("File is too large")
+            raise ValidationError('Upload size limit exceeded exception')
 
         if self.fileName.name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT:
             """ Check if the uploaded file has a valid file extension """
