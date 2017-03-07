@@ -34,14 +34,14 @@ class GrievanceAward(models.Model):
         ('P', 'Policy')
     ]
     # Object properties
-    case = models.ForeignKey(Case, related_name="ga_case")
+    case = models.OneToOneField(Case)
     awardAmount = models.FloatField(default=500.00, validators=[validators.validate_award_amt])
     description = models.CharField(max_length=1000, null=True,blank=True, validators=[validators.validate_description])
     date = models.DateField(default=date.today())
 
     # Default get_absolute_url method
     def get_absolute_url(self):
-        return reverse(viewname='add_case:case_add', kwargs={'pk': self.pk})
+        return reverse(viewname='add_case:case_detail', kwargs={'pk': self.case.pk})
 
     @property
     def recipient(self):
@@ -69,8 +69,7 @@ class GrievanceAward(models.Model):
 
     # Method: __str__ (toString)
     # Purpose: Return a string representation of this object.
-    def __str__(self):
-        return "Grievance Type: " + self.grievanceType + "\nDescription: " + self.description
+
 
 
 

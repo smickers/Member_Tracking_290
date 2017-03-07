@@ -32,14 +32,18 @@ class GrievanceAwardCreation(CreateView):
         return context
 
     def get_form(self, form_class=None):
-        form = GrievanceAwardForm(initial={'case': self.kwargs['pk'] })
-        return form
+        return self.form_class(initial={'case': self.kwargs['pk']})
+
+
+    def post(self, request, *args, **kwargs):
+        print(request.__dict__)
+        return super(GrievanceAwardCreation, self).post(request, *args, **kwargs)
 
 # Class: GrievanceAwardCreationSuccess
 # Purpose: The view that is shown upon successfully creating a grievance award.
-
-    def get_success_url(self):
-        return self.object.get_absolute_url()
+#
+#     def get_success_url(self):
+#         return self.object.get_absolute_url()
 
 
 class GrievanceAwardCreationSuccess(DetailView):

@@ -97,22 +97,20 @@ class GrievanceAwardForm(ModelForm):
         # Show all fields and set up labels
         fields = '__all__'
         labels = {
-            'grievanceType': 'Grievance Type',
             'recipient': 'Related Recipient',
             'case': 'Related Case',
             'awardAmount': 'Award Amount',
             'description' : 'Description',
-            'date' : 'Date Awarded'
+            'date': 'Date Awarded'
         }
 
         # Use some special widgets for certain fields
         widgets = {
             'date': SelectDateWidget(months=MONTHS, years=YEARS),
             'description' : Textarea(),
-            'grievanceType' : RadioSelect(),
             'recipient' : forms.Select(
                 attrs={'class': 'js-recipient', 'required':''}),
-            'case' : forms.HiddenInput()
+            'case' : forms.HiddenInput(),
         }
 
 
