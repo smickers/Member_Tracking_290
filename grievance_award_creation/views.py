@@ -1,18 +1,9 @@
-from encodings.punycode import selective_find
-
 from django.shortcuts import render
 from .models import *
 from .forms import GrievanceAwardForm
-from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
-from django.http import JsonResponse
-from django.core.exceptions import ValidationError
-from django.core.files.uploadhandler import StopUpload, SkipFile
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.views.generic.list import ListView
-from spfa_mt import settings
-from django.http import HttpResponse
 from add_case.models import Case
 
 
@@ -24,6 +15,7 @@ class GrievanceAwardCreation(CreateView):
     # Link GrievanceAward to the appropriate grievance award form
     model = GrievanceAward
     form_class = GrievanceAwardForm
+    context_object_name = "grievance_award"
 
 
     def get_context_data(self, **kwargs):
@@ -31,38 +23,14 @@ class GrievanceAwardCreation(CreateView):
         context['case'] = Case.objects.get(pk=self.kwargs['pk'])
         return context
 
-    def get_form(self, form_class=None):
-        return self.form_class(initial={'case': self.kwargs['pk']})
+    def get_initial(self):
+        return { 'case': self.kwargs['pk']}
 
-
-    def post(self, request, *args, **kwargs):
-        print(request.__dict__)
-        return super(GrievanceAwardCreation, self).post(request, *args, **kwargs)
-
-# Class: GrievanceAwardCreationSuccess
-# Purpose: The view that is shown upon successfully creating a grievance award.
-#
-#     def get_success_url(self):
-#         return self.object.get_absolute_url()
 
 
 class GrievanceAwardCreationSuccess(DetailView):
     # Define the model
     model = GrievanceAward
-
-
-# Class: GrievanceAwardDetail
-# Purpose: To display the details of an award
-# class GrievanceAwardDetail(DetailView):
-#     model = GrievanceAward
-#     template_name = 'grievance_award_creation/grievanceaward_actual_detail.html'
-
-
-    # def get_context_data(self, **kwargs):
-    #     context = super(GrievanceAwardDetail, self).get_context_data(**kwargs)
-    #     # context["files"] = GrievanceFiles.objects.all().model.file
-    #     context["files"] = "hello"
-    #     return context
 
 # Function: grievance_award_detail
 # Purpose: function based view for viewing the details of a grievance award and its files
@@ -80,13 +48,14 @@ def grievance_award_detail(request, pk):
         gw.file_desc = ""
         gw.file_date_uploaded = ""
 
-    return render(request, 'grievance_award_creation/grievanceaward_actual_detail.html', {'object': gw})
+    return render(request, 'grievance_award_creation/grievanceaward_actual_detail.html', {'grievance_award': gw})
 
 
 # This class declares the form for the editing a grievance award
 class GrievanceAwardEditView(UpdateView):
     model = GrievanceAward
     form_class = GrievanceAwardForm
+
 
 # This class declares the form to show a list of current grievance award
 class GrievanceAwardList(ListView):

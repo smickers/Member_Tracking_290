@@ -1,31 +1,18 @@
-{% include 'nav.html' %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Grievance Award Detail</title>
-     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <meta charset="UTF-8">
-</head>
-<body>
-    <h1 id="award">Award ID: {{ object.id }}</h1>
-    <h2>Recipient: {{ object.recipient }}</h2>
-    <h2>Related Case: {{ object.case }}</h2>
-    <h2>Grievance Type: {{ object.grieveanceType }}</h2>
-    <h2>Award Amount: {{ object.awardAmount }}</h2>
-    <h2>Description: {{ object.description }}</h2>
-    <h2>Date: {{ object.date|date:"d, M. Y" }}</h2>
-    {% block document %}
-        {% if object.file_name %}
-            <h2>Document: <a id="download" target="_blank" href="../../media/grievance/{{ object.file_name }}">{{ object.file_name }}</a></h2>
-            <h2>Document Description: {{ object.file_desc }}</h2>
-            <h2>Document Upload Date: {{ object.file_date_uploaded|date:"d, M. Y" }}</h2>
+{% block content %}
+    <body>
+        <p id="award">Award ID: {{ grievance_award.id }}</p>
+        <p>Recipient: {{ grievance_award.recipient }}</p>
+        <p>Related Case: {{ grievance_award.case }}</p>
+        <p>Grievance Type: {{ grievance_award.grieveanceType }}</p>
+        <p>Award Amount: {{ grievance_award.awardAmount }}</p>
+        <p>Description: {{ grievance_award.description }}</p>
+        <p>Date: {{ grievance_award.grievance_award|date:"d, M. Y" }}</p>
+        {% if grievance_award.file_name %}
+            <p>Document: <a id="download" target="_blank" href="../../media/grievance/{{ grievance_award.file_name }}">{{ grievance_award.file_name }}</a></p>
+            <p>Document Description: {{ grievance_award.file_desc }}</p>
+            <p>Document Upload Date: {{ grievance_award.file_date_uploaded|date:"d, M. Y" }}</p>
         {% endif %}
-    {% endblock %}
-<input type="button" value="Back" onclick="window.history.back()" />
-</body>
-{% include 'footer.html' %}
-</html>
+        <input type="button" value="Back" onclick="window.history.back()" />
+        <br>
+    </body>
+{% endblock %}

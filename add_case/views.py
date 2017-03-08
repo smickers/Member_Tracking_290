@@ -1,13 +1,11 @@
-from django.shortcuts import render
 from .models import Case
 from .forms import CaseForm
-from django.views import generic
 from django.views.generic import *
 from django.views.generic.edit import *
 from drf_haystack.viewsets import HaystackViewSet
 from serializer import CaseSearchSerializer
 from drf_haystack.filters import HaystackAutocompleteFilter
-from django.core.exceptions import ValidationError
+from grievance_award_creation.models import GrievanceAward
 
 
 class CaseCreate(CreateView):
@@ -49,9 +47,8 @@ class CaseDetail(DetailView):
     template_name = 'add_case/cases_detail.html'
 
     def get_context_data(self, **kwargs):
-        request = self.request
         context = super(CaseDetail, self).get_context_data(**kwargs)
-        print request.POST
+        context['grievance_award'] = GrievanceAward.objects.get(pk=self.kwargs['pk'])
         return context
 
 #view for listing all the members found in the db

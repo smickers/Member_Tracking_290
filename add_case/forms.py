@@ -57,9 +57,6 @@ class CaseForm(ModelForm):
         Purpose: Cleans the models before they are entered into the database
         :return:
         """
-        # print(self.files not None)
-        #print(self.files != {})
-
         #Clean uploaded files if there are any
         if self.files != {}:
             # print(self.files.getlist('file_field')[0].name)

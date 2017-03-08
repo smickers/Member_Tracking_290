@@ -1,152 +1,141 @@
-{% include 'nav.html' %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Case</title>
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
-    {% load static %}
-     <script src="{% static 'add_case/file_upload_validation.js' %}" type="text/javascript"></script>
+{% extends 'base.html' %}
+{% load bootstrap3 %}
 
-    {% load bootstrap3 %}
-    {% bootstrap_javascript %}
-       <script type="text/javascript">
-            $(document).ready(function() {
-                $("#id_department").hide();
-                $("label[for='id_department']").hide();
+{% block metadata %}
+        {% load static %}
+    <script src="{% static 'add_case/file_upload_validation.js' %}" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#id_department").hide();
+            $("label[for='id_department']").hide();
 
-              var members = $(".js-complainant");
+          var members = $(".js-complainant");
 
-              members.select2({
-                ajax: {
-                    //a list of all members
-                    url: "/api-root/members_list/search/", //URL of the REST API for querying the members
-                    dataType: 'json',
-                    data: function(params)
-                    {
-                        return {
-                            q: params.term, //The term to be sent
-                            offset: (params.page ) * 10 //Which page of the REST page will be loaded
-                        }
-                    },
-                    processResults: function (data, params) {
-                        return {
-                            results: data.results,
-                            pagination: {
-                                more: true //enables the pagination feature
-                            }
-                        }
-                   },
-                }
-              });
-
-              var members = $(".js-additional_members");
-
-              members.select2({
-                ajax: {
-                    //a list of all members
-                    url: "/api-root/members_list/search/", //URL of the REST API for querying the members
-                    dataType: 'json',
-                    data: function(params)
-                    {
-                        return {
-                            q: params.term, //The term to be sent
-                            offset: (params.page ) * 10, //Which page of the REST page will be loaded
-                            id__not: $("#id_complainant").val()
-                        }
-                    },
-                    processResults: function (data, params) {
-                        return {
-                            results: data.results,
-                            pagination: {
-                                more: true //enables the pagination feature
-                            }
-                        }
-                   },
-                }
-              });
-
-                //If a school is selected as "other" Show the department dropdown, and hide program dropdown
-                $("#id_school").change(function(){
-                    if($("#id_school").val() === "Other")
-                    {
-                        $("#id_department").show();
-                        $("label[for='id_department']").show();
-
-                        $("#id_program").hide();
-                        $("label[for='id_program']").hide();
-                    }
-                    else
-                    {
-                        $("#id_department").hide();
-                        $("label[for='id_department']").hide();
-
-                        $("#id_program").show();
-                        $("label[for='id_program']").show();
-                    }
-                });
-
-                // Set up functionality to ensure that the complainant cannot be selected
-                // as an additional member
-                $("#id_additionalMembers").change(function()
+          members.select2({
+            ajax: {
+                //a list of all members
+                url: "/api-root/members_list/search/", //URL of the REST API for querying the members
+                dataType: 'json',
+                data: function(params)
                 {
-                    // Double check to make sure current users aren't the complainant
-                    var currComplainant = $("#id_complainant").val();
-                    // Using a convoluted foreach loop to do this
-                    var newValues = [];
-                    if ($(this).val() !== null)
-                    {
-                       $(this).val().forEach(function(value, index)
-                        {
-                            // Push valid values onto a new array
-                            if (value !== currComplainant)
-                            {
-                                // Push the user onto an array if they aren't the complainant
-                                newValues.push(value);
-                            }
-                            else
-                            {
-                                // If user is the current complainant, then remove them
-                                // from the list of additional members
-                                $("#id_additionalMembers option").filter("[value='" + currComplainantID + "']").remove();
-                            }
-                        });
+                    return {
+                        q: params.term, //The term to be sent
+                        offset: (params.page ) * 10 //Which page of the REST page will be loaded
                     }
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.results,
+                        pagination: {
+                            more: true //enables the pagination feature
+                        }
+                    }
+               },
+            }
+          });
 
-                    // Now update the values listed
-                    $(this).val(newValues);
-                });
+          var members = $(".js-additional_members");
 
-                // Setting up a variable to be used in the below onchange listener
-                var currComplainantID = -1;
-
-                $("#id_complainant").change(function()
+          members.select2({
+            ajax: {
+                //a list of all members
+                url: "/api-root/members_list/search/", //URL of the REST API for querying the members
+                dataType: 'json',
+                data: function(params)
                 {
-                    // Make sure that this member doesn't show up in the list of additional members
-                    currComplainantID = $(this).val();
+                    return {
+                        q: params.term, //The term to be sent
+                        offset: (params.page ) * 10, //Which page of the REST page will be loaded
+                        id__not: $("#id_complainant").val()
+                    }
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.results,
+                        pagination: {
+                            more: true //enables the pagination feature
+                        }
+                    }
+               },
+            }
+          });
 
-                    // Now update the query to be run, and remove this person from the current
-                    // list of additional members
-                    // This code is courtesy of:
-                    // http://stackoverflow.com/questions/7375491/jquery-select-remove-option
-                    $("#id_additionalMembers option").filter("[value='" + currComplainantID + "']").remove();
-                });
+            //If a school is selected as "other" Show the department dropdown, and hide program dropdown
+            $("#id_school").change(function(){
+                if($("#id_school").val() === "Other")
+                {
+                    $("#id_department").show();
+                    $("label[for='id_department']").show();
+
+                    $("#id_program").hide();
+                    $("label[for='id_program']").hide();
+                }
+                else
+                {
+                    $("#id_department").hide();
+                    $("label[for='id_department']").hide();
+
+                    $("#id_program").show();
+                    $("label[for='id_program']").show();
+                }
             });
 
+            // Set up functionality to ensure that the complainant cannot be selected
+            // as an additional member
+            $("#id_additionalMembers").change(function()
+            {
+                // Double check to make sure current users aren't the complainant
+                var currComplainant = $("#id_complainant").val();
+                // Using a convoluted foreach loop to do this
+                var newValues = [];
+                if ($(this).val() !== null)
+                {
+                   $(this).val().forEach(function(value, index)
+                    {
+                        // Push valid values onto a new array
+                        if (value !== currComplainant)
+                        {
+                            // Push the user onto an array if they aren't the complainant
+                            newValues.push(value);
+                        }
+                        else
+                        {
+                            // If user is the current complainant, then remove them
+                            // from the list of additional members
+                            $("#id_additionalMembers option").filter("[value='" + currComplainantID + "']").remove();
+                        }
+                    });
+                }
 
-     </script>
-</head>
-<body>
+                // Now update the values listed
+                $(this).val(newValues);
+            });
+
+            // Setting up a variable to be used in the below onchange listener
+            var currComplainantID = -1;
+
+            $("#id_complainant").change(function()
+            {
+                // Make sure that this member doesn't show up in the list of additional members
+                currComplainantID = $(this).val();
+
+                // Now update the query to be run, and remove this person from the current
+                // list of additional members
+                // This code is courtesy of:
+                // http://stackoverflow.com/questions/7375491/jquery-select-remove-option
+                $("#id_additionalMembers option").filter("[value='" + currComplainantID + "']").remove();
+            });
+        });
+ </script>
+{% endblock %}
+
+{% block content %}
     <div class="container">
         <h1><strong>Create a Case</strong></h1>
         <form class="form form-group" action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {% bootstrap_form_errors form type='fields' %}
-            {% bootstrap_form form%}
+            {% bootstrap_form form %}
 
             {% buttons %}
                 <button id="cancel_upload">Cancel</button>
@@ -157,7 +146,4 @@
             {% endbuttons %}
         </form>
     </div>
-</body>
-{% include 'footer.html' %}
-     <script src="{% static 'add_case/case_validation.js' %}" type="text/javascript"></script>
-</html>
+{% endblock %}
