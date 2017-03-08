@@ -3,6 +3,7 @@ from grievance_award_creation.models import GrievanceAward
 from add_member.models import Person
 from add_case.models import Case, CasePrograms
 from spfa_mt import kvp
+from django.urls import reverse
 
 class CaseLinksToGrievanceAwards(TestCase):
     """
@@ -80,11 +81,11 @@ class CaseLinksToGrievanceAwards(TestCase):
         self.tempCase.caseType = 7
         self.tempCase.status = "OPEN"
         self.tempCase.additionalNonMembers = ""
+
         self.tempCase.docs = None
         self.tempCase.logs = None
         self.tempCase.date = "2016-10-20"
         self.tempCase.full_clean()
-        self.tempCase.save()
         self.tempCase.save()
 
         self.tempCase2.lead = 123456789
@@ -134,10 +135,20 @@ class CaseLinksToGrievanceAwards(TestCase):
         member
         :return: None
         """
-        self.ga.case.additionalMembers.add(self.person2)
-        self.ga.case.save()
+        response = self.client.get(reverse('add_case:case_edit', kwargs={'pk': self.tempCase.pk}))
+        oldresponsevalues = response.context['form'].initial
+        print(oldresponsevalues)
+        print()
+        print()
+        print()
+        oldresponsevalues['additionalMembers'] = Person.objects.filter(pk=self.person2.pk)
+        # print(oldresponsevalues)
+        response = self.client.post(reverse('add_case:case_edit', kwargs={'pk': self.tempCase.pk}), oldresponsevalues)
 
-        self.assertTrue(isinstance(self.ga.recipient, Person))  # checks to see if recipient is a single person object
+        print(self.tempCase.additionalMembers)
+
+
+        #TODO: [place test here]  # checks to see if recipient is a single person object
 
 
     def test_grievance_award_can_be_associated_with_multiple_member_if_grievance_award_type_is_of_policy(self):

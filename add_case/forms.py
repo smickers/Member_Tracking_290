@@ -45,11 +45,14 @@ class CaseForm(ModelForm):
         return obj
 
     def clean(self):
-        super(CaseForm, self).clean()
 
-        if self.cleaned_data['caseType'] == 7 and self.cleaned_data['additionalMembers'].all().count():
-            raise ValidationError("You can only select 1 member if a grievance type is INDIVIDUAL")
+        print(self.__dict__)
+        # if self.cleaned_data['caseType'] == 7 and self.cleaned_data['additionalMembers'].count():
+        #     raise ValidationError("You can only select 1 member if a grievance type is INDIVIDUAL")
+        # super(CaseForm, self).clean()
         return self.cleaned_data
+
+
 
     def clean_file_field(self):
         """
