@@ -58,7 +58,6 @@ class GrievanceAward(models.Model):
         #     q_set .append(self.case.complainant)
         #     return q_set
         return self.case.members
-
     @property
     def grievanceType(self):
         if self.case.caseType == kvp.TYPE_CHOICES[0][0]:  # if caseType is individual

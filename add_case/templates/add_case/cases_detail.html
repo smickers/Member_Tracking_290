@@ -6,32 +6,45 @@
 
 {% block content %}
     <div class="container">
-        <div class="case_info">
-            <h3>Case Information</h3>
-            <p>Lead: {{ object.lead }}</p>
-            <p>Case Type: {{ object.get_caseType_display }}</p>
-            <p>Status: {{ object.status }}</p>
-            <p>Complainant: <em>{{ object.complainant }}</em></p>
+        <div class="case_info panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Case Information</h3>
+            </div>
+            <div class="panel-body">
+                <p>Lead: {{ object.lead }}</p>
+                <p>Case Type: {{ object.get_caseType_display }}</p>
+                <p>Status: {{ object.status }}</p>
+                <p>Complainant: <em>{{ object.complainant }}</em></p>
 
 
-            {% if object.get_caseType_display != "GRIEVANCES - INDIVIDUAL" %}
-                <h3>Members: </h3>
-                {%  for members in object.additionalMembers.all %}
-                    <p>
-                        <strong>{{ members.memberID }}</strong>: {{ members.firstName }} {{ members.lastName }}
-                    </p>
-                {% empty %}
-                    <p>
-                        No members associated
-                    </p>
-                {% endfor %}
-            {% endif %}
+                {% if object.get_caseType_display != "GRIEVANCES - INDIVIDUAL" %}
+                    <h3>Members: </h3>
+                    {%  for members in object.additionalMembers.all %}
+                        <p>
+                            <strong>{{ members.memberID }}</strong>: {{ members.firstName }} {{ members.lastName }}
+                        </p>
+                    {% empty %}
+                        <p>
+                            No members associated
+                        </p>
+                    {% endfor %}
+                {% endif %}
+            </div>
         </div>
 
 
         {% if object.grievanceaward %}
-            <h3>Grievance Award</h3>
-            {% include 'grievance_award_creation/grievanceaward_actual_detail.html'  %}
+
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Grievance Award</h3>
+              </div>
+              <div class="panel-body">
+                  {% include 'grievance_award_creation/grievanceaward_actual_detail.html'  %}
+              </div>
+            </div>
+
+
         {% endif %}
 
 
