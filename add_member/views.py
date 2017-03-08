@@ -5,6 +5,7 @@ from .forms import PersonForm
 from drf_haystack.viewsets import HaystackViewSet
 from .serializer import MemberSearchSerializer
 from drf_haystack.filters import HaystackAutocompleteFilter
+from rest_framework import generics
 
 
 # view responsible for the member creation
@@ -36,3 +37,6 @@ class MemberSearchView(HaystackViewSet):
     index_models = [Person]
     serializer_class = MemberSearchSerializer
     filter_backends = [HaystackAutocompleteFilter]
+
+class MemberFilterView(generics.ListAPIView):
+    pass
