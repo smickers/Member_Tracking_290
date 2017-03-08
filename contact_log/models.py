@@ -7,7 +7,6 @@ from datetime import date
 from django.db import models
 from spfa_mt import kvp, settings
 from django.core.exceptions import ValidationError
-from itertools import chain
 
 # Contact Log Class
 # Purpose: This class will hold a contact log, and

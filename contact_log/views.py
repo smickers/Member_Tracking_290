@@ -18,6 +18,7 @@ class ContactLogEdit(UpdateView):
     model = contactLog
     form_class = ContactLogForm
 
+
 class ContactLogDetails(DetailView):
     model = contactLog
     form_class = ContactLogDetailsForm

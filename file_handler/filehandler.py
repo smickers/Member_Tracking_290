@@ -37,20 +37,6 @@ class UploadValidator(TemporaryFileUploadHandler):
         return super(UploadValidator, self).file_complete(file_size)
 
     """
-    Method: receive_data_chunk
-    Purpose: Receives a chunk of data from the file upload.
-    """
-    def receive_data_chunk(self, raw_data, start):
-
-        super(UploadValidator, self).receive_data_chunk(raw_data, start)
-        if self.total_size > MAX_FILE_SIZE:
-            """
-                Raises exception if the file size is invalid
-            """
-            # This is where the upload size exception *used* to be thrown
-            # raise ValidationError('Upload size limit exceeded exception')
-
-    """
     Method: handle_raw_input
     Purpose: Allows the handler to completely override the parsing of the raw HTTP input.
     """
@@ -58,8 +44,6 @@ class UploadValidator(TemporaryFileUploadHandler):
 
         super(UploadValidator, self).handle_raw_input(input_data, META, content_length, boundary, encoding=None)
         self.total_size = content_length
-
-
 
     """
     Method: new_file

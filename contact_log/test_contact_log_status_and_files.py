@@ -173,7 +173,7 @@ class ContactLogEditTests(TestCase):
 
     # Test 6: Ensure that a file that over 500MB cannot be uploaded.
     def test_ensure_a_file_larger_than_500mb_file_cannot_be_uploaded(self):
-        with self.assertRaisesRegexp(ValidationError, "File is too large."):
+        with self.assertRaisesRegexp(ValidationError, "Upload size limit exceeded exception"):
             # Use the oversized file we created in setUp:
             file_name = self.oversizeFile
             # open our over-sized, exception-throwing file
