@@ -134,6 +134,9 @@ class CaseLinksToGrievanceAwards(TestCase):
         member
         :return: None
         """
+        self.ga.case.additionalMembers.add(self.person2)
+        self.ga.case.save()
+
         self.assertTrue(isinstance(self.ga.recipient, Person))  # checks to see if recipient is a single person object
 
 

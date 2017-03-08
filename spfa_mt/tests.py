@@ -10,7 +10,7 @@ from contact_log.models import contactLog
 from create_event.models import Event
 from grievance_award_creation.models import GrievanceAward
 from meeting.models import Meeting
-from spfa_mt.urls import urlpatterns
+
 
 
 # Test for navigation bar element in entire SPFA-MT application
@@ -47,7 +47,6 @@ class TestAllSPFAMTElements(SimpleTestCase):
 
 
         temp_case = Case()
-        temp_case.pk = 1
         temp_case.lead = 123456789
         temp_case.complainant = person1
         temp_case.school = "School of Business"
@@ -57,6 +56,17 @@ class TestAllSPFAMTElements(SimpleTestCase):
         temp_case.logs = None
         temp_case.date = "2016-10-20"
         temp_case.save()
+
+        temp_case2 = Case()
+        temp_case2.lead = 123456789
+        temp_case2.complainant = person1
+        temp_case2.school = "School of Business"
+        temp_case2.caseType = 3
+        temp_case2.status = "OPEN"
+        temp_case2.docs = None
+        temp_case2.logs = None
+        temp_case2.date = "2016-10-20"
+        temp_case2.save()
 
 
         testCom = Committee()
@@ -81,12 +91,14 @@ class TestAllSPFAMTElements(SimpleTestCase):
         pdAward1.endDate = "2017-02-01"
         pdAward1.full_clean()
         pdAward1.save()
+
         tempCLog = contactLog()
         tempCLog.member = person1
         tempCLog.description = 'Hello World'
         tempCLog.date = '2016-01-01'
         tempCLog.clean()
         tempCLog.save()
+
         testEvent = Event()
         testEvent.name = "Fun Event"
         testEvent.description = ""
@@ -94,15 +106,15 @@ class TestAllSPFAMTElements(SimpleTestCase):
         testEvent.location = "Saskatoon"
         testEvent.full_clean()
         testEvent.save()
+
         ga = GrievanceAward()
-        ga.grievanceType = "M"
-        ga.recipient = person1
-        ga.case = temp_case
+        ga.case = temp_case2
         ga.awardAmount = 500.00
         ga.description = ""
         ga.date = '2016-12-01'
         ga.full_clean()
         ga.save()
+
         testMeeting = Meeting()
         testMeeting.committee = testCom
         testMeeting.liaison = 1234
@@ -137,28 +149,3 @@ class TestAllSPFAMTElements(SimpleTestCase):
         soup.prettify()
         self.assertTrue(soup.find("img"))
 
-    def test_navigation_exists_in_add_and_list_pages(self):
-        client = Client()
-        # I hard-coded this and I HATE THAT, I tried to find an easier/cleaner/DRY-er option and couldn't
-        # Ideally you could include the urlpatterns from spfa_mt, and then for each url listed, go through each of
-        # THOSE, and THEN do the check.
-        test_patterns = ["add_member:member_add", "add_member:member_list", "add_case:case_add", "add_case:case_list",
-                         "add_com:committee_add", "add_com:committee_list", "award:edu_create","award:edu_list",
-                         "award:award_pd_create", "award:award_pd_list", "contact_log_creation:contact_log_add",
-                         "contact_log_creation:contact_log_list_default", "create_event:add_event",
-                         "create_event:list_event", "grievance_award_creation:create_grievance_award",
-                         "grievance_award_creation:grievance_award_list", "meeting:create_meeting",
-                         "meeting:meeting_list", "add_member:member_detail", "add_case:case_detail",
-                         "add_com:committee_detail", "award:edu_detail", "award:award_pd_detail",
-                         "create_event:event_detail", "grievance_award_creation:create_grievance_award_success",
-                         "meeting:meeting_detail"]
-        for app in test_patterns:
-            if app.__contains__("detail") or app.__contains__("success"):
-                src = client.get(reverse(app, args='1'))
-            else:
-                src = client.get(reverse(app))
-            soup = BeautifulSoup(src.content, "html.parser")
-            soup.prettify()
-            self.assertTrue(soup.find("nav"))
-            self.assertTrue(soup.find("div", attrs={"class": "footer"}))
-            self.assertTrue(soup.find("img", attrs={"class": "img-responsive"}))

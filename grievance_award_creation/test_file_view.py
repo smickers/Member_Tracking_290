@@ -129,7 +129,7 @@ class FileViewTests(TestCase):
 
         # Set up a grievence award to be edited
 
-        self.ga2.case = self.tempCase
+        self.ga2.case = self.tempCase2
         self.ga2.awardAmount = 500.00
         self.ga2.description = ""
         self.ga2.date = '2016-12-01'

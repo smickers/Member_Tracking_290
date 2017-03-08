@@ -93,9 +93,7 @@ class GrievanceFile_UploadTest(StaticLiveServerTestCase):
         self.temp_case.save()
 
         self.griev_aw = GrievanceAward(awardAmount=500,
-                                  grievanceType='M',
-                                  case=self.temp_case,
-                                  recipient=self.person1)
+                                  case=self.temp_case)
         self.griev_aw.save()
 
         f = open(self.path_largefile, "wb")
