@@ -75,3 +75,7 @@ class Person(models.Model):
             self.pCode = self.pCode.upper()
             if len(self.pCode) == 6:
                 self.pCode = self.pCode[:3] + ' ' + self.pCode[3:]
+
+
+class MemberFiles(models.Model):
+    """"""
