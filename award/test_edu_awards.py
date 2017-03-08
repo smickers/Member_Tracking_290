@@ -31,23 +31,25 @@ class EducationAwardTest(TestCase):
         ea.save()
         self.assertTrue(True)
 
-    # Test that a decimal value is not allowed:
-    def test_invalid_low_value_award(self):
-        with self.assertRaises(ValidationError):
-            ea = EducationAward()
-            ea.description = "SPFA Education Award - Fall 2016"
-            ea.awardAmount = 0.01
-            ea.full_clean()
-            ea.save()
+    ##NO LONGER VALID SEE test_new_monetary_value
+    # # Test that a decimal value is not allowed:
+    # def test_invalid_low_value_award(self):
+    #     with self.assertRaises(ValidationError):
+    #         ea = EducationAward()
+    #         ea.description = "SPFA Education Award - Fall 2016"
+    #         ea.awardAmount = 0.01
+    #         ea.full_clean()
+    #         ea.save()
 
-    # Test that an award amount is required:
-    def test_award_value_not_blank(self):
-        with self.assertRaises(ValidationError):
-            ea = EducationAward()
-            ea.description = "SPFA Education Award - Winter 2017"
-            ea.awardAmount = None
-            ea.full_clean()
-            ea.save()
+    ##NO LONGER VALID SEE test_new_monetary_value
+    # # Test that an award amount is required:
+    # def test_award_value_not_blank(self):
+    #     with self.assertRaises(ValidationError):
+    #         ea = EducationAward()
+    #         ea.description = "SPFA Education Award - Winter 2017"
+    #         ea.awardAmount = None
+    #         ea.full_clean()
+    #         ea.save()
 
     # Test that an award amount cannot be zero:
     def test_award_value_not_zero(self):
@@ -57,15 +59,15 @@ class EducationAwardTest(TestCase):
             ea.awardAmount = 0
             ea.full_clean()
             ea.save()
-
-    # Test that an award value cannot exceed 5 digits in length:
-    def test_award_value_5_digits(self):
-        with self.assertRaises(ValidationError):
-            ea = EducationAward()
-            ea.description = "SPFA Education Award - Fall 2017"
-            ea.awardAmount = 100000
-            ea.full_clean()
-            ea.save()
+    ##NO LONGER VALID SEE test_new_monetary_value
+    # # Test that an award value cannot exceed 5 digits in length:
+    # def test_award_value_5_digits(self):
+    #     with self.assertRaises(ValidationError):
+    #         ea = EducationAward()
+    #         ea.description = "SPFA Education Award - Fall 2017"
+    #         ea.awardAmount = 100000
+    #         ea.full_clean()
+    #         ea.save()
 
     # Test that award description cannot be left blank:
     def test_edu_award_desc_not_blank(self):

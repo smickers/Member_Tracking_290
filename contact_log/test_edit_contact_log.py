@@ -92,6 +92,7 @@ class ContactLogEditTests(TestCase):
         self.cLog.member = self.person1
         self.cLog.date = '2017-02-12'
         self.cLog.description = 'Hello world!'
+        self.cLog.contactCode = 'E'
         self.cLog.full_clean()
         self.cLog.save()
 

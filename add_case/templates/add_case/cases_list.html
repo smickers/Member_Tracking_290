@@ -14,7 +14,9 @@
             <th colspan="2" style="text-align:center;">Action</th>
         </thead>
         <tbody>
+        <tr><a href="{%  url 'add_case:case_add' %}">Add New Case</a></tr>
         <!-- show this if there are cases existing in the DB -->
+         <tr><a href="{%  url 'add_case:case_add' %}">Add New Case</a></tr>
         {% for case in object_list %}
         </tbody>
             <tr>
@@ -27,7 +29,7 @@
         <!-- only appears if no committees exist in the DB -->
         {% empty %}
             <tr>(No cases yet.)</tr>
-            <tr><a href="{%  url 'add_case:case_add' %}">Add New Case</a></tr>
+
         {% endfor %}
     </table>
 </body>

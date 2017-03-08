@@ -8,7 +8,7 @@
     <h2>Professional Development Funding Details</h2>
         <h3>Award Name: {{ object.awardName }}</h3>
         <p>Member Awarded: {{ object.memberAwarded }}</p>
-        <p>Professional Development Cost: {{ object.awardCost }}</p>
+        <p>Professional Development Cost: {{ object.awardCost|floatformat:2 }}</p>
         <p>Start Date: {{ object.startDate }}</p>
         <p>End Date: {{ object.endDate }}</p>
         {%  buttons %}

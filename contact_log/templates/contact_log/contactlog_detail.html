@@ -1,0 +1,56 @@
+{% include 'nav.html' %}
+{% load bootstrap3 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Log Details</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Contact Log #{{ object.id }}: {{ object.member }}</h2>
+
+        <table class="table table-striped">
+            <tr>
+                <th>Contact Log ID</th>
+                <td>{{ object.id }}</td>
+            </tr>
+            <tr>
+                <th>Contact Log Description</th>
+                <td>{{ object.description }}</td>
+            </tr>
+            <tr>
+                <th>Primary Complainant</th>
+                <td>{{ object.member }}</td>
+            </tr>
+            <tr>
+                <th>Contact Code</th>
+                <td>{{ object.get_contactCode_display }}</td>
+            </tr>
+        {% if object.containsfile %}
+            <tr>
+                <th>File Name</th>
+                <td>{{ object.getfilename }}</td>
+            </tr>
+        {% endif %}
+        </table>
+
+        {% buttons %}
+        <input type="button" class="btn btn-primary" value="Back" onclick="window.history.back()" />
+        {% endbuttons %}
+        <hr>
+        <center>
+            <a href="{% url 'contact_log_creation:contact_log_edit' object.id %}">Edit this Contact Log</a> |
+            <a href="{% url 'contact_log_creation:contact_log_add' %}">Create New Contact Log</a> |
+            <a href="{% url 'contact_log_creation:contact_log_list_default' %}">View List of Contact Logs</a>
+        </center>
+    </div>
+</body>
+{% include 'footer.html' %}
+</html>

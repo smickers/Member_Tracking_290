@@ -90,11 +90,11 @@ class GrievanceFiles(models.Model):
     def clean(self):
 
         super(GrievanceFiles, self).clean()
-        if(self.file.size > MAX_FILE_SIZE):
+        if self.file.size > MAX_FILE_SIZE:
             """Check if the uploaded file has a valid file size"""
             raise ValidationError("File is too large")
 
-        if(self.file.name.split(".")[-1] not in FILE_EXT_TO_ACCEPT):
+        if self.file.name.split(".")[-1] not in FILE_EXT_TO_ACCEPT:
             """ Check if the uploaded file has a valid file extension """
             raise ValidationError("Invalid File Extension")
 

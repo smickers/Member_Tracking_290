@@ -7,6 +7,7 @@ from spfa_mt import settings
 from django.core.exceptions import ValidationError
 from django.core.files import File
 from django import forms
+from spfa_mt import kvp
 
 
 
@@ -17,9 +18,6 @@ class GrievanceAwardForm(ModelForm):
         super(ModelForm, self).__init__(*args, **kwargs)
         self.fields['file_field'] = FileField(required=False,widget=ClearableFileInput(attrs={'multiple': False, 'accept': FILE_EXT_TO_ACCEPT_STR} ))
         self.fields['file_description'] = CharField(required=False, label='File Description', widget= forms.TextInput(attrs={'type':'', 'size':'100%'}))
-
-
-
 
     def save(self, commit=False):
         """
@@ -33,7 +31,7 @@ class GrievanceAwardForm(ModelForm):
         except ValidationError:
             return ValidationError
 
-        #Files do not have to be uploaded, but if they are, save the file
+        # Files do not have to be uploaded, but if they are, save the file
         if self.files != {}:
             f = self.files.getlist('file_field')[0]
             temp = File(file=f)
@@ -78,22 +76,6 @@ class GrievanceAwardForm(ModelForm):
         YEARS = range(date.today().year - 5, date.today().year + 6)
         YEARS.sort()
 
-        # Define months so they're entered as three letters
-        MONTHS = {
-            1: 'Jan',
-            2: 'Feb',
-            3: 'Mar',
-            4: 'Apr',
-            5: 'May',
-            6: 'Jun',
-            7: 'Jul',
-            8: 'Aug',
-            9: 'Sep',
-            10: 'Oct',
-            11: 'Nov',
-            12: 'Dec'
-        }
-
         # Show all fields and set up labels
         fields = '__all__'
         labels = {
@@ -106,7 +88,7 @@ class GrievanceAwardForm(ModelForm):
 
         # Use some special widgets for certain fields
         widgets = {
-            'date': SelectDateWidget(months=MONTHS, years=YEARS),
+            'date': SelectDateWidget(months=kvp.MONTHS, years=YEARS),
             'description' : Textarea(),
             'recipient' : forms.Select(
                 attrs={'class': 'js-recipient', 'required':''}),
