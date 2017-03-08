@@ -61,7 +61,6 @@ class TestNav(SimpleTestCase):
         self.tempCase.save()
 
         ga = GrievanceAward()
-        ga.grievanceType = "M"
         ga.recipient = self.tempPerson
         ga.case = self.tempCase
         ga.awardAmount = 500.00

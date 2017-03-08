@@ -105,8 +105,6 @@ class AwardEditTest(TestCase):
         self.tempCase2.save()
 
         #Set up a grievence award to be edited
-        self.ga.grievanceType = "M"
-        self.ga.recipient = self.tempPerson
         self.ga.case = self.tempCase
         self.ga.awardAmount = 500.00
         self.ga.description = ""
@@ -114,25 +112,7 @@ class AwardEditTest(TestCase):
         self.ga.full_clean()
         self.ga.save()
 
-    # Test 1 - Validate that a recipient can be edited to a different valid recipient
-    # Input: Recipient is a valid Person
-    # Expected result: Record is saved successfully
-    def test_that_recipient_is_changed_to_different_member(self):
-        self.ga.recipient = self.tempPerson2
-        self.ga.clean()
-        self.ga.save()
 
-        assert self.ga.recipient == self.tempPerson2
-
-
-    # Test 2 - Validate that a recipient cannnot be edited to a different invalid recipient
-    # Input: Recipient is an invalid Person
-    # Expected result: Validation Error Thrown
-    def test_that_recipient_is_changed_to_an_invalid_recipient(self):
-        with self.assertRaises(ValueError):
-            self.ga.recipient = 78945648794
-            self.ga.full_clean()
-            self.ga.save()
 
             # check validation error message
 
@@ -209,23 +189,4 @@ class AwardEditTest(TestCase):
 
         assert self.ga.date == '2016-01-01'
 
-    # Test 9 - Validate that Grievence Type can be changed to valid choice
-    # Input: Grievence type is changed to 'P'
-    # Expected result: Record is saved successfully
-    def test_that_grievance_type_can_be_changed_to_valid_choice(self):
-        self.ga.grievanceType = 'P'
-        self.ga.full_clean()
-        self.ga.save()
 
-        assert self.ga.grievanceType == 'P'
-
-    # Test 10 - Validate that Grievence Type cannot be changed to invalid choice
-    # Input: Grievence type is changed to 'L'
-    # Expected result: Validation Error Thrown
-    def test_that_grievance_type_cannot_be_changed_to_invalid_choice(self):
-        with self.assertRaisesMessage(ValidationError, "A grievance type of member or policy must be selected!"):
-            self.ga.grievanceType = 'L'
-            self.ga.full_clean()
-            self.ga.save()
-
-            # check validation error message

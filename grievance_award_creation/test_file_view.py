@@ -120,8 +120,6 @@ class FileViewTests(TestCase):
         self.tempCase2.save()
 
         # Set up a grievence award to be edited
-        self.ga.grievanceType = "M"
-        self.ga.recipient = self.tempPerson
         self.ga.case = self.tempCase
         self.ga.awardAmount = 500.00
         self.ga.description = ""
@@ -130,8 +128,7 @@ class FileViewTests(TestCase):
         self.ga.save()
 
         # Set up a grievence award to be edited
-        self.ga2.grievanceType = "M"
-        self.ga2.recipient = self.tempPerson
+
         self.ga2.case = self.tempCase
         self.ga2.awardAmount = 500.00
         self.ga2.description = ""

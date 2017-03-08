@@ -2,7 +2,6 @@ from django.core.urlresolvers import reverse
 from django.test import SimpleTestCase
 from models import Committee
 
-
 # class for testing the HTML navbar navigation within this app, and between this app and others.
 class TestNav(SimpleTestCase):
     # lets us use SimpleTestCase to do database queries

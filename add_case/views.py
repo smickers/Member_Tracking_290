@@ -6,6 +6,7 @@ from drf_haystack.viewsets import HaystackViewSet
 from serializer import CaseSearchSerializer
 from drf_haystack.filters import HaystackAutocompleteFilter
 from grievance_award_creation.models import GrievanceAward
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class CaseCreate(CreateView):
@@ -48,7 +49,11 @@ class CaseDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(CaseDetail, self).get_context_data(**kwargs)
-        context['grievance_award'] = GrievanceAward.objects.get(pk=self.kwargs['pk'])
+        try:
+            context['grievance_award'] = GrievanceAward.objects.get(pk=self.kwargs['pk'])
+        except ObjectDoesNotExist:
+            pass
+
         return context
 
 #view for listing all the members found in the db

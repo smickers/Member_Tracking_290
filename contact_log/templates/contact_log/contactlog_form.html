@@ -1,14 +1,8 @@
-{% include 'nav.html' %}
+{% extends 'base.html' %}
 {%  load bootstrap3 %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Contact Log Creation</title>
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+{% block metadata %}
+    <title>Contact Log Creation</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     <style>
@@ -20,6 +14,9 @@
             margin: 0;
         }
     </style>
+{% endblock %}
+
+{% block scripts %}
     <script>
         $(document).ready(function()
         {
@@ -58,8 +55,10 @@
               });
         });
     </script>
-</head>
-<body>
+{% endblock %}
+
+
+{% block content %}
     <div class="container">
         <h1 class="main-heading">Contact Log</h1>
         {% if form.instance.id %}
@@ -86,6 +85,4 @@
             <button class="btn btn-warning" type="reset">Reset</button>
         </form>
     </div>
-</body>
-{% include 'footer.html' %}
-</html>
+{% endblock %}
