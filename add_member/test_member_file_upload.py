@@ -222,7 +222,7 @@ class MemberFileUploadTest(StaticLiveServerTestCase):
         member_file.fileName = File(fp)
         # Save the file
         member_file.clean()
-        member_file.save()
+        member_file.save()  
         # Close the file stream
         fp.close()
         # Assert that the file exists, meaning our test passes
