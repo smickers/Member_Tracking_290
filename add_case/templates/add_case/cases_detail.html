@@ -18,16 +18,14 @@
 
 
                 {% if object.get_caseType_display != "GRIEVANCES - INDIVIDUAL" %}
-                    <h3>Members: </h3>
-                    {%  for members in object.additionalMembers.all %}
-                        <p>
-                            <strong>{{ members.memberID }}</strong>: {{ members.firstName }} {{ members.lastName }}
-                        </p>
-                    {% empty %}
-                        <p>
-                            No members associated
-                        </p>
-                    {% endfor %}
+                    <div class="panel panel-info">
+                        <div class="panel panel-heading">
+                              <p>Members </p>
+                        </div>
+
+                    {% include 'add_case/case_members.html' %}
+
+                    </div>
                 {% endif %}
             </div>
         </div>

@@ -83,7 +83,7 @@
     <body>
         <div class="container">
             <h1>Case Information</h1>
-            <table>
+            <table class="table">
                 <tr>
                     <td>Lead:</td>
                     <td>{{ case.lead }}</td>
@@ -100,17 +100,27 @@
                     <td>Status:</td>
                     <td>{{ case.status }}</td>
                 </tr>
+
+                <tr><td>Members</td></tr>
+                <tr>
+                    <td>
+                    {% include 'add_case/case_members.html' %}
+                    </td>
+                </tr>
             </table>
+
+            <h3>Grievance Info</h3>
+            <form action="" method="POST" enctype="multipart/form-data" class="form">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% buttons %}
+                    <button id="cancel_upload">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Ruling</button>
+                    <button type="reset" class="btn btn-warning">Reset</button>
+                {% endbuttons %}
+            </form>
         </div>
-        <form action="" method="POST" enctype="multipart/form-data" class="form">
-            {% csrf_token %}
-            {% bootstrap_form form %}
-            {% buttons %}
-                <button id="cancel_upload">Cancel</button>
-                <button type="submit" class="btn btn-primary">Create Ruling</button>
-                <button type="reset" class="btn btn-warning">Reset</button>
-            {% endbuttons %}
-        </form>
+
     </body>
 {% endblock %}
 

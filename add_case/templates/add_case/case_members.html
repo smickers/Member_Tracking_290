@@ -1,0 +1,19 @@
+<div class="panel panel-body">
+   <table class="table">
+    <thead>
+        <th>ID</th>
+        <th>Name</th>
+    </thead>
+    {%  for members in case.additionalMembers.all %}
+    <tr>
+        <td>{{ members.memberID }}</td>
+        <td> <a href="{% url 'add_member:member_detail' members.pk %}">{{ members.firstName }}
+            {{ members.lastName }}</a></td>
+    </tr>
+    {% empty %}
+    <p>
+        No members associated
+    </p>
+    {% endfor %}
+    </table>
+</div>

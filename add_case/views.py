@@ -46,6 +46,7 @@ class UpdateCaseView(UpdateView):
 class CaseDetail(DetailView):
     model = Case
     template_name = 'add_case/cases_detail.html'
+    context_object_name = 'case'
 
     def get_context_data(self, **kwargs):
         context = super(CaseDetail, self).get_context_data(**kwargs)
