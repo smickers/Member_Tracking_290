@@ -2,164 +2,169 @@ from django.test import TestCase, Client
 from rest_framework.test import APIRequestFactory
 from django.core.exceptions import ValidationError
 from .models import Person
-
+from views import MemberFilterView
+from rest_framework.test import RequestsClient
 
 class FilterMembers(TestCase):
 
     def setUp(self):
-        pass
+        client = RequestsClient()
 
     def test_filter_first_name(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?firstName=Jill')
-        self.assertEqual(len(request.data), 1)
+        request = factory.get('/member-filter?format=json&firstName=Jill', format='json')
+        view = MemberFilterView.as_view()
+        response = self.client.get('/member-filter?format=json&firstName=Jill', format='json')
+        # response.results('/member-filter?format=json&firstName=Jill', format='json')
+        print(response)
+        self.assertEqual(len(response), 1)
 
     def test_filter_last_name(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?lastName=Smith')
+        request = factory.get('/member-filter?lastName=Smith')
         self.assertEqual(len(request.data), 2)
 
     def test_filter_middle_name(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?middleName=Ana')
+        request = factory.get('/member-filter?middleName=Ana')
         self.assertEqual(len(request.data), 1)
 
     def test_filter_saskpolytech_id(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?memberID=111111111')
+        request = factory.get('/member-filter?memberID=111111111')
         self.assertEqual(len(request.data), 1)
 
     def test_filter_SIN(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?socNum=111111112')
+        request = factory.get('/member-filter?socNum=111111112')
         self.assertEqual(len(request.data), 1)
 
     def test_filter_city(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?city=Saskatoon')
+        request = factory.get('/member-filter?city=Saskatoon')
         self.assertEqual(len(request.data), 2)
 
     def test_filter_mail_address(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?mailAddress=123 street')
+        request = factory.get('/member-filter?mailAddress=123 street')
         self.assertEqual(len(request.data), 1)
 
     def test_filter_mail_address_2(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?mailAddress=123 street')
+        request = factory.get('/member-filter?mailAddress=123 street')
         self.assertEqual(len(request.data), 1)
 
     def test_filter_pcode(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?pCode=S7L 1Y7')
+        request = factory.get('/member-filter?pCode=S7L 1Y7')
         self.assertEqual(len(request.data), 2)
 
     def test_filter_from_birthdate_and_on(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?bDateFrom=1985-09-10')
+        request = factory.get('/member-filter?bDateFrom=1985-09-10')
         self.assertEqual(len(request.data), 1)
 
     def test_filter_between_birth_dates(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?bDateFrom=1990-01-01&bDateTo=1985-12-31')
+        request = factory.get('/member-filter?bDateFrom=1990-01-01&bDateTo=1985-12-31')
         self.assertEqual(len(request.data), 1)
 
     def test_filter_gender(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?gender=MALE')
+        request = factory.get('/member-filter?gender=MALE')
         self.assertEqual(len(request.data), 2)
 
     def test_filter_hphone(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?hPhone=(306)111-1112')
+        request = factory.get('/member-filter?hPhone=(306)111-1112')
         self.assertEqual(len(request.data), 1)
 
     def test_filter_cphone(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?cPhone=(306)555-5555')
+        request = factory.get('/member-filter?cPhone=(306)555-5555')
         self.assertEqual(len(request.data), 1)
 
     def test_filter_hemail(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?hEmail=abc.com')
+        request = factory.get('/member-filter?hEmail=abc.com')
         self.assertEqual(len(request.data), 1)
 
     def test_filter_campus(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?campus=Saskatoon')
+        request = factory.get('/member-filter?campus=Saskatoon')
         self.assertEqual(len(request.data), 2)
 
     def test_filter_job_type(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?jobType=Part-time ongoing')
+        request = factory.get('/member-filter?jobType=Part-time ongoing')
         self.assertEqual(len(request.data), 1)
 
     def test_filter_committee(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?committee=Spring Dance')
+        request = factory.get('/member-filter?committee=Spring Dance')
         self.assertEqual(len(request.data), 1)
 
     def test_filter_program_choice(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?programChoice=Sample')
+        request = factory.get('/member-filter?programChoice=Sample')
         self.assertEqual(len(request.data), 3)
 
     def test_filter_membership_status(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?membershipStatus=RESOURCE')
+        request = factory.get('/member-filter?membershipStatus=RESOURCE')
         self.assertEqual(len(request.data), 2)
 
     def test_filter_from_hire_date_and_on(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?hireDateFrom=2012-03-01')
+        request = factory.get('/member-filter?hireDateFrom=2012-03-01')
         self.assertEqual(len(request.data), 2)
 
     def test_filter_between_hire_dates(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?hireDateFrom=2010-01-01&hireDateTo=2012-12-31')
+        request = factory.get('/member-filter?hireDateFrom=2010-01-01&hireDateTo=2012-12-31')
         self.assertEqual(len(request.data), 2)
 
     def test_filter_firstname_AND_city(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?firstName=Bob&city=Saskatoon')
+        request = factory.get('/member-filter?firstName=Bob&city=Saskatoon')
         self.assertEqual(len(request.data), 1)
 
     def test_filter_lastname_city(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?lastName=Smith&city=Saskatoon')
+        request = factory.get('/member-filter?lastName=Smith&city=Saskatoon')
         self.assertEqual(len(request.data), 2)
 
     def test_filter_jobtype_AND_campus(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?city=Regina&jobType=Full-time ongoing')
+        request = factory.get('/member-filter?city=Regina&jobType=Full-time ongoing')
         self.assertEqual(len(request.data), 1)
 
     def test_filter_hiredate_AND_campus(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?hireDateFrom=2012-01-01&hireDateTo=2012-12-31&campus=Saskatoon')
+        request = factory.get('/member-filter?hireDateFrom=2012-01-01&hireDateTo=2012-12-31&campus=Saskatoon')
         self.assertEqual(len(request.data), 1)
 
     def test_filter_firstname_OR_lastname(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?firstName=John&lastName=Smith')
+        request = factory.get('/member-filter?firstName=John&lastName=Smith')
         self.assertEqual(len(request.data), 3)
 
     def test_filter_city_OR_jobtype(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?city=Regina&jobType=Full-time ongoing')
+        request = factory.get('/member-filter?city=Regina&jobType=Full-time ongoing')
         self.assertEqual(len(request.data), 3)
 
     def test_filter_on_conditions_and_which_no_members_returned(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?city=Moose Jaw&jobType=Part-time end')
+        request = factory.get('/member-filter?city=Moose Jaw&jobType=Part-time end')
         self.assertEqual(len(request.data), 0)
 
     def test_filter_name_with_wild_cards(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?*abc.com')
+        request = factory.get('/member-filter?*abc.com')
         self.assertEqual(len(request.data), 2)
 
     def test_filter_pcode_with_wild_cards(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?pCode=S7L*')
+        request = factory.get('/member-filter?pCode=S7L*')
         self.assertEqual(len(request.data), 2)

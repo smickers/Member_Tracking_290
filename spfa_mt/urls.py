@@ -3,7 +3,7 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework import routers
-from add_member.views import MemberSearchView
+from add_member.views import MemberSearchView, MemberFilterView
 from django.conf.urls.static import static
 import settings
 from add_case.views import CaseSearchView
@@ -22,10 +22,12 @@ router.register('case_list/search', CaseSearchView, base_name='case-search')
 # route the committee search functionality to 'meeting/view' url
 router.register('committee_list/search', CommitteeSearchView, base_name='committee-search')
 
+router.register(r'^member/filter$', MemberFilterView.as_view(), base_name='member-filter')
 
 urlpatterns = [
     url(r'^index.html$', views.spfaView.as_view(), name='index_default'),
     url(r'^$', views.spfaView.as_view(), name='index'),
+    url(r'^member-filter$', MemberFilterView.as_view()),
     #rest service's root url
     url(r'^api-root/', include(router.urls)),
     url(r'^admin/', admin.site.urls),
