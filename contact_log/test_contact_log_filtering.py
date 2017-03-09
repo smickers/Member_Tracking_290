@@ -136,3 +136,7 @@ class ContactLogFilteringTests(TestCase):
         request = self.requestFactory.get("/api-root/contact_log/filter/contactCode=P?condition=NOT")
         self.assertEquals(len(request.data), 5)
 
+    def test_AND_OR_chaining(self):
+        request = self.requestFactory.get("/api-root/contact_log/filter/date=2017-01-01?condition=gt?condition=AND?contactCode=M?criteria=OR?member=2")
+        self.assertEquals(len(request.data),2)
+

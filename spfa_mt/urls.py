@@ -8,6 +8,7 @@ from django.conf.urls.static import static
 import settings
 from add_case.views import CaseSearchView
 from add_com.views import CommitteeSearchView
+from contact_log.views import ContactLogViewSet
 from . import views
 
 # initialize rest framework's router
@@ -21,6 +22,8 @@ router.register('case_list/search', CaseSearchView, base_name='case-search')
 
 # route the committee search functionality to 'meeting/view' url
 router.register('committee_list/search', CommitteeSearchView, base_name='committee-search')
+
+router.register('contact_log/search', ContactLogViewSet, base_name='contact-log-search')
 
 
 urlpatterns = [

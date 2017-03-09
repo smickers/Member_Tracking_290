@@ -29,5 +29,7 @@ class ContactLogDetails(DetailView):
 class ContactLogList(ListView):
     model = contactLog
 
-class
+class ContactLogViewSet(viewsets.ModelViewSet):
+    queryset = contactLog.objects.all().order_by("id")
+    serializer_class = ContactLogSerializer
 
