@@ -62,7 +62,7 @@ class Case(models.Model):
     @property
     def members(self):
         """
-
+            Gets the associated members of a case. Members returned are based on the type of Case.
         """
         if self.caseType == kvp.TYPE_CHOICES[0][0]:  # return the primary complainant
             return self.complainant
@@ -72,12 +72,13 @@ class Case(models.Model):
             q_set.append(self.complainant)
             return q_set
 
-
-    # Name: __str__
-    # Purpose: toString method
-    # Returns: A string representation of the object.
-    # def __str__(self):
-    #     return self.complainant.__str__() + ' - ' + self.date.strftime("%d, %b. %Y")
+    def __str__(self):
+        """
+            Returns a string representation of the case
+        """
+        return "<Case lead: {}, campus: {}, satellite: {}, caseType: {}>".format(self.lead, self.get_campus_display(),
+                                                                                 self.satellite,
+                                                                                 self.get_caseType_display())
 
 # Class: CaseMembers
 # Purpose: Joining class for Members to a Case.
@@ -94,19 +95,19 @@ class CaseFiles(models.Model):
     description = models.CharField(max_length=50,blank=True,null=True)
 
 
-    """
-    Method: clean
-    Purpose: Responsible for validating/cleaning files.
-            Raises exception if problem occurs
-    """
     def clean(self):
+        """
+        Method: clean
+        Purpose: Responsible for validating/cleaning files.
+                Raises exception if problem occurs
+        """
         super(CaseFiles, self).clean()
-        if (self.file.size > MAX_FILE_SIZE):
-            """Check if the uploaded file has a valid file size"""
+        if self.file.size > MAX_FILE_SIZE:
+            # Check if the uploaded file has a valid file size
             raise ValidationError("File is too large")
 
-        if (self.file.name.split(".")[-1] not in FILE_EXT_TO_ACCEPT):
-            """ Check if the uploaded file has a valid file extension """
+        if self.file.name.split(".")[-1] not in FILE_EXT_TO_ACCEPT:
+            # Check if the uploaded file has a valid file extension
             raise ValidationError("Invalid File Extension")
 
 

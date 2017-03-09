@@ -141,7 +141,10 @@
         <h1><strong>Create a Case</strong></h1>
         <form class="form form-group" action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            {% bootstrap_form_errors form type='fields' %}
+            <div class="form_errors">
+                {% bootstrap_form_errors form type='fields' %}
+            </div>
+
             {% bootstrap_form form %}
 
             {% buttons %}
@@ -155,5 +158,5 @@
     </div>
     {% load static %}
     <script src="{% static 'add_case/file_upload_validation.js' %}" type="text/javascript"></script>
-    <script src="{% static 'add_case/case_validation.js' %}" type="text/javascript"></script>
+{#    <script src="{% static 'add_case/case_validation.js' %}" type="text/javascript"></script>#}
 {% endblock %}

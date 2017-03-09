@@ -2,7 +2,6 @@ from django.test import TestCase
 from django.core.exceptions import ValidationError
 from add_case.models import Case
 from add_member.models import Person
-from django.test import Client
 
 
 class CaseTestsPrimComplaintant(TestCase):
@@ -55,34 +54,12 @@ class CaseTestsPrimComplaintant(TestCase):
             tempCase.full_clean()
             tempCase.save()
 
-    # Tests for a valid primary complaintant using "First" and "Last" as first and last names respectively.
-    #   There should be a person existing with this first and last name
-
-    # No longer works after story 26.7
-    # def testValidPrimaryComplaintant(self):
-    #     tempCase = Case()
-    #     tempCase.complainant = self.person1
-    #     tempCase.lead = 1
-    #     tempCase.campus = "Saskatoon"
-    #     tempCase.school = "School of Business"
-    #     tempCase.program = "Business - Certificate"
-    #     tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
-    #     tempCase.status = "OPEN"
-    #     tempCase.additionalNonMembers = ""
-    #     tempCase.docs = None
-    #     tempCase.logs = None
-    #     tempCase.date = "2016-10-20"
-    #     tempCase.full_clean()
-    #     tempCase.save()
-
     # Tests for a blank primary complaintant. Complainant is a required field. Should fail
     def testBlankPrimaryComplaintant(self):
         with self.assertRaises(ValidationError):
             tempCase = Case()
-            tempCase.complainant = None
             tempCase.campus = "Saskatoon"
             tempCase.school = "School of Business"
-           # tempCase.program = "Business Certificate"
             tempCase.caseType = 3
             tempCase.status = "OPEN"
             tempCase.additionalNonMembers = ""

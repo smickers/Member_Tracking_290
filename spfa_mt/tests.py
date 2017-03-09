@@ -1,5 +1,4 @@
 from django.test import SimpleTestCase
-from bs4 import BeautifulSoup
 from django.test import Client
 from django.core.urlresolvers import reverse
 from add_member.models import Person
@@ -10,6 +9,7 @@ from contact_log.models import contactLog
 from create_event.models import Event
 from grievance_award_creation.models import GrievanceAward
 from meeting.models import Meeting
+from bs4 import BeautifulSoup
 
 
 
