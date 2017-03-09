@@ -78,4 +78,14 @@ class Person(models.Model):
 
 
 class MemberFiles(models.Model):
-    """"""
+    dateUploaded = models.DateTimeField(auto_now=True, blank=True, null=True)
+    fileName = models.FileField(upload_to='members/', blank=True, null=True, validators=[validate_file_ext])
+    relatedMember = models.ForeignKey(Person, blank=True, null=True)
+    fileDesc = models.CharField(max_length=50, blank=True, null=True)
+
+    def clean(self):
+        if self.fileName.size > settings.MAX_FILE_SIZE:
+            raise ValidationError('Upload size limit exceeded exception')
+
+    def __str__(self):
+        return str(self.fileName.name)

@@ -1,27 +1,46 @@
-from django.forms import ModelForm, NumberInput, ValidationError, SelectDateWidget
-from .models import Person
+from django.forms import ModelForm, ValidationError, SelectDateWidget, FileField, ClearableFileInput, CharField
+from .models import Person, MemberFiles
+from django import forms
+from spfa_mt import kvp
+from django.core.files import File
 from .validators import *
 import re
 import datetime
 
 
-#The form used for modifying/adding a member
+# The form used for modifying/adding a member
 class PersonForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ModelForm, self).__init__(*args, **kwargs)
+        self.fields['file_field'] = FileField(required=False,
+                                              widget=ClearableFileInput(
+                                                  attrs={'multiple': False, 'accept': settings.FILE_EXT_TO_ACCEPT}))
+        self.fields['file_description'] = CharField(required=False, label='File Description',
+                                                    widget=forms.TextInput(attrs={'type': '', 'size': '100%'}))
+
+    # Ensure member can be saved and then save the file, associating it with the member
+    def save(self, commit=False):
+        # Try to save the regular member, excluding the file
+        try:
+            obj = super(ModelForm, self).save()
+        # If saving the mmebr throws an error show the error
+        except ValidationError:
+            return ValidationError
+
+        # If a file exists to save
+        if self.files != {}:
+            # Get the save file
+            save_file = self.files.getList('file_field')[0]
+            temp = File(file=save_file)
+            desc = self.cleaned_data['file_description']
+            # Create a member file, with information from the file fields and the member object
+            mem_file = MemberFiles(fileName=temp, fileDesc=desc, relatedMember=obj)
+            mem_file.save()
+
+        return obj
+
     class Meta:
-        MONTHS = {
-            1: 'Jan',
-            2: 'Feb',
-            3: 'Mar',
-            4: 'Apr',
-            5: 'May',
-            6: 'Jun',
-            7: 'Jul',
-            8: 'Aug',
-            9: 'Sep',
-            10: 'Oct',
-            11: 'Nov',
-            12: 'Dec'
-        }
+
 
         model = Person
 
@@ -59,8 +78,8 @@ class PersonForm(ModelForm):
 
         #modifies the date fields to have a valid range
         widgets = {
-            'bDay': SelectDateWidget(months=MONTHS, years=range(1900, datetime.datetime.now().year + 1)),
-            'hireDate': SelectDateWidget(months=MONTHS, years=range(1900, datetime.datetime.now().year + 1))
+            'bDay': SelectDateWidget(months=kvp.MONTHS, years=range(1900, datetime.datetime.now().year + 1)),
+            'hireDate': SelectDateWidget(months=kvp.MONTHS, years=range(1900, datetime.datetime.now().year + 1))
             }
 
 

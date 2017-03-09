@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from spfa_mt import settings
 import re
 
 #validators for postal code
@@ -50,5 +51,15 @@ def validate_rightstringlen30(value):
 def validate_rightstringlen50(value):
     if len(str(value)) > 50:
         raise ValidationError("Character length must be less than or equal to 50")
+
+
+# Validator for file upload extension
+def validate_file_ext(value):
+    if value.fileName.name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT:
+        raise ValidationError('Invalid File Extension')
+
+
+
+
 
 
