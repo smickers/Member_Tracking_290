@@ -4,6 +4,8 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import ListView, DetailView
 from .models import contactLog
 from .forms import ContactLogForm, ContactLogDetailsForm
+from rest_framework import viewsets
+from .serializers import ContactLogSerializer
 
 
 # View ContactLogCreate
@@ -26,4 +28,6 @@ class ContactLogDetails(DetailView):
 
 class ContactLogList(ListView):
     model = contactLog
+
+class
 
