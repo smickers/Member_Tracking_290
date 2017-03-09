@@ -62,7 +62,7 @@ class MemberFileUploadTest(StaticLiveServerTestCase):
         f.seek(settings.MAX_FILE_SIZE + 1)
         f.write("\0")
         f.close()
-
+   
         f = open(self.path_midsizedFile, "wb")
         f.seek(25000)
         f.write("\0")
