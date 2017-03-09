@@ -52,7 +52,7 @@ class CaseForm(ModelForm):
         if self.cleaned_data['caseType'] == 7 and len(self.data.getlist('additionalMembers')) > 0 :
             """ Raises a Validation error if the user tries to add a member to an case with a caseType of "INDIVIDUAL"
             """
-            raise ValidationError('You can only select 1 member if a grievance type is INDIVIDUAL',
+            raise ValidationError('You can only select 1 member for a grievance type of INDIVIDUAL',
                                   code='illegal_additional_member')
         super(CaseForm, self).clean()
         return self.cleaned_data

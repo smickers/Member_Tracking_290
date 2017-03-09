@@ -1,11 +1,16 @@
 {% block content %}
     <body>
         <p id="award">Award ID: {{ grievance_award.id }}</p>
-        <p>Grievance Type: {{ grievance_award.grievanceType }}</p>
+        <p>Grievance Type:
+            {%  if grievance_award.grievanceType == 7 %}
+                {{ 'Individual' }}
+            {% else %}
+                {{ 'Member' }}
+            {% endif %}
+        </p>
         <p>Award Amount: {{ grievance_award.awardAmount }}</p>
         <p>Description: {{ grievance_award.description }}</p>
-        <p>Date: {{ grievance_award.date }}</p>
-{#        <p>Date: {{ grievance_award.grievance_award|date:"d, M. Y" }}</p>#}
+        <p>Date: {{ grievance_award.date| date:"d, M. Y" }}</p>
         {% if grievance_award.file_name %}
             <p>Document: <a id="download" target="_blank" href="../../media/grievance/{{ grievance_award.file_name }}">{{ grievance_award.file_name }}</a></p>
             <p>Document Description: {{ grievance_award.file_desc }}</p>
