@@ -86,7 +86,7 @@ class FilterMembers(TestCase):
 
     def test_filter_campus(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?campus=SASKATOON')
+        request = factory.get('/api-root/member/filter?campus=Saskatoon')
         self.assertEqual(len(request.data), 2)
 
     def test_filter_job_type(self):
@@ -124,10 +124,10 @@ class FilterMembers(TestCase):
         request = factory.get('/api-root/member/filter?firstName=Bob&city=Saskatoon')
         self.assertEqual(len(request.data), 1)
 
-    def test_filter_gender_AND_firstname(self):
+    def test_filter_lastname_city(self):
         factory = APIRequestFactory()
-        request = factory.get('/api-root/member/filter?firstName=Bob&gender=FEMALE')
-        self.assertEqual(len(request.data), 1)
+        request = factory.get('/api-root/member/filter?lastName=Smith&city=Saskatoon')
+        self.assertEqual(len(request.data), 2)
 
     def test_filter_jobtype_AND_campus(self):
         factory = APIRequestFactory()
