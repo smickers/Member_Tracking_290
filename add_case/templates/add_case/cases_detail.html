@@ -15,12 +15,18 @@
                 <p>Case Type: {{ object.get_caseType_display }}</p>
                 <p>Status: {{ object.status }}</p>
                 <p>Complainant: <em>{{ object.complainant }}</em></p>
-
+                <p>Additional Non-members: {{ object.additionalNonMembers }}</p>
 
                 {% if object.get_caseType_display != "GRIEVANCES - INDIVIDUAL" %}
                     <div class="panel panel-info">
                         <div class="panel panel-heading">
-                              <p>Members </p>
+                            <p>
+                                {% if object.grievanceaward %}
+                                    {{ 'Recipients' }}
+                                {% else %}
+                                    {{ 'Members' }}
+                                {% endif %}
+                            </p>
                         </div>
 
                     {% include 'add_case/case_members.html' %}

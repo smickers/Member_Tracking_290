@@ -6,7 +6,7 @@
             <th>ID</th>
             <th>Name</th>
         </thead>
-        {%  for members in case.additionalMembers.all %}
+        {%  for members in case.members %}
         <tr>
             <td>{{ members.memberID }}</td>
             <td> <a href="{% url 'add_member:member_detail' members.pk %}">{{ members.firstName }}

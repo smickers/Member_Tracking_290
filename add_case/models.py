@@ -69,7 +69,7 @@ class Case(models.Model):
         else:
             # combine additional members to the primary complainant
             q_set = list(self.additionalMembers.all())
-            q_set.append(self.complainant)
+            q_set.insert(0, self.complainant)
             return q_set
 
     def __str__(self):

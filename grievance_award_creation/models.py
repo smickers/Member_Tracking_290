@@ -45,18 +45,6 @@ class GrievanceAward(models.Model):
 
     @property
     def recipient(self):
-        """
-        Returns the recipient of a case
-        :return: recipients/recipient related to the case
-        """
-        # print(self.case.caseType)
-        # if self.case.caseType == kvp.TYPE_CHOICES[0][0]:  # return the primary complainant
-        #     return self.case.complainant
-        # else:
-        #     # combine additional members to the primary complainant
-        #     q_set = list(self.case.additionalMembers.all())
-        #     q_set .append(self.case.complainant)
-        #     return q_set
         return self.case.members
     @property
     def grievanceType(self):
