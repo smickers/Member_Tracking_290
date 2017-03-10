@@ -6,6 +6,8 @@ from .models import contactLog
 from .forms import ContactLogForm, ContactLogDetailsForm
 from rest_framework import viewsets
 from .serializers import ContactLogSerializer
+from drf_haystack.viewsets import HaystackViewSet
+from drf_haystack.filters import HaystackAutocompleteFilter
 
 
 # View ContactLogCreate
@@ -29,7 +31,10 @@ class ContactLogDetails(DetailView):
 class ContactLogList(ListView):
     model = contactLog
 
+#class ContactLogSearchView(HaystackViewSet):
 class ContactLogViewSet(viewsets.ModelViewSet):
+    #index_models = [contactLog]
     queryset = contactLog.objects.all().order_by("id")
     serializer_class = ContactLogSerializer
+    #filter_backends = [HaystackAutocompleteFilter]
 

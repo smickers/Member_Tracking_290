@@ -1,6 +1,6 @@
 from django.conf.urls import url, include
 from . import views
-from rest_framework import routers 
+from rest_framework import routers
 
 app_name = 'contact_log_creation'
 
@@ -9,7 +9,7 @@ app_name = 'contact_log_creation'
 
 urlpatterns = [
     #url(r'^api/', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^add/$', views.ContactLogCreate.as_view(), name='contact_log_add'),
     url(r'^(list)/$', views.ContactLogList.as_view(), name='contact_log_list'),
     url(r'^update/(?P<pk>[-\d]+)$', views.ContactLogEdit.as_view(), name='contact_log_edit'),
