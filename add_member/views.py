@@ -41,11 +41,14 @@ class MemberSearchView(HaystackViewSet):
 
 
 class MemberFilter(django_filters.rest_framework.FilterSet):
+    max_bDay = django_filters.DateFilter(name='bDay', lookup_expr='lte')
+    min_bDay = django_filters.DateFilter(name='bDay', lookup_expr='gte')
+    max_hDay = django_filters.DateFilter(name='hDay', lookup_expr='lte')
     class Meta:
         model = Person
         fields = ['id', 'memberID', 'firstName', 'middleName', 'lastName',
                   'socNum', 'city', 'mailAddress', 'mailAddress2', 'pCode',
-                  'bDay', 'gender', 'hPhone', 'cPhone', 'hEmail', 'campus',
+                  'max_bDay', 'min_bDay', 'gender', 'hPhone', 'cPhone', 'hEmail', 'campus',
                   'jobType', 'committee', 'membershipStatus', 'hireDate']
 
 
