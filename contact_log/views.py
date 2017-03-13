@@ -4,10 +4,8 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import ListView, DetailView
 from .models import contactLog
 from .forms import ContactLogForm, ContactLogDetailsForm
-from rest_framework import viewsets
+from rest_framework import generics
 from .serializers import ContactLogSerializer
-from drf_haystack.viewsets import HaystackViewSet
-from drf_haystack.filters import HaystackAutocompleteFilter
 
 
 # View ContactLogCreate
@@ -31,10 +29,13 @@ class ContactLogDetails(DetailView):
 class ContactLogList(ListView):
     model = contactLog
 
-#class ContactLogSearchView(HaystackViewSet):
-class ContactLogViewSet(viewsets.ModelViewSet):
-    #index_models = [contactLog]
-    queryset = contactLog.objects.all().order_by("id")
+class ContactLogViewSet(generics.ListAPIView):
+    base_name = 'contact_log-list'
     serializer_class = ContactLogSerializer
-    #filter_backends = [HaystackAutocompleteFilter]
+    def get_queryset(self):
+        queryset = contactLog.objects.all()
+        cl_id = self.request.query_params('id', None)
+        if cl_id is not None:
+            queryset = contactLog.objects.filter(id=cl_id)
+        return queryset
 
