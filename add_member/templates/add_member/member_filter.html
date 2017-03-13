@@ -3,6 +3,7 @@
 {% load static %}
 {% block metadata %}
     <script href="{% static 'spfa_mt/libraries/jquery-3.1.1.min.js' %}"></script>
+    <title>Member Filter</title>
 {% endblock %}
 
 
@@ -44,34 +45,36 @@
         var page = 1;
         var data_each_page = 30;
         var end_point_url = "/member-filter?limit=30&" ;
+        var temp_endpoint = end_point_url;
         $(document).ready( function() {
             $("#filter").click(function(){
-                var temp_endpoint = end_point_url;
-                temp_endpoint += "memberID=" + encodeURIComponent($('#id_memberID').val())+ "&";
-                temp_endpoint += "firstName=" + encodeURIComponent($('#id_firstName').val())+ "&";
-                temp_endpoint += "middleName=" + encodeURIComponent($('#id_middleName').val())+ "&";
-                temp_endpoint += "lastName=" + encodeURIComponent($('#id_lastName').val())+ "&";
-                temp_endpoint += "socNum=" + encodeURIComponent($('#id_socNum').val())+ "&";
-                temp_endpoint += "city=" + encodeURIComponent($('#id_city').val())+ "&";
-                temp_endpoint += "mailAddress=" + encodeURIComponent($('#id_mailAddress').val())+ "&";
-                temp_endpoint += "mailAddress2=" + encodeURIComponent($('#id_mailAddress2').val())+ "&";
-                temp_endpoint += "pCode=" + encodeURIComponent($('#id_pCode').val())+ "&";
-                temp_endpoint += "hPhone=" + encodeURIComponent($('#id_hPhone').val())+ "&";
-                temp_endpoint += "campus=" + encodeURIComponent($('#id_campus').val())+ "&";
-                temp_endpoint += "jobType=" + encodeURIComponent($('#id_jobType').val())+ "&";
-                temp_endpoint += "committee=" + encodeURIComponent($('#id_committee').val())+ "&";
-                temp_endpoint += "membershipStatus=" + encodeURIComponent($('#id_membershipStatus').val())+ "&";
+                temp_endpoint = end_point_url;
+                $('#id_memberID').val() > 0 ? temp_endpoint += "memberID=" + encodeURIComponent($('#id_memberID').val())+ "&" : false;
+                $('#id_firstName').val().length > 0 ? temp_endpoint += "firstName__contains=" + encodeURIComponent($('#id_firstName').val())+ "&" : false;
+                $('#id_middleName').val().length > 0 ? temp_endpoint += "middleName__contains=" + encodeURIComponent($('#id_middleName').val())+ "&": false;
+                $('#id_lastName').val().length > 0 ? temp_endpoint += "lastName__contains=" + encodeURIComponent($('#id_lastName').val())+ "&": false;
+                $('#id_socNum').val() > 0 ? temp_endpoint += "socNum__contains=" + encodeURIComponent($('#id_socNum').val())+ "&": false;
+                $('#id_city').val().length > 0 ? temp_endpoint += "city__contains=" + encodeURIComponent($('#id_city').val())+ "&": false;
+                $('#id_mailAddress').val().length > 0 ? temp_endpoint += "mailAddress__contains=" + encodeURIComponent($('#id_mailAddress').val())+ "&": false;
+                $('#id_mailAddress2').val().length > 0 ? temp_endpoint += "mailAddress2__contains=" + encodeURIComponent($('#id_mailAddress2').val())+ "&": false;
+                $('#id_pCode').val().length > 0 ? temp_endpoint += "pCode__contains=" + encodeURIComponent($('#id_pCode').val())+ "&": false;
+                $('#id_hPhone').val().length > 0 ? temp_endpoint += "hPhone__contains=" + encodeURIComponent($('#id_hPhone').val())+ "&": false;
+                $('#id_campus').val().length > 0 ? temp_endpoint += "campus__contains=" + encodeURIComponent($('#id_campus').val())+ "&": false;
+                $('#id_jobType').val().length > 0 ? temp_endpoint += "jobType__contains=" + encodeURIComponent($('#id_jobType').val())+ "&": false;
+                $('#id_committee').val().length > 0 ? temp_endpoint += "committee__contains=" + encodeURIComponent($('#id_committee').val())+ "&": false;
+                $('#id_membershipStatus').val().length ? temp_endpoint += "membershipStatus__contains=" + encodeURIComponent($('#id_membershipStatus').val())+ "&": false;
                 ($('#id_min_hDay').val() != null ) ? temp_endpoint += "min_hDay=" + encodeURIComponent($('#id_min_hDay').val())+ "&": temp_endpoint += '';
                 ($('#id_max_hDay').val() != null ) ? temp_endpoint += "max_hDay=" + encodeURIComponent($('#id_max_hDay').val())+ "&": temp_endpoint += '';
                 ($('#id_min_bDay').val() != null ) ? temp_endpoint += "min_bDay=" + encodeURIComponent($('#id_min_bDay').val())+ "&": temp_endpoint += '';
                 ($('#id_max_bDay').val() != null ) ? temp_endpoint += "max_bDay=" + encodeURIComponent($('#id_max_bDay').val())+ "&": temp_endpoint += '';
-                temp_endpoint += "gender=" + encodeURIComponent($('#id_gender').val());
-                console.log(temp_endpoint)
+                $('#id_gender').val().length > 0 ? temp_endpoint += "gender=" + encodeURIComponent($('#id_gender').val()): false;
+                console.log(temp_endpoint);
+                $('#list_member')[0].innerHTML = ""
                 ajax_call(temp_endpoint);
             });
 
             $("#show_more").click(function(){
-                ajax_call(end_point_url+"offset=" + data_each_page*page);
+                ajax_call(temp_endpoint+"offset=" + data_each_page*page);
                 page++;
             });
 
@@ -85,7 +88,7 @@
                             data.results.forEach(function(e){
                                 var ele = $('<tr></tr>');
                                 ele.append(
-                                    $("<td></td>").text(e.firstName + " " + e.lastName)
+                                    "<td><a href='/member/" + e.id + "'>" + e.firstName + " " + e.lastName + "</a></td>"
                                 );
                                 ele.append(
                                     $("<td></td>").text(e.gender)
@@ -117,7 +120,7 @@
                 });
             }
 
-
+            ajax_call(temp_endpoint);
         });
     </script>
 {% endblock %}

@@ -22,7 +22,7 @@ class MemberSearchSerializer(HaystackSerializer):
 class MemberFilterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
-        index_classes = [MembersIndex]
+        # index_classes = [MembersIndex]
         fields = ['id', 'memberID', 'firstName', 'middleName', 'lastName',
                   'socNum', 'city', 'mailAddress', 'mailAddress2', 'pCode',
                   'bDay', 'gender', 'hPhone', 'cPhone', 'hEmail', 'campus',

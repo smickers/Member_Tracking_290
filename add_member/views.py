@@ -5,8 +5,10 @@ from .forms import PersonForm, MemberFilterForm
 from drf_haystack.viewsets import HaystackViewSet
 from .serializer import MemberSearchSerializer, MemberFilterSerializer
 from drf_haystack.filters import HaystackAutocompleteFilter
-from rest_framework import generics
+from rest_framework import generics, viewsets, filters
 import django_filters
+from filters.mixins import FiltersMixin
+from url_filter.integrations.drf import DjangoFilterBackend
 from rest_framework.response import Response
 
 # view responsible for the member creation
@@ -61,15 +63,46 @@ class MemberFilter(django_filters.rest_framework.FilterSet):
                   'jobType', 'committee', 'membershipStatus', 'hireDate']
 
 
-class MemberFilterView(generics.ListAPIView):
+# class MemberFilterView(generics.ListAPIView):
+#     """
+#     This is our API for filtering a member. It queries the database for all members and
+#     filters based on the parameters passed in through the url
+#     """
+#     queryset = Person.objects.all()
+#     serializer_class = MemberFilterSerializer
+#     filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
+#     filter_class = MemberFilter
+#     filter_fields = ['id', 'memberID', 'firstName', 'middleName', 'lastName',
+#                   'socNum', 'city', 'mailAddress', 'mailAddress2', 'pCode',
+#                   'max_bDay', 'min_bDay', 'gender', 'hPhone', 'cPhone', 'hEmail', 'campus',
+#                   'jobType', 'committee', 'membershipStatus', 'hireDate']
+
+
+class MemberFilterView(FiltersMixin, viewsets.ModelViewSet):
     """
     This is our API for filtering a member. It queries the database for all members and
     filters based on the parameters passed in through the url
     """
-    queryset = Person.objects.all()
     serializer_class = MemberFilterSerializer
     filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
     filter_class = MemberFilter
+    filter_fields = ['id', 'memberID', 'firstName', 'middleName', 'lastName',
+                  'socNum', 'city', 'mailAddress', 'mailAddress2', 'pCode',
+                  'max_bDay', 'min_bDay', 'gender', 'hPhone', 'cPhone', 'hEmail', 'campus',
+                  'jobType', 'committee', 'membershipStatus', 'hireDate']
+
+    def get_queryset(self):
+        query_params = self.request.query_params
+        url_params = self.kwargs
+
+        queryset_filters = self.get_db_filters(url_params, query_params)
+
+        db_filters = queryset_filters['db_filters']
+        db_excludes = queryset_filters['db_excludes']
+
+        queryset = Person.objects.all()
+
+        return queryset.filter(**db_filters).exclude(**db_excludes)
 
 
 class MemberFilterList(TemplateView, FormMixin):
