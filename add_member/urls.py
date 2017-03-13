@@ -8,5 +8,5 @@ urlpatterns = [
     url(r'list/$', views.PersonList.as_view(), name='member_list'),
     url(r'^update/(?P<pk>[-\w]+)/$', views.PersonUpdate.as_view(), name='member_update'),
     url(r'^(?P<pk>[-\w]+)/$', views.PersonDetail.as_view(), name='member_detail'),
-
+    url(r'^filter/$', views.MemberFilterList.as_view(), name='member_filter')
 ]

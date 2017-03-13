@@ -1,7 +1,7 @@
-from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic import ListView, DetailView, TemplateView
+from django.views.generic.edit import CreateView, UpdateView, FormMixin
 from .models import Person
-from .forms import PersonForm
+from .forms import PersonForm, MemberFilterForm
 from drf_haystack.viewsets import HaystackViewSet
 from .serializer import MemberSearchSerializer, MemberFilterSerializer
 from drf_haystack.filters import HaystackAutocompleteFilter
@@ -41,11 +41,20 @@ class MemberSearchView(HaystackViewSet):
 
 
 class MemberFilter(django_filters.rest_framework.FilterSet):
+    """
+    This is the filter for our members (Person).
+    """
     max_bDay = django_filters.DateFilter(name='bDay', lookup_expr='lte')
     min_bDay = django_filters.DateFilter(name='bDay', lookup_expr='gte')
     max_hDay = django_filters.DateFilter(name='hDay', lookup_expr='lte')
+    min_hDay = django_filters.DateFilter(name='hDay', lookup_expr='gte')
+
     class Meta:
+        """
+        Declaring our model and the fields we want
+        """
         model = Person
+        # Note, this is NOT __all__, do not make it so.
         fields = ['id', 'memberID', 'firstName', 'middleName', 'lastName',
                   'socNum', 'city', 'mailAddress', 'mailAddress2', 'pCode',
                   'max_bDay', 'min_bDay', 'gender', 'hPhone', 'cPhone', 'hEmail', 'campus',
@@ -53,11 +62,16 @@ class MemberFilter(django_filters.rest_framework.FilterSet):
 
 
 class MemberFilterView(generics.ListAPIView):
+    """
+    This is our API for filtering a member. It queries the database for all members and
+    filters based on the parameters passed in through the url
+    """
     queryset = Person.objects.all()
     serializer_class = MemberFilterSerializer
     filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
     filter_class = MemberFilter
 
-    # def get(self, request):
-    #     response = super(self, request)
-    #     return response
+
+class MemberFilterList(TemplateView, FormMixin):
+    template_name = "add_member/member_filter.html"
+    form_class = MemberFilterForm

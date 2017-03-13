@@ -3,7 +3,7 @@ from .models import Person
 from .validators import *
 import re
 import datetime
-
+from django import forms
 
 #The form used for modifying/adding a member
 class PersonForm(ModelForm):
@@ -64,5 +64,33 @@ class PersonForm(ModelForm):
             }
 
 
+class MemberFilterForm(forms.Form):
+    memberID = forms.IntegerField(label='Member ID', widget=forms.NumberInput(attrs={'placeholder': 'Member ID'}))
+    firstName = forms.CharField(label='First Name', widget=forms.TextInput(attrs={'placeholder': 'First Name'}))
+    middleName = forms.CharField(label='Middle Name', widget=forms.TextInput(attrs={'placeholder': 'Middle Name'}))
+    lastName = forms.CharField(label='Last Name', widget=forms.TextInput(attrs={'placeholder': 'Last Name'}))
+    min_bDay = forms.DateField(widget=PersonForm.Meta.widgets['bDay'])
+    max_bDay = forms.DateField(widget=PersonForm.Meta.widgets['bDay'])
+    gender = forms.ChoiceField(choices=Person.GENDER_CHOICE)
+    socNum = forms.IntegerField(label='SIN', widget=forms.NumberInput(attrs={'placeholder': 'Social Insurance Number'}))
+    city = forms.CharField(label='City', widget=forms.TextInput(attrs={'placeholder': 'City'}))
+    mailAddress = forms.CharField(label='Address', widget=forms.TextInput(attrs={'placeholder': 'Address'}))
+    mailAddress2 = forms.CharField(label='Address #2', widget=forms.TextInput(attrs={'placeholder': 'Address #2'}))
+    pCode = forms.CharField(max_length=7, label='Postal Code', widget=forms.TextInput(attrs={'placeholder': 'A1A 1A1'}))
+    hPhone = forms.CharField(label='Home Phone', widget=forms.TextInput(attrs={'placeholder': '(123)123-4567'}))
+    cPhone = forms.CharField(label='Cell Phone', widget=forms.TextInput(attrs={'placeholder': '(123)123-4567'}))
+    hEmail = forms.CharField(label='Email Address', widget=forms.TextInput(attrs={'placeholder': 'someone@email.com'}))
+    campus = forms.CharField(label='Campus', widget=forms.TextInput(attrs={'placeholder': 'Sask Polytech Campus'}))
+    jobType = forms.CharField(label='Job Type', widget=forms.TextInput(attrs={'placeholder': 'Job Type'}))
+    committee = forms.CharField(label='Committee', widget=forms.TextInput(attrs={'placeholder': 'Committee'}))
+    membershipStatus = forms.CharField(label='Membership Status', widget=forms.TextInput(attrs={'placeholder': 'Membership Status'}))
+    min_hDay = forms.DateField(widget=PersonForm.Meta.widgets['hireDate'])
+    max_hDay = forms.DateField(widget=PersonForm.Meta.widgets['hireDate'])
 
-
+    # Set up a custom error message for postal codes that are too long
+    # This is used to override the default max_length message.
+    error_messages = {
+        'pCode': {
+            'max_length': "Postal code entered is too long. Must be in the form A#A #A#.",
+        },
+    }
