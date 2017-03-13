@@ -1,10 +1,123 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Member Filtering</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% load static %}
+{% block metadata %}
+    <script href="{% static 'spfa_mt/libraries/jquery-3.1.1.min.js' %}"></script>
+{% endblock %}
 
-</body>
-</html>
+
+
+{% block content %}
+
+    <div class="col-lg-2 col-md-12 filter_widget">
+            {% bootstrap_form form %}
+            <button class="btn" id="filter">Filter</button>
+    </div>
+
+    <div class="col-lg-10">
+        <div id="member_data">
+            <table class="table">
+                <thead>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Member ID</th>
+                    <th>City</th>
+                    <th>Postal Code</th>
+                    <th>Birth Date</th>
+                    <th>Campus</th>
+                </thead>
+
+                <tbody id="list_member">
+                </tbody>
+                <tfoot>
+                    <td> <button class="btn" id="show_more">Load More</button></td>
+                </tfoot>
+
+            </table>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script >
+        var page = 1;
+        var data_each_page = 30;
+        var end_point_url = "/member-filter?limit=30&" ;
+        $(document).ready( function() {
+            $("#filter").click(function(){
+                var temp_endpoint = end_point_url;
+                temp_endpoint += "memberID=" + encodeURIComponent($('#id_memberID').val())+ "&";
+                temp_endpoint += "firstName=" + encodeURIComponent($('#id_firstName').val())+ "&";
+                temp_endpoint += "middleName=" + encodeURIComponent($('#id_middleName').val())+ "&";
+                temp_endpoint += "lastName=" + encodeURIComponent($('#id_lastName').val())+ "&";
+                temp_endpoint += "socNum=" + encodeURIComponent($('#id_socNum').val())+ "&";
+                temp_endpoint += "city=" + encodeURIComponent($('#id_city').val())+ "&";
+                temp_endpoint += "mailAddress=" + encodeURIComponent($('#id_mailAddress').val())+ "&";
+                temp_endpoint += "mailAddress2=" + encodeURIComponent($('#id_mailAddress2').val())+ "&";
+                temp_endpoint += "pCode=" + encodeURIComponent($('#id_pCode').val())+ "&";
+                temp_endpoint += "hPhone=" + encodeURIComponent($('#id_hPhone').val())+ "&";
+                temp_endpoint += "campus=" + encodeURIComponent($('#id_campus').val())+ "&";
+                temp_endpoint += "jobType=" + encodeURIComponent($('#id_jobType').val())+ "&";
+                temp_endpoint += "committee=" + encodeURIComponent($('#id_committee').val())+ "&";
+                temp_endpoint += "membershipStatus=" + encodeURIComponent($('#id_membershipStatus').val())+ "&";
+                ($('#id_min_hDay').val() != null ) ? temp_endpoint += "min_hDay=" + encodeURIComponent($('#id_min_hDay').val())+ "&": temp_endpoint += '';
+                ($('#id_max_hDay').val() != null ) ? temp_endpoint += "max_hDay=" + encodeURIComponent($('#id_max_hDay').val())+ "&": temp_endpoint += '';
+                ($('#id_min_bDay').val() != null ) ? temp_endpoint += "min_bDay=" + encodeURIComponent($('#id_min_bDay').val())+ "&": temp_endpoint += '';
+                ($('#id_max_bDay').val() != null ) ? temp_endpoint += "max_bDay=" + encodeURIComponent($('#id_max_bDay').val())+ "&": temp_endpoint += '';
+                temp_endpoint += "gender=" + encodeURIComponent($('#id_gender').val());
+                console.log(temp_endpoint)
+                ajax_call(temp_endpoint);
+            });
+
+            $("#show_more").click(function(){
+                ajax_call(end_point_url+"offset=" + data_each_page*page);
+                page++;
+            });
+
+            function ajax_call(end_url){
+                $.ajax({
+                    url: end_url,
+                    success: function(data){
+                        console.log("Here's the data : ");
+                        console.log(data);
+                        if( data.count != 0){
+                            data.results.forEach(function(e){
+                                var ele = $('<tr></tr>');
+                                ele.append(
+                                    $("<td></td>").text(e.firstName + " " + e.lastName)
+                                );
+                                ele.append(
+                                    $("<td></td>").text(e.gender)
+                                );
+                                ele.append(
+                                    $("<td></td>").text(e.memberID)
+                                );
+                                ele.append(
+                                    $("<td></td>").text(e.city)
+                                );
+                                ele.append(
+                                    $("<td></td>").text(e.pCode)
+                                );
+                                ele.append(
+                                    $("<td></td>").text(e.bDay)
+                                );
+                                ele.append(
+                                    $("<td></td>").text(e.campus)
+                                );
+
+                                $('#list_member').append(ele);
+                            });
+                        }else{
+                            $('#list_member')[0].innerHTML = ""
+                        }
+
+
+                    }
+                });
+            }
+
+
+        });
+    </script>
+{% endblock %}
