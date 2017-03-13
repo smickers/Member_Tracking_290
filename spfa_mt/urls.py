@@ -25,7 +25,8 @@ router.register('case_list/search', CaseSearchView, base_name='case-search')
 router.register('committee_list/search', CommitteeSearchView, base_name='committee-search')
 
 #router.register('contact_log/search', ContactLogSearchView, base_name='contact-log-search')
-router.register(r'contact_log/search', ContactLogViewSet)
+#router.register(r'contact_log/search', ContactLogViewSet, base_name='contact_log')
+router.register('contact_log/search', ContactLogViewSet)
 
 
 urlpatterns = [

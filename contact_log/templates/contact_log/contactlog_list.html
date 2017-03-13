@@ -9,13 +9,141 @@
     <meta charset="UTF-8">
     <title>Contact Log List</title>
     <style>
-         thead th, .center {
+         thead th, .center, #contact-log-table-data td {
         text-align: center;
     }
     </style>
+    <script type="text/javascript">
+        var criteriaCount = 0;
+
+
+        function addCriteria()
+        {
+            criteriaCount++;
+            $("#filteringForm").append('<br /><br /><div class="form-group"> <label>Field</label> <select class="form-control" id="field-choice-0"> <option value="id">ID</option> <option value="member">Member</option> <option value="date">Date</option> <option value="description">Description</option> <option value="contactCode">Contact Code</option> </select> </div> <div class="form-group"> <label>Value</label> <input type="text" class="form-control" id="field-value-0"> </div> <div class="form-group"> <button class="form-control btn btn-info" onclick="addCriteria()">AND</button> </div>')
+        }
+
+        function applyFilter()
+        {
+            // Grab criteria to build up request URL
+            var request_url = "http://127.0.0.1:8000/api-root/contact_log/search/";
+            for(var i = 0; i <= criteriaCount; i++)
+            {
+                request_url += "?" + $("#field-choice-" + i).val() + "=" + $("#field-value-" + i).val() + "&";
+            }
+
+            // Snip off the very last character (the last ampersand)
+            request_url = request_url.substring(0, request_url.length - 1);
+            console.log(request_url);
+            $.ajax({
+                method: 'GET',
+                url: request_url,
+                beforeSend: function(xhr)
+                {
+                    console.log("Sending request!");
+                },
+                success: function(data, status)
+                {
+                    console.log("Request returned!");
+                    console.log(data);
+                    result = data.results;
+                    filterTable(result);
+{#                    result.forEach(function(item, index)#}
+{#                    {#}
+{#                       console.log(item.description + " - " + item.contactCode);#}
+{#                    });#}
+                }
+            });
+        }
+
+        function getContactCode(ccValue)
+        {
+            switch(ccValue)
+            {
+                case "E":
+                    return "Email";
+                    break;
+                case "P":
+                    return "Phone";
+                    break;
+                case "F":
+                    return "Face to face";
+                    break;
+                case "M":
+                    return "Meeting";
+                    break;
+                case "T":
+                    return "Text";
+                    break;
+                default:
+                    return "Unknown";
+                    break;
+            }
+        }
+
+        function formatDate(toFormat)
+        {
+            var monthNames = [
+                "Jan", "Feb", "Mar",
+                "Apr", "May", "Jun", "Jul",
+                "Aug", "Sep", "Oct",
+                "Nov", "Dec"
+              ];
+
+            var year = toFormat.substring(0, 4);
+            console.log("Year: " + year);
+            var monthIndex = parseInt(toFormat.substring(6, 9));
+            console.log("Month index: " + monthIndex);
+            var date = toFormat.substring(8, 11);
+            console.log("Date: " + date);
+
+            var toReturn = date + ", " + monthNames[monthIndex - 1] + ". " + year;
+            return toReturn;
+        }
+
+        function filterTable(newData)
+        {
+            $("#contact-log-table-data").html("");
+            newData.forEach(function(item, index)
+            {
+                var id = item.id;
+                var name = item.member.firstName + " " + item.member.lastName;
+                var date = formatDate(item.date);
+                var description = item.description;
+                var contactCode = getContactCode(item.contactCode);
+                var rowToAdd = "<tr><td>" + id + "</td><td>" + name + "</td><td>" + date + "</td><td>" + description + "</td><td>" +
+                                contactCode + '</td><td><a href="http://127.0.0.1:8000/contact_log/details/' + id + '">[View]</a></td><td><a href="http://127.0.0.1:8000/contact_log/update/' + id + '">[Edit]</a></td></tr>';
+
+                $("#contact-log-table-data").append(rowToAdd);
+                console.log("Added row!");
+
+            });
+        }
+    </script>
 </head>
 <body>
     <div class="container">
+    <div class="form-inline center" id="filteringForm">
+        <div class="form-group">
+            <label>Field</label>
+            <select class="form-control" id="field-choice-0">
+                <option value="id">ID</option>
+                <option value="member">Member</option>
+                <option value="date">Date</option>
+                <option value="description">Description</option>
+                <option value="contactCode">Contact Code</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Value</label>
+            <input type="text" class="form-control" id="field-value-0">
+        </div>
+        <div class="form-group">
+            <button class="form-control btn btn-info" onclick="addCriteria()">AND</button>
+        </div>
+    </div>
+    <br />
+    <button class="btn btn-primary" onclick="applyFilter()">Filter</button>
         <h2>List of Contact Logs</h2>
 {#        <a href="{% url 'contact_log_creation:contact_log_add' %}">Create a New Contact Log</a>#}
         <table class="table table-striped table-bordered table-hover">
@@ -31,16 +159,16 @@
                 <th>Edit</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="contact-log-table-data">
                 {% for curr_cl in object_list %}
                     <tr>
-                        <td class="center">{{ curr_cl.pk }}</td>
-                        <td class="center">{{ curr_cl.member }}</td>
-                        <td class="center">{{ curr_cl.date }}</td>
+                        <td>{{ curr_cl.pk }}</td>
+                        <td>{{ curr_cl.member }}</td>
+                        <td>{{ curr_cl.date }}</td>
                         <td>{{ curr_cl.description }}</td>
-                        <td class="center"> {{  curr_cl.get_contactCode_display }}</td>
-                        <td class="center"><a href="{% url 'contact_log_creation:details' curr_cl.pk %}">[View]</a></td>
-                        <td class="center"><a href="{% url 'contact_log_creation:contact_log_edit' curr_cl.pk %}">[Edit]</a></td>
+                        <td> {{  curr_cl.get_contactCode_display }}</td>
+                        <td><a href="{% url 'contact_log_creation:details' curr_cl.pk %}">[View]</a></td>
+                        <td><a href="{% url 'contact_log_creation:contact_log_edit' curr_cl.pk %}">[Edit]</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
