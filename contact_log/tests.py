@@ -43,6 +43,7 @@ class ContactLogTests(TestCase):
         tempCLog.member = self.person1
         tempCLog.description = 'Hello World'
         tempCLog.date = '2016-01-01'
+        tempCLog.contactCode = 'E'
         tempCLog.clean()
         tempCLog.save()
         self.assertTrue(True)
@@ -55,6 +56,7 @@ class ContactLogTests(TestCase):
         tempCLog.member = self.person1
         tempCLog.description = 'Hello World'
         tempCLog.date = '2016-12-12'
+        tempCLog.contactCode = 'E'
         tempCLog.clean()
         tempCLog.save()
         self.assertTrue(True)
@@ -68,6 +70,7 @@ class ContactLogTests(TestCase):
             tempCLog.member = self.person1
             tempCLog.description = 'Hello World'
             tempCLog.date = 'January 1, 2016'
+            tempCLog.contactCode = 'E'
             tempCLog.clean()
             tempCLog.save()
 
@@ -80,6 +83,7 @@ class ContactLogTests(TestCase):
             tempCLog.member = self.person1
             tempCLog.description = 'Hello World'
             tempCLog.date = '30-02-2016'
+            tempCLog.contactCode = 'E'
             tempCLog.clean()
             tempCLog.save()
             self.assertTrue(False)
@@ -93,6 +97,7 @@ class ContactLogTests(TestCase):
             tempCLog.member = self.person1
             tempCLog.description = 'Hello World'
             tempCLog.date = '29-02-2015'
+            tempCLog.contactCode = 'E'
             tempCLog.clean()
             tempCLog.save()
             self.assertTrue(False)
@@ -105,9 +110,9 @@ class ContactLogTests(TestCase):
         tempCLog.member = self.person1
         tempCLog.description = 'Hello World'
         tempCLog.date = '2016-01-30'
+        tempCLog.contactCode = 'E'
         tempCLog.clean()
         tempCLog.save()
-        self.assertTrue(True)
 
     # Test that an empty description is accepted
     # Input '' (empty string)
@@ -117,9 +122,9 @@ class ContactLogTests(TestCase):
         tempCLog.member = self.person1
         tempCLog.description = ''
         tempCLog.date = '2016-01-01'
+        tempCLog.contactCode = 'E'
         tempCLog.clean()
         tempCLog.save()
-        self.assertTrue(True)
 
     # Test that a 149 char description is accepted
     # Input '' (empty string)
@@ -129,9 +134,9 @@ class ContactLogTests(TestCase):
         tempCLog.member = self.person1
         tempCLog.description = 'a' * 149
         tempCLog.date = '2016-01-01'
+        tempCLog.contactCode = 'E'
         tempCLog.clean()
-        self.assertTrue(True)
-
+        tempCLog.save()
 
     # Test that a 150 char description is accepted
     # Input '' (empty string)
@@ -141,9 +146,9 @@ class ContactLogTests(TestCase):
         tempCLog.member = self.person1
         tempCLog.description = 'a' * 150
         tempCLog.date = '2016-01-01'
+        tempCLog.contactCode = 'E'
         tempCLog.clean()
-        self.assertTrue(True)
-
+        tempCLog.save()
 
     # Test that a 151 char description is rejected
     # Input '' (empty string)
@@ -154,6 +159,7 @@ class ContactLogTests(TestCase):
             tempCLog.member = self.person1
             tempCLog.description = 'a' * 151
             tempCLog.date = '2016-01-01'
+            tempCLog.contactCode = 'E'
             tempCLog.clean()
             tempCLog.save()
 
@@ -165,9 +171,9 @@ class ContactLogTests(TestCase):
         tempCLog.member = None
         tempCLog.description = ''
         tempCLog.date = '2016-01-01'
+        tempCLog.contactCode = 'E'
         tempCLog.clean()
         tempCLog.save()
-        self.assertTrue(True)
 
     # Test that an invalid member is rejected
     # Input: fake member
@@ -177,6 +183,7 @@ class ContactLogTests(TestCase):
             tempCLog = contactLog()
             tempCLog.member = Person.objects.get(firstName='A ridiculous first name!')
             tempCLog.description = 'A'
+            tempCLog.contactCode = 'E'
             tempCLog.date = '2016-01-01'
             tempCLog.clean()
             tempCLog.save()
@@ -189,9 +196,9 @@ class ContactLogTests(TestCase):
         tempCLog.member = self.person1
         tempCLog.description = 'A'
         tempCLog.date = '2016-01-01'
+        tempCLog.contactCode = 'E'
         tempCLog.clean()
         tempCLog.save()
-        self.assertTrue(True)
 
     # Test that an invalid member ID is rejected
     # Input: a non-existant member
@@ -202,4 +209,6 @@ class ContactLogTests(TestCase):
             tempCLog.member = Person.objects.get(firstName='A ridiculous first name!')
             tempCLog.description = 'A'
             tempCLog.date = '2016-01-01'
+            tempCLog.contactCode = 'E'
             tempCLog.clean()
+            tempCLog.save()

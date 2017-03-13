@@ -45,10 +45,11 @@ class Case(models.Model):
     satellite = models.CharField(max_length=50, default=None, null=True, blank=True)
     school = models.CharField(choices=kvp.SCHOOL_CHOICES.iteritems(), max_length=255)
     program = models.ForeignKey(CasePrograms, default=None, null=True, blank=True)
-    department = models.CharField(choices=kvp.DEPARTMENT_CHOICES.iteritems(), max_length=255, null=True, default=None, blank=True)
-    caseType = models.CharField(choices=kvp.TYPE_CHOICES.iteritems(), max_length=50, validators=[validate_case_type])
-    status = models.CharField(choices=kvp.STATUS_CHOICES.iteritems(), max_length=50, blank=True, validators=[validate_status])
-    additionalMembers = models.ManyToManyField(Person, default=None, null=True, blank=True)
+    department = models.CharField(choices=kvp.DEPARTMENT_CHOICES.iteritems(), max_length=255, null=True, default=None,
+                                  blank=True)
+    caseType = models.IntegerField(choices=kvp.TYPE_CHOICES)
+    status = models.CharField(choices=kvp.STATUS_CHOICES, default="OPEN", max_length=15)
+    additionalMembers = models.ManyToManyField(Person, blank=True, )
     additionalNonMembers = models.TextField(blank=True, null=True)
     docs = models.TextField(blank=True, null=True)
     logs = models.TextField(blank=True, null=True)
@@ -58,19 +59,26 @@ class Case(models.Model):
     def get_absolute_url(self):
         return reverse(viewname='add_case:case_detail', kwargs={'pk': self.pk})
 
-    # clean method
-    # Purpose: Clean data before saving it to the database.
-    def clean(self):
-        if len(self.status) == 0:
-            self.status = 'OPEN'
-        if self.program is not None:
-            self.department = None
+    @property
+    def members(self):
+        """
+            Gets the associated members of a case. Members returned are based on the type of Case.
+        """
+        if self.caseType == kvp.TYPE_CHOICES[0][0]:  # return the primary complainant
+            return self.complainant
+        else:
+            # combine additional members to the primary complainant
+            q_set = list(self.additionalMembers.all())
+            q_set.insert(0, self.complainant)
+            return q_set
 
-    # Name: __str__
-    # Purpose: toString method
-    # Returns: A string representation of the object.
     def __str__(self):
-        return self.complainant.__str__() + ' - ' + self.date.strftime("%d, %b. %Y")
+        """
+            Returns a string representation of the case
+        """
+        return "<Case lead: {}, campus: {}, satellite: {}, caseType: {}>".format(self.lead, self.get_campus_display(),
+                                                                                 self.satellite,
+                                                                                 self.get_caseType_display())
 
 # Class: CaseMembers
 # Purpose: Joining class for Members to a Case.
@@ -87,19 +95,19 @@ class CaseFiles(models.Model):
     description = models.CharField(max_length=50,blank=True,null=True)
 
 
-    """
-    Method: clean
-    Purpose: Responsible for validating/cleaning files.
-            Raises exception if problem occurs
-    """
     def clean(self):
+        """
+        Method: clean
+        Purpose: Responsible for validating/cleaning files.
+                Raises exception if problem occurs
+        """
         super(CaseFiles, self).clean()
-        if (self.file.size > MAX_FILE_SIZE):
-            """Check if the uploaded file has a valid file size"""
+        if self.file.size > MAX_FILE_SIZE:
+            # Check if the uploaded file has a valid file size
             raise ValidationError("File is too large")
 
-        if (self.file.name.split(".")[-1] not in FILE_EXT_TO_ACCEPT):
-            """ Check if the uploaded file has a valid file extension """
+        if self.file.name.split(".")[-1] not in FILE_EXT_TO_ACCEPT:
+            # Check if the uploaded file has a valid file extension
             raise ValidationError("Invalid File Extension")
 
 

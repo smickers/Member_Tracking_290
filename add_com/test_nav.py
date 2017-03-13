@@ -1,8 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.test import SimpleTestCase
 from models import Committee
-from add_member.models import Person
-
 
 # class for testing the HTML navbar navigation within this app, and between this app and others.
 class TestNav(SimpleTestCase):

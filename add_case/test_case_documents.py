@@ -73,7 +73,7 @@ class CaseFileUpload(StaticLiveServerTestCase):
         self.case.campus = "Saskatoon"
         self.case.school = "School of Business"
         self.case.program = program
-        self.case.caseType = "GRIEVANCES - CLASSIFICATION"
+        self.case.caseType = 3
         self.case.status = "OPEN"
         self.case.docs = None
         self.case.logs = None

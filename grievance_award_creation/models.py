@@ -7,6 +7,7 @@ from spfa_mt.settings import MAX_FILE_SIZE, FILE_EXT_TO_ACCEPT
 from django.core.urlresolvers import reverse
 from datetime import date
 from django.core.exceptions import ValidationError
+from spfa_mt import kvp
 
 """
 Class: GrievanceFilesManager
@@ -33,34 +34,31 @@ class GrievanceAward(models.Model):
         ('P', 'Policy')
     ]
     # Object properties
-    grievanceType = models.CharField(max_length=1, choices=GRIEVANCE_TYPES, validators=[validators.validate_grievance_type], default='M')
-    recipient = models.ForeignKey(Person, validators=[validators.validate_recipient])
-    #recipient = models.CharField(max_length=50, validators=[validators.validate_recipient])
-    case = models.ForeignKey(Case, validators=[validators.validate_case])
-    #case = models.CharField(max_length=50, validators=[validators.validate_case],blank=True, null=True)
+    case = models.OneToOneField(Case)
     awardAmount = models.FloatField(default=500.00, validators=[validators.validate_award_amt])
     description = models.CharField(max_length=1000, null=True,blank=True, validators=[validators.validate_description])
     date = models.DateField(default=date.today())
 
     # Default get_absolute_url method
     def get_absolute_url(self):
-        return reverse(viewname='grievance_award_creation:create_grievance_award_success', kwargs={'pk': self.pk})
+        return reverse(viewname='add_case:case_detail', kwargs={'pk': self.case.pk})
 
-    # Method: clean
-    # Purpose: Validate attribute values.
-    def clean(self):
-        validators.validate_grievance_type(self.grievanceType)
-        #validators.validate_recipient(self.recipient)
-        #validators.validate_case(self.case)
-        validators.validate_award_amt(self.awardAmount)
-        validators.validate_description(self.description)
+    @property
+    def recipient(self):
+        return self.case.members
+    @property
+    def grievanceType(self):
+        if self.case.caseType == kvp.TYPE_CHOICES[0][0]:  # if caseType is individual
+            return GrievanceAward.GRIEVANCE_TYPES[0][0]   # GA type must be "member"
+        else:
+            return GrievanceAward.GRIEVANCE_TYPES[1][0]   # otherwise, "policy"
+
 
     # Method: __str__ (toString)
     # Purpose: Return a string representation of this object.
-    def __str__(self):
-        # Get the complainant
-        complainant = Person.objects.get(id=self.recipient)
-        return self.id.__str__() + " - " + complainant.firstName + " " + complainant.lastName
+
+
+
 
 """
 Class: GrievanceFiles
@@ -80,11 +78,11 @@ class GrievanceFiles(models.Model):
     def clean(self):
 
         super(GrievanceFiles, self).clean()
-        if(self.file.size > MAX_FILE_SIZE):
+        if self.file.size > MAX_FILE_SIZE:
             """Check if the uploaded file has a valid file size"""
             raise ValidationError("File is too large")
 
-        if(self.file.name.split(".")[-1] not in FILE_EXT_TO_ACCEPT):
+        if self.file.name.split(".")[-1] not in FILE_EXT_TO_ACCEPT:
             """ Check if the uploaded file has a valid file extension """
             raise ValidationError("Invalid File Extension")
 

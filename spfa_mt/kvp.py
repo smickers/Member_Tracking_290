@@ -22,25 +22,26 @@ CAMPUS_CHOICES = {
 }
 
 # Type of Case:
-TYPE_CHOICES = {
-    "GRIEVANCES - INDIVIDUAL": "GRIEVANCES - INDIVIDUAL",
-    "GRIEVANCES - GROUP": "GRIEVANCES - GROUP",
-    "GRIEVANCES - POLICY": "GRIEVANCES - POLICY",
-    "GRIEVANCES - CLASSIFICATION": "GRIEVANCES - CLASSIFICATION",
-    "GRIEVANCES - COMPLAINTS": "GRIEVANCES - COMPLAINTS",
-    "DISABILITY CLAIMS": "DISABILITY CLAIMS",
-    "ARBITRATION": "ARBITRATION",
-    "COMPLAINT": "COMPLAINT"
-}
+#   https://docs.djangoproject.com/en/1.10/ref/models/fields/
+TYPE_CHOICES = (
+    (7, "GRIEVANCES - INDIVIDUAL"),
+    (6, "GRIEVANCES - GROUP"),
+    (5, "GRIEVANCES - POLICY"),
+    (4, "GRIEVANCES - CLASSIFICATION"),
+    (3, "GRIEVANCES - COMPLAINTS"),
+    (2, "DISABILITY CLAIMS"),
+    (1, "ARBITRATION"),
+    (0, "COMPLAINT")
+)
 
 # List of available statuses for a Case:
-STATUS_CHOICES = {
-    "OPEN": "OPEN",
-    "CLOSED": "CLOSED",
-    "PENDING": "PENDING",
-    "ACTION REQ'D - MGMT": "ACTION REQ'D - MGMT",
-    "ACTION REQ'D SPFA": "ACTION REQ'D SPFA"
-}
+STATUS_CHOICES = (
+        ("OPEN", "OPEN"),
+        ("CLOSED", "CLOSED"),
+        ("PENDING", "PENDING"),
+        ("ACTION REQ'D - MGMT", "ACTION REQ'D - MGMT"),
+        ("ACTION REQ'D SPFA", "ACTION REQ'D SPFA")
+)
 
 # Options for schools for each campus:
 SCHOOL_CHOICES = {
@@ -90,3 +91,19 @@ EDU_AWARD_TYPES = [
 EDU_YEAR_CHOICES = [(r, r) for r in range(1980, date.today().year + 1)]
 # Reversing the list so that the latest year is shown first
 EDU_YEAR_CHOICES.reverse()
+
+CONTACT_LOG_STATUSES = (('E', 'Email'),
+                        ('F', 'Face to face'),
+                        ('P', 'Phone'),
+                        ('M', 'Meeting'),
+                        ('T', 'Text'))
+
+# CONTACT_LOG_FILE_EXTENSIONS = [
+#     'mp3',
+#     'msg',
+#     'xlsx',
+#     'doc',
+#     'docx',
+#     'pdf',
+#     'txt'
+# ]

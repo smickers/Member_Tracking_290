@@ -1,13 +1,14 @@
-from django.core.urlresolvers import reverse
-from django.test import SimpleTestCase
+from django.urls import reverse
+from django.test import SimpleTestCase, LiveServerTestCase
 from .models import Event
 from add_member.models import Person
 
 
+
 # class for testing the HTML navbar navigation within this app, and between this app and others.
-class TestNav(SimpleTestCase):
+class TestNav(LiveServerTestCase):
     # lets us use SimpleTestCase to do database queries
-    allow_database_queries = True
+    # allow_database_queries = True
     testEvent = None
     tempPerson = None
     tempPerson2 = None
@@ -77,7 +78,8 @@ class TestNav(SimpleTestCase):
     def test_we_can_nav_to_page_within_meeting_app(self):
         response = self.client.get(reverse('create_event:list_event'))
         self.assertContains(response, "List of Events")
-        response = self.client.get(reverse('create_event:event_detail', args='1'))
+        response = self.client.get(reverse('create_event:event_detail', kwargs={'pk': self.testEvent.pk } ))
+        print(reverse('create_event:event_detail', kwargs={'pk':'1'}))
         self.assertEquals(response.status_code, 200)
 
     # Test to show we can move from one page to another page in a different app

@@ -1,0 +1,22 @@
+<div class="panel panel-body">
+   <table class="table">
+
+    {% if case.additionalMembers.all %}
+        <thead>
+            <th>ID</th>
+            <th>Name</th>
+        </thead>
+        {%  for members in case.members %}
+        <tr>
+            <td>{{ members.memberID }}</td>
+            <td> <a href="{% url 'add_member:member_detail' members.pk %}">{{ members.firstName }}
+                {{ members.lastName }}</a></td>
+        </tr>
+        {% endfor %}
+    {% else %}
+        <p>
+            No members associated
+        </p>
+    {% endif %}
+    </table>
+</div>

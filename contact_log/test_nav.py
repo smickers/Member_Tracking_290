@@ -1,13 +1,19 @@
 from django.core.urlresolvers import reverse
-from django.test import SimpleTestCase
+from django.test import TestCase
 from add_member.models import Person
 from models import contactLog
-
+from django.test import Client
 
 # class for testing the HTML navbar navigation within this app, and between this app and others.
-class TestNav(SimpleTestCase):
+class TestNav(TestCase):
+
+    def __init__(self, *args, **kwargs):
+        super(TestNav, self).__init__(*args, **kwargs)
+        self.tempCLog = contactLog()
+
     # lets us use SimpleTestCase to do database queries
     allow_database_queries = True
+
 
     def setUp(self):
         self.tempPerson = Person()
@@ -31,26 +37,28 @@ class TestNav(SimpleTestCase):
         self.tempPerson.gender = 'MALE'
         self.tempPerson.save()
 
-        tempCLog = contactLog()
-        tempCLog.member = self.tempPerson
-        tempCLog.description = 'Hello World'
-        tempCLog.date = '2016-01-01'
-        tempCLog.clean()
-        tempCLog.save()
+
+        self.tempCLog.member = self.tempPerson
+        self.tempCLog.description = 'Hello World'
+        self.tempCLog.date = '2016-01-01'
+        self.tempCLog.clean()
+        self.tempCLog.save()
 
     # Test to show we can move from one page to another within an app
     def test_we_can_nav_to_page_within_Contact_Log_app(self):
+        self.client = Client()
         response = self.client.get(reverse('contact_log_creation:contact_log_list_default'))
         self.assertContains(response, "Contact Logs")
         # Using post was not allowed, switching to using get returned the web page
         # assertRedirect was looking for response code 302 meaning the page was found
         # using get actually gets the page and will tell you if it exists returning response code 200
         # so compare response code to 200 to make sure it went to the page
-        response = self.client.get(reverse('contact_log_creation:contact_log_edit', args='1'))
+        response = self.client.get(reverse('contact_log_creation:contact_log_edit', args=[self.tempCLog.pk]))
         self.assertEquals(response.status_code, 200)
 
     # Test to show we can move from one page to another page in a different app
     def test_we_can_navigate_to_a_page_outside_Contact_Log_app(self):
+        self.client = Client()
         response = self.client.get(reverse('contact_log_creation:contact_log_list_default'))
         self.assertContains(response, "Contact Logs")
         response = self.client.get(reverse('add_com:committee_list'))
@@ -58,6 +66,7 @@ class TestNav(SimpleTestCase):
 
     # Test to show that we can get to a landing page from any other pages
     def test_we_can_navigate_to_a_landing_page(self):
+        self.client = Client()
         response = self.client.get(reverse('contact_log_creation:contact_log_list_default'))
         self.assertContains(response, "Contact Logs")
         response = self.client.get("http://127.0.0.1:8000")
@@ -65,6 +74,7 @@ class TestNav(SimpleTestCase):
 
     # Test to prove that e cannot navigate to a page that doesn't exist
     def test_we_cannot_navigate_to_a_page_that_doesnt_exist(self):
+        self.client = Client()
         response = self.client.get(reverse('contact_log_creation:contact_log_list_default'))
         self.assertContains(response, "Contact Logs")
         response = self.client.get("add_member:member_edit_list")
