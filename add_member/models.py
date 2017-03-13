@@ -1,9 +1,7 @@
 from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db import IntegrityError
 from .validators import *
-from django.core.validators import MaxValueValidator
 
 
 # Create your models here.
@@ -75,6 +73,20 @@ class Person(models.Model):
             self.pCode = self.pCode.upper()
             if len(self.pCode) == 6:
                 self.pCode = self.pCode[:3] + ' ' + self.pCode[3:]
+
+
+    # Function: containsFile
+    # Purpose: Returns true or false, based on whether or not a file is associated with this
+    # member
+    # Returns: boolean
+    @property
+    def containsfile(self):
+        return MemberFiles.objects.filter(relatedMember=self.id).count() != 0
+    # TODO put these two properties in the implementation class diagram
+    @property
+    def get_files(self):
+        file_array = MemberFiles.objects.filter(relatedMember=self.id)
+        return file_array
 
 
 class MemberFiles(models.Model):

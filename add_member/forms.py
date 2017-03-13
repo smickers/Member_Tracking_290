@@ -1,12 +1,11 @@
-from django.forms import ModelForm, ValidationError, SelectDateWidget, FileField, ClearableFileInput, CharField
+from django.forms import ModelForm, SelectDateWidget, FileField, ClearableFileInput, CharField
 from .models import Person, MemberFiles
 from django import forms
 from spfa_mt import kvp
 from django.core.files import File
 from .validators import *
-import re
 import datetime
-
+from django.views.generic.edit import FormView
 
 # The form used for modifying/adding a member
 class PersonForm(ModelForm):
@@ -15,7 +14,7 @@ class PersonForm(ModelForm):
         super(ModelForm, self).__init__(*args, **kwargs)
         self.fields['file_field'] = FileField(required=False,
                                               widget=ClearableFileInput(
-                                                  attrs={'multiple': False, 'accept': settings.FILE_EXT_TO_ACCEPT}))
+                                                  attrs={'multiple': True, 'accept': settings.FILE_EXT_TO_ACCEPT}))
         self.fields['file_description'] = CharField(required=False, label='File Description',
                                                     widget=forms.TextInput(attrs={'type': '', 'size': '100%'}))
 
@@ -31,7 +30,7 @@ class PersonForm(ModelForm):
         # If a file exists to save
         if self.files != {}:
             # Get the save file
-            save_file = self.files.getList('file_field')[0]
+            save_file = self.files.getlist('file_field')[0]
             temp = File(file=save_file)
             desc = self.cleaned_data['file_description']
             # Create a member file, with information from the file fields and the member object
@@ -40,15 +39,15 @@ class PersonForm(ModelForm):
 
         return obj
 
-    class Meta:
 
+    class Meta:
 
         model = Person
 
-        #specifies which field are going to be used on the form
+        # specifies which field are going to be used on the form
         fields = '__all__'
 
-        #specifies labels for all the fields found in the model
+        # specifies labels for all the fields found in the model
         labels = {
             'memberID': 'Member ID/Saskpoly ID',
             'firstName': 'First Name',
@@ -77,7 +76,7 @@ class PersonForm(ModelForm):
             },
         }
 
-        #modifies the date fields to have a valid range
+        # modifies the date fields to have a valid range
         widgets = {
             'bDay': SelectDateWidget(months=kvp.MONTHS, years=range(1900, datetime.datetime.now().year + 1)),
             'hireDate': SelectDateWidget(months=kvp.MONTHS, years=range(1900, datetime.datetime.now().year + 1))
