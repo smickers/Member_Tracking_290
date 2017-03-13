@@ -21,3 +21,4 @@ migrations/*.py
 files/
 test/
 media/
+gamma_env/

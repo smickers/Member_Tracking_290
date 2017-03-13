@@ -44,23 +44,33 @@ class CaseForm(ModelForm):
 
         return obj
 
+    def clean(self):
+        """
+        Purpose: Get called after all the clean_[field_name] is called.
+        :return: None
+        """
+        if self.cleaned_data['caseType'] == 7 and len(self.data.getlist('additionalMembers')) > 0 :
+            """ Raises a Validation error if the user tries to add a member to an case with a caseType of "INDIVIDUAL"
+            """
+            raise ValidationError('You can only select 1 member for a grievance type of INDIVIDUAL',
+                                  code='illegal_additional_member')
+        super(CaseForm, self).clean()
+        return self.cleaned_data
+
+
+
     def clean_file_field(self):
         """
-        Function: clean
         Purpose: Cleans the models before they are entered into the database
         :return:
         """
-        # print(self.files not None)
-        #print(self.files != {})
-
-        #Clean uploaded files if there are any
+        # Clean uploaded files if there are any
         if self.files != {}:
             # print(self.files.getlist('file_field')[0].name)
             for f in self.files.getlist('file_field'):
-                #print(f.size)
-                if(f.size > MAX_FILE_SIZE):
+                if f.size > MAX_FILE_SIZE:
                     raise ValidationError("File exceeds maximum size allowed")
-                if(f.name.split(".")[-1] not in FILE_EXT_TO_ACCEPT):
+                if f.name.split(".")[-1] not in FILE_EXT_TO_ACCEPT:
                     raise ValidationError("File type is not allowed")
             return self.cleaned_data['file_field']
 
@@ -110,6 +120,7 @@ class CaseForm(ModelForm):
                 'invalid_choice': "Complainant cannot be added as an additional member."
             }
         }
+
 
 
 class CaseMembersForm(ModelForm):
