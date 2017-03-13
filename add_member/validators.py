@@ -2,7 +2,8 @@ from django.core.exceptions import ValidationError
 from spfa_mt import settings
 import re
 
-#validators for postal code
+
+# validators for postal code
 def validate_pCode(value):
     # Check to see if postal code is too short
     if value:
@@ -15,6 +16,7 @@ def validate_pCode(value):
             if not PCODE_REGEX.match(str(value)):
                 raise ValidationError("Invalid postal code entered! Postal code must be in the form A#A #A#.")
 
+
 def validate_date_format(value):
     DATE_REGEX = re.compile(r"^(?s).*(id_bDay_day).(?s).*(id_bDay_month)(?s).*(id_bDay_year)(?s).*$")
     if not DATE_REGEX.match(str(value)):
@@ -22,7 +24,7 @@ def validate_date_format(value):
     else:
         assert True
 
-#validators for phone numbers
+# validators for phone numbers
 def validate_numbers(value):
     HNUM_REGEX = re.compile(r"^\([0-9]{3}\)[0-9]{3}-[0-9]{4}$")
     if not HNUM_REGEX.match(str(value)):
@@ -55,7 +57,7 @@ def validate_rightstringlen50(value):
 
 # Validator for file upload extension
 def validate_file_ext(value):
-    if value.fileName.name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT:
+    if value.name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT:
         raise ValidationError('Invalid File Extension')
 
 

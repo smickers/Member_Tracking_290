@@ -10,6 +10,7 @@ import datetime
 
 # The form used for modifying/adding a member
 class PersonForm(ModelForm):
+    # Overloading the init method, to add file field/desc separately from the rest of the form.
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
         self.fields['file_field'] = FileField(required=False,
@@ -23,7 +24,7 @@ class PersonForm(ModelForm):
         # Try to save the regular member, excluding the file
         try:
             obj = super(ModelForm, self).save()
-        # If saving the mmebr throws an error show the error
+        # If saving the member throws an error, show the error
         except ValidationError:
             return ValidationError
 

@@ -62,7 +62,7 @@ class Person(models.Model):
     membershipStatus = models.CharField(max_length=30, choices=MEMBERSHIP_STATUS, null=True)
     hireDate = models.DateField(null=True)
 
-    #when model gets updated, user will be routed to thte member_detail url
+    # when model gets updated, user will be routed to thte member_detail url
     def get_absolute_url(self):
         return reverse(viewname='add_member:member_detail', kwargs={'pk':self.pk})
 
