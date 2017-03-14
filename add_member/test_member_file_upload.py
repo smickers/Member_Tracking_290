@@ -7,11 +7,11 @@ from spfa_mt import settings
 import os.path
 import shutil
 
+
 # Class: MemberFile_UploadTest
 # This class is for testing file uploads for a member
 @override_settings(MEDIA_ROOT='test/')
 class MemberFileUploadTest(StaticLiveServerTestCase):
-
     @classmethod
     def setUpClass(cls):
         super(MemberFileUploadTest, cls).setUpClass()
@@ -62,7 +62,7 @@ class MemberFileUploadTest(StaticLiveServerTestCase):
         f.seek(settings.MAX_FILE_SIZE + 1)
         f.write("\0")
         f.close()
-   
+
         f = open(self.path_midsizedFile, "wb")
         f.seek(25000)
         f.write("\0")
@@ -101,7 +101,7 @@ class MemberFileUploadTest(StaticLiveServerTestCase):
         # close the file stream
         fp.close()
         # Assert that the file exists, meaning our test passes
-        self.assertTrue(os.path.isfile(self.path_midsizedFile))
+        self.assertTrue(MemberFiles.objects.filter(fileName=member_file.fileName) != 0)
 
     # Test 3: Test that a user cannot upload a document > 500MB to a member
     def test_user_cannot_upload_oversize_file_to_member(self):
@@ -121,7 +121,7 @@ class MemberFileUploadTest(StaticLiveServerTestCase):
             # close the file stream
             fp.close()
             # Assert that the file exists, meaning our test passes
-            self.assertTrue(os.path.isfile(self.path_largeFile))
+            self.assertTrue(MemberFiles.objects.filter(fileName=member_file.fileName) != 0)
 
     # Test 4: Test that a user can upload files with valid file extensions
     def test_user_can_upload_file_with_valid_file_extension(self):
@@ -149,7 +149,7 @@ class MemberFileUploadTest(StaticLiveServerTestCase):
             # Close the file stream
             fp.close()
             # Validate that the file actually exists
-            self.assertTrue(os.path.isfile(file_path))
+            self.assertTrue(MemberFiles.objects.filter(fileName=member_file.fileName) != 0)
 
     # Test 5: Test that user cannot upload a file with an invalid file extension
     def test_user_cannot_upload_file_w_invalid_file_extension(self):
@@ -185,7 +185,7 @@ class MemberFileUploadTest(StaticLiveServerTestCase):
         # close the file stream
         fp.close()
         # Assert that the file exists, meaning our test passes
-        self.assertTrue(os.path.isfile(self.path_emptyFile))
+        self.assertTrue(MemberFiles.objects.filter(fileName=member_file.fileName) != 0)
 
     # Test 7: Test that a user can upload multiple files to a member (NOT all at the same time):
     def test_user_can_upload_more_than_one_file_to_each_member(self):
@@ -210,7 +210,8 @@ class MemberFileUploadTest(StaticLiveServerTestCase):
         # close the file stream
         fp.close()
         # Assert that the file exists, meaning our test passes
-        self.assertTrue(os.path.isfile(self.path_midsizedFile), self.path_smallFile)
+        self.assertTrue(MemberFiles.objects.filter(fileName=member_file.fileName) != 0 and MemberFiles.objects.filter(
+            fileName=second_file.fileName))
 
     # Test 8: Test that the database tracks the date when the file is uploaded, in the format DD/MM/YYYY
     def test_database_tracks_file_upload_date(self):
@@ -222,11 +223,12 @@ class MemberFileUploadTest(StaticLiveServerTestCase):
         member_file.fileName = File(fp)
         # Save the file
         member_file.clean()
-        member_file.save()  
+        member_file.save()
         # Close the file stream
         fp.close()
         # Assert that the file exists, meaning our test passes
-        self.assertTrue(member_file.dateUploaded is not None)
+        self.assertTrue(MemberFiles.objects.filter(fileName=member_file.fileName) != 0 and member_file.dateUploaded
+                        is not None)
 
     # Tear down and trash all the old files
     def tearDown(self):
