@@ -82,17 +82,32 @@
                     $("#show_more").show();
                 }
 
-                var minBdayDate = new Date($("#id_min_bDay_year").val(), $("#id_min_bDay_month").val(),$("#id_min_bDay_day").val());
-                minBday = minBdayDate.getDate() + "-" + (minBdayDate.getMonth()) + "-" +minBdayDate.getFullYear();
-                var maxBdayDate = new Date($("#id_max_bDay_year").val(), $("#id_max_bDay_month").val(),$("#id_max_bDay_day").val());
-                maxBday = minBdayDate.getDate() + "-" + (maxBdayDate.getMonth()) + "-" +maxBdayDate.getFullYear();
+                var minBday = null;
+                var maxBday = null;
+                var minHday = null;
+                var maxHday = null;
 
-                var minHdayDate = new Date($("#id_min_hDay_year").val(), $("#id_min_hDay_month").val(),$("#id_min_hDay_day").val());
-                minHday = minHdayDate.getDate() + "-" + (minHdayDate.getMonth()) + "-" +minHdayDate.getFullYear();
-                var maxHdayDate = new Date($("#id_max_hDay_year").val(), $("#id_max_hDay_month").val(),$("#id_max_hDay_day").val());
-                maxHday = maxHdayDate.getDate() + "-" + (maxHdayDate.getMonth()) + "-" +maxHdayDate.getFullYear();
+                if($("#id_min_bDay_year").val() != 0 && $("#id_min_bDay_month").val() != 0 && $("#id_min_bDay_day").val() !=0)
+                {
+                    var minBdayDate = new Date($("#id_min_bDay_year").val(), $("#id_min_bDay_month").val(),$("#id_min_bDay_day").val());
+                    minBday = minBdayDate.getFullYear() + "-" + (minBdayDate.getMonth()) + "-" +minBdayDate.getDate();
+                }
+                if($("#id_max_bDay_year").val() != 0 && $("#id_max_bDay_month").val() != 0 && $("#id_max_bDay_day").val() !=0)
+                {
+                    var maxBdayDate = new Date($("#id_max_bDay_year").val(), $("#id_max_bDay_month").val(),$("#id_max_bDay_day").val());
+                    maxBday = maxBdayDate.getFullYear()+ "-" + (maxBdayDate.getMonth()) + "-" +minBdayDate.getDate();
+                }
+                if($("#id_min_hDay_year").val() != 0 && $("#id_min_hDay_month").val() != 0 && $("#id_min_hDay_day").val() !=0)
+                {
+                    var minHdayDate = new Date($("#id_min_hDay_year").val(), $("#id_min_hDay_month").val(),$("#id_min_hDay_day").val());
+                    minHday =  minHdayDate.getFullYear()+ "-" + (minHdayDate.getMonth()) + "-" +minHdayDate.getDate();
+                }
+                if($("#id_max_hDay_year").val() != 0 && $("#id_max_hDay_month").val() != 0 && $("#id_max_hDay_day").val() !=0)
+                {
+                    var maxHdayDate = new Date($("#id_max_hDay_year").val(), $("#id_max_hDay_month").val(),$("#id_max_hDay_day").val());
+                    maxHday = maxHdayDate.getFullYear() + "-" + (maxHdayDate.getMonth()) + "-" +maxHdayDate.getDate();
+                }
 
-                //console.log("Min Bday "+minBday+ " Max Bday " + maxBday + " Min Hire " + minHday + " maxHday " + maxHday);
 
                 $('#id_memberID').val() > 0 ? temp_endpoint += "memberID=" + encodeURIComponent($('#id_memberID').val())+ "&" : false;
                 $('#id_firstName').val().length > 0 ? temp_endpoint += "firstName__contains=" + encodeURIComponent($('#id_firstName').val())+ "&" : false;
@@ -108,16 +123,15 @@
                 $('#id_jobType').val().length > 0 ? temp_endpoint += "jobType__contains=" + encodeURIComponent($('#id_jobType').val())+ "&": false;
                 $('#id_committee').val().length > 0 ? temp_endpoint += "committee__contains=" + encodeURIComponent($('#id_committee').val())+ "&": false;
                 $('#id_membershipStatus').val().length ? temp_endpoint += "membershipStatus__contains=" + encodeURIComponent($('#id_membershipStatus').val())+ "&": false;
-                ($('#id_min_hDay').val() != null ) ? temp_endpoint += "min_hDay=" + encodeURIComponent($('#id_min_hDay').val())+ "&": temp_endpoint += '';
-                ($('#id_max_hDay').val() != null ) ? temp_endpoint += "max_hDay=" + encodeURIComponent($('#id_max_hDay').val())+ "&": temp_endpoint += '';
-                ($('#id_min_bDay').val() != null ) ? temp_endpoint += "min_bDay=" + encodeURIComponent($('#id_min_bDay').val())+ "&": temp_endpoint += '';
-                ($('#id_max_bDay').val() != null ) ? temp_endpoint += "max_bDay=" + encodeURIComponent($('#id_max_bDay').val())+ "&": temp_endpoint += '';
+                (minHday != null ) ? temp_endpoint += "min_hDay=" + encodeURIComponent(minHday)+ "&": temp_endpoint += '';
+                (maxHday != null ) ? temp_endpoint += "max_hDay=" + encodeURIComponent(maxHday)+ "&": temp_endpoint += '';
+                (minBday != null ) ? temp_endpoint += "min_bDay=" + encodeURIComponent(minBday)+ "&": temp_endpoint += '';
+                (maxBday != null ) ? temp_endpoint += "max_bDay=" + encodeURIComponent(maxBday)+ "&": temp_endpoint += '';
                 $('#id_gender').val().length > 0 ? temp_endpoint += "gender=" + encodeURIComponent($('#id_gender').val()) + "&": false;
-
-
 
                 ajax_call(temp_endpoint);
                 console.log(temp_endpoint);
+
                 for(var i = 1; i <= form_no; i++)
                 {
                     temp_endpoint = "/member-filter?";
@@ -136,10 +150,10 @@
                     $('#id_jobType'+i).val().length > 0 ? temp_endpoint += "jobType__contains=" + encodeURIComponent($('#id_jobType'+i).val())+ "&": false;
                     $('#id_committee'+i).val().length > 0 ? temp_endpoint += "committee__contains=" + encodeURIComponent($('#id_committee'+i).val())+ "&": false;
                     $('#id_membershipStatus'+i).val().length ? temp_endpoint += "membershipStatus__contains=" + encodeURIComponent($('#id_membershipStatus'+i).val())+ "&": false;
-                    ($('#id_min_hDay'+i).val() != null ) ? temp_endpoint += "min_hDay=" + encodeURIComponent($('#id_min_hDay'+i).val())+ "&": temp_endpoint += '';
-                    ($('#id_max_hDay'+i).val() != null ) ? temp_endpoint += "max_hDay=" + encodeURIComponent($('#id_max_hDay'+i).val())+ "&": temp_endpoint += '';
-                    ($('#id_min_bDay'+i).val() != null ) ? temp_endpoint += "min_bDay=" + encodeURIComponent($('#id_min_bDay'+i).val())+ "&": temp_endpoint += '';
-                    ($('#id_max_bDay'+i).val() != null ) ? temp_endpoint += "max_bDay=" + encodeURIComponent($('#id_max_bDay'+i).val())+ "&": temp_endpoint += '';
+                    (minHday != null ) ? temp_endpoint += "min_hDay=" + encodeURIComponent(minHday)+ "&": temp_endpoint += '';
+                    (maxHday != null ) ? temp_endpoint += "max_hDay=" + encodeURIComponent(maxHday)+ "&": temp_endpoint += '';
+                    (minBday != null ) ? temp_endpoint += "min_bDay=" + encodeURIComponent(minBday)+ "&": temp_endpoint += '';
+                    (maxBday != null ) ? temp_endpoint += "max_bDay=" + encodeURIComponent(maxBday)+ "&": temp_endpoint += '';
                     $('#id_gender'+i).val().length > 0 ? temp_endpoint += "gender=" + encodeURIComponent($('#id_gender'+i).val()) + "&": false;
 
                     ajax_call(temp_endpoint);
