@@ -10,7 +10,7 @@
 
 {% block content %}
 
-    <div class="col-lg-2 col-md-12 filter_widget">
+    <div class="col-lg-3 col-md-12 filter_widget">
         <div id="form_container">
             <div id="form">
                 {% bootstrap_form form %}
@@ -21,7 +21,7 @@
 
     </div>
 
-    <div class="col-lg-10">
+    <div class="col-lg-9">
         <div id="member_data">
             <table class="table">
                 <thead>
@@ -52,14 +52,16 @@
         var data_each_page = 30;
         var end_point_url = "/member-filter?limit=30&" ;
         var temp_endpoint = end_point_url;
-        var form_no = 1;
+        var form_no = 0;
         $(document).ready( function() {
             $("#moreFilters").click(function(){
+                form_no++;
+
                 var source = $("#form"),
                     clone = source.clone();
 
-                console.log("Hi");
-                console.log((clone));
+                //console.log("Hi");
+                //console.log((clone));
 
                 clone.find(':input').attr('id', function(i, val){
                     return val + form_no;
@@ -67,11 +69,31 @@
 
                 clone.appendTo("#form_container");
 
-                form_no++;
             });
 
             $("#filter").click(function(){
-                temp_endpoint = end_point_url;
+                if(form_no > 0) {
+                    temp_endpoint = "/member-filter?";
+                    $("#show_more").hide();
+                }
+                else
+                {
+                    temp_endpoint = end_point_url;
+                    $("#show_more").show();
+                }
+
+                var minBdayDate = new Date($("#id_min_bDay_year").val(), $("#id_min_bDay_month").val(),$("#id_min_bDay_day").val());
+                minBday = minBdayDate.getDate() + "-" + (minBdayDate.getMonth()) + "-" +minBdayDate.getFullYear();
+                var maxBdayDate = new Date($("#id_max_bDay_year").val(), $("#id_max_bDay_month").val(),$("#id_max_bDay_day").val());
+                maxBday = minBdayDate.getDate() + "-" + (maxBdayDate.getMonth()) + "-" +maxBdayDate.getFullYear();
+
+                var minHdayDate = new Date($("#id_min_hDay_year").val(), $("#id_min_hDay_month").val(),$("#id_min_hDay_day").val());
+                minHday = minHdayDate.getDate() + "-" + (minHdayDate.getMonth()) + "-" +minHdayDate.getFullYear();
+                var maxHdayDate = new Date($("#id_max_hDay_year").val(), $("#id_max_hDay_month").val(),$("#id_max_hDay_day").val());
+                maxHday = maxHdayDate.getDate() + "-" + (maxHdayDate.getMonth()) + "-" +maxHdayDate.getFullYear();
+
+                //console.log("Min Bday "+minBday+ " Max Bday " + maxBday + " Min Hire " + minHday + " maxHday " + maxHday);
+
                 $('#id_memberID').val() > 0 ? temp_endpoint += "memberID=" + encodeURIComponent($('#id_memberID').val())+ "&" : false;
                 $('#id_firstName').val().length > 0 ? temp_endpoint += "firstName__contains=" + encodeURIComponent($('#id_firstName').val())+ "&" : false;
                 $('#id_middleName').val().length > 0 ? temp_endpoint += "middleName__contains=" + encodeURIComponent($('#id_middleName').val())+ "&": false;
@@ -92,9 +114,14 @@
                 ($('#id_max_bDay').val() != null ) ? temp_endpoint += "max_bDay=" + encodeURIComponent($('#id_max_bDay').val())+ "&": temp_endpoint += '';
                 $('#id_gender').val().length > 0 ? temp_endpoint += "gender=" + encodeURIComponent($('#id_gender').val()) + "&": false;
 
-                for(var i = 1; i < form_no; i++)
+
+
+                ajax_call(temp_endpoint);
+                console.log(temp_endpoint);
+                for(var i = 1; i <= form_no; i++)
                 {
-                    console.log(i);
+                    temp_endpoint = "/member-filter?";
+                    console.log("form_no: "+i);
                     $('#id_memberID'+i).val() > 0 ? temp_endpoint += "memberID=" + encodeURIComponent($('#id_memberID'+i).val())+ "&" : false;
                     $('#id_firstName'+i).val().length > 0 ? temp_endpoint += "firstName__contains=" + encodeURIComponent($('#id_firstName'+i).val())+ "&" : false;
                     $('#id_middleName'+i).val().length > 0 ? temp_endpoint += "middleName__contains=" + encodeURIComponent($('#id_middleName'+i).val())+ "&": false;
@@ -114,11 +141,13 @@
                     ($('#id_min_bDay'+i).val() != null ) ? temp_endpoint += "min_bDay=" + encodeURIComponent($('#id_min_bDay'+i).val())+ "&": temp_endpoint += '';
                     ($('#id_max_bDay'+i).val() != null ) ? temp_endpoint += "max_bDay=" + encodeURIComponent($('#id_max_bDay'+i).val())+ "&": temp_endpoint += '';
                     $('#id_gender'+i).val().length > 0 ? temp_endpoint += "gender=" + encodeURIComponent($('#id_gender'+i).val()) + "&": false;
+
+                    ajax_call(temp_endpoint);
                 }
-                console.log(temp_endpoint);
+
                 $('#list_member')[0].innerHTML = "";
-                $("#show_more").show();
-                ajax_call(temp_endpoint);
+
+
             });
 
             $("#show_more").click(function(){
@@ -132,35 +161,35 @@
                     success: function(data){
                         console.log("Here's the data : ");
                         console.log(data);
-                        if( data.count != 0){
-                            data.results.forEach(function(e){
-                                var ele = $('<tr></tr>');
-                                ele.append(
-                                    "<td><a href='/member/" + e.id + "'>" + e.firstName + " " + e.lastName + "</a></td>"
-                                );
-                                ele.append(
-                                    $("<td></td>").text(e.gender)
-                                );
-                                ele.append(
-                                    $("<td></td>").text(e.memberID)
-                                );
-                                ele.append(
-                                    $("<td></td>").text(e.city)
-                                );
-                                ele.append(
-                                    $("<td></td>").text(e.pCode)
-                                );
-                                ele.append(
-                                    $("<td></td>").text(e.bDay)
-                                );
-                                ele.append(
-                                    $("<td></td>").text(e.campus)
-                                );
+                        data.results.forEach(function(e){
+                            var ele = $('<tr></tr>');
+                            ele.append(
+                                "<td><a href='/member/" + e.id + "'>" + e.firstName + " " + e.lastName + "</a></td>"
+                            );
+                            ele.append(
+                                $("<td></td>").text(e.gender)
+                            );
+                            ele.append(
+                                $("<td></td>").text(e.memberID)
+                            );
+                            ele.append(
+                                $("<td></td>").text(e.city)
+                            );
+                            ele.append(
+                                $("<td></td>").text(e.pCode)
+                            );
+                            ele.append(
+                                $("<td></td>").text(e.bDay)
+                            );
+                            ele.append(
+                                $("<td></td>").text(e.campus)
+                            );
 
-                                $('#list_member').append(ele);
-                            });
-                        }else{
-                            $('#list_member').append("<td colspan=7 style='text-align: center'><strong>End Of List</strong></td>");
+                            $('#list_member').append(ele);
+                        });
+                        if( data.next == null)
+                        {
+                            //$('#list_member').append("<td colspan=7 style='text-align: center'><strong>End Of List</strong></td>");
                             $("#show_more").hide();
                         }
 

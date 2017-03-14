@@ -4,7 +4,7 @@ from .validators import *
 import re
 import datetime
 from django import forms
-
+import django
 #The form used for modifying/adding a member
 class PersonForm(ModelForm):
     class Meta:
@@ -69,7 +69,7 @@ class MemberFilterForm(forms.Form):
     firstName = forms.CharField(label='First Name', widget=forms.TextInput(attrs={'placeholder': 'First Name'}), required=False)
     middleName = forms.CharField(label='Middle Name', widget=forms.TextInput(attrs={'placeholder': 'Middle Name'}), required=False)
     lastName = forms.CharField(label='Last Name', widget=forms.TextInput(attrs={'placeholder': 'Last Name'}), required=False)
-    min_bDay = forms.DateField(label='Minimum Birth Date', widget=PersonForm.Meta.widgets['bDay'], required=False)
+    min_bDay = forms.DateField(label='Minimum Birth Date', widget=PersonForm.Meta.widgets['bDay'],required=False)
     max_bDay = forms.DateField(label='Maximum Birth Date', widget=PersonForm.Meta.widgets['bDay'], required=False)
     gender = forms.ChoiceField(choices=Person.GENDER_CHOICE, required=False)
     socNum = forms.IntegerField(label='SIN', widget=forms.NumberInput(attrs={'placeholder': 'Social Insurance Number'}), required=False)
@@ -86,3 +86,7 @@ class MemberFilterForm(forms.Form):
     membershipStatus = forms.CharField(label='Membership Status', widget=forms.TextInput(attrs={'placeholder': 'Membership Status'}), required=False)
     min_hDay = forms.DateField(label='Minimum Hire Date', widget=PersonForm.Meta.widgets['hireDate'], required=False)
     max_hDay = forms.DateField(label='Maximum Hire Date', widget=PersonForm.Meta.widgets['hireDate'], required=False)
+
+    widgets ={
+
+    }

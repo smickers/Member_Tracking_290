@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     'grievance_award_creation.apps.GrievanceAwardCreationConfig',
     'url_filter',
     'django_filters',
-    'filters'
 ]
 
 MIDDLEWARE = [

@@ -92,7 +92,7 @@ class MemberFilterView(viewsets.ReadOnlyModelViewSet):
     filter_fields = ['id', 'memberID', 'firstName', 'middleName', 'lastName',
                   'socNum', 'city', 'mailAddress', 'mailAddress2', 'pCode',
                   'max_bDay', 'min_bDay', 'gender', 'hPhone', 'cPhone', 'hEmail', 'campus',
-                  'jobType', 'committee', 'membershipStatus', 'hireDate']
+                  'jobType', 'committee', 'membershipStatus', 'max_hDay','min_hDay']
 
 
 class MemberFilterList(TemplateView, FormMixin):
