@@ -81,7 +81,11 @@ class PersonUploadTestCase(TestCase):
     '''
     def test_preview_table_displays_all_member_information(self):
         """
-
+            1. Upload the xlsx file to the endpoint url
+            2. Parse the request to json
+            3. Send the primary key of the uploaded xlsx file to the xlsx-to-json endpoint
+            4. Parse the request response to json
+            5. Verify if the json response can be represented as a table.
         """
         pass
 
@@ -113,6 +117,14 @@ class PersonUploadTestCase(TestCase):
                 (ex: no address, no phone number) etc
     '''
     def test_members_are_created_if_non_required_fields_are_missing_in_file(self):
+        """
+            1. Upload the xlsx file to the endpoint url
+            2. Parse the request to json
+            3. Send the primary key of the uploaded xlsx file to the xlsx-to-json endpoint
+            4. Parse the request response to json
+            5. Verify if the json response can be represented as a table.
+            6. Check to see if the list of members included witht he xlsx file now exists on the DB
+        """
         pass
 
     '''
@@ -121,4 +133,11 @@ class PersonUploadTestCase(TestCase):
                 (ex: file has improper headers: no header for address, sin, ID, etc)
     '''
     def test_members_are_not_created_if_file_is_invalid_format(self):
+        """
+            1. Upload the xlsx file to the endpoint url
+            2. Parse the request to json
+            3. Send the primary key of the uploaded xlsx file to the xlsx-to-json endpoint
+            4. Parse the request response to json
+            5. Check if json response contains an error attribute
+        """
         pass
