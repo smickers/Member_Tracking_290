@@ -165,7 +165,7 @@ class MemberFileUploadTest(StaticLiveServerTestCase):
             member_file.save()
             # Close the file stream
             fp.close()
-    # TODO: David needs to check in the AT document, so we can fix this test criterion.
+
     # Test 6: Test that a user CANNOT upload an empty file (0B), as these are useless entries to the DB:
     def test_user_can_upload_empty_file(self):
         with self.assertRaisesRegexp(ValidationError, "The submitted file is empty."):
@@ -208,8 +208,8 @@ class MemberFileUploadTest(StaticLiveServerTestCase):
         # close the file stream
         fp.close()
         # Assert that the file exists, meaning our test passes
-        self.assertTrue(MemberFiles.objects.filter(fileName=member_file.fileName) != 0 and MemberFiles.objects.filter(
-            fileName=second_file.fileName) != 0)
+        self.assertTrue(MemberFiles.objects.filter(fileName=member_file.fileName) != 0
+                        and MemberFiles.objects.filter(fileName=second_file.fileName) != 0)
 
     # Test 8: Test that the database tracks the date when the file is uploaded, in the format DD/MM/YYYY
     def test_database_tracks_file_upload_date(self):
@@ -225,8 +225,8 @@ class MemberFileUploadTest(StaticLiveServerTestCase):
         # Close the file stream
         fp.close()
         # Assert that the file exists, meaning our test passes
-        self.assertTrue(MemberFiles.objects.filter(fileName=member_file.fileName) != 0 and member_file.dateUploaded
-                        is not None)
+        self.assertTrue(MemberFiles.objects.filter(fileName=member_file.fileName) != 0
+                        and member_file.dateUploaded is not None)
 
     # Tear down and trash all the old files
     def tearDown(self):
