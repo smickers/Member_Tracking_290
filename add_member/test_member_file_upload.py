@@ -79,8 +79,6 @@ class MemberFileUploadTest(StaticLiveServerTestCase):
         f.close()
 
         f = open(self.path_emptyFile, "wb")
-        f.seek(1)
-        f.write("\0")
         f.close()
 
     # Test 1: that a user can upload a document to a member
@@ -167,27 +165,27 @@ class MemberFileUploadTest(StaticLiveServerTestCase):
             member_file.save()
             # Close the file stream
             fp.close()
-
-    # Test 6: Test that a user CAN upload an empty file (0MB):
+    # TODO: David needs to check in the AT document, so we can fix this test criterion.
+    # Test 6: Test that a user CANNOT upload an empty file (0B), as these are useless entries to the DB:
     def test_user_can_upload_empty_file(self):
-        # Create a new instance of MemberFiles to associate the File to
-        member_file = MemberFiles()
-        # Open a regular sized file, since this is a valid file test:
-        fp = open(self.path_emptyFile, "r")
-        # Associate the MemberFile with the File we just opened:
-        member_file.fileName = File(fp)
-        # Associate the MemberFile with a Member, since MF is a join:
-        member_file.relatedMember = self.person1
-        # Call the clean method of the model, to do file validation:
-        member_file.clean()
-        # Save the MemberFile object
-        member_file.save()
-        # close the file stream
-        fp.close()
-        # Assert that the file exists, meaning our test passes
-        self.assertTrue(MemberFiles.objects.filter(fileName=member_file.fileName) != 0)
+        with self.assertRaisesRegexp(ValidationError, "The submitted file is empty."):
+            # Create a new instance of MemberFiles to associate the File to
+            member_file = MemberFiles()
+            # Open a regular sized file, since this is a valid file test:
+            fp = open(self.path_emptyFile, "r")
+            # Associate the MemberFile with the File we just opened:
+            member_file.fileName = File(fp)
+            # Associate the MemberFile with a Member, since MF is a join:
+            member_file.relatedMember = self.person1
+            # Call the clean method of the model, to do file validation:
+            member_file.clean()
+            # Save the MemberFile object
+            member_file.save()
+            # close the file stream
+            fp.close()
 
-    # Test 7: Test that a user can upload multiple files to a member (NOT all at the same time):
+    # Test 7: Test that a user can upload multiple files to a member:
+    # NOTE: simultaneous uploads are not accepted and will crash.
     def test_user_can_upload_more_than_one_file_to_each_member(self):
         # Create new instances of MemberFiles, to associate the files to
         member_file = MemberFiles()
@@ -211,7 +209,7 @@ class MemberFileUploadTest(StaticLiveServerTestCase):
         fp.close()
         # Assert that the file exists, meaning our test passes
         self.assertTrue(MemberFiles.objects.filter(fileName=member_file.fileName) != 0 and MemberFiles.objects.filter(
-            fileName=second_file.fileName))
+            fileName=second_file.fileName) != 0)
 
     # Test 8: Test that the database tracks the date when the file is uploaded, in the format DD/MM/YYYY
     def test_database_tracks_file_upload_date(self):
