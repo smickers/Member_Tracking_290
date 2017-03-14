@@ -22,12 +22,12 @@ router.register('case_list/search', CaseSearchView, base_name='case-search')
 # route the committee search functionality to 'meeting/view' url
 router.register('committee_list/search', CommitteeSearchView, base_name='committee-search')
 
-router.register('member/filter', MemberFilterView, base_name='member-filter')
+#router.register('member/filter', MemberFilterView, base_name='member-filter')
 
 urlpatterns = [
     url(r'^index.html$', views.spfaView.as_view(), name='index_default'),
     url(r'^$', views.spfaView.as_view(), name='index'),
-   # url(r'^member-filter/$', MemberFilterView.as_view(), name='member-filter'),
+    url(r'^member-filter/$', MemberFilterView.as_view({'get': 'list'}), name='member-filter'),
     #rest service's root url
     url(r'^api-root/', include(router.urls)),
     url(r'^admin/', admin.site.urls),

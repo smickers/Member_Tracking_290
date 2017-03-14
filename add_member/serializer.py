@@ -23,7 +23,4 @@ class MemberFilterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
         # index_classes = [MembersIndex]
-        fields = ['id', 'memberID', 'firstName', 'middleName', 'lastName',
-                  'socNum', 'city', 'mailAddress', 'mailAddress2', 'pCode',
-                  'bDay', 'gender', 'hPhone', 'cPhone', 'hEmail', 'campus',
-                  'jobType', 'committee', 'membershipStatus', 'hireDate']
+        fields = '__all__'

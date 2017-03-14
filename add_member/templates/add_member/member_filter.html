@@ -11,8 +11,14 @@
 {% block content %}
 
     <div class="col-lg-2 col-md-12 filter_widget">
-            {% bootstrap_form form %}
+        <div id="form_container">
+            <div id="form">
+                {% bootstrap_form form %}
+            </div>
+        </div>
+            <button class="btn" id="moreFilters">Additional Filters</button>
             <button class="btn" id="filter">Filter</button>
+
     </div>
 
     <div class="col-lg-10">
@@ -46,7 +52,24 @@
         var data_each_page = 30;
         var end_point_url = "/member-filter?limit=30&" ;
         var temp_endpoint = end_point_url;
+        var form_no = 1;
         $(document).ready( function() {
+            $("#moreFilters").click(function(){
+                var source = $("#form"),
+                    clone = source.clone();
+
+                console.log("Hi");
+                console.log((clone));
+
+                clone.find(':input').attr('id', function(i, val){
+                    return val + form_no;
+                });
+
+                clone.appendTo("#form_container");
+
+                form_no++;
+            });
+
             $("#filter").click(function(){
                 temp_endpoint = end_point_url;
                 $('#id_memberID').val() > 0 ? temp_endpoint += "memberID=" + encodeURIComponent($('#id_memberID').val())+ "&" : false;
@@ -67,9 +90,34 @@
                 ($('#id_max_hDay').val() != null ) ? temp_endpoint += "max_hDay=" + encodeURIComponent($('#id_max_hDay').val())+ "&": temp_endpoint += '';
                 ($('#id_min_bDay').val() != null ) ? temp_endpoint += "min_bDay=" + encodeURIComponent($('#id_min_bDay').val())+ "&": temp_endpoint += '';
                 ($('#id_max_bDay').val() != null ) ? temp_endpoint += "max_bDay=" + encodeURIComponent($('#id_max_bDay').val())+ "&": temp_endpoint += '';
-                $('#id_gender').val().length > 0 ? temp_endpoint += "gender=" + encodeURIComponent($('#id_gender').val()): false;
+                $('#id_gender').val().length > 0 ? temp_endpoint += "gender=" + encodeURIComponent($('#id_gender').val()) + "&": false;
+
+                for(var i = 1; i < form_no; i++)
+                {
+                    console.log(i);
+                    $('#id_memberID'+i).val() > 0 ? temp_endpoint += "memberID=" + encodeURIComponent($('#id_memberID'+i).val())+ "&" : false;
+                    $('#id_firstName'+i).val().length > 0 ? temp_endpoint += "firstName__contains=" + encodeURIComponent($('#id_firstName'+i).val())+ "&" : false;
+                    $('#id_middleName'+i).val().length > 0 ? temp_endpoint += "middleName__contains=" + encodeURIComponent($('#id_middleName'+i).val())+ "&": false;
+                    $('#id_lastName'+i).val().length > 0 ? temp_endpoint += "lastName__contains=" + encodeURIComponent($('#id_lastName'+i).val())+ "&": false;
+                    $('#id_socNum'+i).val() > 0 ? temp_endpoint += "socNum__contains=" + encodeURIComponent($('#id_socNum'+i).val())+ "&": false;
+                    $('#id_city'+i).val().length > 0 ? temp_endpoint += "city__contains=" + encodeURIComponent($('#id_city'+i).val())+ "&": false;
+                    $('#id_mailAddress'+i).val().length > 0 ? temp_endpoint += "mailAddress__contains=" + encodeURIComponent($('#id_mailAddress'+i).val())+ "&": false;
+                    $('#id_mailAddress2'+i).val().length > 0 ? temp_endpoint += "mailAddress2__contains=" + encodeURIComponent($('#id_mailAddress2'+i).val())+ "&": false;
+                    $('#id_pCode'+i).val().length > 0 ? temp_endpoint += "pCode__contains=" + encodeURIComponent($('#id_pCode'+i).val())+ "&": false;
+                    $('#id_hPhone'+i).val().length > 0 ? temp_endpoint += "hPhone__contains=" + encodeURIComponent($('#id_hPhone'+i).val())+ "&": false;
+                    $('#id_campus'+i).val().length > 0 ? temp_endpoint += "campus__contains=" + encodeURIComponent($('#id_campus'+i).val())+ "&": false;
+                    $('#id_jobType'+i).val().length > 0 ? temp_endpoint += "jobType__contains=" + encodeURIComponent($('#id_jobType'+i).val())+ "&": false;
+                    $('#id_committee'+i).val().length > 0 ? temp_endpoint += "committee__contains=" + encodeURIComponent($('#id_committee'+i).val())+ "&": false;
+                    $('#id_membershipStatus'+i).val().length ? temp_endpoint += "membershipStatus__contains=" + encodeURIComponent($('#id_membershipStatus'+i).val())+ "&": false;
+                    ($('#id_min_hDay'+i).val() != null ) ? temp_endpoint += "min_hDay=" + encodeURIComponent($('#id_min_hDay'+i).val())+ "&": temp_endpoint += '';
+                    ($('#id_max_hDay'+i).val() != null ) ? temp_endpoint += "max_hDay=" + encodeURIComponent($('#id_max_hDay'+i).val())+ "&": temp_endpoint += '';
+                    ($('#id_min_bDay'+i).val() != null ) ? temp_endpoint += "min_bDay=" + encodeURIComponent($('#id_min_bDay'+i).val())+ "&": temp_endpoint += '';
+                    ($('#id_max_bDay'+i).val() != null ) ? temp_endpoint += "max_bDay=" + encodeURIComponent($('#id_max_bDay'+i).val())+ "&": temp_endpoint += '';
+                    $('#id_gender'+i).val().length > 0 ? temp_endpoint += "gender=" + encodeURIComponent($('#id_gender'+i).val()) + "&": false;
+                }
                 console.log(temp_endpoint);
-                $('#list_member')[0].innerHTML = ""
+                $('#list_member')[0].innerHTML = "";
+                $("#show_more").show();
                 ajax_call(temp_endpoint);
             });
 
@@ -112,7 +160,8 @@
                                 $('#list_member').append(ele);
                             });
                         }else{
-                            $('#list_member')[0].innerHTML = ""
+                            $('#list_member').append("<td colspan=7 style='text-align: center'><strong>End Of List</strong></td>");
+                            $("#show_more").hide();
                         }
 
 
