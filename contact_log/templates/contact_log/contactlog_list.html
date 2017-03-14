@@ -12,6 +12,9 @@
          thead th, .center, #contact-log-table-data td {
         text-align: center;
     }
+        .form-control {
+            margin-right: 1vw;
+        }
     </style>
     <script type="text/javascript">
         var criteriaCount = 0;
@@ -20,40 +23,64 @@
         function addCriteria()
         {
             criteriaCount++;
-            $("#filteringForm").append('<br /><br /><div class="form-group"> <label>Field</label> <select class="form-control" id="field-choice-0"> <option value="id">ID</option> <option value="member">Member</option> <option value="date">Date</option> <option value="description">Description</option> <option value="contactCode">Contact Code</option> </select> </div> <div class="form-group"> <label>Value</label> <input type="text" class="form-control" id="field-value-0"> </div> <div class="form-group"> <button class="form-control btn btn-info" onclick="addCriteria()">AND</button> </div>')
+            $("#filteringForm").append('<div id="filter-entry-' + criteriaCount + '"><br /><div class="form-group" id="filter-entry-' + criteriaCount + '"> <label>Field</label> <select class="form-control" id="field-choice-' + criteriaCount + '"> <option value="id">ID</option> <option value="member">Member</option> <option value="date">Date</option> <option value="description">Description</option> <option value="contactCode">Contact Code</option> </select> </div> <div class="form-group"> <label>Value</label> <input type="text" class="form-control" id="field-value-' + criteriaCount + '"> </div><div class="form-group"> <label>Logical Join</label><input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="AND" checked>AND <input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="OR">OR </div> <div class="form-group"> <button class="form-control btn btn-info" onclick="addCriteria()"><span class="glyphicon glyphicon-plus"></span></button><button class="form-control btn btn-warning close" onclick="removeCriteria(' + criteriaCount + ')"> <span aria-hidden="true">&times;</span> </button> </div></div>')
         }
 
         function applyFilter()
         {
-            // Grab criteria to build up request URL
-            var request_url = "http://127.0.0.1:8000/api-root/contact_log/search/";
-            for(var i = 0; i <= criteriaCount; i++)
+            var all_records = []
+            //var currRecord = 0;
+            const BASE_REQUEST_URL = "http://127.0.0.1:8000/api-root/contact_log/search/?";
+            var next_join = "AND";
+            for (var i = 0; i < criteriaCount; i++)
             {
-                request_url += "?" + $("#field-choice-" + i).val() + "=" + $("#field-value-" + i).val() + "&";
+                var request_url = BASE_REQUEST_URL;
+                if (next_join === "OR")
+                {
+                    // Run a query right now on the current criteria and combine it with
+                    // the previous results
+                    request_url += $("#field-choice-" + i).val() + "=" + $("#field-value-" + i).val();
+                    $.ajax({
+                        method: 'GET',
+                        url: request_url,
+                        success: function(data, status)
+                        {
+                            result = data.results;
+                            all_records.push(result);
+                            //filterTable(result);
+                        }
+                    });
+                }
+                else
+                {
+                    // Run a query on the current criteria and AND it with the results
+                    request_url += $("#field-choice-" + i).val() + "=" + $("#field-value-" + i).val();
+                }
+
+                next_join = $("[name=field-join-" + i + "]:checked").val();
             }
 
-            // Snip off the very last character (the last ampersand)
-            request_url = request_url.substring(0, request_url.length - 1);
-            console.log(request_url);
-            $.ajax({
-                method: 'GET',
-                url: request_url,
-                beforeSend: function(xhr)
-                {
-                    console.log("Sending request!");
-                },
-                success: function(data, status)
-                {
-                    console.log("Request returned!");
-                    console.log(data);
-                    result = data.results;
-                    filterTable(result);
-{#                    result.forEach(function(item, index)#}
-{#                    {#}
-{#                       console.log(item.description + " - " + item.contactCode);#}
-{#                    });#}
-                }
-            });
+            // And now make a request for the last element
+
+            // Grab criteria to build up request URL
+{#            var request_url = "http://127.0.0.1:8000/api-root/contact_log/search/?";#}
+{#            for(var i = 0; i <= criteriaCount; i++)#}
+{#            {#}
+{#                request_url += $("#field-choice-" + i).val() + "=" + $("#field-value-" + i).val() + "&";#}
+{#            }#}
+{##}
+{#            // Snip off the very last character (the last ampersand)#}
+{#            request_url = request_url.substring(0, request_url.length - 1);#}
+{#            console.log(request_url);#}
+{#            $.ajax({#}
+{#                method: 'GET',#}
+{#                url: request_url,#}
+{#                success: function(data, status)#}
+{#                {#}
+{#                    result = data.results;#}
+{#                    filterTable(result);#}
+{#                }#}
+{#            });#}
         }
 
         function getContactCode(ccValue)
@@ -91,11 +118,8 @@
               ];
 
             var year = toFormat.substring(0, 4);
-            console.log("Year: " + year);
             var monthIndex = parseInt(toFormat.substring(6, 9));
-            console.log("Month index: " + monthIndex);
             var date = toFormat.substring(8, 11);
-            console.log("Date: " + date);
 
             var toReturn = date + ", " + monthNames[monthIndex - 1] + ". " + year;
             return toReturn;
@@ -115,31 +139,46 @@
                                 contactCode + '</td><td><a href="http://127.0.0.1:8000/contact_log/details/' + id + '">[View]</a></td><td><a href="http://127.0.0.1:8000/contact_log/update/' + id + '">[Edit]</a></td></tr>';
 
                 $("#contact-log-table-data").append(rowToAdd);
-                console.log("Added row!");
-
             });
+        }
+
+        function removeCriteria(num)
+        {
+            // Remove the entire row of filtering
+            $("#filter-entry-" + num).remove();
+            // Decrement criteria count
+            criteriaCount--;
         }
     </script>
 </head>
 <body>
     <div class="container">
     <div class="form-inline center" id="filteringForm">
-        <div class="form-group">
-            <label>Field</label>
-            <select class="form-control" id="field-choice-0">
-                <option value="id">ID</option>
-                <option value="member">Member</option>
-                <option value="date">Date</option>
-                <option value="description">Description</option>
-                <option value="contactCode">Contact Code</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Value</label>
-            <input type="text" class="form-control" id="field-value-0">
-        </div>
-        <div class="form-group">
-            <button class="form-control btn btn-info" onclick="addCriteria()">AND</button>
+        <div id="filter-entry-0">
+            <div class="form-group">
+                <label>Field</label>
+                <select class="form-control" id="field-choice-0">
+                    <option value="id">ID</option>
+                    <option value="member">Member</option>
+                    <option value="date">Date</option>
+                    <option value="description">Description</option>
+                    <option value="contactCode">Contact Code</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Value</label>
+                <input type="text" class="form-control" id="field-value-0">
+            </div>
+            <div class="form-group">
+                <label>Logical Join</label>
+                <input type="radio" name="field-join-0" class="form-control" value="AND" checked>AND
+                <input type="radio" name="field-join-0" class="form-control" value="OR">OR
+            </div>
+            <div class="form-group">
+                <button class="form-control btn btn-info" onclick="addCriteria()">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </div>
         </div>
     </div>
     <br />
