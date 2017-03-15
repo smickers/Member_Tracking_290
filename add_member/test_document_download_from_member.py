@@ -93,21 +93,31 @@ class DocumentDownloadTestCase(TestCase):
         # Weird error with using the file url causes the / between members and files to disappear
         # hard-coding the value in and parsing /MemberFiles out of the string
         # response = self.client.get(str(self.text_file))
+
+        #print(self.client.get(self.text_file))
         # We need to register the url where the files are stored in the urls for the download
         # link to work. Don't think the tests will pass until then
-        # response = self.client.get("/members/files/" + str(self.path_smallFile)[6:])
+        #response2 = self.client.get("/members/files/" + str(self.path_smallFile)[6:])
+        # print("/members/files/" + str(self.path_smallFile)[6:])
+        # print("/" + self.path_smallFile)
+        response2 = self.client.get("/members/" + str(self.path_smallFile))
+        # print(response2)
         # Steph's note: Got this working below. Our biggest problem is when a file is a duplicate, it's appending a
         # random string to the file name.
+        wrapper = FileWrapper(file(self.path_smallFile, "rb"))
         response = HttpResponse(content_type='application/force-download')
         response['Content-Disposition'] = 'attachment; filename=%s' % str(self.text_file.fileName)
-        print(response)
-        self.assertEqual(response.get('Content-Disposition'), 'attachment; filename=' + str(self.text_file.fileName))
+        print(str(self.text_file.file.url))
+        # print(response)
+        response
+        self.assertEqual(response.get('Content-Disposition'), 'attachment; filename=')
 
     # Test 3: Test that downloaded file's contents are not empty:
     def test_downloaded_file_not_empty(self):
         response = HttpResponse(content_type='application/force-download')
         response['Content-Disposition'] = 'attachment; filename=%s' % str(self.text_file.fileName)
-        self.assertTrue(response.content is not None)
+        response['X-Sendfile'] = self.text_file.fileName
+        self.assertTrue(response['Content-Length'] is not None)
 
     # Test 4: Test that downloaded content contains the same contents it was saved with
     def test_downloaded_content_has_correct_contents(self):
