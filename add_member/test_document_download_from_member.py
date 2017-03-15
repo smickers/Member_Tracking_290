@@ -127,7 +127,8 @@ class DocumentDownloadTestCase(StaticLiveServerTestCase):
 
         client = Client()
         # Response will not get a result until a URL is properly configured for accessing the file at the media root
-        response = client.get("media/" + str(self.text_file.fileName))
+        response = client.get("/addmember/download/" + str(self.text_file.fileName))
+        print (response)
         self.assertEqual(response.get('Content-Disposition'), 'attachment; filename=' + str(self.text_file.fileName))
 
     # Test 3: Test that downloaded file's contents are not empty:
@@ -138,7 +139,7 @@ class DocumentDownloadTestCase(StaticLiveServerTestCase):
         # self.assertTrue(response['Content-Length'] is not None)
 
         client = Client()
-        response = client.get("media/" + str(self.text_file.fileName))
+        response = client.get("/addmember/download/" + str(self.text_file.fileName))
         response['Content-Length'] = os.stat(str(self.text_file.fileName)).st_size
         self.assertTrue(response['Content-Length'] is not None)
 
@@ -149,12 +150,12 @@ class DocumentDownloadTestCase(StaticLiveServerTestCase):
 
         client = Client()
         # Response will not get a result until a URL is properly configured for accessing the file at the media root
-        response = client.get("/media/" + str(self.text_file.fileName))
+        response = client.get("/addmember/download/" + str(self.text_file.fileName))
 
         f = open("media/" + str(self.text_file.fileName), 'rb')
         lines = f.readlines()
         f.close()
-        self.assertEquals(response.content, lines)
+        self.assertEquals( response.content, lines[0])
 
     # Tear down and trash all the old files
     def tearDown(self):

@@ -7,6 +7,10 @@ from .serializer import MemberSearchSerializer
 from drf_haystack.filters import HaystackAutocompleteFilter
 from spfa_mt import settings
 from wsgiref.util import FileWrapper
+from mimetypes import MimeTypes
+from django.http import HttpResponse
+import os.path
+
 
 
 # view responsible for the member creation
@@ -45,6 +49,13 @@ class MemberSearchView(HaystackViewSet):
 # TODO: Follow this link for downloadi file stuff
 # http://stackoverflow.com/questions/15246661/downloading-the-fileswhich-are-uploaded-from-media-folder-in-django-1-4-3
 def download(request, file_name):
+    mime = MimeTypes()
     file_path = settings.MEDIA_ROOT + file_name
     file_wrapper = FileWrapper(file(file_path, 'rb'))
-    file_mimetype = mimetypes.guess_type(file_path)
+    file_mimetype = mime.guess_type(file_path)
+    response = HttpResponse(file_wrapper, content_type=file_mimetype)
+    response['X-Sendfile'] = file_path
+    response['Content-Length'] = os.stat(file_path)
+    response['Content-Disposition'] = 'attachment; filename=%s' % str(file_name)
+
+    return response
