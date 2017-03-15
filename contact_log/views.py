@@ -100,6 +100,6 @@ class ContactLogViewSet(viewsets.ReadOnlyModelViewSet):
         if cl_cc is not None:
             queryset = queryset.filter(contactCode=cl_cc)
 
-        final_queryset = sorted(list(chain(queryset, base_query_set)), key=attrgetter('id'))
-        return queryset | base_query_set
+        #final_queryset = sorted(list(chain(queryset, base_query_set)), key=attrgetter('id'))
+        return queryset# | base_query_set
         # return curr_query_set

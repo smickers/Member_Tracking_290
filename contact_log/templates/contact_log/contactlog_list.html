@@ -26,39 +26,99 @@
             $("#filteringForm").append('<div id="filter-entry-' + criteriaCount + '"><br /><div class="form-group" id="filter-entry-' + criteriaCount + '"> <label>Field</label> <select class="form-control" id="field-choice-' + criteriaCount + '"> <option value="id">ID</option> <option value="member">Member</option> <option value="date">Date</option> <option value="description">Description</option> <option value="contactCode">Contact Code</option> </select> </div> <div class="form-group"> <label>Value</label> <input type="text" class="form-control" id="field-value-' + criteriaCount + '"> </div><div class="form-group"> <label>Logical Join</label><input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="AND" checked>AND <input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="OR">OR </div> <div class="form-group"> <button class="form-control btn btn-info" onclick="addCriteria()"><span class="glyphicon glyphicon-plus"></span></button><button class="form-control btn btn-warning close" onclick="removeCriteria(' + criteriaCount + ')"> <span aria-hidden="true">&times;</span> </button> </div></div>')
         }
 
+{#        function addRecordsToTableAND(records)#}
+{#        {#}
+{#            #}
+{#            // Check to see if the current ID exists in the table already#}
+{#        }#}
+
+
+        // This function is courtesy of:
+        // http://stackoverflow.com/questions/1584370/how-to-merge-two-arrays-in-javascript-and-de-duplicate-items
+        function arrayUnique(array)
+        {
+            var a = array.concat();
+            for(var i=0; i<a.length; ++i) {
+                for(var j=i+1; j<a.length; ++j) {
+                    if(a[i] === a[j])
+                        a.splice(j--, 1);
+                }
+            }
+
+            return a;
+        }
+
         function applyFilter()
         {
             var all_records = []
             //var currRecord = 0;
             const BASE_REQUEST_URL = "http://127.0.0.1:8000/api-root/contact_log/search/?";
-            var next_join = "AND";
-            for (var i = 0; i < criteriaCount; i++)
+            var next_join = "OR";
+            $("#contact-log-table-data").html("");
+            for (var i = 0; i <= criteriaCount; i++)
             {
                 var request_url = BASE_REQUEST_URL;
                 if (next_join === "OR")
                 {
+                    console.log("Running an OR request");
                     // Run a query right now on the current criteria and combine it with
                     // the previous results
                     request_url += $("#field-choice-" + i).val() + "=" + $("#field-value-" + i).val();
+                    console.log(request_url);
                     $.ajax({
+                        async: false,
                         method: 'GET',
                         url: request_url,
                         success: function(data, status)
                         {
+                            //console.log("OR ajax success running!");
+
                             result = data.results;
-                            all_records.push(result);
+                            //console.log(result);
+                            //all_records.push(result);
+                            //addRecordsToTableOR(result)
+                            //all_records = arrayUnique(all_records.concat(result));
+
+                            all_records = combineArraysOR(all_records,  result);
+
+                            //console.log(all_records);
                             //filterTable(result);
                         }
                     });
                 }
                 else
                 {
+                    console.log("Running an AND request");
                     // Run a query on the current criteria and AND it with the results
                     request_url += $("#field-choice-" + i).val() + "=" + $("#field-value-" + i).val();
+                    console.log(request_url);
+                    $.ajax({
+                        async: false,
+                        method: 'GET',
+                        url: request_url,
+                        success: function(data, status)
+                        {
+                            //console.log("AND ajax success running!");
+                            result = data.results;
+                            //addRecordsToTableAND(result);
+
+                            all_records = combineArraysAND(all_records,  result);
+
+{#                            all_records = result.filter(function(value)#}
+{#                            {#}
+{#                               return all_records.indexOf(value) != -1;#}
+{#                            });#}
+                        }
+                    });
                 }
 
                 next_join = $("[name=field-join-" + i + "]:checked").val();
             }
+
+            // Now display the result
+            console.log("All results: ");
+            console.log(all_records);
+            filterTable(all_records);
 
             // And now make a request for the last element
 
@@ -81,6 +141,53 @@
 {#                    filterTable(result);#}
 {#                }#}
 {#            });#}
+        }
+
+        function combineArraysAND(arrayOne, arrayTwo)
+        {
+            console.log("In AND combine arrays!");
+            var result_array = [];
+            for(var i = 0; i < arrayOne.length; i++)
+            {
+                var found = false;
+                for(var j = 0; j < arrayTwo.length && !found; j++)
+                {
+                    if (arrayOne[i].id === arrayTwo[j].id)
+                    {
+                        found = true;
+                        result_array.push(arrayOne[i]);
+                    }
+                }
+            }
+
+            return result_array;
+        }
+
+        function combineArraysOR(arrayOne, arrayTwo)
+        {
+            console.log("In OR combine arrays!");
+            var result_array = arrayOne;
+
+            // Loop through all items in the second array
+            for (var i = 0; i < arrayTwo.length; i++)
+            {
+                var found = false;
+                // Check to see if it exists in the first array
+                for (var j = 0; j < arrayOne.length && !found; j++)
+                {
+                    // If it exists, quit looping
+                    found = arrayTwo[i].id === arrayOne[j].id;
+                }
+
+                // If it wasn't found, add the item to the array
+                if (!found)
+                {
+                    result_array.push(arrayTwo[i]);
+                }
+            }
+
+            // Return our new results
+            return result_array;
         }
 
         function getContactCode(ccValue)
@@ -127,6 +234,7 @@
 
         function filterTable(newData)
         {
+            console.log("In filter table!");
             $("#contact-log-table-data").html("");
             newData.forEach(function(item, index)
             {
@@ -163,6 +271,16 @@
                     <option value="date">Date</option>
                     <option value="description">Description</option>
                     <option value="contactCode">Contact Code</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Criteria</label>
+                <select class="form-control" id="field-criteria-0">
+                    <option value="gte">>=</option>
+                    <option value="gt">></option>
+                    <option value="ee">==</option>
+                    <option value="lt"><</option>
+                    <option value="lte"><=</option>
                 </select>
             </div>
             <div class="form-group">
