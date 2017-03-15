@@ -3,17 +3,21 @@ from django.core.exceptions import ValidationError
 from .models import Person, MemberFiles
 from spfa_mt import settings
 from django.core.files import File
+from django.http import HttpResponse
 from django.conf.urls import url
+from mimetypes import MimeTypes
+
+
 
 class DocumentDownloadTestCase(TestCase):
-    def __init__(self, *args, **kwargs):
+
+    def setUp(self):
         self.CONST_FILE_PATH = settings.STATIC_ROOT + 'grievance_award_creation/test_files_grievance_docs_upload/%s'
         self.tempPerson = Person()
         self.path_smallFile = self.CONST_FILE_PATH % 'SmallFile.txt'
         self.path_pptFile = self.CONST_FILE_PATH % 'powerpoint.pptx'
         self.path_excelFile = self.CONST_FILE_PATH % 'excelFile.xlsx'
 
-    def setUp(self):
         self.tempPerson.memberID = 1
         self.tempPerson.firstName = 'First'
         self.tempPerson.middleName = 'Middle'
@@ -53,40 +57,48 @@ class DocumentDownloadTestCase(TestCase):
         f.write("\0")
         f.close()
 
-        text_file = MemberFiles()
+        self.text_file = MemberFiles()
         fp = open(self.path_smallFile, "r")
-        text_file.fileName = File(fp)
-        text_file.relatedMember = self.tempPerson
-        text_file.clean()
-        text_file.save()
+        self.text_file.fileName = File(fp)
+        self.text_file.relatedMember = self.tempPerson
+        self.text_file.clean()
+        self.text_file.save()
         fp.close()
 
-        ppt_file = MemberFiles()
+        self.ppt_file = MemberFiles()
         fp = open(self.path_pptFile, "r")
-        ppt_file.fileName = File(fp)
-        ppt_file.relatedMember = self.tempPerson
-        ppt_file.clean()
-        ppt_file.save()
+        self.ppt_file.fileName = File(fp)
+        self.ppt_file.relatedMember = self.tempPerson
+        self.ppt_file.clean()
+        self.ppt_file.save()
         fp.close()
 
-        excel_file = MemberFiles()
+        self.excel_file = MemberFiles()
         fp = open(self.path_excelFile, "r")
-        excel_file.fileName = File(fp)
-        excel_file.relatedMember = self.tempPerson
-        excel_file.clean()
-        excel_file.save()
+        self.excel_file.fileName = File(fp)
+        self.excel_file.relatedMember = self.tempPerson
+        self.excel_file.clean()
+        self.excel_file.save()
         fp.close()
 
     #TODO: go to this link for download test example
     # "http://stackoverflow.com/questions/8244220/django-unit-test-for-testing-a-file-download"
-    def test_that_a_file_exists_form_the_member(self):
-        self.assertTrue(self.MemberFiles.objects.filter(relatedMember=self.tempPerson.id) != 0)
+    def test_that_a_file_exists_for_the_member(self):
+        self.assertTrue(MemberFiles.objects.filter(relatedMember=self.tempPerson.id) != 0)
 
 
     def test_user_can_download_a_document_from_a_member_profile(self):
         self.client = Client()
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
+        # Weird error with using the file url causes the / betweeen memebrs and files to dissapear
+        # hardocing the value in and parsing /membersfiles out of the string
+        # response = self.client.get(str(self.text_file))
+
+        # We need to register the url where the files are stored in the urls for the download
+        # link to work. Don't think the tests will pass until then
+        response = self.client.get("/members/files" + str(self.path_smallFile)[6:])
+        print(response)
+        self.assertEqual(response.get('Content-Disposition'), 'attachment; filename=' + str(self.text_file.fileName))
+
 
 
 
