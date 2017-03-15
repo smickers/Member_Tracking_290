@@ -1,22 +1,37 @@
 from django.test import TestCase, Client
 from django.core.exceptions import ValidationError
 from .models import Person, MemberFiles
+from django.test import override_settings
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from spfa_mt import settings
 from django.core.files import File
 from django.http import HttpResponse
 from django.conf.urls import url
 from mimetypes import MimeTypes
+import os.path
+import shutil
 
 
+@override_settings(MEDIA_ROOT='test/')
+class DocumentDownloadTestCase(StaticLiveServerTestCase):
+    @classmethod
+    def setUpClass(cls):
+        super(DocumentDownloadTestCase, cls).setUpClass()
 
-class DocumentDownloadTestCase(TestCase):
-
-    def setUp(self):
+    # Function: init
+    # Purpose: This function is used to initialize the variables used for the tests
+    def __init__(self, *args, **kwargs):
+        super(DocumentDownloadTestCase, self).__init__(*args, **kwargs)
+        # Feels cheap, but why create more bloat in the application? Use what they
+        # made back in grievance award file uploads.
         self.CONST_FILE_PATH = settings.STATIC_ROOT + 'grievance_award_creation/test_files_grievance_docs_upload/%s'
         self.tempPerson = Person()
         self.path_smallFile = self.CONST_FILE_PATH % 'SmallFile.txt'
         self.path_pptFile = self.CONST_FILE_PATH % 'powerpoint.pptx'
         self.path_excelFile = self.CONST_FILE_PATH % 'excelFile.xlsx'
+
+    def setUp(self):
+
 
         self.tempPerson.memberID = 1
         self.tempPerson.firstName = 'First'
@@ -89,7 +104,7 @@ class DocumentDownloadTestCase(TestCase):
 
     # Test 2: Test that a user can download a document from a member profile
     def test_user_can_download_a_document_from_a_member_profile(self):
-        # client = Client()
+
         # Weird error with using the file url causes the / between members and files to disappear
         # hard-coding the value in and parsing /MemberFiles out of the string
         # response = self.client.get(str(self.text_file))
@@ -100,28 +115,50 @@ class DocumentDownloadTestCase(TestCase):
         #response2 = self.client.get("/members/files/" + str(self.path_smallFile)[6:])
         # print("/members/files/" + str(self.path_smallFile)[6:])
         # print("/" + self.path_smallFile)
-        response2 = self.client.get("/members/" + str(self.path_smallFile))
+
         # print(response2)
         # Steph's note: Got this working below. Our biggest problem is when a file is a duplicate, it's appending a
         # random string to the file name.
-        wrapper = FileWrapper(file(self.path_smallFile, "rb"))
-        response = HttpResponse(content_type='application/force-download')
-        response['Content-Disposition'] = 'attachment; filename=%s' % str(self.text_file.fileName)
-        print(str(self.text_file.file.url))
+        # wrapper = FileWrapper(file(self.path_smallFile, "rb"))
+        # response = HttpResponse(content_type='application/force-download')
+        # response['Content-Disposition'] = 'attachment; filename=%s' % str(self.text_file.fileName)
+        # print(str(self.text_file.file.url))
         # print(response)
-        response
-        self.assertEqual(response.get('Content-Disposition'), 'attachment; filename=')
+
+        client = Client()
+        # Response will not get a result until a URL is properly configured for accessing the file at the media root
+        response = client.get("media/" + str(self.text_file.fileName))
+        self.assertEqual(response.get('Content-Disposition'), 'attachment; filename=' + str(self.text_file.fileName))
 
     # Test 3: Test that downloaded file's contents are not empty:
     def test_downloaded_file_not_empty(self):
-        response = HttpResponse(content_type='application/force-download')
-        response['Content-Disposition'] = 'attachment; filename=%s' % str(self.text_file.fileName)
-        response['X-Sendfile'] = self.text_file.fileName
+        # response = HttpResponse(content_type='application/force-download')
+        # response['Content-Disposition'] = 'attachment; filename=%s' % str(self.text_file.fileName)
+        # response['X-Sendfile'] = self.text_file.fileName
+        # self.assertTrue(response['Content-Length'] is not None)
+
+        client = Client()
+        response = client.get("media/" + str(self.text_file.fileName))
+        response['Content-Length'] = os.stat(str(self.text_file.fileName)).st_size
         self.assertTrue(response['Content-Length'] is not None)
 
     # Test 4: Test that downloaded content contains the same contents it was saved with
     def test_downloaded_content_has_correct_contents(self):
-        response = HttpResponse(content_type='application/force-download')
-        response['Content-Disposition'] = 'attachment; filename=%s' % str(self.text_file.fileName)
+        # response = HttpResponse(content_type='application/force-download')
+        # response['Content-Disposition'] = 'attachment; filename=%s' % str(self.text_file.fileName)
+
+        client = Client()
+        # Response will not get a result until a URL is properly configured for accessing the file at the media root
+        response = client.get("/media/" + str(self.text_file.fileName))
+
+        f = open("media/" + str(self.text_file.fileName), 'rb')
+        lines = f.readlines()
+        f.close()
+        self.assertEquals(response.content, lines)
+
+    # Tear down and trash all the old files
+    def tearDown(self):
+        if os.path.exists(self._overridden_settings["MEDIA_ROOT"]):
+            shutil.rmtree(self._overridden_settings["MEDIA_ROOT"])
 
 

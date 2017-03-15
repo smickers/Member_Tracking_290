@@ -39,3 +39,7 @@ class MemberSearchView(HaystackViewSet):
     index_models = [Person]
     serializer_class = MemberSearchSerializer
     filter_backends = [HaystackAutocompleteFilter]
+
+
+def download(request, file_name):
+    """"""

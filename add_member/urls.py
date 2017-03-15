@@ -1,5 +1,4 @@
 from django.conf.urls import url
-from request.router import patterns
 from django.conf.urls.static import static
 from . import views
 from django.conf import settings
