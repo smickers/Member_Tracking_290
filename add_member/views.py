@@ -47,4 +47,4 @@ class MemberSearchView(HaystackViewSet):
 def download(request, file_name):
     file_path = settings.MEDIA_ROOT + file_name
     file_wrapper = FileWrapper(file(file_path, 'rb'))
-    file_mimetype = mimetypes.guess_type(filepath)
+    file_mimetype = mimetypes.guess_type(file_path)
