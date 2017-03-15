@@ -17,7 +17,8 @@ class PersonUploadTestCase(TestCase):
         self.test_xlsx = self.CONST_FILE_PATH % 'member_upload.xlsx'
         self.invalid_file = self.CONST_FILE_PATH % 'member_upload_invalid_file.jpeg'
         self.path_largefile = self.CONST_FILE_PATH % 'dummylarge.xlsx'
-        self.path_emptyfile = self.CONST_FILE_PATH % 'empty.xlsx'
+        self.path_emptyfile = self.CONST_FILE_PATH \
+                              % 'empty.xlsx'
 
 
     def setUp(self):

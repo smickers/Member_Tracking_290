@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+{% block metadata %}
+    <title>File Upload</title>
+{% endblock %}
+
+{% block content %}
+    <div id="file-form">
+            <input type="file" name="pic" id='file-select'>
+            <button id="upload_button">Submit</button>
+            <button id="stop_upload">Stop</button>
+    </div>
+
+    <div id="progress"></div>
+
+    <table id="list_members"></table>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'jquery-3.1.1.js' %}"></script>
+    <script>
+        var xhr = new XMLHttpRequest();
+        var upload_button = document.getElementById('upload_button');
+        var fileSelect = document.getElementById("file-select");
+        var stop_upload = document.getElementById("stop_upload");
+        var confirm_button_y = $('<button id="submit_json_y">Yes</button>');
+        var confirm_button_n = $('<button id="submit_json_n">No</button>');
+        var json_members = undefined;
+        confirm_button_n.click( function(e){
+            $("#progress").empty();
+            $('#list_members').empty();
+            fileSelect.value = "";
+        });
+
+        confirm_button_y.click(function(e){
+        });
+
+        stop_upload.addEventListener('click', function(){
+            xhr.abort();
+        });
+
+        upload_button.addEventListener('click', function(event){
+            event.preventDefault() ;
+            upload_button.innerHTML = 'Uploading';
+            var files = fileSelect.files;
+            var formData = new FormData();
+            formData.append('file', files[0], files[0].name);
+            // Set up the request.
+            xhr.upload.addEventListener('progress',function(oEvent){
+              if (oEvent.lengthComputable) {
+                var percentComplete = oEvent.loaded / oEvent.total;
+                document.getElementById("progress").innerHTML =  (percentComplete * 100) + "%";
+              } else {
+                document.getElementById("progress").innerHTML =  'unknown';
+              }
+            });
+            xhr.open('POST', '/fileupload/filter/', true);           //TODO: use relative url
+            xhr.setRequestHeader('Content-Disposition', 'attachment; filename='+files[0].name);
+            // Set up a handler for when the request finishes.
+            xhr.onload = function () {
+                // File(s) uploaded.
+                upload_button.innerHTML = 'Upload';
+              if (xhr.status === 201) {
+                var json_response = JSON.parse(this.responseText);
+                var event = new CustomEvent('uploaded_valid_fl', {'detail': json_response.id });
+                upload_button.dispatchEvent(event);
+              }
+            };
+            xhr.send(formData);
+        });
+
+        upload_button.addEventListener('uploaded_valid_fl', function(e){
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/fileupload/exceltojson/'+e.detail, true); //TODO: use relative URL
+            xhr.onload = function () {
+              if (xhr.status === 200) {
+                create_table( JSON.parse(this.responseText) ) ;
+              }
+            };
+            xhr.send();
+        });
+
+        function create_table(json_members_temp){
+            $('#list_members').empty();
+            json_members = json_members_temp;
+            json_members_temp.Result.forEach(function(val){
+                var ele = $('<tr></tr>');
+                ele.append(
+                    $("<td></td>").text(val.name)
+                );
+                ele.append(
+                    $("<td></td>").text(val.department)
+                );
+                ele.append(
+                    $("<td></td>").text(val.campus)
+                );
+                $('#list_members').append(ele);
+            });
+            $('#list_members').append($('<div>Please confirm if information is correct.</div>'));
+            $('#list_members').append(confirm_button_y);
+            $('#list_members').append(confirm_button_n);
+        }
+    </script>
+{% endblock %}
