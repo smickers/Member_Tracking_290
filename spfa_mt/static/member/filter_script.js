@@ -7,6 +7,9 @@ $(document).ready( function() {
     var end_point_url = "/api-root/member/filter/?limit=30&" ;
     var temp_endpoint = end_point_url;
     var form_no = 0;
+
+    $("#form").find(':input').val("");
+
     /*
         This is my brilliant function to clone the form and append the clone to the end of the form container.
      */
@@ -56,22 +59,22 @@ $(document).ready( function() {
         var maxHday = null;
 
         // These if blocks check to see if the dates are filled out, if so, we build a date string
-        if($("#id_min_bDay_year").val() != 0 && $("#id_min_bDay_month").val() != 0 && $("#id_min_bDay_day").val() !=0)
+        if($("#id_min_bDay_year").val() != null && $("#id_min_bDay_month").val() != null && $("#id_min_bDay_day").val() !=null)
         {
             var minBdayDate = new Date($("#id_min_bDay_year").val(), $("#id_min_bDay_month").val(),$("#id_min_bDay_day").val());
             minBday = minBdayDate.getFullYear() + "-" + (minBdayDate.getMonth()) + "-" +minBdayDate.getDate();
         }
-        if($("#id_max_bDay_year").val() != 0 && $("#id_max_bDay_month").val() != 0 && $("#id_max_bDay_day").val() !=0)
+        if($("#id_max_bDay_year").val() != null && $("#id_max_bDay_month").val() != null && $("#id_max_bDay_day").val() !=null)
         {
             var maxBdayDate = new Date($("#id_max_bDay_year").val(), $("#id_max_bDay_month").val(),$("#id_max_bDay_day").val());
             maxBday = maxBdayDate.getFullYear()+ "-" + (maxBdayDate.getMonth()) + "-" +minBdayDate.getDate();
         }
-        if($("#id_min_hDay_year").val() != 0 && $("#id_min_hDay_month").val() != 0 && $("#id_min_hDay_day").val() !=0)
+        if($("#id_min_hDay_year").val() != null && $("#id_min_hDay_month").val() != null && $("#id_min_hDay_day").val() !=null)
         {
             var minHdayDate = new Date($("#id_min_hDay_year").val(), $("#id_min_hDay_month").val(),$("#id_min_hDay_day").val());
             minHday =  minHdayDate.getFullYear()+ "-" + (minHdayDate.getMonth()) + "-" +minHdayDate.getDate();
         }
-        if($("#id_max_hDay_year").val() != 0 && $("#id_max_hDay_month").val() != 0 && $("#id_max_hDay_day").val() !=0)
+        if($("#id_max_hDay_year").val() != null && $("#id_max_hDay_month").val() != null && $("#id_max_hDay_day").val() !=null)
         {
             var maxHdayDate = new Date($("#id_max_hDay_year").val(), $("#id_max_hDay_month").val(),$("#id_max_hDay_day").val());
             maxHday = maxHdayDate.getFullYear() + "-" + (maxHdayDate.getMonth()) + "-" +maxHdayDate.getDate();
@@ -89,16 +92,16 @@ $(document).ready( function() {
         $('#id_mailAddress2').val().length > 0 ? temp_endpoint += "mailAddress2__contains=" + encodeURIComponent($('#id_mailAddress2').val())+ "&": false;
         $('#id_pCode').val().length > 0 ? temp_endpoint += "pCode__contains=" + encodeURIComponent($('#id_pCode').val())+ "&": false;
         $('#id_hPhone').val().length > 0 ? temp_endpoint += "hPhone__contains=" + encodeURIComponent($('#id_hPhone').val())+ "&": false;
-        $('#id_campus').val().length > 0 ? temp_endpoint += "campus__contains=" + encodeURIComponent($('#id_campus').val())+ "&": false;
-        $('#id_jobType').val().length > 0 ? temp_endpoint += "jobType__contains=" + encodeURIComponent($('#id_jobType').val())+ "&": false;
+        $('#id_campus').val() != null ? temp_endpoint += "campus__contains=" + encodeURIComponent($('#id_campus').val())+ "&": false;
+        $('#id_jobType').val() != null ? temp_endpoint += "jobType__contains=" + encodeURIComponent($('#id_jobType').val())+ "&": false;
         $('#id_committee').val().length > 0 ? temp_endpoint += "committee__contains=" + encodeURIComponent($('#id_committee').val())+ "&": false;
-        $('#id_membershipStatus').val().length ? temp_endpoint += "membershipStatus__contains=" + encodeURIComponent($('#id_membershipStatus').val())+ "&": false;
+        $('#id_membershipStatus').val() != null ? temp_endpoint += "membershipStatus__contains=" + encodeURIComponent($('#id_membershipStatus').val())+ "&": false;
+        $('#id_programChoice').val().length > 0 ? temp_endpoint += "programChoice__contains=" + encodeURIComponent($('#id_programChoice').val())+ "&": false;
         (minHday != null ) ? temp_endpoint += "min_hDay=" + encodeURIComponent(minHday)+ "&": temp_endpoint += '';
         (maxHday != null ) ? temp_endpoint += "max_hDay=" + encodeURIComponent(maxHday)+ "&": temp_endpoint += '';
         (minBday != null ) ? temp_endpoint += "min_bDay=" + encodeURIComponent(minBday)+ "&": temp_endpoint += '';
         (maxBday != null ) ? temp_endpoint += "max_bDay=" + encodeURIComponent(maxBday)+ "&": temp_endpoint += '';
         $('#id_gender').val() != null ? temp_endpoint += "gender=" + encodeURIComponent($('#id_gender').val()) + "&": false;
-
         // Make our ajax call to our API
         ajax_call(temp_endpoint);
 
@@ -106,6 +109,32 @@ $(document).ready( function() {
         // table.
         for(var i = 1; i <= form_no; i++)
         {
+            // Some fancy variables to be used to build some date strings
+            var minBday = null;
+            var maxBday = null;
+            var minHday = null;
+            var maxHday = null;
+            // These if blocks check to see if the dates are filled out, if so, we build a date string
+            if($("#id_min_bDay_year" +i).val() != null && $("#id_min_bDay_month"+i).val() != null && $("#id_min_bDay_day"+i).val() !=null)
+            {
+                var minBdayDate = new Date($("#id_min_bDay_year"+i).val(), $("#id_min_bDay_month"+i).val(),$("#id_min_bDay_day"+i).val());
+                minBday = minBdayDate.getFullYear() + "-" + (minBdayDate.getMonth()) + "-" +minBdayDate.getDate();
+            }
+            if($("#id_max_bDay_year"+i).val() != null && $("#id_max_bDay_month"+i).val() != null && $("#id_max_bDay_day"+i).val() !=null)
+            {
+                var maxBdayDate = new Date($("#id_max_bDay_year"+i).val(), $("#id_max_bDay_month"+i).val(),$("#id_max_bDay_day"+i).val());
+                maxBday = maxBdayDate.getFullYear()+ "-" + (maxBdayDate.getMonth()) + "-" +minBdayDate.getDate();
+            }
+            if($("#id_min_hDay_year"+i).val() != null && $("#id_min_hDay_month"+i).val() != null && $("#id_min_hDay_day"+i).val() !=null)
+            {
+                var minHdayDate = new Date($("#id_min_hDay_year"+i).val(), $("#id_min_hDay_month"+i).val(),$("#id_min_hDay_day"+i).val());
+                minHday =  minHdayDate.getFullYear()+ "-" + (minHdayDate.getMonth()) + "-" +minHdayDate.getDate();
+            }
+            if($("#id_max_hDay_year"+i).val() != null && $("#id_max_hDay_month"+i).val() != null && $("#id_max_hDay_day"+i).val() !=null)
+            {
+                var maxHdayDate = new Date($("#id_max_hDay_year"+i).val(), $("#id_max_hDay_month"+i).val(),$("#id_max_hDay_day"+i).val());
+                maxHday = maxHdayDate.getFullYear() + "-" + (maxHdayDate.getMonth()) + "-" +maxHdayDate.getDate();
+            }
             // Building our url with the parameters again.
             temp_endpoint = "/api-root/member/filter/?";
             $('#id_memberID'+i).val() > 0 ? temp_endpoint += "memberID=" + encodeURIComponent($('#id_memberID'+i).val())+ "&" : false;
@@ -118,16 +147,16 @@ $(document).ready( function() {
             $('#id_mailAddress2'+i).val().length > 0 ? temp_endpoint += "mailAddress2__contains=" + encodeURIComponent($('#id_mailAddress2'+i).val())+ "&": false;
             $('#id_pCode'+i).val().length > 0 ? temp_endpoint += "pCode__contains=" + encodeURIComponent($('#id_pCode'+i).val())+ "&": false;
             $('#id_hPhone'+i).val().length > 0 ? temp_endpoint += "hPhone__contains=" + encodeURIComponent($('#id_hPhone'+i).val())+ "&": false;
-            $('#id_campus'+i).val().length > 0 ? temp_endpoint += "campus__contains=" + encodeURIComponent($('#id_campus'+i).val())+ "&": false;
-            $('#id_jobType'+i).val().length > 0 ? temp_endpoint += "jobType__contains=" + encodeURIComponent($('#id_jobType'+i).val())+ "&": false;
+            $('#id_campus'+i).val() != null  ? temp_endpoint += "campus__contains=" + encodeURIComponent($('#id_campus'+i).val())+ "&": false;
+            $('#id_jobType'+i).val() != null ? temp_endpoint += "jobType__contains=" + encodeURIComponent($('#id_jobType'+i).val())+ "&": false;
             $('#id_committee'+i).val().length > 0 ? temp_endpoint += "committee__contains=" + encodeURIComponent($('#id_committee'+i).val())+ "&": false;
-            $('#id_membershipStatus'+i).val().length ? temp_endpoint += "membershipStatus__contains=" + encodeURIComponent($('#id_membershipStatus'+i).val())+ "&": false;
+            $('#id_membershipStatus'+i).val() != null ? temp_endpoint += "membershipStatus__contains=" + encodeURIComponent($('#id_membershipStatus'+i).val())+ "&": false;
+            $('#id_programChoice'+i).val().length > 0 ? temp_endpoint += "programChoice__contains=" + encodeURIComponent($('#id_programChoice'+i).val())+ "&": false;
             (minHday != null ) ? temp_endpoint += "min_hDay=" + encodeURIComponent(minHday)+ "&": temp_endpoint += '';
             (maxHday != null ) ? temp_endpoint += "max_hDay=" + encodeURIComponent(maxHday)+ "&": temp_endpoint += '';
             (minBday != null ) ? temp_endpoint += "min_bDay=" + encodeURIComponent(minBday)+ "&": temp_endpoint += '';
             (maxBday != null ) ? temp_endpoint += "max_bDay=" + encodeURIComponent(maxBday)+ "&": temp_endpoint += '';
-            $('#id_gender'+i).val() != null > 0 ? temp_endpoint += "gender=" + encodeURIComponent($('#id_gender'+i).val()) + "&": false;
-            console.log(temp_endpoint);
+            $('#id_gender'+i).val() != null ? temp_endpoint += "gender=" + encodeURIComponent($('#id_gender'+i).val()) + "&": false;
             // ajax call to api again.
             ajax_call(temp_endpoint);
         }

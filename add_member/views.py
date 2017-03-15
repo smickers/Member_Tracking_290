@@ -7,6 +7,7 @@ from .serializer import MemberSearchSerializer, MemberFilterSerializer
 from drf_haystack.filters import HaystackAutocompleteFilter
 from rest_framework import viewsets
 import rest_framework_filters as filters
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
 
 
 # view responsible for the member creation
@@ -79,7 +80,17 @@ class MemberFilter(filters.FilterSet):
             'membershipStatus': '__all__',
             'max_hDay': '__all__',
             'min_hDay': '__all__',
+            'programChoice': '__all__',
         }
+
+
+class FilterOffsetClass(LimitOffsetPagination):
+    """
+    This is our offset. It overwrites what we have in the settings page.
+    """
+    default_limit = Person.objects.count()
+    limit_query_param = 'limit'
+    offset_query_param = 'offset'
 
 
 class MemberFilterView(viewsets.ReadOnlyModelViewSet):
@@ -95,7 +106,8 @@ class MemberFilterView(viewsets.ReadOnlyModelViewSet):
     filter_fields = ['id', 'memberID', 'firstName', 'middleName', 'lastName',
                   'socNum', 'city', 'mailAddress', 'mailAddress2', 'pCode',
                   'max_bDay', 'min_bDay', 'gender', 'hPhone', 'cPhone', 'hEmail', 'campus',
-                  'jobType', 'committee', 'membershipStatus', 'max_hDay', 'min_hDay']
+                  'jobType', 'committee', 'membershipStatus', 'max_hDay', 'min_hDay', 'programChoice']
+    pagination_class = FilterOffsetClass
 
 
 class MemberFilterList(TemplateView, FormMixin):
