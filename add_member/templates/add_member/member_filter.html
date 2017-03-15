@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% load static %}
+{% block metadata %}
+    <script href="{% static 'spfa_mt/libraries/jquery-3.1.1.min.js' %}"></script>
+    <title>Member Filter</title>
+{% endblock %}
+
+
+
+{% block content %}
+
+    <div class="col-lg-3 col-md-12 filter_widget">
+        <div id="form_container">
+            <div id="form">
+                {% bootstrap_form form %}
+            </div>
+        </div>
+            <button class="btn" id="moreFilters">Additional Filters</button>
+            <button class="btn" id="filter">Filter</button>
+
+    </div>
+
+    <div class="col-lg-9">
+        <div id="member_data">
+            <button class="btn" onclick="alert('Please enter in filter criteria on the left side. This will search for' +
+             ' members with all of this information.\n\nYou can click on the \'Additional Filters\' button to do an \'OR\' filter.' +
+              '\nEx. First name is John or Jon');">Help</button>
+            <table class="table">
+                <thead>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Member ID</th>
+                    <th>City</th>
+                    <th>Postal Code</th>
+                    <th>Birth Date</th>
+                    <th>Campus</th>
+                </thead>
+
+                <tbody id="list_member">
+                </tbody>
+                <tfoot>
+                    <td> <button class="btn" id="show_more">Load More</button></td>
+                </tfoot>
+
+            </table>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'member/filter_script.js' %}" type="text/javascript"></script>
+{% endblock %}

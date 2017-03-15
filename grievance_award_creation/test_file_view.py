@@ -100,7 +100,7 @@ class FileViewTests(TestCase):
         self.tempCase.campus = "Saskatoon"
         self.tempCase.school = "School of Business"
         self.tempCase.program = self.program
-        self.tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+        self.tempCase.caseType = 3
         self.tempCase.status = "OPEN"
         self.tempCase.date = "2016-10-20"
         self.tempCase.full_clean()
@@ -113,15 +113,13 @@ class FileViewTests(TestCase):
         self.tempCase2.campus = "Saskatoon"
         self.tempCase2.school = "School of Business"
         self.tempCase2.program = self.program
-        self.tempCase2.caseType = "GRIEVANCES - CLASSIFICATION"
+        self.tempCase2.caseType = 3
         self.tempCase2.status = "OPEN"
         self.tempCase2.date = "2016-10-20"
         self.tempCase2.full_clean()
         self.tempCase2.save()
 
         # Set up a grievence award to be edited
-        self.ga.grievanceType = "M"
-        self.ga.recipient = self.tempPerson
         self.ga.case = self.tempCase
         self.ga.awardAmount = 500.00
         self.ga.description = ""
@@ -130,9 +128,8 @@ class FileViewTests(TestCase):
         self.ga.save()
 
         # Set up a grievence award to be edited
-        self.ga2.grievanceType = "M"
-        self.ga2.recipient = self.tempPerson
-        self.ga2.case = self.tempCase
+
+        self.ga2.case = self.tempCase2
         self.ga2.awardAmount = 500.00
         self.ga2.description = ""
         self.ga2.date = '2016-12-01'

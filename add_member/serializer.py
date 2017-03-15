@@ -1,5 +1,7 @@
 from drf_haystack.serializers import HaystackSerializer
 from add_member.search_indexes import MembersIndex
+from rest_framework import serializers
+from models import Person
 
 class MemberSearchSerializer(HaystackSerializer):
     """
@@ -15,3 +17,12 @@ class MemberSearchSerializer(HaystackSerializer):
         field_aliases = {
             'q': 'auto_complete'
         }
+
+
+class MemberFilterSerializer(serializers.ModelSerializer):
+    """
+    Serializes our member/person with all fields.
+    """
+    class Meta:
+        model = Person
+        fields = '__all__'

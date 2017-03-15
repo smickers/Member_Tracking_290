@@ -1,9 +1,4 @@
-# This is a sample build configuration for Python.
-# Check our guides at https://confluence.atlassian.com/x/VYk8Lw for more examples.
-# Only use spaces to indent your .yml configuration.
-# -----
-# You can specify a custom docker image from Docker Hub as your build environment.
-image: python:3.5.1
+image: mikemanger/python27-mysql
 
 pipelines:
   default:
@@ -12,3 +7,11 @@ pipelines:
           - pip install -U tox
           - pip --version
           - tox --version
+#          - /etc/init.d/mysql start
+#          - mysql -uroot -p 'bitnami' -e 'create database gamma'
+#          - pip install -r requirements.txt
+#          - python manage.py collectstatic --noinput
+#          - python manage.py makemigrations
+#          - python manage.py migrate
+#          - python manage.py generate_members
+#          - python manage.py test

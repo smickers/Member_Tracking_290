@@ -1,40 +1,40 @@
-{% include 'nav.html' %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% extends 'base.html' %}
+
+
+{% block metadata %}
+
     <title>Committees</title>
-     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-</head>
-<body>
-    <h2>List of Committees</h2>
-    <a href="{%  url 'add_com:committee_add' %}">Add New Committee</a><br />
-    <table border="1" table class="table table-bordered" style="width:50%; text-align:center;">
-        <thead>
-            <th style="text-align:center;">Name</th>
-            <th colspan="2" style="text-align:center;">Action</th>
-        </thead>
-        <tbody>
-        <!-- show this if there are committees existing in the DB -->
-        {% for committee in object_list %}
-        </tbody>
-            <tr>
-                <td>{{ committee.name }}</td>
-                <td>
-                    <!-- Link to committee details, will show meeting info at a later date? -->
-                    <a href='{% url "add_com:committee_detail" committee.pk %}'>[View Detail]</a>
-                </td>
-                <td>
-                    <a href='{% url "add_com:committee_edit" committee.pk %}'>[Edit Committee]</a>
-                </td>
-            </tr>
-        <!-- only appears if no committees exist in the DB -->
-        {% empty %}
-            <tr>(No committees yet.)</tr>
-        {% endfor %}
-    </table>
-</body>
-{% include 'footer.html' %}
-</html>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <h2>List of Committees</h2>
+        <a href="{%  url 'add_com:committee_add' %}">Add New Committee</a><br />
+        <table border="1" table class="table table-bordered" style="width:50%; text-align:center;">
+            <thead>
+                <th style="text-align:center;">Name</th>
+                <th colspan="2" style="text-align:center;">Action</th>
+            </thead>
+            <tbody>
+            <!-- show this if there are committees existing in the DB -->
+            {% for committee in object_list %}
+            </tbody>
+                <tr>
+                    <td>{{ committee.name }}</td>
+                    <td>
+                        <!-- Link to committee details, will show meeting info at a later date? -->
+                        <a href='{% url "add_com:committee_detail" committee.pk %}'>[View Detail]</a>
+                    </td>
+                    <td>
+                        <a href='{% url "add_com:committee_edit" committee.pk %}'>[Edit Committee]</a>
+                    </td>
+                </tr>
+            <!-- only appears if no committees exist in the DB -->
+            {% empty %}
+                <tr>(No committees yet.)</tr>
+            {% endfor %}
+        </table>
+
+    </div>
+{% endblock %}

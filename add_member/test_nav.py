@@ -1,4 +1,4 @@
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.test import SimpleTestCase
 from add_member.models import Person
 
@@ -38,7 +38,7 @@ class TestNav(SimpleTestCase):
         # assertRedirect was looking for response code 302 meaning the page was found
         # using get actually gets the page and will tell you if it exists returning response code 200
         # so compare response code to 200 to make sure it went to the page
-        response = self.client.get(reverse('add_member:member_detail', args='1'))
+        response = self.client.get(reverse('add_member:member_detail', args=[self.tempPerson.pk]))
         self.assertEquals(response.status_code, 200)
 
     # Test to show we can move from one page to another page in a different app

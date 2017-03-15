@@ -1,15 +1,12 @@
-{% include 'nav.html' %}
-{%  load bootstrap3 %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% extends 'base.html' %}
+
+
+{% block metadata %}
     <title>PD Award List</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-</head>
-<body>
+{% endblock %}
+
+
+{% block content %}
 <h2>List of Professional Development Funding</h2>
     <a href="{% url 'award:award_pd_create' %}">Create New Professional Development Funding</a>
     <table border="2" class="table table-bordered" style="width:50%;">
@@ -33,6 +30,4 @@
         </tbody>
 
     </table>
-</body>
-{% include 'footer.html' %}
-</html>
+{% endblock %}

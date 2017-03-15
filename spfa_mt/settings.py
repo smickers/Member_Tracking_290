@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'drf_haystack',
     'rest_framework',
     'grievance_award_creation.apps.GrievanceAwardCreationConfig',
+    'url_filter',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -133,7 +135,8 @@ HAYSTACK_CONNECTIONS = {
 REST_FRAMEWORK = {
     #'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework_filters.backends.DjangoFilterBackend',)
 }
 
 

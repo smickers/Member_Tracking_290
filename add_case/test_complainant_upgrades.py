@@ -124,7 +124,7 @@ class CaseTests(TestCase):
         temp_case.campus = "Saskatoon"
         temp_case.school = "School of Business"
         temp_case.program = self.prog
-        temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
+        temp_case.caseType = 3
         temp_case.status = "OPEN"
         temp_case.docs = None
         temp_case.logs = None
@@ -143,7 +143,7 @@ class CaseTests(TestCase):
         temp_case.campus = "Saskatoon"
         temp_case.school = "School of Business"
         temp_case.program = self.prog
-        temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
+        temp_case.caseType = 3
         temp_case.status = "OPEN"
         temp_case.docs = None
         temp_case.logs = None
@@ -164,7 +164,7 @@ class CaseTests(TestCase):
         temp_case.campus = "Saskatoon"
         temp_case.school = "School of Business"
         temp_case.program = self.prog
-        temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
+        temp_case.caseType = 3
         temp_case.status = "OPEN"
         temp_case.docs = None
         temp_case.logs = None
@@ -188,7 +188,7 @@ class CaseTests(TestCase):
         temp_case.campus = "Saskatoon"
         temp_case.school = "School of Business"
         temp_case.program = self.prog
-        temp_case.caseType = "GRIEVANCES - CLASSIFICATION"
+        temp_case.caseType = 3
         temp_case.status = "OPEN"
         temp_case.docs = None
         temp_case.logs = None

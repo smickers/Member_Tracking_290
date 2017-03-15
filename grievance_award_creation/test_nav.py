@@ -5,6 +5,7 @@ from add_member.models import Person
 from add_case.models import Case, CasePrograms
 
 
+
 # class for testing the HTML navbar navigation within this app, and between this app and others.
 class TestNav(SimpleTestCase):
     # lets us use SimpleTestCase to do database queries
@@ -14,6 +15,7 @@ class TestNav(SimpleTestCase):
     tempCase = Case()
     case_pk = -1
     program = CasePrograms()
+    ga = GrievanceAward()
 
     # setup
     def setUp(self):
@@ -53,21 +55,19 @@ class TestNav(SimpleTestCase):
         self.tempCase.campus = "Saskatoon"
         self.tempCase.school = "School of Business"
         self.tempCase.program = self.program
-        self.tempCase.caseType = "GRIEVANCES - CLASSIFICATION"
+        self.tempCase.caseType = 3
         self.tempCase.status = "OPEN"
         self.tempCase.date = "2016-10-20"
         self.tempCase.full_clean()
         self.tempCase.save()
 
-        ga = GrievanceAward()
-        ga.grievanceType = "M"
-        ga.recipient = self.tempPerson
-        ga.case = self.tempCase
-        ga.awardAmount = 500.00
-        ga.description = ""
-        ga.date = '2016-12-01'
-        ga.full_clean()
-        ga.save()
+
+        self.ga.case = self.tempCase
+        self.ga.awardAmount = 500.00
+        self.ga.description = ""
+        self.ga.date = '2016-12-01'
+        self.ga.full_clean()
+        self.ga.save()
 
     # Test to show we can move from one page to another within an app
     def test_we_can_nav_to_page_within_meeting_app(self):
@@ -77,7 +77,7 @@ class TestNav(SimpleTestCase):
         # assertRedirect was looking for response code 302 meaning the page was found
         # using get actually gets the page and will tell you if it exists returning response code 200
         # so compare response code to 200 to make sure it went to the page
-        response = self.client.get(reverse('grievance_award_creation:grievance_award_actual_detail', args='1'))
+        response = self.client.get(reverse('grievance_award_creation:grievance_award_actual_detail', args=[self.ga.pk]))
         self.assertEquals(response.status_code, 200)
 
     # Test to show we can move from one page to another page in a different app
