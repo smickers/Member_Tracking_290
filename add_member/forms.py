@@ -65,6 +65,13 @@ class PersonForm(ModelForm):
 
 
 class MemberFilterForm(forms.Form):
+    """
+    This is the form that is used to filter members. We're only using this to generate the fields and labels.
+    The form itself is not submitted. The page will do javascript to get the values from the inputs and do an ajax request.
+    """
+    JOB_TYPE = Person.POSITION_CLASS_CHOICE
+    JOB_TYPE.insert(0, ('', '-----'))
+    # All of the fields we are filtering with.
     memberID = forms.IntegerField(label='Member ID', widget=forms.NumberInput(attrs={'placeholder': 'Member ID'}), required=False)
     firstName = forms.CharField(label='First Name', widget=forms.TextInput(attrs={'placeholder': 'First Name'}), required=False)
     middleName = forms.CharField(label='Middle Name', widget=forms.TextInput(attrs={'placeholder': 'Middle Name'}), required=False)
@@ -81,12 +88,8 @@ class MemberFilterForm(forms.Form):
     cPhone = forms.CharField(label='Cell Phone', widget=forms.TextInput(attrs={'placeholder': '(123)123-4567'}), required=False)
     hEmail = forms.CharField(label='Email Address', widget=forms.TextInput(attrs={'placeholder': 'someone@email.com'}), required=False)
     campus = forms.CharField(label='Campus', widget=forms.TextInput(attrs={'placeholder': 'Sask Polytech Campus'}), required=False)
-    jobType = forms.CharField(label='Job Type', widget=forms.TextInput(attrs={'placeholder': 'Job Type'}), required=False)
+    jobType = forms.ChoiceField(label='Job Type', choices=Person.POSITION_CLASS_CHOICE, required=False)
     committee = forms.CharField(label='Committee', widget=forms.TextInput(attrs={'placeholder': 'Committee'}), required=False)
     membershipStatus = forms.CharField(label='Membership Status', widget=forms.TextInput(attrs={'placeholder': 'Membership Status'}), required=False)
     min_hDay = forms.DateField(label='Minimum Hire Date', widget=PersonForm.Meta.widgets['hireDate'], required=False)
     max_hDay = forms.DateField(label='Maximum Hire Date', widget=PersonForm.Meta.widgets['hireDate'], required=False)
-
-    widgets ={
-
-    }

@@ -20,7 +20,9 @@ class MemberSearchSerializer(HaystackSerializer):
 
 
 class MemberFilterSerializer(serializers.ModelSerializer):
+    """
+    Serializes our member/person with all fields.
+    """
     class Meta:
         model = Person
-        # index_classes = [MembersIndex]
         fields = '__all__'
