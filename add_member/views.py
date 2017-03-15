@@ -5,6 +5,8 @@ from .forms import PersonForm
 from drf_haystack.viewsets import HaystackViewSet
 from .serializer import MemberSearchSerializer
 from drf_haystack.filters import HaystackAutocompleteFilter
+from spfa_mt import settings
+from wsgiref.util import FileWrapper
 
 
 # view responsible for the member creation
@@ -40,6 +42,9 @@ class MemberSearchView(HaystackViewSet):
     serializer_class = MemberSearchSerializer
     filter_backends = [HaystackAutocompleteFilter]
 
-
+# TODO: Follow this link for downloadi file stuff
+# http://stackoverflow.com/questions/15246661/downloading-the-fileswhich-are-uploaded-from-media-folder-in-django-1-4-3
 def download(request, file_name):
-    """"""
+    file_path = settings.MEDIA_ROOT + file_name
+    file_wrapper = FileWrapper(file(file_path, 'rb'))
+    file_mimetype = mimetypes.guess_type(filepath)
