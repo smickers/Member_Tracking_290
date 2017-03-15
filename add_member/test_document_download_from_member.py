@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from .models import Person, MemberFiles
 from spfa_mt import settings
 from django.core.files import File
+from django.conf.urls import url
 
 class DocumentDownloadTestCase(TestCase):
     def __init__(self, *args, **kwargs):
@@ -83,6 +84,9 @@ class DocumentDownloadTestCase(TestCase):
 
 
     def test_user_can_download_a_document_from_a_member_profile(self):
+        self.client = Client()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
 
 
 
