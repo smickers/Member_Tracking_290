@@ -23,15 +23,10 @@
         function addCriteria()
         {
             criteriaCount++;
-            $("#filteringForm").append('<div id="filter-entry-' + criteriaCount + '"><br /><div class="form-group" id="filter-entry-' + criteriaCount + '"> <label>Field</label> <select class="form-control" id="field-choice-' + criteriaCount + '"> <option value="id">ID</option> <option value="member">Member</option> <option value="date">Date</option> <option value="description">Description</option> <option value="contactCode">Contact Code</option> </select> </div> <div class="form-group"> <label>Value</label> <input type="text" class="form-control" id="field-value-' + criteriaCount + '"> </div><div class="form-group"> <label>Logical Join</label><input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="AND" checked>AND <input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="OR">OR </div> <div class="form-group"> <button class="form-control btn btn-info" onclick="addCriteria()"><span class="glyphicon glyphicon-plus"></span></button><button class="form-control btn btn-warning close" onclick="removeCriteria(' + criteriaCount + ')"> <span aria-hidden="true">&times;</span> </button> </div></div>')
+            //$("#filteringForm").append('<div id="filter-entry-' + criteriaCount + '"><br /><div class="form-group" id="filter-entry-' + criteriaCount + '"> <label>Field</label> <select class="form-control" id="field-choice-' + criteriaCount + '"> <option value="id">ID</option> <option value="member">Member</option> <option value="date">Date</option> <option value="description">Description</option> <option value="contactCode">Contact Code</option> </select> </div> <div class="form-group"> <label>Value</label> <input type="text" class="form-control" id="field-value-' + criteriaCount + '"> </div><div class="form-group"> <label>Logical Join</label><input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="AND" checked>AND <input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="OR">OR </div> <div class="form-group"> <button class="form-control btn btn-info" onclick="addCriteria()"><span class="glyphicon glyphicon-plus"></span></button><button class="form-control btn btn-warning close" onclick="removeCriteria(' + criteriaCount + ')"> <span aria-hidden="true">&times;</span> </button> </div></div>')
+            $("#filteringForm").append('<div id="filter-entry-' + criteriaCount + '"> <div class="form-group"> <label>Field</label> <select class="form-control" id="field-choice-0" onchange="determineToShowEquality(' + criteriaCount + ')"> <option value="id">ID</option> <option value="member">Member</option> <option value="date">Date</option> <option value="description">Description</option> <option value="contactCode">Contact Code</option> </select> </div> <div class="form-group"> <label>Criteria</label> <select class="form-control" id="field-criteria-' + criteriaCount + '"> <option value="gt">>=</option> <option value="ee" selected>==</option> <option value="lt"><=</option> </select> </div><div class="form-group"> <label>Value</label> <input type="text" class="form-control" id="field-value-' + criteriaCount + '"> </div> <div class="form-group"> <label>Logical Join</label> <input type="radio" name="field-join-0" class="form-control" value="AND" checked>AND <input type="radio" name="field-join-0" class="form-control" value="OR">OR</div><div class="form-group"> <button class="form-control btn btn-info" onclick="addCriteria()"> <span class="glyphicon glyphicon-plus"></span> </button> <button class="form-control btn btn-warning close" onclick="removeCriteria(' + criteriaCount + ')"> <span aria-hidden="true">&times;</span> </button></div> </div>');
+            determineToShowEquality(criteriaCount);
         }
-
-{#        function addRecordsToTableAND(records)#}
-{#        {#}
-{#            #}
-{#            // Check to see if the current ID exists in the table already#}
-{#        }#}
-
 
         // This function is courtesy of:
         // http://stackoverflow.com/questions/1584370/how-to-merge-two-arrays-in-javascript-and-de-duplicate-items
@@ -63,7 +58,27 @@
                     console.log("Running an OR request");
                     // Run a query right now on the current criteria and combine it with
                     // the previous results
-                    request_url += $("#field-choice-" + i).val() + "=" + $("#field-value-" + i).val();
+                    if ($("#field-choice-" + i).val() === "date")
+                    {
+                        // Determine if less than, greater than, or equals was selected
+                        switch($("#field-criteria-" + i).val())
+                        {
+                            case 'gt':
+                                request_url += 'date_gt=' + $("#field-value-" + i).val();
+                                break;
+                            case 'lt':
+                                request_url += 'date_lt=' + $("#field-value-" + i).val();
+                                break;
+                            default:
+                                request_url += 'date=' + $("#field-value-" + i).val();
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        request_url += $("#field-choice-" + i).val() + "=" + $("#field-value-" + i).val();
+                    }
+
                     console.log(request_url);
                     $.ajax({
                         async: false,
@@ -90,7 +105,26 @@
                 {
                     console.log("Running an AND request");
                     // Run a query on the current criteria and AND it with the results
-                    request_url += $("#field-choice-" + i).val() + "=" + $("#field-value-" + i).val();
+                    if ($("#field-choice-" + i).val() === "date")
+                    {
+                        // Determine if less than, greater than, or equals was selected
+                        switch($("#field-criteria-" + i).val())
+                        {
+                            case 'gt':
+                                request_url += 'date_gt=' + $("#field-value-" + i).val();
+                                break;
+                            case 'lt':
+                                request_url += 'date_lt=' + $("#field-value-" + i).val();
+                                break;
+                            default:
+                                request_url += 'date=' + $("#field-value-" + i).val();
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        request_url += $("#field-choice-" + i).val() + "=" + $("#field-value-" + i).val();
+                    }
                     console.log(request_url);
                     $.ajax({
                         async: false,
@@ -104,10 +138,6 @@
 
                             all_records = combineArraysAND(all_records,  result);
 
-{#                            all_records = result.filter(function(value)#}
-{#                            {#}
-{#                               return all_records.indexOf(value) != -1;#}
-{#                            });#}
                         }
                     });
                 }
@@ -119,28 +149,6 @@
             console.log("All results: ");
             console.log(all_records);
             filterTable(all_records);
-
-            // And now make a request for the last element
-
-            // Grab criteria to build up request URL
-{#            var request_url = "http://127.0.0.1:8000/api-root/contact_log/search/?";#}
-{#            for(var i = 0; i <= criteriaCount; i++)#}
-{#            {#}
-{#                request_url += $("#field-choice-" + i).val() + "=" + $("#field-value-" + i).val() + "&";#}
-{#            }#}
-{##}
-{#            // Snip off the very last character (the last ampersand)#}
-{#            request_url = request_url.substring(0, request_url.length - 1);#}
-{#            console.log(request_url);#}
-{#            $.ajax({#}
-{#                method: 'GET',#}
-{#                url: request_url,#}
-{#                success: function(data, status)#}
-{#                {#}
-{#                    result = data.results;#}
-{#                    filterTable(result);#}
-{#                }#}
-{#            });#}
         }
 
         function combineArraysAND(arrayOne, arrayTwo)
@@ -257,6 +265,27 @@
             // Decrement criteria count
             criteriaCount--;
         }
+
+        function determineToShowEquality(elem)
+        {
+            
+            if ($("#field-choice-" + elem).val() === "date")
+            {
+                // Show the entire div that the equality selector is in - which happens
+                // to be the parent of the field-choice select element
+                $("#field-criteria-" + elem).parent().show();
+            }
+            else
+            {
+                $("#field-criteria-" + elem).parent().hide();
+            }
+        }
+
+        $(document).ready(function()
+        {
+            // Hide the equality selector for the first criteria by default
+            determineToShowEquality(0);
+        })
     </script>
 </head>
 <body>
@@ -265,7 +294,7 @@
         <div id="filter-entry-0">
             <div class="form-group">
                 <label>Field</label>
-                <select class="form-control" id="field-choice-0">
+                <select class="form-control" id="field-choice-0" onchange="determineToShowEquality(0)">
                     <option value="id">ID</option>
                     <option value="member">Member</option>
                     <option value="date">Date</option>
@@ -276,11 +305,9 @@
             <div class="form-group">
                 <label>Criteria</label>
                 <select class="form-control" id="field-criteria-0">
-                    <option value="gte">>=</option>
-                    <option value="gt">></option>
-                    <option value="ee">==</option>
-                    <option value="lt"><</option>
-                    <option value="lte"><=</option>
+                    <option value="gt">>=</option>
+                    <option value="ee" selected>==</option>
+                    <option value="lt"><=</option>
                 </select>
             </div>
             <div class="form-group">
