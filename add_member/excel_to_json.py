@@ -1,4 +1,3 @@
-
 import pyexcel as pe
 from zipfile import BadZipfile
 
@@ -28,7 +27,7 @@ def convert_excel_json(content):
     """
         Method that converts the excel file to JSON
     """
-    all_dict = [] # create a holder for all the dictionaries
+    all_dict = []  # create a holder for all the dictionaries
     try:
         book = pe.get_book(file_content=content,file_type='xlsx')  # open the excel book in memory
         for sheet in book:  # loop for each sheet found in the excel book
@@ -47,14 +46,15 @@ def convert_excel_json(content):
                 if valid:  # If the row is valid
                     for z in range(0, len(temp), 1):  # loop each column of the row
                         if temp[z] != "Name":   # If the current column does not belong to the 'Name' column
-                            temp2[field_name[temp[z]]] = sheet[i, z]  # create a key value pair based on the field name and its value
-                        else: # If the current column belong sto the 'Name' column
+                            # create a key value pair based on the field name and its value
+                            temp2[field_name[temp[z]]] = sheet[i, z]
+                        else:  # If the current column belong sto the 'Name' column
                             array = [x.rstrip(',.') for x in sheet[i, z].split(' ')] # split the names into an array
-                            for j in range(0, len(array)): # loop the resulting array
+                            for j in range(0, len(array)):  # loop the resulting array
                                 temp2[name_fields[j]] = array[j]  # assign the key/val pair using the name_fields as key
                 if temp2:
                     all_dict.append(temp2)
     except BadZipfile:
-        all_dict.append({'Error':'The you uploaded is not an excel file'})
-
+        all_dict.append({'Error': 'The you uploaded is not an excel file'})
+    print(all_dict)
     return all_dict
