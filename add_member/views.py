@@ -45,6 +45,9 @@ class MemberSearchView(HaystackViewSet):
 
 
 class FileListCreateView(generics.ListCreateAPIView):
+    """
+        View that's responsible for accepting a file and writing it into the database
+    """
     queryset = PersonFile.objects.all()
     serializer_class = MemberFileSerializer
 
@@ -55,12 +58,18 @@ class FileListCreateView(generics.ListCreateAPIView):
         return super(FileListCreateView, self).post(request, *args, **kwargs)
 
 class FileTooLarge(APIException):
+    """
+        This exceptions gets raised if the file uploaded is exceeding the file size limit
+    """
     status_code = 400
-    default_detail = 'File too large bruh'
+    default_detail = 'The file exceeded the file size limit. Please upload a smaller file'
     default_code = 'bad request'
 
 
 class MemberFileUploadView(TemplateView):
+    """
+        Renders template for the Member Bulk Create page.
+    """
     template_name ='add_member/memberbulkcreate.html'
 
 
@@ -68,12 +77,15 @@ class MemberFileUploadView(TemplateView):
 @decorators.api_view(['GET'])
 def excel_to_json(request, *args, **kwargs):
     """
-    This is how you do a comment :) :) :) *wink* *WINK*
+        Function-based view responsible for calling the function that converts the excel content to json.
+        @:return JSON response that includes the following key/value pairs
+                    * count: count of the member info found in the excel sheet
+                    * Result: Array of key/val pair that contains each member info found in the excel sheet.
     """
     try:
-        sample_file = PersonFile.objects.get(pk=kwargs['pk'])
-        result = convert_excel_json(sample_file.file.file)
-        return Response({"count": len(result), "Result": result})
+        sample_file = PersonFile.objects.get(pk=kwargs['pk'])  # get the PersonFile object using the pk
+        result = convert_excel_json(sample_file.file.file)  # convert the excel file to json string
+        return Response({"count": len(result), "Result": result})  # return a JSON reponse
     except ObjectDoesNotExist:
         return Response({"Error": "There is an error on parsing the excel file"})
     except IOError:
