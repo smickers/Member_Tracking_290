@@ -4,10 +4,19 @@ from .models import contactLog
 from rest_framework.test import APIRequestFactory
 
 
+# Courtesy of:
+# http://stackoverflow.com/questions/9890364/combine-two-dictionaries-and-remove-duplicates-in-python
+def result_combine(lis1, lis2):
+    for aLis1 in lis1:
+        if aLis1 not in lis2:
+            lis2.append(aLis1)
+    return lis2
+
 class ContactLogFilteringTests(TestCase):
     requestFactory = APIRequestFactory()
     person1 = Person()
     person2 = Person()
+    person3 = Person()
     aContactLogs = [contactLog(), contactLog(), contactLog(), contactLog(), contactLog(), contactLog(), contactLog()]
 
     def setUp(self):
@@ -60,6 +69,30 @@ class ContactLogFilteringTests(TestCase):
         self.person2.full_clean()
         self.person2.save()
 
+        self.person3.memberID = 4204444
+        self.person3.firstName = 'Deborah'
+        self.person3.middleName = 'Middle'
+        self.person3.lastName = 'Williams'
+        self.person3.socNum = 123456789
+        self.person3.city = 'Sample City'
+        self.person3.mailAddress = 'Sample address'
+        self.person3.mailAddress2 = 'Sample Address 2'
+        self.person3.pCode = 's7k5j8'
+        self.person3.hPhone = '(306)812-1234'
+        self.person3.cPhone = '(306)812-1234'
+        self.person3.hEmail = 'sample@sample.com'
+        self.person3.campus = 'SASKATOON'
+        self.person3.jobType = 'FTO'
+        self.person3.committee = 'Sample Commitee'
+        self.person3.memberImage = 'image.img'
+        self.person3.bDay = '2012-03-03'
+        self.person3.hireDate = '2012-03-03'
+        self.person3.gender = 'MALE'
+        self.person3.membershipStatus = 'RESOURCE'
+        self.person3.programChoice = 'Sample Program'
+        self.person3.full_clean()
+        self.person3.save()
+
         self.aContactLogs[0].member = self.person1
         self.aContactLogs[0].date = '2017-02-01'
         self.aContactLogs[0].description = 'Test'
@@ -74,14 +107,14 @@ class ContactLogFilteringTests(TestCase):
         self.aContactLogs[1].clean()
         self.aContactLogs[1].save()
 
-        self.aContactLogs[2].member = self.person1
+        self.aContactLogs[2].member = self.person2
         self.aContactLogs[2].date = '2017-02-03'
         self.aContactLogs[2].description = 'World'
         self.aContactLogs[2].contactCode = 'T'
         self.aContactLogs[2].clean()
         self.aContactLogs[2].save()
 
-        self.aContactLogs[3].member = self.person1
+        self.aContactLogs[3].member = self.person3
         self.aContactLogs[3].date = '2017-02-15'
         self.aContactLogs[3].description = 'A CL'
         self.aContactLogs[3].contactCode = 'P'
@@ -94,49 +127,64 @@ class ContactLogFilteringTests(TestCase):
         self.aContactLogs[4].clean()
         self.aContactLogs[4].save()
 
-        self.aContactLogs[5].member = self.person1
+        self.aContactLogs[5].member = self.person2
         self.aContactLogs[5].date = '2017-02-19'
         self.aContactLogs[5].description = 'Test'
         self.aContactLogs[5].contactCode = 'M'
         self.aContactLogs[5].clean()
         self.aContactLogs[5].save()
 
-        self.aContactLogs[6].member = self.person2
+        self.aContactLogs[6].member = self.person3
         self.aContactLogs[6].date = '2016-04-05'
         self.aContactLogs[6].description = 'Goodbye'
         self.aContactLogs[6].contactCode = 'M'
         self.aContactLogs[6].clean()
         self.aContactLogs[6].save()
 
+
     def test_related_member_filtering(self):
-        request = self.requestFactory.get("/api-root/contact_log/filter?member=1")
-        self.assertEquals(len(request.data), 6)
+        request = self.client.get('/api-root/contact_log/search/?member=1')
+        self.assertEquals(request.json()['count'], 3)
 
     def test_date_filtering(self):
-        request = self.requestFactory.get("/api-root/contact_log/filter?date=2017-01-01?condition=lt")
-        self.assertEquals(len(request.data), 2)
+        request = self.client.get('/api-root/contact_log/search/?date_lt=2017-01-01')
+        self.assertEquals(request.json()['count'], 2)
 
     def test_description_filtering_and_empty_filtering(self):
-        request = self.requestFactory.get("/api-root/contact_log/filter?description=")
-        self.assertEquals(len(request.data), 1)
+        request = self.client.get('/api-root/contact_log/search/?empty_desc_filter=true')
+        self.assertEquals(request.json()['count'], 1)
 
     def test_contact_code_filtering(self):
-        request = self.requestFactory.get("/api-root/contact_log/filter/contactCode=M")
-        self.assertEquals(len(request.data), 2)
+        request = self.client.get('/api-root/contact_log/search/?contactCode=M')
+        self.assertEquals(request.json()['count'], 2)
 
     def test_OR_filtering(self):
-        request = self.requestFactory.get("/api-root/contact_log/filter/contactCode=M?condition=OR?contactCode=P")
-        self.assertEquals(len(request.data), 4)
+        # Make a request for contact code = M
+        request = self.client.get('/api-root/contact_log/search/?contactCode=M')
+        resultOne = request.json()['results']
+        # Make a request for contact code = P
+        requestTwo = self.client.get('/api-root/contact_log/search/?contactCode=P')
+        resultTwo = requestTwo.json()['results']
+        # Combine the results of two queries together
+        all_results = result_combine(resultOne, resultTwo)
+        #Double check the number of items returned
+        self.assertEquals(len(all_results), 4)
 
     def test_AND_filtering(self):
-        request = self.requestFactory.get("/api-root/contact_log/filter/contactCode=M?condition=AND?description=Goodbye")
-        self.assertTrue(len(request.data), 1)
+        request = self.client.get('/api-root/contact_log/search/?contactCode=M&description=Goodbye')
+        self.assertEquals(request.json()['count'], 1)
 
-    def test_NOT_filtering(self):
-        request = self.requestFactory.get("/api-root/contact_log/filter/contactCode=P?condition=NOT")
-        self.assertEquals(len(request.data), 5)
+    # def test_NOT_filtering(self):
+    #     request = self.requestFactory.get("/api-root/contact_log/filter/contactCode=P?condition=NOT")
+    #     self.assertEquals(len(request.data), 5)
 
     def test_AND_OR_chaining(self):
-        request = self.requestFactory.get("/api-root/contact_log/filter/date=2017-01-01?condition=gt?condition=AND?contactCode=M?criteria=OR?member=2")
-        self.assertEquals(len(request.data),2)
+        request = self.client.get('/api-root/contact_log/search/?date_gt=2017-01-01&contactCode=M')
+        resultOne = request.json()['results']
+
+        requestTwo = self.client.get('/api-root/contact_log/search/?member=2')
+        resultTwo = requestTwo.json()['results']
+
+        all_results = result_combine(resultOne, resultTwo)
+        self.assertEquals(len(all_results),2)
 

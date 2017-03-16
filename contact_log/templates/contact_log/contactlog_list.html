@@ -24,7 +24,7 @@
         {
             criteriaCount++;
             //$("#filteringForm").append('<div id="filter-entry-' + criteriaCount + '"><br /><div class="form-group" id="filter-entry-' + criteriaCount + '"> <label>Field</label> <select class="form-control" id="field-choice-' + criteriaCount + '"> <option value="id">ID</option> <option value="member">Member</option> <option value="date">Date</option> <option value="description">Description</option> <option value="contactCode">Contact Code</option> </select> </div> <div class="form-group"> <label>Value</label> <input type="text" class="form-control" id="field-value-' + criteriaCount + '"> </div><div class="form-group"> <label>Logical Join</label><input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="AND" checked>AND <input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="OR">OR </div> <div class="form-group"> <button class="form-control btn btn-info" onclick="addCriteria()"><span class="glyphicon glyphicon-plus"></span></button><button class="form-control btn btn-warning close" onclick="removeCriteria(' + criteriaCount + ')"> <span aria-hidden="true">&times;</span> </button> </div></div>')
-            $("#filteringForm").append('<div id="filter-entry-' + criteriaCount + '"> <div class="form-group"> <label>Field</label> <select class="form-control" id="field-choice-0" onchange="determineToShowEquality(' + criteriaCount + ')"> <option value="id">ID</option> <option value="member">Member</option> <option value="date">Date</option> <option value="description">Description</option> <option value="contactCode">Contact Code</option> </select> </div> <div class="form-group"> <label>Criteria</label> <select class="form-control" id="field-criteria-' + criteriaCount + '"> <option value="gt">>=</option> <option value="ee" selected>==</option> <option value="lt"><=</option> </select> </div><div class="form-group"> <label>Value</label> <input type="text" class="form-control" id="field-value-' + criteriaCount + '"> </div> <div class="form-group"> <label>Logical Join</label> <input type="radio" name="field-join-0" class="form-control" value="AND" checked>AND <input type="radio" name="field-join-0" class="form-control" value="OR">OR</div><div class="form-group"> <button class="form-control btn btn-info" onclick="addCriteria()"> <span class="glyphicon glyphicon-plus"></span> </button> <button class="form-control btn btn-warning close" onclick="removeCriteria(' + criteriaCount + ')"> <span aria-hidden="true">&times;</span> </button></div> </div>');
+            $("#filteringForm").append('<div id="filter-entry-' + criteriaCount + '"> <div class="form-group"> <label>Field</label> <select class="form-control" id="field-choice-' + criteriaCount + '" onchange="determineToShowEquality(' + criteriaCount + ')"> <option value="id">ID</option> <option value="member">Member</option> <option value="date">Date</option> <option value="description">Description</option> <option value="contactCode">Contact Code</option> </select> </div> <div class="form-group"> <label>Criteria</label> <select class="form-control" id="field-criteria-' + criteriaCount + '"> <option value="gt">></option> <option value="ee" selected>==</option> <option value="lt"><</option> </select> </div><div class="form-group"> <label>Value</label> <input type="text" class="form-control" id="field-value-' + criteriaCount + '"> </div> <div class="form-group"> <label>Logical Join</label> <input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="AND" checked>AND <input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="OR">OR</div><div class="form-group"> <button class="form-control btn btn-info" onclick="addCriteria()"> <span class="glyphicon glyphicon-plus"></span> </button> <button class="form-control btn btn-warning close" id="remove-' + criteriaCount + '" onclick="removeCriteria(' + criteriaCount + ')"> <span aria-hidden="true">&times;</span> </button></div> </div>');
             determineToShowEquality(criteriaCount);
         }
 
@@ -64,15 +64,20 @@
                         switch($("#field-criteria-" + i).val())
                         {
                             case 'gt':
-                                request_url += 'date_gt=' + $("#field-value-" + i).val();
+                                request_url += 'date_gt=' + convertDateFormat($("#field-value-" + i).val());
                                 break;
                             case 'lt':
-                                request_url += 'date_lt=' + $("#field-value-" + i).val();
+                                request_url += 'date_lt=' + convertDateFormat($("#field-value-" + i).val());
                                 break;
                             default:
-                                request_url += 'date=' + $("#field-value-" + i).val();
+                                request_url += 'date=' + convertDateFormat($("#field-value-" + i).val());
                                 break;
                         }
+                    }
+                    // Check for an empty description
+                    else if ($("#field-choice-" + i).val() === "description" && $("#field-value-" + i).val() === "")
+                    {
+                        request_url += "empty_desc_filter=yes";
                     }
                     else
                     {
@@ -111,15 +116,20 @@
                         switch($("#field-criteria-" + i).val())
                         {
                             case 'gt':
-                                request_url += 'date_gt=' + $("#field-value-" + i).val();
+                                request_url += 'date_gt=' + convertDateFormat($("#field-value-" + i).val());
                                 break;
                             case 'lt':
-                                request_url += 'date_lt=' + $("#field-value-" + i).val();
+                                request_url += 'date_lt=' + convertDateFormat($("#field-value-" + i).val());
                                 break;
                             default:
-                                request_url += 'date=' + $("#field-value-" + i).val();
+                                request_url += 'date=' + convertDateFormat($("#field-value-" + i).val());
                                 break;
                         }
+                    }
+                    // Check for an empty description
+                    else if ($("#field-choice-" + i).val() === "description" && $("#field-value-" + i).val() === "")
+                    {
+                        request_url += "empty_desc_filter=yes";
                     }
                     else
                     {
@@ -262,13 +272,34 @@
         {
             // Remove the entire row of filtering
             $("#filter-entry-" + num).remove();
+
+            // Decrement the IDs of inputs that occur after
+            for (var i = num + 1; i <= criteriaCount; i++)
+            {
+                console.log("Working on ID " + i);
+
+                // Decrement filter-entry
+                $("#filter-entry-" + i).attr('id', 'filter-entry-' + (i - 1));
+                // Decrement field-choice
+                $("#field-choice-" + i).attr('id', 'field-choice-' + (i - 1));
+                // Decrement field-criteria
+                $("#field-criteria-" + i).attr('id', 'field-criteria-' + (i - 1));
+                // Decrement field-value
+                 $("#field-value-" + i).attr('id', 'field-value-' + (i - 1));
+                // Decrement field-join
+                $("#field-join-" + i).attr('id', 'field-join-' + (i - 1));
+                // Change the onclick value + ID of the onclick button
+                $("#remove-" + i).attr('id', 'remove-' + (i - 1));
+                $("#remove-" + (i - 1)).attr('onclick', 'removeCriteria(' + (i - 1) + ')');
+            }
+
             // Decrement criteria count
             criteriaCount--;
         }
 
         function determineToShowEquality(elem)
         {
-            
+
             if ($("#field-choice-" + elem).val() === "date")
             {
                 // Show the entire div that the equality selector is in - which happens
@@ -279,6 +310,16 @@
             {
                 $("#field-criteria-" + elem).parent().hide();
             }
+        }
+
+        // This function is courtesy of:
+        // http://stackoverflow.com/questions/17445585/javascript-convert-string-into-date-with-format-dd-mmm-yyyy-i-e-01-jun-2012
+        function convertDateFormat(enteredDate)
+        {
+            var dateToReturn = new Date(enteredDate);
+            // Convert the date to a string in the form DD/MM/YYYY, and then
+            // change all the slashes to hyphens
+            return dateToReturn.toLocaleDateString("en-CA");
         }
 
         $(document).ready(function()
@@ -305,9 +346,9 @@
             <div class="form-group">
                 <label>Criteria</label>
                 <select class="form-control" id="field-criteria-0">
-                    <option value="gt">>=</option>
+                    <option value="gt">></option>
                     <option value="ee" selected>==</option>
-                    <option value="lt"><=</option>
+                    <option value="lt"><</option>
                 </select>
             </div>
             <div class="form-group">
