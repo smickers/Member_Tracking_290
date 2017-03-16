@@ -5,8 +5,7 @@ from .validators import *
 
 
 # Create your models here.
-
-class Person(models.Model):
+class PersonBase(models.Model):
 
     #bound fields choices for gender field
     GENDER_CHOICE = [
@@ -60,13 +59,11 @@ class Person(models.Model):
     membershipStatus = models.CharField(max_length=30, choices=MEMBERSHIP_STATUS, null=True)
     hireDate = models.DateField(null=True) #TODO: change to current hire date
 
-    # TODO:  Add Department field
-    # TODO: Add position title
-    # TODO: Add employee status field
-    # TODO: Termination date
-    # TODO: Add these fields: Position Begin Date	Position End Date
+    class Meta:
+        abstract = True
 
-    #when model gets updated, user will be routed to thte member_detail url
+
+class Person(PersonBase):
     def get_absolute_url(self):
         return reverse(viewname='add_member:member_detail', kwargs={'pk':self.pk})
 
@@ -79,6 +76,7 @@ class Person(models.Model):
             self.pCode = self.pCode.upper()
             if len(self.pCode) == 6:
                 self.pCode = self.pCode[:3] + ' ' + self.pCode[3:]
+
 
 class PersonFile(models.Model):
     file = models.FileField(blank=True, null=True)

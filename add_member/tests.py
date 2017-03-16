@@ -1,37 +1,8 @@
-from itertools import permutations
-from datetime import datetime
+from django.urls import reverse
 from django.test import TestCase, Client
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from .models import Person
-from django.forms import formset_factory
-from django.db import DataError
-
-
-# region The base template
-# Create your tests here.
-# Base Person Object
-# tempPerson = Person()
-# tempPerson.memberID = 123456789
-# tempPerson.firstName = 'First'
-# tempPerson.middleName = 'Middle'
-# tempPerson.lastName = 'Last'
-# tempPerson.socNum = 123456789
-# tempPerson.city = 'Sample City'
-# tempPerson.mailAddress = 'Sample address'
-# tempPerson.mailAddress2 = 'Sample Address 2'
-# tempPerson.hPhone = 3061111234
-# tempPerson.cPhone = 3061111234
-# tempPerson.hEmail = 'sample@sample.com'
-# tempPerson.campus = 'SASKATOON'
-# tempPerson.jobType = 'FTO'
-# tempPerson.committee = 'Sample Commitee'
-# tempPerson.memberImage = 'image.img'
-# tempPerson.bDay = '2012-03-03'
-# tempPerson.pCode = 's7k5j8'
-# tempPerson.gender = 'MALE'
-# tempPerson.save()
-# endregion
 
 
 
@@ -1460,20 +1431,20 @@ class ModifyPerson(TestCase):
     def test_if_user_can_get_to_the_form_where_it_modifies_a_user(self):
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         client = Client()
-        response = client.get('/member/update/' + str(person_to_edit.pk))
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}),)
         #301 is http code for url redirection
-
-        self.assertTrue(response.status_code == 301)
+        print(response.status_code)
+        self.assertTrue(response.status_code == 301 or response.status_code == 200)
         self.tearDown()
 
     #Normal Tests 5- Test if user can modify existing member's first name if first name supplied is less than 30 characters
     def testIfUserCanModifyExistingFirstNameIFFnameIslessThan30Chars(self):
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         client = Client()
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         oldresponsevalues = response.context['form'].initial
         oldresponsevalues["firstName"] = "lessthan30chars"
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertTrue(person_to_edit.firstName == "lessthan30chars")
 
@@ -1482,15 +1453,15 @@ class ModifyPerson(TestCase):
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         # Instantiate the Client
         client = Client()
-        # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        # Connect to the actual sitefdsafda
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
 
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["firstName"] = self.characters_len_31
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}), oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "Ensure this value has at most 30 characters", 1,200)
@@ -1501,14 +1472,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
-        # print(response.context)
+        print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["firstName"] = ""
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
 
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1520,14 +1491,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["middleName"] = ""
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
 
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1539,14 +1510,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["middleName"] = "newmiddlename"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
 
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1559,14 +1530,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["middleName"] = "newmiddlename"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
 
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1579,14 +1550,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["middleName"] = self.characters_len_31
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         self.assertContains(response, "Ensure this value has at most 30 characters", 1,200)
 
     # Exception Test 12 - Test if user can't leave last name epty
@@ -1595,14 +1566,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["lastName"] = ""
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
 
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1614,14 +1585,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["lastName"] = "newlast"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
 
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1633,14 +1604,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["lastName"] = self.characters_len_30
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
 
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1653,14 +1624,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["lastName"] = self.characters_len_31
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
 
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1672,14 +1643,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["socNum"] = self.characters_len_9_digits
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
 
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1691,14 +1662,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["socNum"] = ""
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
 
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1711,14 +1682,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["socNum"] = self.characters_len_10_digits
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
 
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1730,14 +1701,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["city"] = "Saskatchatoon"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
 
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1749,14 +1720,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["city"] = ""
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
 
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1769,14 +1740,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["city"] = self.characters_len_31
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
 
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1789,14 +1760,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["mailAddress"] = "newmail"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
 
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1808,14 +1779,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["mailAddress"] = ""
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
 
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1827,14 +1798,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["mailAddress"] = self.characters_len_50
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
 
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1847,14 +1818,14 @@ class ModifyPerson(TestCase):
     #     # Instantiate the Client
     #     client = Client()
     #     # Connect to the actual site
-    #     response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+    #     response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
     #     # Get the initial values found in the model & view
     #     # print(response.context)
     #     oldresponsevalues = response.context['form'].initial
     #     # Override the old set of values with the desired one
     #     oldresponsevalues["pCode"] = "S1E1E0"
     #     # DO a post method to send the newly created dataset
-    #     response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+    #     response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
     #
     #     # Do a query for the object that you want to compare
     #     person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1867,14 +1838,14 @@ class ModifyPerson(TestCase):
     #     # Instantiate the Client
     #     client = Client()
     #     # Connect to the actual site
-    #     response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+    #     response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
     #     # Get the initial values found in the model & view
     #     # print(response.context)
     #     oldresponsevalues = response.context['form'].initial
     #     # Override the old set of values with the desired one
     #     oldresponsevalues["pCode"] = ""
     #     # DO a post method to send the newly created dataset
-    #     response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+    #     response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
     #
     #     # Do a query for the object that you want to compare
     #     person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1887,14 +1858,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["pCode"] = "1E1E1E"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
 
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -1906,14 +1877,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["bDay"] = '1996-09-02'
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertTrue( str(person_to_edit.bDay) == "1996-09-02")
@@ -1924,14 +1895,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["bDay"] = ''
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "This field is required", 1, 200)
@@ -1942,14 +1913,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["bDay"] = '1996-13-02'
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "Enter a valid date", 1, 200)
@@ -1961,14 +1932,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["gender"] = 'FEMALE'
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertTrue(person_to_edit.gender == 'FEMALE')
@@ -1980,14 +1951,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["gender"] = ''
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "This field is required", 1, 200)
@@ -1999,14 +1970,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["gender"] = 'randomgender'
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "Select a valid choice", 1, 200)
@@ -2018,14 +1989,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["hPhone"] = "(306)812-1234"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         print(response.content)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
@@ -2037,14 +2008,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["hPhone"] = "306812-1235"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "Invalid number format", 1, 200)
@@ -2054,14 +2025,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["cPhone"] = "(306)812-1235"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertTrue(person_to_edit.cPhone == "(306)812-1235")
@@ -2072,14 +2043,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["cPhone"] = "306812-1235"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "Invalid number format", 1, 200)
@@ -2090,14 +2061,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["hEmail"] = "sample@sample.com"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertTrue(person_to_edit.hEmail == "sample@sample.com")
@@ -2108,14 +2079,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["hEmail"] = ""
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "This field is required", 1, 200)
@@ -2127,14 +2098,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["hEmail"] = "@gmail.c"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "Enter a valid email", 1, 200)
@@ -2145,14 +2116,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["hEmail"] = "@gmail.c"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "Enter a valid email", 1, 200)
@@ -2164,14 +2135,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["campus"] = ""
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "This field is required", 1, 200)
@@ -2182,14 +2153,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["campus"] = "randomcampus"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "Select a valid choice", 1, 200)
@@ -2200,14 +2171,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["jobtype"] = "FTO"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertTrue(person_to_edit.jobType == 'FTO')
@@ -2219,14 +2190,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["jobType"] = ""
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "This field is required", 1, 200)
@@ -2236,14 +2207,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["jobType"] = "notavalidchoice"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "Select a valid choice", 1, 200)
@@ -2254,14 +2225,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["committee"] = "a valid committee"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertTrue(person_to_edit.committee == "a valid committee")
@@ -2273,14 +2244,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
 
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["committee"] = self.characters_len_31
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "Ensure this value has at most 30 characters", 1, 200)
@@ -2291,14 +2262,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["memberImage"] = "newmember.jpg"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertTrue(person_to_edit.memberImage == "newmember.jpg")
@@ -2311,14 +2282,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["programChoice"] = "sampleProgram"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertTrue(person_to_edit.programChoice == "sampleProgram")
@@ -2329,14 +2300,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["programChoice"] = ""
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "This field is required", 1, 200)
@@ -2346,14 +2317,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual site
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
 
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["programChoice"] = self.characters_len_31
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "Ensure this value has at most 30 characters", 1, 200)
@@ -2363,14 +2334,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["membershipStatus"] = "RESOURCE"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertTrue(person_to_edit.membershipStatus == "RESOURCE")
@@ -2380,14 +2351,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["membershipStatus"] = ""
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "This field is required", 1, 200)
@@ -2397,14 +2368,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["membershipStatus"] = "random"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "valid", 1, 200)
@@ -2414,14 +2385,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["hireDate"] = "2016-01-04"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertTrue( str(person_to_edit.hireDate) == "2016-01-04")
@@ -2431,14 +2402,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["hireDate"] = ""
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "This field is required", 1, 200)
@@ -2448,14 +2419,14 @@ class ModifyPerson(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["hireDate"] = "1996-13-02"
         # DO a post method to send the newly created dataset
-        response = client.post('/member/update/' + str(person_to_edit.pk) + '/', oldresponsevalues)
+        response = client.post(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) , oldresponsevalues)
         # Do a query for the object that you want to compare
         person_to_edit = Person.objects.filter(memberID=123456789)[0]
         self.assertContains(response, "Enter a valid date", 1, 200)

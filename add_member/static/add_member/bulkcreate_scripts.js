@@ -107,6 +107,13 @@ var BulkCreate = {
             );
             list_members.append(ele);
         });
+        var ele = $('<thead></thead>');
+        ele.append($('<th>First Name</th>'));
+        ele.append($('<th>Middle Name</th>'));
+        ele.append($('<th>Last Name</th>'));
+        ele.append($('<th>Department</th>'));
+        ele.append($('<th>Campus</th>'));
+        list_members.append(ele);
         list_members.append($('<div>Please confirm if information is correct.</div>'));
         list_members.append(confirm_button_y);
         list_members.append(confirm_button_n);
