@@ -135,12 +135,12 @@ class TestAllSPFAMTElements(SimpleTestCase):
         self.assertTrue(soup.find("nav"))
 
     # Test that the footer exists on index.html
-    def test_footer_exists_on_main_pages(self):
-        client = Client()
-        source_code = client.get(reverse('index_default'))
-        soup = BeautifulSoup(source_code.content, "html.parser")
-        soup.prettify()
-        self.assertTrue(soup.find("div", attrs={"class": "footer"}))
+    # def test_footer_exists_on_main_pages(self):
+    #     client = Client()
+    #     source_code = client.get(reverse('index_default'))
+    #     soup = BeautifulSoup(source_code.content, "html.parser")
+    #     soup.prettify()
+    #     self.assertTrue(soup.find("div", attrs={"class": "footer"}))
 
     # Test that the header image exists on index.html
     def test_header_image_on_main_page(self):
@@ -149,4 +149,3 @@ class TestAllSPFAMTElements(SimpleTestCase):
         soup = BeautifulSoup(source_code.content, "html.parser")
         soup.prettify()
         self.assertTrue(soup.find("img"))
-

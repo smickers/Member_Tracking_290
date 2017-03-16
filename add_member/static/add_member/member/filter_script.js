@@ -67,7 +67,7 @@ $(document).ready( function() {
         if($("#id_max_bDay_year").val() != null && $("#id_max_bDay_month").val() != null && $("#id_max_bDay_day").val() !=null)
         {
             var maxBdayDate = new Date($("#id_max_bDay_year").val(), $("#id_max_bDay_month").val(),$("#id_max_bDay_day").val());
-            maxBday = maxBdayDate.getFullYear()+ "-" + (maxBdayDate.getMonth()) + "-" +minBdayDate.getDate();
+            maxBday = maxBdayDate.getFullYear()+ "-" + (maxBdayDate.getMonth()) + "-" +maxBdayDate.getDate();
         }
         if($("#id_min_hDay_year").val() != null && $("#id_min_hDay_month").val() != null && $("#id_min_hDay_day").val() !=null)
         {
@@ -103,6 +103,7 @@ $(document).ready( function() {
         (maxBday != null ) ? temp_endpoint += "max_bDay=" + encodeURIComponent(maxBday)+ "&": temp_endpoint += '';
         $('#id_gender').val() != null ? temp_endpoint += "gender=" + encodeURIComponent($('#id_gender').val()) + "&": false;
         // Make our ajax call to our API
+        console.log(temp_endpoint);
         ajax_call(temp_endpoint);
 
         // If we have multiple fields, we use this loop. We build a new url for each form and the results are added on to our
@@ -123,7 +124,7 @@ $(document).ready( function() {
             if($("#id_max_bDay_year"+i).val() != null && $("#id_max_bDay_month"+i).val() != null && $("#id_max_bDay_day"+i).val() !=null)
             {
                 var maxBdayDate = new Date($("#id_max_bDay_year"+i).val(), $("#id_max_bDay_month"+i).val(),$("#id_max_bDay_day"+i).val());
-                maxBday = maxBdayDate.getFullYear()+ "-" + (maxBdayDate.getMonth()) + "-" +minBdayDate.getDate();
+                maxBday = maxBdayDate.getFullYear()+ "-" + (maxBdayDate.getMonth()) + "-" +maxBdayDate.getDate();
             }
             if($("#id_min_hDay_year"+i).val() != null && $("#id_min_hDay_month"+i).val() != null && $("#id_min_hDay_day"+i).val() !=null)
             {
@@ -158,6 +159,7 @@ $(document).ready( function() {
             (maxBday != null ) ? temp_endpoint += "max_bDay=" + encodeURIComponent(maxBday)+ "&": temp_endpoint += '';
             $('#id_gender'+i).val() != null ? temp_endpoint += "gender=" + encodeURIComponent($('#id_gender'+i).val()) + "&": false;
             // ajax call to api again.
+            console.log(temp_endpoint);
             ajax_call(temp_endpoint);
         }
 
