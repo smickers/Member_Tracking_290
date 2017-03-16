@@ -38,5 +38,5 @@ urlpatterns = [
     url(r'^award/', include('award.urls')),
     url(r'^grievance/', include('grievance_award_creation.urls')),
     url(r'^add_event/', include('create_event.urls')),
-    url(r'^add_com/', include('add_com.urls'))
+    url(r'^add_com/', include('add_com.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

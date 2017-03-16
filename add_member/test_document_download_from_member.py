@@ -140,7 +140,6 @@ class DocumentDownloadTestCase(StaticLiveServerTestCase):
 
         client = Client()
         response = client.get("/addmember/download/" + str(self.text_file.fileName))
-        response['Content-Length'] = os.stat(str(self.text_file.fileName)).st_size
         self.assertTrue(response['Content-Length'] is not None)
 
     # Test 4: Test that downloaded content contains the same contents it was saved with
