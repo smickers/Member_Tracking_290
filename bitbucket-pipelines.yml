@@ -4,14 +4,11 @@ pipelines:
   default:
     - step:
         script: # Modify the commands below to build your repository.
-          - pip install -U tox
-          - pip --version
-          - tox --version
-#          - /etc/init.d/mysql start
-#          - mysql -uroot -p 'bitnami' -e 'create database gamma'
-#          - pip install -r requirements.txt
-#          - python manage.py collectstatic --noinput
-#          - python manage.py makemigrations
-#          - python manage.py migrate
-#          - python manage.py generate_members
-#          - python manage.py test
+          - /etc/init.d/mysql start
+          - mysql -u root -e 'create database gamma'
+          - pip install -r requirements.txt
+          - python manage.py collectstatic --noinput
+          - python manage.py makemigrations
+          - python manage.py migrate
+          - python manage.py generate_members
+          - python manage.py test

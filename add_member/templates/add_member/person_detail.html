@@ -4,8 +4,13 @@
     <title>Person Detail</title>
 {% endblock %}
 
-
 {% block content %}
-    <h1>Name: {{ object.firstName }}</h1>
+    <h1>Name: {{ object.firstName }} {{ object.lastName }}</h1>
     <p>SIN NUMBER: {{ object.socNum }}</p>
+    <p>File(s) Associated to {{ object.firstName }} {{ object.lastName }}:</p>
+    {% if object.containsfile %}
+        {% for fi in object.get_files %}
+            <p>{{ fi.fileName }}{{ fi.fileDesc }}</p>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

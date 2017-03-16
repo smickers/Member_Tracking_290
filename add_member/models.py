@@ -1,16 +1,12 @@
 from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db import IntegrityError
 from .validators import *
-from django.core.validators import MaxValueValidator
 
 
-# Create your models here.
-
+# Original class created to add a Member object:
 class Person(models.Model):
-
-    #bound fields choices for gender field
+    # bound fields choices for gender field
     GENDER_CHOICE = [
         ('MALE', 'Male'),
         ('FEMALE', 'Female'),
@@ -40,6 +36,7 @@ class Person(models.Model):
         ('RECORDER', 'RECORDER'),
     ]
 
+    # Attributes:
     memberID = models.IntegerField(validators=[validate_ninedigits])
     firstName = models.CharField(max_length=30, validators=[validate_rightstringlen30])
     middleName = models.CharField(max_length=30, validators=[validate_rightstringlen30])
@@ -62,7 +59,7 @@ class Person(models.Model):
     membershipStatus = models.CharField(max_length=30, choices=MEMBERSHIP_STATUS, null=True)
     hireDate = models.DateField(null=True)
 
-    #when model gets updated, user will be routed to thte member_detail url
+    # when model gets updated, user will be routed to the member_detail url
     def get_absolute_url(self):
         return reverse(viewname='add_member:member_detail', kwargs={'pk':self.pk})
 
@@ -75,3 +72,45 @@ class Person(models.Model):
             self.pCode = self.pCode.upper()
             if len(self.pCode) == 6:
                 self.pCode = self.pCode[:3] + ' ' + self.pCode[3:]
+
+    # FUNCTION:     containsFile
+    # PURPOSE:      Returns true or false, based on whether or not a file is associated with this member
+    # RETURNS:      boolean value: true if a file is associated to this Member, false otherwise.
+    @property
+    def containsfile(self):
+        return MemberFiles.objects.filter(relatedMember=self.id).count() != 0
+
+    # FUNCTION:     get_files
+    # PURPOSE:      Returns all files associated to the relatedMember
+    # RETURNS:      the array of files associated to the relatedMember
+    @property
+    def get_files(self):
+        file_array = MemberFiles.objects.filter(relatedMember=self.id)
+        return file_array
+
+
+# Joining class for Members and their associated files:
+class MemberFiles(models.Model):
+    # Attributes
+    dateUploaded = models.DateTimeField(auto_now=True, blank=True, null=True)
+    fileName = models.FileField(upload_to='members/', blank=True, null=True, validators=[validate_file_ext])
+    relatedMember = models.ForeignKey(Person, blank=True, null=True)
+    fileDesc = models.CharField(max_length=50, blank=True, null=True)
+
+    # FUNCTION:     clean()
+    # PURPOSE:      Override the existing clean method, in order to perform some file validation
+    def clean(self):
+        super(MemberFiles, self).clean()
+        if self.fileName.size > settings.MAX_FILE_SIZE:
+            raise ValidationError('Upload size limit exceeded exception')
+        if self.fileName.size == 0:
+            raise ValidationError('The submitted file is empty.')
+        if self.fileName.name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT:
+            # Check if the uploaded file has a valid file extension
+            raise ValidationError("Invalid File Extension")
+
+    # FUNCTION:     __str__()
+    # PURPOSE:      Provide a readable name for the file we uploaded.
+    # RETURNS:      fileName, as a string.
+    def __str__(self):
+        return str(self.fileName.name)
