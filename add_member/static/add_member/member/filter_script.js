@@ -59,25 +59,69 @@ $(document).ready( function() {
         var maxHday = null;
 
         // These if blocks check to see if the dates are filled out, if so, we build a date string
-        if($("#id_min_bDay_year").val() != null && $("#id_min_bDay_month").val() != null && $("#id_min_bDay_day").val() !=null)
+        if($("#id_min_bDay_year").val() != null)
         {
-            var minBdayDate = new Date($("#id_min_bDay_year").val(), $("#id_min_bDay_month").val(),$("#id_min_bDay_day").val());
-            minBday = minBdayDate.getFullYear() + "-" + (minBdayDate.getMonth()) + "-" +minBdayDate.getDate();
+            if($("#id_min_bDay_month").val() != null && $("#id_min_bDay_day").val() !=null)
+            {
+                var minBdayDate = new Date($("#id_min_bDay_year").val(), $("#id_min_bDay_month").val(),$("#id_min_bDay_day").val());
+                minBday = minBdayDate.getFullYear() + "-" + (minBdayDate.getMonth()) + "-" +minBdayDate.getDate();
+            }
+            else if($("#id_min_bDay_month").val() != null)
+            {
+                minBday = $("#id_min_bDay_year").val() + "-" + $("#id_min_bDay_month").val() + "-1";
+            }
+            else
+            {
+                minBday =  $("#id_min_bDay_year").val() + "-1-1";
+            }
         }
-        if($("#id_max_bDay_year").val() != null && $("#id_max_bDay_month").val() != null && $("#id_max_bDay_day").val() !=null)
+
+        if($("#id_max_bDay_year").val() != null)
         {
-            var maxBdayDate = new Date($("#id_max_bDay_year").val(), $("#id_max_bDay_month").val(),$("#id_max_bDay_day").val());
-            maxBday = maxBdayDate.getFullYear()+ "-" + (maxBdayDate.getMonth()) + "-" +maxBdayDate.getDate();
+            if($("#id_max_bDay_month").val() != null && $("#id_max_bDay_day").val() !=null)
+            {
+                var maxBdayDate = new Date($("#id_max_bDay_year").val(), $("#id_max_bDay_month").val(),$("#id_max_bDay_day").val());
+                maxBday = maxBdayDate.getFullYear() + "-" + (maxBdayDate.getMonth()) + "-" +maxBdayDate.getDate();
+            }
+            else if($("#id_max_bDay_month").val() != null)
+            {
+                maxBday = $("#id_max_bDay_year").val() + "-" + $("#id_max_bDay_month").val() + "-30";
+            }
+            else
+            {
+                maxBday =  $("#id_max_bDay_year").val() + "-12-30";
+            }
         }
-        if($("#id_min_hDay_year").val() != null && $("#id_min_hDay_month").val() != null && $("#id_min_hDay_day").val() !=null)
+
+        if($("#id_min_hDay_year").val() != null)
         {
-            var minHdayDate = new Date($("#id_min_hDay_year").val(), $("#id_min_hDay_month").val(),$("#id_min_hDay_day").val());
-            minHday =  minHdayDate.getFullYear()+ "-" + (minHdayDate.getMonth()) + "-" +minHdayDate.getDate();
+            if($("#id_min_hDay_month").val() != null && $("#id_min_hDay_day").val() !=null)
+            {
+                var minHdayDate = new Date($("#id_min_hDay_year").val(), $("#id_min_hDay_month").val(),$("#id_min_hDay_day").val());
+                minHday = minHdayDate.getFullYear() + "-" + (minHdayDate.getMonth()) + "-" +minHdayDate.getDate();
+            }
+            else if($("#id_max_bDay_month").val() != null)
+            {
+                minHday = $("#id_min_hDay_year").val() + "-" + $("#id_min_hDay_month").val() + "-1";
+            }
+            else
+            {
+                minHday =  $("#id_min_hDay_year").val() + "-1-1";
+            }
         }
-        if($("#id_max_hDay_year").val() != null && $("#id_max_hDay_month").val() != null && $("#id_max_hDay_day").val() !=null)
+
+        if($("#id_max_hDay_year").val() != null)
         {
-            var maxHdayDate = new Date($("#id_max_hDay_year").val(), $("#id_max_hDay_month").val(),$("#id_max_hDay_day").val());
-            maxHday = maxHdayDate.getFullYear() + "-" + (maxHdayDate.getMonth()) + "-" +maxHdayDate.getDate();
+            if ($("#id_max_hDay_month").val() != null && $("#id_max_hDay_day").val() != null) {
+                var maxHdayDate = new Date($("#id_max_hDay_year").val(), $("#id_max_hDay_month").val(), $("#id_max_hDay_day").val());
+                maxHday = maxHdayDate.getFullYear() + "-" + (maxHdayDate.getMonth()) + "-" + maxHdayDate.getDate();
+            }
+            else if ($("#id_max_bDay_month").val() != null) {
+                maxHday = $("#id_max_hDay_year").val() + "-" + $("#id_max_hDay_month").val() + "-30";
+            }
+            else {
+                maxHday = $("#id_max_hDay_year").val() + "-12-30";
+            }
         }
 
         // This lovely block of code checks to see if each input field has a value in it. If they do, we add that to our string.
