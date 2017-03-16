@@ -51,7 +51,6 @@ class MemberSearchView(HaystackViewSet):
 # PURPOSE:  Overrides the existing download functionality to define where a user will download files from.
 # PARAMS:   request -> the HTTPRequest object sent to the client.
 #           file_name-> the name of the file to download
-@property
 def download(request, file_name):
     mime = MimeTypes()
     file_path = settings.MEDIA_ROOT + file_name
