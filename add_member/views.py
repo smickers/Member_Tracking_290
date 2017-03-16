@@ -123,6 +123,7 @@ class MemberFilterList(TemplateView, FormMixin):
     template_name = "add_member/member_filter.html"
     form_class = MemberFilterForm
 
+
 # Follow this link for downloading file stuff
 # http://stackoverflow.com/questions/15246661/downloading-the-fileswhich-are-uploaded-from-media-folder-in-django-1-4-3
 # FUNCTION: download
