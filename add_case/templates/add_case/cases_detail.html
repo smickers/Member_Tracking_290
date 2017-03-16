@@ -28,9 +28,7 @@
                                 {% endif %}
                             </p>
                         </div>
-
-                    {% include 'add_case/case_membe    url(r'^filter/$', FileListCreateView.as_view(), name='file-list'),rs.html' %}
-
+                        {% include 'add_case/case_members.html' %}
                     </div>
                 {% endif %}
             </div>
