@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, LiveServerTestCase
 from add_member.models import Person
 from .models import contactLog
 from rest_framework.test import APIRequestFactory
@@ -12,7 +12,7 @@ def result_combine(lis1, lis2):
             lis2.append(aLis1)
     return lis2
 
-class ContactLogFilteringTests(TestCase):
+class ContactLogFilteringTests(LiveServerTestCase):
     requestFactory = APIRequestFactory()
     person1 = Person()
     person2 = Person()
@@ -182,7 +182,7 @@ class ContactLogFilteringTests(TestCase):
         request = self.client.get('/api-root/contact_log/search/?date_gt=2017-01-01&contactCode=M')
         resultOne = request.json()['results']
 
-        requestTwo = self.client.get('/api-root/contact_log/search/?member=2')
+        requestTwo = self.client.get('/api-root/contact_log/search/?member=' + self.person2.pk)
         resultTwo = requestTwo.json()['results']
 
         all_results = result_combine(resultOne, resultTwo)
