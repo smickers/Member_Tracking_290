@@ -12,7 +12,7 @@ from django.core.urlresolvers import reverse
 
 class Meeting(models.Model):
 
-    #Meeting Attributes
+    # Meeting Attributes
     committee = models.ForeignKey(Committee, null=False, blank=False)
     liaison = models.CharField(max_length=10, null=False, blank=False)
     members_attending = models.ManyToManyField(Person)
@@ -22,3 +22,7 @@ class Meeting(models.Model):
     # Default get_absolute_url method
     def get_absolute_url(self):
         return reverse(viewname='meeting:create_meeting_success', kwargs={'pk': self.pk})
+
+
+class MeetingFiles(models.Model):
+    """"""
