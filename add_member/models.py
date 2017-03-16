@@ -40,27 +40,33 @@ class Person(models.Model):
         ('RECORDER', 'RECORDER'),
     ]
 
-    memberID = models.IntegerField(validators=[validate_ninedigits])
+    memberID = models.IntegerField(validators=[validate_ninedigits])                     #TODO: optional
     firstName = models.CharField(max_length=30, validators=[validate_rightstringlen30])
     middleName = models.CharField(max_length=30, validators=[validate_rightstringlen30])
     lastName = models.CharField(max_length=30, validators=[validate_rightstringlen30])
-    socNum = models.IntegerField(validators=[validate_ninedigits])
+    socNum = models.IntegerField(validators=[validate_ninedigits])                      #TODO: optional
     city = models.CharField(max_length=20, validators=[validate_rightstringlen20])
-    mailAddress = models.CharField(max_length=50, validators=[validate_rightstringlen50])
-    mailAddress2 = models.CharField(max_length=50, null=True, blank=True, validators=[validate_rightstringlen50])
-    pCode = models.CharField(null=True, max_length=7, blank=True, validators=[validate_pCode])
-    bDay = models.DateField()
-    gender = models.CharField(choices=GENDER_CHOICE, max_length=10)
-    hPhone = models.CharField(max_length=13, null=True, blank=True, validators=[validate_numbers])
-    cPhone = models.CharField(max_length=13, null=True, blank=True, validators=[validate_numbers])
-    hEmail = models.EmailField()
-    campus = models.CharField(max_length=20, choices=CAMPUS_CHOICE)
-    jobType = models.CharField(max_length=30, choices=POSITION_CLASS_CHOICE)
-    committee = models.CharField(max_length=30, validators=[validate_rightstringlen30])
-    memberImage = models.CharField(max_length=30, blank=True, null=True)
+    mailAddress = models.CharField(max_length=50, validators=[validate_rightstringlen50])#TODO: optional
+    mailAddress2 = models.CharField(max_length=50, null=True, blank=True, validators=[validate_rightstringlen50])#TODO:  optional
+    pCode = models.CharField(null=True, max_length=7, blank=True, validators=[validate_pCode])#TODO:  optional
+    bDay = models.DateField()#TODO:  optional
+    gender = models.CharField(choices=GENDER_CHOICE, max_length=10)#TODO:  optional
+    hPhone = models.CharField(max_length=13, null=True, blank=True, validators=[validate_numbers])#TODO:  optional
+    cPhone = models.CharField(max_length=13, null=True, blank=True, validators=[validate_numbers])#TODO:  optional
+    hEmail = models.EmailField()#TODO:  optional
+    campus = models.CharField(max_length=20, choices=CAMPUS_CHOICE)#TODO:  optional
+    jobType = models.CharField(max_length=30, choices=POSITION_CLASS_CHOICE)#TODO:  Accepts Employee Class Long Description
+    committee = models.CharField(max_length=30, validators=[validate_rightstringlen30]) #TODO:  optional
+    memberImage = models.CharField(max_length=30, blank=True, null=True)#TODO:  optional
     programChoice = models.CharField(max_length=30, null=True, validators=[validate_rightstringlen30])
     membershipStatus = models.CharField(max_length=30, choices=MEMBERSHIP_STATUS, null=True)
-    hireDate = models.DateField(null=True)
+    hireDate = models.DateField(null=True) #TODO: change to current hire date
+
+    # TODO:  Add Department field
+    # TODO: Add position title
+    # TODO: Add employee status field
+    # TODO: Termination date
+    # TODO: Add these fields: Position Begin Date	Position End Date
 
     #when model gets updated, user will be routed to thte member_detail url
     def get_absolute_url(self):

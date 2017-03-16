@@ -56,7 +56,7 @@
                 document.getElementById("progress").innerHTML =  'unknown';
               }
             });
-            xhr.open('POST', '/fileupload/filter/', true);           //TODO: use relative url
+            xhr.open('POST', '{% url 'add_member:excel-upload' %}', true);           //TODO: use relative url
             xhr.setRequestHeader('Content-Disposition', 'attachment; filename='+files[0].name);
             // Set up a handler for when the request finishes.
             xhr.onload = function () {
@@ -73,7 +73,7 @@
 
         upload_button.addEventListener('uploaded_valid_fl', function(e){
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', '/fileupload/exceltojson/'+e.detail, true); //TODO: use relative URL
+            xhr.open('GET', '{% url 'add_member:excel-to-json' 0 %}'+ e.detail, true); //TODO: use relative URL
             xhr.onload = function () {
               if (xhr.status === 200) {
                 create_table( JSON.parse(this.responseText) ) ;
