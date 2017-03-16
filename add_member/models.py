@@ -1,9 +1,7 @@
 from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db import IntegrityError
 from .validators import *
-from django.core.validators import MaxValueValidator
 
 
 # Create your models here.
