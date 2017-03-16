@@ -1433,7 +1433,6 @@ class ModifyPerson(TestCase):
         client = Client()
         response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}),)
         #301 is http code for url redirection
-        print(response.status_code)
         self.assertTrue(response.status_code == 301 or response.status_code == 200)
         self.tearDown()
 
@@ -1474,7 +1473,6 @@ class ModifyPerson(TestCase):
         # Connect to the actual site
         response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}) )
         # Get the initial values found in the model & view
-        print(response.context)
         oldresponsevalues = response.context['form'].initial
         # Override the old set of values with the desired one
         oldresponsevalues["firstName"] = ""
