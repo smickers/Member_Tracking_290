@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
-from add_member.models import Person, MemberBulkTempData
+from add_member.models import Person
 from rest_framework.test import APIRequestFactory
 from spfa_mt import settings
 from django.core.files import File

@@ -5,22 +5,35 @@ from zipfile import BadZipfile
 #   by the Person model
 field_name = {
     'Campus': 'campus',
-    'Employee Status': 'emp_stat',
-    'Employee Class': 'emp_class',
+    'Employee Status': 'employeeStatus',
+    'Employee Class': 'employeeClass',
     'Name': 'name',
-    'Employee Class Long Description': 'emp_class_desc',
+    'Employee Class Long Description': 'jobType',
     'Current Hire Date': 'hireDate',
     'Position': 'position',
-    'Position Title': 'position_title',
-    'Position Begin Date': 'pos_beg_date',
-    'Position End Date': 'pos_end_date',
+    'Position Title': 'posTitle',
+    'Position Begin Date': 'posBeginDate',
+    'Position End Date': 'posEndDate',
     'Department': 'department',
-    'Job Suffix': 'job_suffix',
-    'Termination Date': 'term_date',
+    'Job Suffix': 'jobSuffix',
+    'Termination Date': 'terminationDate',
+    'Membership Status': 'membershipStatus',
+    'Member ID': 'memberID',
+    'SIN Number': 'socNum',
+    'City': 'city',
+    'Mail Address 1': 'mailAddress',
+    'Mail Address 2': 'mailAddress2',
+    'Postal Code': 'pCode',
+    'Birth Date': 'bDay',
+    'Gender': 'gender',
+    'Home Phone': 'hPhone',
+    'Cell Phone': 'cPhone',
+    'Home Email': 'hEmail',
+    'Committee': 'committee',
+    'Program Choice': 'programChoice'
 }
 
-
-name_fields = ['lName', 'fName', 'mName']
+name_fields = ['lastName', 'firstName', 'middleName']
 
 
 def convert_excel_json(content):
@@ -56,5 +69,4 @@ def convert_excel_json(content):
                     all_dict.append(temp2)
     except BadZipfile:
         all_dict.append({'Error': 'The you uploaded is not an excel file'})
-    print(all_dict)
     return all_dict
