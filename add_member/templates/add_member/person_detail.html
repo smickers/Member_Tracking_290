@@ -10,7 +10,7 @@
     <p>File(s) Associated to {{ object.firstName }} {{ object.lastName }}:</p>
     {% if object.containsfile %}
         {% for fi in object.get_files %}
-            <p>{{ fi.fileName }}{{ fi.fileDesc }}</p>
+            <p>{{ fi.fileName }}{{ fi.fileDesc }} <a href="download/{{ fi.fileName }}" download>Download</a></p>
         {% endfor %}
     {% endif %}
 {% endblock %}
