@@ -75,7 +75,7 @@ class PersonForm(ModelForm):
             'firstName': 'First Name',
             'middleName': 'Middle Name',
             'socNum': 'SIN',
-            'city':'City',
+            'city': 'City',
             'mailAddress': 'Mail Address',
             'mailAddress2': 'Mail Address 2',
             'pCode':'Postal Code',
@@ -117,8 +117,8 @@ class MemberFilterForm(forms.Form):
     firstName = forms.CharField(label='First Name', widget=forms.TextInput(attrs={'placeholder': 'First Name'}), required=False)
     middleName = forms.CharField(label='Middle Name', widget=forms.TextInput(attrs={'placeholder': 'Middle Name'}), required=False)
     lastName = forms.CharField(label='Last Name', widget=forms.TextInput(attrs={'placeholder': 'Last Name'}), required=False)
-    min_bDay = forms.DateField(label='Older Birth Date', widget=PersonForm.Meta.widgets['bDay'],required=False)
-    max_bDay = forms.DateField(label='Newer Birth Date', widget=PersonForm.Meta.widgets['bDay'], required=False)
+    min_bDay = forms.DateField(label='Birth Date From:', widget=PersonForm.Meta.widgets['bDay'],required=False)
+    max_bDay = forms.DateField(label='Birth Date To:', widget=PersonForm.Meta.widgets['bDay'], required=False)
     gender = forms.ChoiceField(choices=Person.GENDER_CHOICE, required=False)
     socNum = forms.IntegerField(label='SIN', widget=forms.NumberInput(attrs={'placeholder': 'Social Insurance Number'}), required=False)
     city = forms.CharField(label='City', widget=forms.TextInput(attrs={'placeholder': 'City'}), required=False)
@@ -132,6 +132,6 @@ class MemberFilterForm(forms.Form):
     jobType = forms.ChoiceField(label='Job Type', choices=Person.POSITION_CLASS_CHOICE, required=False)
     committee = forms.CharField(label='Committee', widget=forms.TextInput(attrs={'placeholder': 'Committee'}), required=False)
     membershipStatus = forms.ChoiceField(label='Membership Status', choices=Person.MEMBERSHIP_STATUS, required=False)
-    min_hDay = forms.DateField(label='Older Hire Date', widget=PersonForm.Meta.widgets['hireDate'], required=False)
-    max_hDay = forms.DateField(label='Newer Hire Date', widget=PersonForm.Meta.widgets['hireDate'], required=False)
+    min_hDay = forms.DateField(label='Hire Date From:', widget=PersonForm.Meta.widgets['hireDate'], required=False)
+    max_hDay = forms.DateField(label='Hire Date To:', widget=PersonForm.Meta.widgets['hireDate'], required=False)
     programChoice = forms.CharField(label='Program', widget=forms.TextInput(attrs={'placeholder': 'Program'}), required=False)

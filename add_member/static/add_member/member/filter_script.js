@@ -33,7 +33,7 @@ $(document).ready( function() {
         $("#id_max_hDay_year").show();
         $("#id_max_hDay_day").show();
         $("#id_max_hDay_month").show();
-        $("label[for='id_max_bDay_day']").show();
+        $("label[for='id_max_hDay_day']").show();
     }: false);
 
     // Clearing out our default values
@@ -71,7 +71,8 @@ $(document).ready( function() {
     $("#filter").click(function(){
         // If the form_no is greater than 0 (this is an OR case), we don't want to limit our results to the initial 30.
         // We also hide the show more button
-        if(form_no > 0) {
+        if(form_no > 0)
+        {
             temp_endpoint = "/api-root/member/filter/?";
             $("#show_more").hide();
         }
@@ -136,7 +137,7 @@ $(document).ready( function() {
             {
                 var day = $("#id_min_bDay_month").val() % 2 == 0 ? 31: 30;
                 $("#id_min_bDay_month").val() == 2 ? day = 28: day = day;
-                maxBday = $("#id_min_bDay_year").val() + "-" + $("#id_min_bDay_month") + "-" + day;
+                maxBday = $("#id_min_bDay_year").val() + "-" + $("#id_min_bDay_month").val() + "-" + day;
             }
             else
             {
@@ -187,7 +188,7 @@ $(document).ready( function() {
             {
                 var day = $("#id_min_bHay_month").val() % 2 == 0 ? 31: 30;
                 $("#id_min_bHay_month").val() == 2 ? day = 28: day = day;
-                maxHday = $("#id_min_hDay_year").val() + "-" + $("#id_min_bHay_month") + "-" + day;
+                maxHday = $("#id_min_hDay_year").val() + "-" + $("#id_min_bHay_month").val() + "-" + day;
             }
             else
             {
@@ -207,7 +208,9 @@ $(document).ready( function() {
         $('#id_mailAddress2').val().length > 0 ? temp_endpoint += "mailAddress2__contains=" + encodeURIComponent($('#id_mailAddress2').val())+ "&": false;
         $('#id_pCode').val().length > 0 ? temp_endpoint += "pCode__contains=" + encodeURIComponent($('#id_pCode').val())+ "&": false;
         $('#id_hPhone').val().length > 0 ? temp_endpoint += "hPhone__contains=" + encodeURIComponent($('#id_hPhone').val())+ "&": false;
+        $('#id_cPhone').val().length > 0 ? temp_endpoint += "cPhone__contains=" + encodeURIComponent($('#id_cPhone').val())+ "&": false;
         $('#id_campus').val() != null ? temp_endpoint += "campus__contains=" + encodeURIComponent($('#id_campus').val())+ "&": false;
+        $('#id_hEmail').val() != null ? temp_endpoint += "hEmail__contains=" + encodeURIComponent($('#id_hEmail').val())+ "&": false;
         $('#id_jobType').val() != null ? temp_endpoint += "jobType__contains=" + encodeURIComponent($('#id_jobType').val())+ "&": false;
         $('#id_committee').val().length > 0 ? temp_endpoint += "committee__contains=" + encodeURIComponent($('#id_committee').val())+ "&": false;
         $('#id_membershipStatus').val() != null ? temp_endpoint += "membershipStatus__contains=" + encodeURIComponent($('#id_membershipStatus').val())+ "&": false;
@@ -263,8 +266,10 @@ $(document).ready( function() {
             $('#id_mailAddress2'+i).val().length > 0 ? temp_endpoint += "mailAddress2__contains=" + encodeURIComponent($('#id_mailAddress2'+i).val())+ "&": false;
             $('#id_pCode'+i).val().length > 0 ? temp_endpoint += "pCode__contains=" + encodeURIComponent($('#id_pCode'+i).val())+ "&": false;
             $('#id_hPhone'+i).val().length > 0 ? temp_endpoint += "hPhone__contains=" + encodeURIComponent($('#id_hPhone'+i).val())+ "&": false;
+            $('#id_cPhone').val().length > 0 ? temp_endpoint += "cPhone__contains=" + encodeURIComponent($('#id_cPhone').val())+ "&": false;
             $('#id_campus'+i).val() != null  ? temp_endpoint += "campus__contains=" + encodeURIComponent($('#id_campus'+i).val())+ "&": false;
             $('#id_jobType'+i).val() != null ? temp_endpoint += "jobType__contains=" + encodeURIComponent($('#id_jobType'+i).val())+ "&": false;
+            $('#id_hEmail'+i).val() != null ? temp_endpoint += "hEmail__contains=" + encodeURIComponent($('#id_hEmail'+i).val())+ "&": false;
             $('#id_committee'+i).val().length > 0 ? temp_endpoint += "committee__contains=" + encodeURIComponent($('#id_committee'+i).val())+ "&": false;
             $('#id_membershipStatus'+i).val() != null ? temp_endpoint += "membershipStatus__contains=" + encodeURIComponent($('#id_membershipStatus'+i).val())+ "&": false;
             $('#id_programChoice'+i).val().length > 0 ? temp_endpoint += "programChoice__contains=" + encodeURIComponent($('#id_programChoice'+i).val())+ "&": false;
