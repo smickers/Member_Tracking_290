@@ -8,6 +8,35 @@ $(document).ready( function() {
     var temp_endpoint = end_point_url;
     var form_no = 0;
 
+    // Hiding the option for a range of dates until an initial date has been selected.
+    $("#id_max_bDay_year").hide();
+    $("#id_max_bDay_day").hide();
+    $("#id_max_bDay_month").hide();
+    $("label[for='id_max_bDay_day']").hide();
+
+    // On change handler, if the user selects a year, it shows the other select boxes to make a range of dates.
+    $("#id_min_bDay_year").change($("#id_min_bDay_year").val() > 0 || $("#id_min_bDay_year").val() != null ? function(){
+        $("#id_max_bDay_year").show();
+        $("#id_max_bDay_day").show();
+        $("#id_max_bDay_month").show();
+        $("label[for='id_max_bDay_day']").show();
+    }: false);
+
+    // Hiding the option for a range of dates until an initial date has been selected.
+    $("#id_max_hDay_year").hide();
+    $("#id_max_hDay_day").hide();
+    $("#id_max_hDay_month").hide();
+    $("label[for='id_max_hDay_day']").hide();
+
+    // On change handler, if the user selects a year, it shows the other select boxes to make a range of dates.
+    $("#id_min_hDay_year").change($("#id_min_hDay_year").val() > 0 || $("#id_min_hDay_year").val() != null ? function(){
+        $("#id_max_hDay_year").show();
+        $("#id_max_hDay_day").show();
+        $("#id_max_hDay_month").show();
+        $("label[for='id_max_bDay_day']").show();
+    }: false);
+
+    // Clearing out our default values
     $("#form").find(':input').val("");
 
     /*
@@ -76,6 +105,7 @@ $(document).ready( function() {
             }
         }
 
+        // These if blocks check to see if the dates are filled out, if so, we build a date string
         if($("#id_max_bDay_year").val() != null)
         {
             if($("#id_max_bDay_month").val() != null && $("#id_max_bDay_day").val() !=null)
@@ -92,24 +122,44 @@ $(document).ready( function() {
                 maxBday =  $("#id_max_bDay_year").val() + "-12-30";
             }
         }
-
-        if($("#id_min_hDay_year").val() != null)
+        else if (minBday != null)   // If the user selected a min date but not a max date range
         {
-            if($("#id_min_hDay_month").val() != null && $("#id_min_hDay_day").val() !=null)
+            /*
+                In here we check to see what values were chosen in the min range and create a date string based on
+                what the user has entered
+             */
+            if($("#id_min_bDay_day").val() != null)
             {
-                var minHdayDate = new Date($("#id_min_hDay_year").val(), $("#id_min_hDay_month").val(),$("#id_min_hDay_day").val());
-                minHday = minHdayDate.getFullYear() + "-" + (minHdayDate.getMonth()) + "-" +minHdayDate.getDate();
+                maxBday = minBday;
             }
-            else if($("#id_max_bDay_month").val() != null)
+            else if ($("#id_min_bDay_month").val() != null)
             {
-                minHday = $("#id_min_hDay_year").val() + "-" + $("#id_min_hDay_month").val() + "-1";
+                var day = $("#id_min_bDay_month").val() % 2 == 0 ? 31: 30;
+                $("#id_min_bDay_month").val() == 2 ? day = 28: day = day;
+                maxBday = $("#id_min_bDay_year").val() + "-" + $("#id_min_bDay_month") + "-" + day;
             }
             else
             {
-                minHday =  $("#id_min_hDay_year").val() + "-1-1";
+                maxBday = $("#id_min_bDay_year").val() + "-12-31";
             }
         }
 
+        // These if blocks check to see if the dates are filled out, if so, we build a date string
+        if($("#id_min_hDay_year").val() != null)
+        {
+            if ($("#id_min_hDay_month").val() != null && $("#id_min_hDay_day").val() != null) {
+                var minHdayDate = new Date($("#id_min_hDay_year").val(), $("#id_min_hDay_month").val(), $("#id_min_hDay_day").val());
+                minHday = minHdayDate.getFullYear() + "-" + (minHdayDate.getMonth()) + "-" + minHdayDate.getDate();
+            }
+            else if ($("#id_max_bDay_month").val() != null) {
+                minHday = $("#id_min_hDay_year").val() + "-" + $("#id_min_hDay_month").val() + "-1";
+            }
+            else {
+                minHday = $("#id_min_hDay_year").val() + "-1-1";
+            }
+        }
+
+        // These if blocks check to see if the dates are filled out, if so, we build a date string
         if($("#id_max_hDay_year").val() != null)
         {
             if ($("#id_max_hDay_month").val() != null && $("#id_max_hDay_day").val() != null) {
@@ -121,6 +171,27 @@ $(document).ready( function() {
             }
             else {
                 maxHday = $("#id_max_hDay_year").val() + "-12-30";
+            }
+        }
+        else if (minHday != null)// If the user selected a min date but not a max date range
+        {
+            /*
+                In here we check to see what values were chosen in the min range and create a date string based on
+                what the user has entered
+             */
+            if($("#id_min_hDay_day").val() != null)
+            {
+                maxHday = minHday;
+            }
+            else if ($("#id_min_bHay_month").val() != null)
+            {
+                var day = $("#id_min_bHay_month").val() % 2 == 0 ? 31: 30;
+                $("#id_min_bHay_month").val() == 2 ? day = 28: day = day;
+                maxHday = $("#id_min_hDay_year").val() + "-" + $("#id_min_bHay_month") + "-" + day;
+            }
+            else
+            {
+                maxHday = $("#id_min_hDay_year").val() + "-12-31";
             }
         }
 
