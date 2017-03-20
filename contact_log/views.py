@@ -38,20 +38,26 @@ class ContactLogFilter(filters.FilterSet):
     date_gt = filters.DateFilter(name='date', lookup_expr='gt')
     date_lt = filters.DateFilter(name='date', lookup_expr='lt')
     empty_desc_filter = filters.CharFilter(name='description', lookup_expr='isnull')
+    description = filters.CharFilter(name='description', lookup_expr='icontains')
+    # member_name = filters.CharFilter(name='member', lookup_expr=)
+    member__firstName = filters.CharFilter(name='member__firstName', lookup_expr='icontains')
+    member__lastName = filters.CharFilter(name='member__lastName', lookup_expr='icontains')
+    member__middleName = filters.CharFilter(name='member__middleName', lookup_expr='icontains')
 
 
     class Meta:
         model = contactLog
 
-        fields = {
-            'id': '__all__',
-            'member': '__all__',
-            'date': '__all__',
-            'description': '__all__',
-            'contactCode': '__all__',
-            'date_gt': '__all__',
-            'date_lt': '__all__',
-        }
+        # fields = {
+        #     'id': '__all__',
+        #     'member': '__all__',
+        #     'date': '__all__',
+        #     'description': '__all__',
+        #     'contactCode': '__all__',
+        #     'date_gt': '__all__',
+        #     'date_lt': '__all__',
+        # }
+        fields = ['id', 'member', 'date', 'description', 'contactCode']
 
 
 # Class:    ContactLogViewSet

@@ -15,3 +15,5 @@ class ContactLogSerializer(serializers.ModelSerializer):
         # serialize the ID itself? I'm doing one level here so that the member's
         # name is serialized.
         depth = 1
+
+        # def find_cl_by_member_name(self, ):
