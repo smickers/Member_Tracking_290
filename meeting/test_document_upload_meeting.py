@@ -31,6 +31,8 @@ class MeetingFileUploadTest(StaticLiveServerTestCase):
         self.path_invalidFile = self.CONST_FILE_PATH % 'invalid.exe'
         self.path_emptyFile = self.CONST_FILE_PATH % 'emptyFile.txt'
 
+    # Function: setUp
+    # Purpose: Used to set up all the models need for uploading file to a meeting
     def setUp(self):
         committee = Committee()
         committee.name = "Finance"
@@ -94,6 +96,7 @@ class MeetingFileUploadTest(StaticLiveServerTestCase):
         f = open(self.path_emptyFile, "wb")
         f.close()
 
+    # This test tests that a file can be uploaded also test file size under 500mb
     def test_user_can_upload_document_of_valid_file_size_to_member(self):
         # Create new instance of MeetingFiles to associate the File to
         meeting_file = MeetingFiles()
@@ -111,3 +114,147 @@ class MeetingFileUploadTest(StaticLiveServerTestCase):
         fp.close()
         # Assert that the file exists
         self.assertTrue(MeetingFiles.objects.filter(filename=meeting_file.filename) !=0 )
+
+    # This test tests that a file larger than 500mb cannot be uploaded
+    def test_user_cannot_upload_oversize_file_to_meeting(self):
+        with self.assertRaisesRegExp(ValidationError, "Upload size limit exceeded exception"):
+            # Create a new instance of MemberFiles to associate the File to
+            meeting_file = MeetingFiles()
+            # Open a regular sized file, since this is a valid test
+            fp = open(self.path_largeFile, "r")
+            # Associate the MeetingFile with the file we just opened
+            meeting_file.fileName = File(fp)
+            # Associate the MeetingFile to the Meeting
+            meeting_file.relatedMeeting = self.meeting
+            # Clean the file
+            meeting_file.clean()
+            # Save the file (attempt)
+            meeting_file.save()
+            # Close the stream
+            fp.close()
+
+            # Assert the file exists
+            self.assertTrue(MeetingFiles.objects.filter(fileName = meeting_file.fileName) != 0)
+
+    # This test tests that a proper file extensions  can be uploaded
+    def test_user_can_upload_file_with_valid_file_exension(self):
+        acceptedExtensions = settings.FILE_EXT_TO_ACCEPT
+
+        for ext in acceptedExtensions:
+            # Create a file name for each exension in the list
+            valid_file = "valid_data.%s" % ext
+            # Build the file path create the file
+            file_path = self.CONST_FILE_PATH % valid_file
+            f = open(file_path, "wb")
+            f.seek(5)
+            f.write("\0")
+            f.close()
+
+            # Create a new instance of MemberFiles to associate the File to
+            meeting_file = MeetingFiles()
+            # Open a regular sized file, since this is a valid test
+            fp = open(file_path, "r")
+            # Associate the MeetingFile with the file we just opened
+            meeting_file.fileName = File(fp)
+            # Associate the MeetingFile to the Meeting
+            meeting_file.relatedMeeting = self.meeting
+            # Clean the file
+            meeting_file.clean()
+            # Save the file (attempt)
+            meeting_file.save()
+            # Close the stream
+            fp.close()
+
+            # Assert the file exists
+            self.assertTrue(MeetingFiles.objects.filter(fileName=meeting_file.fileName) != 0)
+
+    # This test tests that files with invalid extensions cannot be uploaded
+    def test_user_cannot_ulpload_file_with_invalid_extension(self):
+        with self.assertRaisesRegExp(ValidationError, "Invalid File Extension"):
+            # Create a new instance of MemberFiles to associate the File to
+            meeting_file = MeetingFiles()
+            # Open a regular sized file, since this is a valid test
+            fp = open(self.path_invalidFile, "r")
+            # Associate the MeetingFile with the file we just opened
+            meeting_file.fileName = File(fp)
+            # Associate the MeetingFile to the Meeting
+            meeting_file.relatedMeeting = self.meeting
+            # Clean the file
+            meeting_file.clean()
+            # Save the file (attempt)
+            meeting_file.save()
+            # Close the stream
+            fp.close()
+
+    # This test tests that an empty file cannot be uploaded
+    def test_user_cannot_upload_empty_file(self):
+        with self.assertRaisesRegExp(ValidationError, "The submitted file is empty."):
+            # Create a new instance of MemberFiles to associate the File to
+            meeting_file = MeetingFiles()
+            # Open a regular sized file, since this is a valid test
+            fp = open(self.path_emptyFile, "r")
+            # Associate the MeetingFile with the file we just opened
+            meeting_file.fileName = File(fp)
+            # Associate the MeetingFile to the Meeting
+            meeting_file.relatedMeeting = self.meeting
+            # Clean the file
+            meeting_file.clean()
+            # Save the file (attempt)
+            meeting_file.save()
+            # Close the stream
+            fp.close()
+
+    # This test tests that multiple file can be uploaded to a member
+    # Cannot upload more than one at a time
+    def test_user_can_upload_more_than_one_file_to_each_meeting(self):
+        # Create two new files to associate to a meeting
+        # Create a new instance of MemberFiles to associate the File to
+        meeting_file = MeetingFiles()
+        second_file = MeetingFiles()
+        # Open a regular sized file, since this is a valid test
+        fp = open(self.path_smallFile, "r")
+        f2 = open(self.path_midsizedFileFile, "r")
+        # Associate the MeetingFile with the file we just opened
+        meeting_file.fileName = File(fp)
+        meeting_file.fileName = File(f2)
+        # Associate the MeetingFile to the Meeting
+        meeting_file.relatedMeeting = self.meeting
+        second_file.relatedMeeting = self.meeting
+        # Clean the file
+        meeting_file.clean()
+        second_file.clean()
+        # Save the file (attempt)
+        meeting_file.save()
+        second_file.save()
+        # Close the stream
+        fp.close()
+
+        # Assert that the file exists, meaning our test passes
+        self.assertTrue(MeetingFiles.objects.filter(fileName=meeting_file.fileName) != 0
+                        and MeetingFiles.objects.filter(fileName=second_file.fileName) != 0)
+
+     # This tests tests that the databse tracks the date the file was uploaded
+    def test_database_tracks_file_upload_date(self):
+        # Create a new instance of MemberFiles to associate the File to
+        meeting_file = MeetingFiles()
+        # Open a regular sized file, since this is a valid test
+        fp = open(self.path_smallFile, "r")
+        # Associate the MeetingFile with the file we just opened
+        meeting_file.fileName = File(fp)
+        # Associate the MeetingFile to the Meeting
+        meeting_file.relatedMeeting = self.meeting
+        # Clean the file
+        meeting_file.clean()
+        # Save the file (attempt)
+        meeting_file.save()
+        # Close the stream
+        fp.close()
+
+        # Assert that the file exists, meaning our test passes
+        self.assertTrue(MeetingFiles.objects.filter(fileName=meeting_file.fileName) != 0
+                        and meeting_file.dateUploaded is not None)
+
+    # Tear down and trash all the old files
+    def tearDown(self):
+        if os.path.exists(self._overridden_settings["MEDIA_ROOT"]):
+            shutil.rmtree(self._overridden_settings["MEDIA_ROOT"])
