@@ -107,3 +107,5 @@ CONTACT_LOG_STATUSES = (('E', 'Email'),
 #     'pdf',
 #     'txt'
 # ]
+
+SERVER_URL = '127.0.0.1:8000'
