@@ -153,7 +153,7 @@ class ContactLogFilteringTests(LiveServerTestCase):
     def test_description_filtering_and_empty_filtering(self):
         request = self.client.get('/api-root/contact_log/search/?empty_desc_filter=true')
         self.assertEquals(request.json()['count'], 1)
-
+ 
     def test_contact_code_filtering(self):
         request = self.client.get('/api-root/contact_log/search/?contactCode=M')
         self.assertEquals(request.json()['count'], 2)
