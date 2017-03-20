@@ -11,9 +11,10 @@ var json_members = undefined;
 var url_upload = undefined;
 var url_xlsx_json = undefined;
 var list_members = undefined;
+var json_to_members = undefined;
 
 var BulkCreate = {
-    init: function(url_file_endpoint, url_xlsx_to_json){
+    init: function(url_file_endpoint, url_xlsx_to_json, json_to_members_in){
         xhr = new XMLHttpRequest();
         upload_button = document.getElementById('upload_button');
         fileSelect = document.getElementById("file-select");
@@ -24,6 +25,7 @@ var BulkCreate = {
         list_members = $('#list_members');
         url_upload = url_file_endpoint;
         url_xlsx_json = url_xlsx_to_json;
+        json_to_members = json_to_members_in;
         BulkCreate.bindEvents();
     },
 
@@ -36,6 +38,18 @@ var BulkCreate = {
         });
 
         confirm_button_y.click(function(e){
+            e.preventDefault() ;
+            xhr.open('POST', json_to_members , true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            // Set up a handler for when the request finishes.
+            xhr.onload = function () {
+                //JSON sent
+              if (xhr.status === 201) {
+                var json_response = JSON.parse(this.responseText);
+                console.log(json_response);
+              }
+            };
+            xhr.send(JSON.stringify(json_members));
         });
         stop_upload.addEventListener('click', function(){
             xhr.abort();
@@ -85,10 +99,10 @@ var BulkCreate = {
         });
     },
 
-    createTable: function (json_members_temp){
+    createTable: function (json_members_temp) {
         list_members.empty();
         json_members = json_members_temp;
-        json_members_temp.Result.forEach(function(val){
+        json_members_temp.Result.forEach(function (val) {
             var ele = $('<tr></tr>');
             ele.append(
                 $("<td></td>").text(val.fName)
@@ -117,7 +131,9 @@ var BulkCreate = {
         list_members.append($('<div>Please confirm if information is correct.</div>'));
         list_members.append(confirm_button_y);
         list_members.append(confirm_button_n);
-    }
+    },
+
+
 };
 
 

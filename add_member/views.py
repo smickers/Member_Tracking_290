@@ -10,7 +10,9 @@ from spfa_mt.settings import MAX_FILE_SIZE
 from rest_framework.exceptions import APIException
 from django.db.models import ObjectDoesNotExist
 from rest_framework.response import Response
+from rest_framework import generics
 from excel_to_json import convert_excel_json
+import json
 
 
 # view responsible for the member creation
@@ -92,3 +94,12 @@ def excel_to_json(request, *args, **kwargs):
         return Response({'Error': 'File cannot be found'})
     except ValueError:
         return Response({'Error': 'Expects a pk'})
+
+@decorators.api_view(['POST'])
+def json_to_members(request, *args, **kwargs):
+    # temp = json.dumps(request.body)
+    json_results = json.loads(request.body)
+
+    for member in json_results['Result']:
+        print(member['employeeClass'])
+    return Response({'Sample': 'sample'})
