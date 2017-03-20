@@ -1,27 +1,17 @@
+# Cameron Auser
+# SPFA MT Project
+# March 20, 2017
 from models import contactLog
 from rest_framework import serializers
-from drf_haystack.serializers import HaystackSerializer
-from contact_log.search_indexes import ContactLogIndex
-from add_member.serializer import MemberSearchSerializer
 
-#class ContactLogSerializer(HaystackSerializer):
-
-# class ContactLogSerializer(serializers.HyperlinkedModelSerializer):
-#     member = MemberSearchSerializer()
-#     class Meta:
-#         #index_classes = [ContactLogIndex]
-#         model = contactLog
-#         #fields = ['text', 'id', 'auto_complete', 'k']
-#         fields = ( 'member', 'date', 'description', 'contactCode')
-#         #ignore_fields = ["auto_complete"]
-#
-#         #field_aliases = {
-#         #    'q': 'auto_complete'
-#         #}
-
-
+# Class:    ContactLogSerializer
+# Purpose:  Define serialization options for a contact log.
 class ContactLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = contactLog
+        # What fields should be serialized
         fields = ('id', 'member', 'date', 'description', 'contactCode')
+        # How many levels of foreign keys should be serialized before we just
+        # serialize the ID itself? I'm doing one level here so that the member's
+        # name is serialized.
         depth = 1

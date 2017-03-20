@@ -31,7 +31,10 @@ class ContactLogDetails(DetailView):
 class ContactLogList(ListView):
     model = contactLog
 
+# Class:    ContactLogFilter
+# Purpose:  Set up filtration options for contact logs.
 class ContactLogFilter(filters.FilterSet):
+    # Declaring filters for date ranges and empty descriptions
     date_gt = filters.DateFilter(name='date', lookup_expr='gt')
     date_lt = filters.DateFilter(name='date', lookup_expr='lt')
     empty_desc_filter = filters.CharFilter(name='description', lookup_expr='isnull')
@@ -51,6 +54,8 @@ class ContactLogFilter(filters.FilterSet):
         }
 
 
+# Class:    ContactLogViewSet
+# Purpose:  Setting up a view for serialized contact logs while allowing for filtering contact logs.
 class ContactLogViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = contactLog.objects.all()
     serializer_class = ContactLogSerializer

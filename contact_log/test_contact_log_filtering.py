@@ -1,8 +1,10 @@
-from django.test import TestCase, LiveServerTestCase
+# Cameron Auser
+# SPFA MT Project
+# March 20, 2017
+from django.test import LiveServerTestCase
 from add_member.models import Person
 from .models import contactLog
 from rest_framework.test import APIRequestFactory
-
 
 # Courtesy of:
 # http://stackoverflow.com/questions/9890364/combine-two-dictionaries-and-remove-duplicates-in-python
@@ -142,22 +144,33 @@ class ContactLogFilteringTests(LiveServerTestCase):
         self.aContactLogs[6].save()
 
 
+    # Test 1
+    # Purpose: Ensure filters can be applied to related members.
     def test_related_member_filtering(self):
-        request = self.client.get('/api-root/contact_log/search/?member=1')
+        request = self.client.get('/api-root/contact_log/search/?member=' + str(self.person1.pk))
         self.assertEquals(request.json()['count'], 3)
 
+    # Test 2
+    # Purpose: Ensure filters can be applied to date ranges.
     def test_date_filtering(self):
         request = self.client.get('/api-root/contact_log/search/?date_lt=2017-01-01')
         self.assertEquals(request.json()['count'], 2)
 
+    # Test 3
+    # Purpose: Ensure a filter can be applied to the description. Ensure an empty filter can be applied to the
+    #          description.
     def test_description_filtering_and_empty_filtering(self):
         request = self.client.get('/api-root/contact_log/search/?empty_desc_filter=true')
         self.assertEquals(request.json()['count'], 1)
- 
+
+    # Test 4
+    # Purpose: Ensure a filter can be applied to contact codes.
     def test_contact_code_filtering(self):
         request = self.client.get('/api-root/contact_log/search/?contactCode=M')
         self.assertEquals(request.json()['count'], 2)
 
+    # Test 5
+    # Purpose: Ensure multiple filters can be strung together with logical ORs.
     def test_OR_filtering(self):
         # Make a request for contact code = M
         request = self.client.get('/api-root/contact_log/search/?contactCode=M')
@@ -170,19 +183,20 @@ class ContactLogFilteringTests(LiveServerTestCase):
         #Double check the number of items returned
         self.assertEquals(len(all_results), 4)
 
+    # Test 6
+    # Purpose: Ensure multiple filters can be strung together with logical ANDs.
     def test_AND_filtering(self):
         request = self.client.get('/api-root/contact_log/search/?contactCode=M&description=Goodbye')
         self.assertEquals(request.json()['count'], 1)
 
-    # def test_NOT_filtering(self):
-    #     request = self.requestFactory.get("/api-root/contact_log/filter/contactCode=P?condition=NOT")
-    #     self.assertEquals(len(request.data), 5)
 
+    # Test 7
+    # Purpose: Ensure a combination of AND and OR conditions can be strung together and work correctly.
     def test_AND_OR_chaining(self):
         request = self.client.get('/api-root/contact_log/search/?date_gt=2017-01-01&contactCode=M')
         resultOne = request.json()['results']
 
-        requestTwo = self.client.get('/api-root/contact_log/search/?member=' + self.person2.pk)
+        requestTwo = self.client.get('/api-root/contact_log/search/?member=' + str(self.person2.pk))
         resultTwo = requestTwo.json()['results']
 
         all_results = result_combine(resultOne, resultTwo)
