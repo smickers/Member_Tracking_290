@@ -90,13 +90,13 @@ class MemberFilter(filters.FilterSet):
         }
 
 
-class FilterOffsetClass(LimitOffsetPagination):
+#class FilterOffsetClass(LimitOffsetPagination):
     """
     This is our offset. It overwrites what we have in the settings page.
     """
-    default_limit = Person.objects.count()
-    limit_query_param = 'limit'
-    offset_query_param = 'offset'
+    # default_limit = Person.objects.count()
+    # limit_query_param = 'limit'
+    # offset_query_param = 'offset'
 
 
 class MemberFilterView(viewsets.ReadOnlyModelViewSet):
@@ -113,7 +113,7 @@ class MemberFilterView(viewsets.ReadOnlyModelViewSet):
                   'socNum', 'city', 'mailAddress', 'mailAddress2', 'pCode',
                   'max_bDay', 'min_bDay', 'gender', 'hPhone', 'cPhone', 'hEmail', 'campus',
                   'jobType', 'committee', 'membershipStatus', 'max_hDay', 'min_hDay', 'programChoice']
-    pagination_class = FilterOffsetClass
+    #pagination_class = FilterOffsetClass
 
 
 class MemberFilterList(TemplateView, FormMixin):
