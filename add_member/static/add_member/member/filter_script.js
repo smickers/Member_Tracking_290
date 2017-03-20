@@ -8,6 +8,35 @@ $(document).ready( function() {
     var temp_endpoint = end_point_url;
     var form_no = 0;
 
+    // Hiding the option for a range of dates until an initial date has been selected.
+    $("#id_max_bDay_year").hide();
+    $("#id_max_bDay_day").hide();
+    $("#id_max_bDay_month").hide();
+    $("label[for='id_max_bDay_day']").hide();
+
+    // On change handler, if the user selects a year, it shows the other select boxes to make a range of dates.
+    $("#id_min_bDay_year").change($("#id_min_bDay_year").val() > 0 || $("#id_min_bDay_year").val() != null ? function(){
+        $("#id_max_bDay_year").show();
+        $("#id_max_bDay_day").show();
+        $("#id_max_bDay_month").show();
+        $("label[for='id_max_bDay_day']").show();
+    }: false);
+
+    // Hiding the option for a range of dates until an initial date has been selected.
+    $("#id_max_hDay_year").hide();
+    $("#id_max_hDay_day").hide();
+    $("#id_max_hDay_month").hide();
+    $("label[for='id_max_hDay_day']").hide();
+
+    // On change handler, if the user selects a year, it shows the other select boxes to make a range of dates.
+    $("#id_min_hDay_year").change($("#id_min_hDay_year").val() > 0 || $("#id_min_hDay_year").val() != null ? function(){
+        $("#id_max_hDay_year").show();
+        $("#id_max_hDay_day").show();
+        $("#id_max_hDay_month").show();
+        $("label[for='id_max_hDay_day']").show();
+    }: false);
+
+    // Clearing out our default values
     $("#form").find(':input').val("");
 
     /*
@@ -42,7 +71,8 @@ $(document).ready( function() {
     $("#filter").click(function(){
         // If the form_no is greater than 0 (this is an OR case), we don't want to limit our results to the initial 30.
         // We also hide the show more button
-        if(form_no > 0) {
+        if(form_no > 0)
+        {
             temp_endpoint = "/api-root/member/filter/?";
             $("#show_more").hide();
         }
@@ -59,25 +89,111 @@ $(document).ready( function() {
         var maxHday = null;
 
         // These if blocks check to see if the dates are filled out, if so, we build a date string
-        if($("#id_min_bDay_year").val() != null && $("#id_min_bDay_month").val() != null && $("#id_min_bDay_day").val() !=null)
+        if($("#id_min_bDay_year").val() != null)
         {
-            var minBdayDate = new Date($("#id_min_bDay_year").val(), $("#id_min_bDay_month").val(),$("#id_min_bDay_day").val());
-            minBday = minBdayDate.getFullYear() + "-" + (minBdayDate.getMonth()) + "-" +minBdayDate.getDate();
+            if($("#id_min_bDay_month").val() != null && $("#id_min_bDay_day").val() !=null)
+            {
+                var minBdayDate = new Date($("#id_min_bDay_year").val(), $("#id_min_bDay_month").val(),$("#id_min_bDay_day").val());
+                minBday = minBdayDate.getFullYear() + "-" + (minBdayDate.getMonth()) + "-" +minBdayDate.getDate();
+            }
+            else if($("#id_min_bDay_month").val() != null)
+            {
+                minBday = $("#id_min_bDay_year").val() + "-" + $("#id_min_bDay_month").val() + "-1";
+            }
+            else
+            {
+                minBday =  $("#id_min_bDay_year").val() + "-1-1";
+            }
         }
-        if($("#id_max_bDay_year").val() != null && $("#id_max_bDay_month").val() != null && $("#id_max_bDay_day").val() !=null)
+
+        // These if blocks check to see if the dates are filled out, if so, we build a date string
+        if($("#id_max_bDay_year").val() != null)
         {
-            var maxBdayDate = new Date($("#id_max_bDay_year").val(), $("#id_max_bDay_month").val(),$("#id_max_bDay_day").val());
-            maxBday = maxBdayDate.getFullYear()+ "-" + (maxBdayDate.getMonth()) + "-" +maxBdayDate.getDate();
+            if($("#id_max_bDay_month").val() != null && $("#id_max_bDay_day").val() !=null)
+            {
+                var maxBdayDate = new Date($("#id_max_bDay_year").val(), $("#id_max_bDay_month").val(),$("#id_max_bDay_day").val());
+                maxBday = maxBdayDate.getFullYear() + "-" + (maxBdayDate.getMonth()) + "-" +maxBdayDate.getDate();
+            }
+            else if($("#id_max_bDay_month").val() != null)
+            {
+                maxBday = $("#id_max_bDay_year").val() + "-" + $("#id_max_bDay_month").val() + "-30";
+            }
+            else
+            {
+                maxBday =  $("#id_max_bDay_year").val() + "-12-30";
+            }
         }
-        if($("#id_min_hDay_year").val() != null && $("#id_min_hDay_month").val() != null && $("#id_min_hDay_day").val() !=null)
+        else if (minBday != null)   // If the user selected a min date but not a max date range
         {
-            var minHdayDate = new Date($("#id_min_hDay_year").val(), $("#id_min_hDay_month").val(),$("#id_min_hDay_day").val());
-            minHday =  minHdayDate.getFullYear()+ "-" + (minHdayDate.getMonth()) + "-" +minHdayDate.getDate();
+            /*
+                In here we check to see what values were chosen in the min range and create a date string based on
+                what the user has entered
+             */
+            if($("#id_min_bDay_day").val() != null)
+            {
+                maxBday = minBday;
+            }
+            else if ($("#id_min_bDay_month").val() != null)
+            {
+                var day = $("#id_min_bDay_month").val() % 2 == 0 ? 31: 30;
+                $("#id_min_bDay_month").val() == 2 ? day = 28: day = day;
+                maxBday = $("#id_min_bDay_year").val() + "-" + $("#id_min_bDay_month").val() + "-" + day;
+            }
+            else
+            {
+                maxBday = $("#id_min_bDay_year").val() + "-12-31";
+            }
         }
-        if($("#id_max_hDay_year").val() != null && $("#id_max_hDay_month").val() != null && $("#id_max_hDay_day").val() !=null)
+
+        // These if blocks check to see if the dates are filled out, if so, we build a date string
+        if($("#id_min_hDay_year").val() != null)
         {
-            var maxHdayDate = new Date($("#id_max_hDay_year").val(), $("#id_max_hDay_month").val(),$("#id_max_hDay_day").val());
-            maxHday = maxHdayDate.getFullYear() + "-" + (maxHdayDate.getMonth()) + "-" +maxHdayDate.getDate();
+            if ($("#id_min_hDay_month").val() != null && $("#id_min_hDay_day").val() != null) {
+                var minHdayDate = new Date($("#id_min_hDay_year").val(), $("#id_min_hDay_month").val(), $("#id_min_hDay_day").val());
+                minHday = minHdayDate.getFullYear() + "-" + (minHdayDate.getMonth()) + "-" + minHdayDate.getDate();
+            }
+            else if ($("#id_max_bDay_month").val() != null) {
+                minHday = $("#id_min_hDay_year").val() + "-" + $("#id_min_hDay_month").val() + "-1";
+            }
+            else {
+                minHday = $("#id_min_hDay_year").val() + "-1-1";
+            }
+        }
+
+        // These if blocks check to see if the dates are filled out, if so, we build a date string
+        if($("#id_max_hDay_year").val() != null)
+        {
+            if ($("#id_max_hDay_month").val() != null && $("#id_max_hDay_day").val() != null) {
+                var maxHdayDate = new Date($("#id_max_hDay_year").val(), $("#id_max_hDay_month").val(), $("#id_max_hDay_day").val());
+                maxHday = maxHdayDate.getFullYear() + "-" + (maxHdayDate.getMonth()) + "-" + maxHdayDate.getDate();
+            }
+            else if ($("#id_max_bDay_month").val() != null) {
+                maxHday = $("#id_max_hDay_year").val() + "-" + $("#id_max_hDay_month").val() + "-30";
+            }
+            else {
+                maxHday = $("#id_max_hDay_year").val() + "-12-30";
+            }
+        }
+        else if (minHday != null)// If the user selected a min date but not a max date range
+        {
+            /*
+                In here we check to see what values were chosen in the min range and create a date string based on
+                what the user has entered
+             */
+            if($("#id_min_hDay_day").val() != null)
+            {
+                maxHday = minHday;
+            }
+            else if ($("#id_min_bHay_month").val() != null)
+            {
+                var day = $("#id_min_bHay_month").val() % 2 == 0 ? 31: 30;
+                $("#id_min_bHay_month").val() == 2 ? day = 28: day = day;
+                maxHday = $("#id_min_hDay_year").val() + "-" + $("#id_min_bHay_month").val() + "-" + day;
+            }
+            else
+            {
+                maxHday = $("#id_min_hDay_year").val() + "-12-31";
+            }
         }
 
         // This lovely block of code checks to see if each input field has a value in it. If they do, we add that to our string.
@@ -92,7 +208,9 @@ $(document).ready( function() {
         $('#id_mailAddress2').val().length > 0 ? temp_endpoint += "mailAddress2__contains=" + encodeURIComponent($('#id_mailAddress2').val())+ "&": false;
         $('#id_pCode').val().length > 0 ? temp_endpoint += "pCode__contains=" + encodeURIComponent($('#id_pCode').val())+ "&": false;
         $('#id_hPhone').val().length > 0 ? temp_endpoint += "hPhone__contains=" + encodeURIComponent($('#id_hPhone').val())+ "&": false;
+        $('#id_cPhone').val().length > 0 ? temp_endpoint += "cPhone__contains=" + encodeURIComponent($('#id_cPhone').val())+ "&": false;
         $('#id_campus').val() != null ? temp_endpoint += "campus__contains=" + encodeURIComponent($('#id_campus').val())+ "&": false;
+        $('#id_hEmail').val() != null ? temp_endpoint += "hEmail__contains=" + encodeURIComponent($('#id_hEmail').val())+ "&": false;
         $('#id_jobType').val() != null ? temp_endpoint += "jobType__contains=" + encodeURIComponent($('#id_jobType').val())+ "&": false;
         $('#id_committee').val().length > 0 ? temp_endpoint += "committee__contains=" + encodeURIComponent($('#id_committee').val())+ "&": false;
         $('#id_membershipStatus').val() != null ? temp_endpoint += "membershipStatus__contains=" + encodeURIComponent($('#id_membershipStatus').val())+ "&": false;
@@ -148,8 +266,10 @@ $(document).ready( function() {
             $('#id_mailAddress2'+i).val().length > 0 ? temp_endpoint += "mailAddress2__contains=" + encodeURIComponent($('#id_mailAddress2'+i).val())+ "&": false;
             $('#id_pCode'+i).val().length > 0 ? temp_endpoint += "pCode__contains=" + encodeURIComponent($('#id_pCode'+i).val())+ "&": false;
             $('#id_hPhone'+i).val().length > 0 ? temp_endpoint += "hPhone__contains=" + encodeURIComponent($('#id_hPhone'+i).val())+ "&": false;
+            $('#id_cPhone').val().length > 0 ? temp_endpoint += "cPhone__contains=" + encodeURIComponent($('#id_cPhone').val())+ "&": false;
             $('#id_campus'+i).val() != null  ? temp_endpoint += "campus__contains=" + encodeURIComponent($('#id_campus'+i).val())+ "&": false;
             $('#id_jobType'+i).val() != null ? temp_endpoint += "jobType__contains=" + encodeURIComponent($('#id_jobType'+i).val())+ "&": false;
+            $('#id_hEmail'+i).val() != null ? temp_endpoint += "hEmail__contains=" + encodeURIComponent($('#id_hEmail'+i).val())+ "&": false;
             $('#id_committee'+i).val().length > 0 ? temp_endpoint += "committee__contains=" + encodeURIComponent($('#id_committee'+i).val())+ "&": false;
             $('#id_membershipStatus'+i).val() != null ? temp_endpoint += "membershipStatus__contains=" + encodeURIComponent($('#id_membershipStatus'+i).val())+ "&": false;
             $('#id_programChoice'+i).val().length > 0 ? temp_endpoint += "programChoice__contains=" + encodeURIComponent($('#id_programChoice'+i).val())+ "&": false;
