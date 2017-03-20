@@ -4,6 +4,10 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import ListView, DetailView
 from .models import contactLog
 from .forms import ContactLogForm, ContactLogDetailsForm
+from rest_framework import viewsets
+from .serializers import ContactLogSerializer
+import django_filters.rest_framework
+import rest_framework_filters as filters
 
 
 # View ContactLogCreate
@@ -27,3 +31,39 @@ class ContactLogDetails(DetailView):
 class ContactLogList(ListView):
     model = contactLog
 
+# Class:    ContactLogFilter
+# Purpose:  Set up filtration options for contact logs.
+class ContactLogFilter(filters.FilterSet):
+    # Declaring filters for date ranges and empty descriptions
+    date_gt = filters.DateFilter(name='date', lookup_expr='gt')
+    date_lt = filters.DateFilter(name='date', lookup_expr='lt')
+    empty_desc_filter = filters.CharFilter(name='description', lookup_expr='isnull')
+    description = filters.CharFilter(name='description', lookup_expr='icontains')
+    member__firstName = filters.CharFilter(name='member__firstName', lookup_expr='icontains')
+    member__lastName = filters.CharFilter(name='member__lastName', lookup_expr='icontains')
+    member__middleName = filters.CharFilter(name='member__middleName', lookup_expr='icontains')
+
+
+    class Meta:
+        model = contactLog
+
+        # fields = {
+        #     'id': '__all__',
+        #     'member': '__all__',
+        #     'date': '__all__',
+        #     'description': '__all__',
+        #     'contactCode': '__all__',
+        #     'date_gt': '__all__',
+        #     'date_lt': '__all__',
+        # }
+        fields = ['id', 'member', 'date', 'description', 'contactCode']
+
+
+# Class:    ContactLogViewSet
+# Purpose:  Setting up a view for serialized contact logs while allowing for filtering contact logs.
+class ContactLogViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = contactLog.objects.all()
+    serializer_class = ContactLogSerializer
+    filter_class = ContactLogFilter
+
+    filter_fields = ['id', 'member', 'date', 'description', 'contactCode', 'date_gt', 'date_lt']

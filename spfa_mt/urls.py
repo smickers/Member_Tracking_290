@@ -8,6 +8,8 @@ from django.conf.urls.static import static
 import settings
 from add_case.views import CaseSearchView
 from add_com.views import CommitteeSearchView
+from contact_log.views import ContactLogViewSet
+#from contact_log.views import ContactLogSearchView
 from . import views
 
 # initialize rest framework's router
@@ -23,11 +25,14 @@ router.register('case_list/search', CaseSearchView, base_name='case-search')
 router.register('committee_list/search', CommitteeSearchView, base_name='committee-search')
 
 router.register('member/filter', MemberFilterView, base_name='member-filter')
+#router.register('contact_log/search', ContactLogSearchView, base_name='contact-log-search')
+#router.register(r'contact_log/search', ContactLogViewSet, base_name='contact_log')
+router.register('contact_log/search', ContactLogViewSet)
+
 
 urlpatterns = [
     url(r'^index.html$', views.spfaView.as_view(), name='index_default'),
     url(r'^$', views.spfaView.as_view(), name='index'),
-    #url(r'^member-filter/$', MemberFilterView.as_view({'get': 'list'}), name='member-filter'),
     #rest service's root url
     url(r'^api-root/', include(router.urls)),
     url(r'^admin/', admin.site.urls),
