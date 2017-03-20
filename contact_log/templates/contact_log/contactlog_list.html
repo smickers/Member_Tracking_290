@@ -20,11 +20,37 @@
         var criteriaCount = 0;
 
 
+        /***
+         * Function:    runQuery
+         * Parameters:  requestURL: The URL to run the request against.
+         * Purpose: Makes an AJAX call to the given request URL, and then returns the data.
+         */
+        function runQuery(requestURL)
+        {
+            var toReturn = null;
+            $.ajax({
+                // Setting async to false, so that a) data can be returned from this method and b) we can successfully
+                // apply AND/OR filtering later on in this code
+                async: false,
+                method: 'GET',
+                url: requestURL,
+                success: function(data, status)
+                {
+                    toReturn = data.results;
+                }
+            });
+
+            return toReturn;
+        }
+
+        /***
+         * Function:    addCriteria
+         * Purpose:     Add another criteria box to the form, and increment the criteria count.
+         */
         function addCriteria()
         {
             criteriaCount++;
-            //$("#filteringForm").append('<div id="filter-entry-' + criteriaCount + '"><br /><div class="form-group" id="filter-entry-' + criteriaCount + '"> <label>Field</label> <select class="form-control" id="field-choice-' + criteriaCount + '"> <option value="id">ID</option> <option value="member">Member</option> <option value="date">Date</option> <option value="description">Description</option> <option value="contactCode">Contact Code</option> </select> </div> <div class="form-group"> <label>Value</label> <input type="text" class="form-control" id="field-value-' + criteriaCount + '"> </div><div class="form-group"> <label>Logical Join</label><input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="AND" checked>AND <input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="OR">OR </div> <div class="form-group"> <button class="form-control btn btn-info" onclick="addCriteria()"><span class="glyphicon glyphicon-plus"></span></button><button class="form-control btn btn-warning close" onclick="removeCriteria(' + criteriaCount + ')"> <span aria-hidden="true">&times;</span> </button> </div></div>')
-            $("#filteringForm").append('<div id="filter-entry-' + criteriaCount + '"> <div class="form-group"> <label>Field</label> <select class="form-control" id="field-choice-' + criteriaCount + '" onchange="determineToShowEquality(' + criteriaCount + ')"> <option value="id">ID</option> <option value="member">Member</option> <option value="date">Date</option> <option value="description">Description</option> <option value="contactCode">Contact Code</option> </select> </div> <div class="form-group"> <label>Criteria</label> <select class="form-control" id="field-criteria-' + criteriaCount + '"> <option value="gt">></option> <option value="ee" selected>==</option> <option value="lt"><</option> </select> </div><div class="form-group"> <label>Value</label> <input type="text" class="form-control" id="field-value-' + criteriaCount + '"> </div> <div class="form-group"> <label>Logical Join</label> <input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="AND" checked>AND <input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="OR">OR</div><div class="form-group"> <button class="form-control btn btn-info" onclick="addCriteria()"> <span class="glyphicon glyphicon-plus"></span> </button> <button class="form-control btn btn-warning close" id="remove-' + criteriaCount + '" onclick="removeCriteria(' + criteriaCount + ')"> <span aria-hidden="true">&times;</span> </button></div> </div>');
+           $("#filteringForm").append('<div id="filter-entry-' + criteriaCount + '"> <div class="form-group"> <label>Field</label> <select class="form-control" id="field-choice-' + criteriaCount + '" onchange="determineToShowEquality(' + criteriaCount + ')"> <option value="id">ID</option> <option value="member">Member</option> <option value="date">Date</option> <option value="description">Description</option> <option value="contactCode">Contact Code</option> </select> </div> <div class="form-group"> <label>Criteria</label> <select class="form-control" id="field-criteria-' + criteriaCount + '"> <option value="gt">></option> <option value="ee" selected>==</option> <option value="lt"><</option> </select> </div><div class="form-group"> <label>Value</label> <input type="text" class="form-control" id="field-value-' + criteriaCount + '"> </div> <div class="form-group"> <label>Logical Join</label> <input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="AND" checked>AND <input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="OR">OR</div><div class="form-group"> <button class="form-control btn btn-info" onclick="addCriteria()"> <span class="glyphicon glyphicon-plus"></span> </button> <button class="form-control btn btn-warning close" id="remove-' + criteriaCount + '" onclick="removeCriteria(' + criteriaCount + ')"> <span aria-hidden="true">&times;</span> </button></div> </div>');
             determineToShowEquality(criteriaCount);
         }
 
@@ -43,9 +69,14 @@
             return a;
         }
 
+        /***
+         * Function:    applyFilter
+         * Purpose:     Apply the filters the user has specified to filter data.
+         */
         function applyFilter()
         {
-            var all_records = []
+            var all_records = [];
+            var curr_records = [];
             //var currRecord = 0;
             const BASE_REQUEST_URL = "http://127.0.0.1:8000/api-root/contact_log/search/?";
             var next_join = "OR";
@@ -53,9 +84,6 @@
             for (var i = 0; i <= criteriaCount; i++)
             {
                 var request_url = BASE_REQUEST_URL;
-                if (next_join === "OR")
-                {
-                    console.log("Running an OR request");
                     // Run a query right now on the current criteria and combine it with
                     // the previous results
                     if ($("#field-choice-" + i).val() === "date")
@@ -73,97 +101,61 @@
                                 request_url += 'date=' + convertDateFormat($("#field-value-" + i).val());
                                 break;
                         }
+                        curr_records = runQuery(request_url);
                     }
                     // Check for an empty description
                     else if ($("#field-choice-" + i).val() === "description" && $("#field-value-" + i).val() === "")
                     {
                         request_url += "empty_desc_filter=yes";
+                        curr_records = runQuery(request_url);
+                    }
+                    else if ($("#field-choice-" + i).val() === "member")
+                    {
+                        // Run three queries: one on first name, one on middle name, and one on last name
+                        // Next, combine them with an OR
+                        request_url += "member__firstName=" + $("#field-value-" + i).val();
+                        curr_records = runQuery(request_url);
+
+                        request_url = BASE_REQUEST_URL + "member__middleName=" + $("#field-value-" + i).val();
+                        // Next, combine them with an OR
+                        curr_records = combineArraysOR(curr_records, runQuery(request_url));
+
+                        // And run the last name query
+                        request_url = BASE_REQUEST_URL + "member__lastName=" + $("#field-value-" + i).val();
+                        curr_records = combineArraysOR(curr_records, runQuery(request_url));
                     }
                     else
                     {
+                        // If no other conditions have been met, just run the query
                         request_url += $("#field-choice-" + i).val() + "=" + $("#field-value-" + i).val();
+                        curr_records = runQuery(request_url);
                     }
 
-                    console.log(request_url);
-                    $.ajax({
-                        async: false,
-                        method: 'GET',
-                        url: request_url,
-                        success: function(data, status)
-                        {
-                            //console.log("OR ajax success running!");
-
-                            result = data.results;
-                            //console.log(result);
-                            //all_records.push(result);
-                            //addRecordsToTableOR(result)
-                            //all_records = arrayUnique(all_records.concat(result));
-
-                            all_records = combineArraysOR(all_records,  result);
-
-                            //console.log(all_records);
-                            //filterTable(result);
-                        }
-                    });
-                }
-                else
-                {
-                    console.log("Running an AND request");
-                    // Run a query on the current criteria and AND it with the results
-                    if ($("#field-choice-" + i).val() === "date")
+                    // Determine how to combine all of our arrays depending on the join type selected
+                    if (next_join === "OR")
                     {
-                        // Determine if less than, greater than, or equals was selected
-                        switch($("#field-criteria-" + i).val())
-                        {
-                            case 'gt':
-                                request_url += 'date_gt=' + convertDateFormat($("#field-value-" + i).val());
-                                break;
-                            case 'lt':
-                                request_url += 'date_lt=' + convertDateFormat($("#field-value-" + i).val());
-                                break;
-                            default:
-                                request_url += 'date=' + convertDateFormat($("#field-value-" + i).val());
-                                break;
-                        }
-                    }
-                    // Check for an empty description
-                    else if ($("#field-choice-" + i).val() === "description" && $("#field-value-" + i).val() === "")
-                    {
-                        request_url += "empty_desc_filter=yes";
+                        all_records = combineArraysOR(all_records, curr_records);
                     }
                     else
                     {
-                        request_url += $("#field-choice-" + i).val() + "=" + $("#field-value-" + i).val();
+                        all_records = combineArraysAND(all_records, curr_records);
                     }
-                    console.log(request_url);
-                    $.ajax({
-                        async: false,
-                        method: 'GET',
-                        url: request_url,
-                        success: function(data, status)
-                        {
-                            //console.log("AND ajax success running!");
-                            result = data.results;
-                            //addRecordsToTableAND(result);
-
-                            all_records = combineArraysAND(all_records,  result);
-
-                        }
-                    });
-                }
-
                 next_join = $("[name=field-join-" + i + "]:checked").val();
             }
 
             // Now display the result
-            console.log("All results: ");
-            console.log(all_records);
             filterTable(all_records);
         }
 
+        /***
+         * Function:    combineArraysAND
+         * Purpose:     Combine two given arrays with an AND operator based on contact log IDs.
+         * @param arrayOne - The first array
+         * @param arrayTwo - the second array
+         * @returns {Array} - the arrays combined with an AND
+         */
         function combineArraysAND(arrayOne, arrayTwo)
         {
-            console.log("In AND combine arrays!");
             var result_array = [];
             for(var i = 0; i < arrayOne.length; i++)
             {
@@ -181,9 +173,15 @@
             return result_array;
         }
 
+        /***
+         * Function:    combineArraysOR
+         * Purpose:     Combine two given arrays with an OR operator based on contact log IDs.
+         * @param arrayOne - The first array
+         * @param arrayTwo - the second array
+         * @returns {Array} - the arrays combined with an OR
+         */
         function combineArraysOR(arrayOne, arrayTwo)
         {
-            console.log("In OR combine arrays!");
             var result_array = arrayOne;
 
             // Loop through all items in the second array
@@ -208,6 +206,12 @@
             return result_array;
         }
 
+        /***
+         * Function:    getContactCode
+         * Purpose:     Given a contact code character, return a full contact code.
+         * @param ccValue - the contact code to be looked up
+         * @returns {*} - the full contact code as a string
+         */
         function getContactCode(ccValue)
         {
             switch(ccValue)
@@ -233,6 +237,12 @@
             }
         }
 
+        /***
+         * Function:    formatDate
+         * Purpose:     Given a date in the form YYYY-MM-DD, format and return it in the form DD-MMM-YYYY.
+         * @param toFormat
+         * @returns {string}
+         */
         function formatDate(toFormat)
         {
             var monthNames = [
@@ -242,17 +252,23 @@
                 "Nov", "Dec"
               ];
 
+            // Grab the year, month, and date
             var year = toFormat.substring(0, 4);
             var monthIndex = parseInt(toFormat.substring(6, 9));
             var date = toFormat.substring(8, 11);
 
+            // Put together the new date and return it
             var toReturn = date + ", " + monthNames[monthIndex - 1] + ". " + year;
             return toReturn;
         }
 
+        /***
+         * Function:    filterTable
+         * Purpose:     Add new data to the table according to the passed-in data.
+         * @param newData - The data to be added.
+         */
         function filterTable(newData)
         {
-            console.log("In filter table!");
             $("#contact-log-table-data").html("");
             newData.forEach(function(item, index)
             {
@@ -268,6 +284,11 @@
             });
         }
 
+        /***
+         * Function:    removeCriteria
+         * Purpose:     Removes criteria with the given number from the table.
+         * @param num - The criteria ID/row to remove.
+         */
         function removeCriteria(num)
         {
             // Remove the entire row of filtering
@@ -276,8 +297,6 @@
             // Decrement the IDs of inputs that occur after
             for (var i = num + 1; i <= criteriaCount; i++)
             {
-                console.log("Working on ID " + i);
-
                 // Decrement filter-entry
                 $("#filter-entry-" + i).attr('id', 'filter-entry-' + (i - 1));
                 // Decrement field-choice
@@ -297,6 +316,12 @@
             criteriaCount--;
         }
 
+        /***
+         * Function:    determineToShowEquality
+         * Purpose:     Determine whether or not to show the equality select box for a specific field based
+         *              on its current value.
+         * @param elem - the element to look at
+         */
         function determineToShowEquality(elem)
         {
 
