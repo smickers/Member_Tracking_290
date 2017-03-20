@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'drf_haystack',
     'rest_framework',
     'grievance_award_creation.apps.GrievanceAwardCreationConfig',
+    'url_filter',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -94,7 +96,7 @@ DATABASES = {
         'NAME': 'gamma',
         'HOST': '127.0.0.1',
         'PORT': '3306',
-        'PASSWORD': 'bitnami',
+        #'PASSWORD': 'bitnami',
         'USER': 'root',
         'OPTIONS': {
             'sql_mode': 'traditional',
@@ -130,7 +132,8 @@ HAYSTACK_CONNECTIONS = {
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework_filters.backends.DjangoFilterBackend',)
 }
 
 

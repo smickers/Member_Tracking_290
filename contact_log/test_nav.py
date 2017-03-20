@@ -6,11 +6,11 @@ from django.test import Client
 
 # class for testing the HTML navbar navigation within this app, and between this app and others.
 class TestNav(TestCase):
-    
+
     def __init__(self, *args, **kwargs):
         super(TestNav, self).__init__(*args, **kwargs)
         self.tempCLog = contactLog()
-    
+
     # lets us use SimpleTestCase to do database queries
     allow_database_queries = True
 
