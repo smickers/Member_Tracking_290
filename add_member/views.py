@@ -97,9 +97,36 @@ def excel_to_json(request, *args, **kwargs):
 
 @decorators.api_view(['POST'])
 def json_to_members(request, *args, **kwargs):
+    # >> new
     # temp = json.dumps(request.body)
-    json_results = json.loads(request.body)
+    # get the file pk and pass it the excel_to_json function 
+    # temp = excel_to_json(kwargs['pk']) 
+    # pass the resulting json response to json loads
+    # json_results = json.loads(request.body)
 
-    for member in json_results['Result']:
-        print(member['employeeClass'])
-    return Response({'Sample': 'sample'})
+    # >> old 
+    #json_results = json.loads(request.body)
+    #for member in json_results['Result']:
+    #   print(member['employeeClass'])
+    #return Response({'Sample': 'sample'})
+    
+    
+    # TRY CATCH: 
+    # for each member : 
+    #    delete unneccessary fields from the json representation of the member
+    #    create a Member Serializer
+    #    Pass the cleaned data to the serializer
+    #    call is_valid function from the member serializer 
+    #    TODO: Find a free mechanism in python to free the member serializer object. 
+    # Catch 
+    #    There is an error, so send a JSON response about the screw up 
+    
+    
+    # IF there's no exception raise
+    # loop the array of members in json again: 
+    #    create a member serializer
+    #    pass the data to the serializer and call the save method()
+    
+    # return the a success json object
+    #like: {'detail': 'Suh dude. The server guy created [number of created members] for you. Stay true'} 
+    pass 
