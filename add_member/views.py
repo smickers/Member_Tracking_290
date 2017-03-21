@@ -3,7 +3,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from .models import Person, PersonFile
 from .forms import PersonForm
 from drf_haystack.viewsets import HaystackViewSet
-from .serializer import MemberSearchSerializer, MemberFileSerializer
+from .serializer import MemberSearchSerializer, MemberFileSerializer, MemberSerializer
 from drf_haystack.filters import HaystackAutocompleteFilter
 from rest_framework import generics, decorators
 from spfa_mt.settings import MAX_FILE_SIZE
@@ -12,7 +12,9 @@ from django.db.models import ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework import generics
 from excel_to_json import convert_excel_json
+from exceptions import ValueError
 import json
+import gc
 
 
 # view responsible for the member creation
@@ -105,24 +107,25 @@ def json_to_members(request, *args, **kwargs):
 
     # >> new
     # get the file pk and pass it the excel_to_json function
-    sample_file = PersonFile.objects.get(pk=kwargs['pk'])
-    json_results = convert_excel_json(sample_file.file.file)
-    
-    try: 
-        for member in json_results['Result']:
-            serializer = MemberFileSerializer(member)
-            if serializser.is_valid():
-                throw Exception
-            print(member['employeeClass'])
-            #call the garbage collector
-            gc.collect()
-            
-        #add more codes
-         for member in json_results['Result']:
-            serializer = MemberFileSerializer(member)
-            serializer.save()       
-    except Exception: 
-        pass 
+    print(request.POST['pk'])
+    # sample_file = PersonFile.objects.get(pk=kwargs['pk'])
+    # json_results = convert_excel_json(sample_file.file.file)
+    #
+    # try:
+    #     for member in json_results['Result']:
+    #         serializer = MemberSerializer(member)
+    #         if serializer.is_valid():
+    #             raise ValueError
+    #         print(member['employeeClass'])
+    #         #call the garbage collector
+    #         gc.collect()
+    #
+    #     #add more codes
+    #     for member in json_results['Result']:
+    #         serializer = MemberSerializer(member)
+    #         serializer.save()
+    # except ValueError:
+    #     pass
 
 
     # temp = excel_to_json(kwargs['pk']) 

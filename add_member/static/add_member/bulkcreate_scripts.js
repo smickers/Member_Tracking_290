@@ -12,6 +12,7 @@ var url_upload = undefined;
 var url_xlsx_json = undefined;
 var list_members = undefined;
 var json_to_members = undefined;
+var pk_to_file = undefined;
 
 var BulkCreate = {
     init: function(url_file_endpoint, url_xlsx_to_json, json_to_members_in){
@@ -49,7 +50,11 @@ var BulkCreate = {
                 console.log(json_response);
               }
             };
-            xhr.send(JSON.stringify(json_members));
+            var formData = new FormData();
+            formData.append('pk', pk_to_file);
+
+
+            xhr.send(formData);
         });
         stop_upload.addEventListener('click', function(){
             xhr.abort();
@@ -78,8 +83,9 @@ var BulkCreate = {
                 // File(s) uploaded.
                 upload_button.innerHTML = 'Upload';
               if (xhr.status === 201) {
-                var json_response = JSON.parse(this.responseText);
-                var event = new CustomEvent('uploaded_valid_fl', {'detail': json_response.id });
+                  var json_response = JSON.parse(this.responseText);
+                  var event = new CustomEvent('uploaded_valid_fl', {'detail': json_response.id });
+                  pk_to_file = json_response.id;
                 upload_button.dispatchEvent(event);
               }
             };
@@ -89,7 +95,7 @@ var BulkCreate = {
         upload_button.addEventListener('uploaded_valid_fl', function(e){
             var xhr = new XMLHttpRequest();
 
-            xhr.open('GET', url_xlsx_json + e.detail, true); //TODO: use relative URL
+            xhr.open('GET', url_xlsx_json + e.detail + "?format=json", true); //TODO: use relative URL
             xhr.onload = function () {
               if (xhr.status === 200) {
                 BulkCreate.createTable( JSON.parse(this.responseText) ) ;

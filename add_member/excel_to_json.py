@@ -60,7 +60,10 @@ def convert_excel_json(content):
                     for z in range(0, len(temp), 1):  # loop each column of the row
                         if temp[z] != "Name":   # If the current column does not belong to the 'Name' column
                             # create a key value pair based on the field name and its value
-                            temp2[field_name[temp[z]]] = sheet[i, z]
+                            try:
+                                temp2[field_name[temp[z]]] = sheet[i, z]
+                            except KeyError:
+                                pass
                         else:  # If the current column belong sto the 'Name' column
                             array = [x.rstrip(',.') for x in sheet[i, z].split(' ')] # split the names into an array
                             for j in range(0, len(array)):  # loop the resulting array
