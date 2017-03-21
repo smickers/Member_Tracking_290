@@ -107,9 +107,22 @@ def json_to_members(request, *args, **kwargs):
     # get the file pk and pass it the excel_to_json function
     sample_file = PersonFile.objects.get(pk=kwargs['pk'])
     json_results = convert_excel_json(sample_file.file.file)
-    for member in json_results['Result']:
-        serializer = MemberFileSerializer
-        print(member['employeeClass'])
+    
+    try: 
+        for member in json_results['Result']:
+            serializer = MemberFileSerializer(member)
+            if serializser.is_valid():
+                throw Exception
+            print(member['employeeClass'])
+            #call the garbage collector
+            gc.collect()
+            
+        #add more codes
+         for member in json_results['Result']:
+            serializer = MemberFileSerializer(member)
+            serializer.save()       
+    except Exception: 
+        pass 
 
 
     # temp = excel_to_json(kwargs['pk']) 
@@ -138,6 +151,4 @@ def json_to_members(request, *args, **kwargs):
     # return the a success json object
     #like: {'detail': 'Suh dude. The server guy created [number of created members] for you. Stay true'}
 
-
-
-    pass 
+    return Response({'Error': 'Expects a pk'}) 
