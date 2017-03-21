@@ -43,9 +43,9 @@ class PersonBase(models.Model):
     ]
 
     firstName = models.CharField(max_length=30, validators=[validate_rightstringlen30])
-    middleName = models.CharField(max_length=30, validators=[validate_rightstringlen30])
     lastName = models.CharField(max_length=30, validators=[validate_rightstringlen30])
-    jobType = models.CharField(max_length=30, choices=POSITION_CLASS_CHOICE)  # TODO:  Accepts Employee Class Long Description
+    # jobType = models.CharField(max_length=30, choices=POSITION_CLASS_CHOICE)  # TODO:  Accepts Employee Class Long Description
+    jobType = models.CharField(max_length=50)
     membershipStatus = models.CharField(max_length=30, choices=MEMBERSHIP_STATUS, null=True)
     hireDate = models.DateField(null=True)  # TODO: change to current hire date
 
@@ -55,6 +55,7 @@ class PersonBase(models.Model):
 
 class Person(PersonBase):
     memberID = models.IntegerField(validators=[validate_ninedigits], null=True, blank=True)
+    middleName = models.CharField(max_length=30, validators=[validate_rightstringlen30], null=True, blank=True)
     socNum = models.IntegerField(validators=[validate_ninedigits],  null=True, blank=True)
     city = models.CharField(max_length=20, validators=[validate_rightstringlen20],  null=True, blank=True)
     mailAddress = models.CharField(max_length=50, validators=[validate_rightstringlen50],  null=True, blank=True)
@@ -65,7 +66,9 @@ class Person(PersonBase):
     hPhone = models.CharField(max_length=13, null=True, blank=True, validators=[validate_numbers])
     cPhone = models.CharField(max_length=13, null=True, blank=True, validators=[validate_numbers])
     hEmail = models.EmailField(null=True, blank=True)
-    campus = models.CharField(max_length=20, choices=PersonBase.CAMPUS_CHOICE, null=True, blank=True)
+    # campus = models.CharField(max_length=20, choices=PersonBase.CAMPUS_CHOICE, null=True, blank=True)
+    campus = models.CharField(max_length=20, null=True, blank=True)
+
     committee = models.CharField(max_length=30, validators=[validate_rightstringlen30],  null=True, blank=True)
     memberImage = models.CharField(max_length=30, blank=True, null=True)
     programChoice = models.CharField(max_length=30,blank=True, null=True, validators=[validate_rightstringlen30])
@@ -73,10 +76,10 @@ class Person(PersonBase):
     posEndDate = models.DateField(blank=True, null=True)
     terminationDate = models.DateField(blank=True, null=True)
     employeeClass = models.CharField(blank=True, null=True, max_length=4)
-    department = models.CharField(blank=True, null=True, max_length=30)
+    department = models.CharField(blank=True, null=True, max_length=50)
     jobSuffix = models.CharField(blank=True, null=True, max_length=4)
-    posTitle = models.CharField(blank=True, null=True, max_length=20)
-    position = models.CharField(blank=True, null=True, max_length=20)
+    posTitle = models.CharField(blank=True, null=True, max_length=50)
+    position = models.CharField(blank=True, null=True, max_length=50)
     employeeStatus = models.CharField(blank=True, null=True, choices=PersonBase.EMPLOYEE_STATUS, max_length=1)
 
 

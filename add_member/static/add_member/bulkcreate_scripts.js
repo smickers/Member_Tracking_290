@@ -50,11 +50,7 @@ var BulkCreate = {
                 console.log(json_response);
               }
             };
-            var formData = new FormData();
-            formData.append('pk', pk_to_file);
-
-
-            xhr.send(formData);
+            xhr.send( JSON.stringify({pk: pk_to_file} ));
         });
         stop_upload.addEventListener('click', function(){
             xhr.abort();

@@ -38,6 +38,6 @@ class MemberSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def validate(self, attrs):
-        instance = PersonFile(**attrs)
+        instance = Person(**attrs)
         instance.clean()
         return attrs

@@ -61,13 +61,6 @@ class FileListCreateView(generics.ListCreateAPIView):
             raise FileTooLarge
         return super(FileListCreateView, self).post(request, *args, **kwargs)
 
-class FileTooLarge(APIException):
-    """
-        This exceptions gets raised if the file uploaded is exceeding the file size limit
-    """
-    status_code = 400
-    default_detail = 'The file exceeded the file size limit. Please upload a smaller file'
-    default_code = 'bad request'
 
 
 class MemberFileUploadView(TemplateView):
@@ -99,59 +92,34 @@ def excel_to_json(request, *args, **kwargs):
 
 @decorators.api_view(['POST'])
 def json_to_members(request, *args, **kwargs):
-    # >> old
-    #json_results = json.loads(request.body)
-    #for member in json_results['Result']:
-    #   print(member['employeeClass'])
-    #return Response({'Sample': 'sample'})
 
-    # >> new
-    # get the file pk and pass it the excel_to_json function
-    print(request.POST['pk'])
-    # sample_file = PersonFile.objects.get(pk=kwargs['pk'])
-    # json_results = convert_excel_json(sample_file.file.file)
-    #
-    # try:
-    #     for member in json_results['Result']:
-    #         serializer = MemberSerializer(member)
-    #         if serializer.is_valid():
-    #             raise ValueError
-    #         print(member['employeeClass'])
-    #         #call the garbage collector
-    #         gc.collect()
-    #
-    #     #add more codes
-    #     for member in json_results['Result']:
-    #         serializer = MemberSerializer(member)
-    #         serializer.save()
-    # except ValueError:
-    #     pass
+    json_results = json.loads(request.body)
+    sample_file = PersonFile.objects.get(pk=json_results['pk'])
+    json_repr = convert_excel_json(sample_file.file.file)
 
+    try:
+        for member in json_repr:
+            serializer = MemberSerializer(data=member)
+            if not serializer.is_valid():
+                print(serializer.errors)
+                raise AssertionError("Some error")
+            gc.collect()
 
-    # temp = excel_to_json(kwargs['pk']) 
-    # pass the resulting json response to json loads
-    # json_results = json.loads(request.body)
+        for member in json_repr:
+            serializer = MemberSerializer(data=member)
+            print(serializer)
+            serializer.is_valid()
+            serializer.save()
+    except AssertionError:
+        return Response({'Error': 'There is an error when creating the members, please contact admin'})
 
+    return Response({'Detail': 'Success'})
 
-    
-    
-    # TRY CATCH: 
-    # for each member : 
-    #    delete unneccessary fields from the json representation of the member
-    #    create a Member Serializer
-    #    Pass the cleaned data to the serializer
-    #    call is_valid function from the member serializer 
-    #    TODO: Find a free mechanism in python to free the member serializer object. 
-    # Catch 
-    #    There is an error, so send a JSON response about the screw up 
-    
-    
-    # IF there's no exception raise
-    # loop the array of members in json again: 
-    #    create a member serializer
-    #    pass the data to the serializer and call the save method()
-    
-    # return the a success json object
-    #like: {'detail': 'Suh dude. The server guy created [number of created members] for you. Stay true'}
+class FileTooLarge(APIException):
+    """
+        This exceptions gets raised if the file uploaded is exceeding the file size limit
+    """
+    status_code = 400
+    default_detail = 'The file exceeded the file size limit. Please upload a smaller file'
+    default_code = 'bad request'
 
-    return Response({'Error': 'Expects a pk'}) 

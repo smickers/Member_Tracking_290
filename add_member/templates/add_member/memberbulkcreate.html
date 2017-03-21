@@ -21,6 +21,6 @@
     <script src="{% static 'add_member/bulkcreate_scripts.js' %}"></script>
     <script>
         temp = BulkCreate;
-        temp.init('{% url 'add_member:excel-upload' %}?format=json', '{% url 'add_member:excel-to-json' 0 %}', '{% url 'add_member:json-to-members' %}?format=json');
+        temp.init('{% url 'add_member:excel-upload' %}?format=json', '{% url 'add_member:excel-to-json' 0 %}', '{% url 'add_member:json-to-members' %}');
     </script>
 {% endblock %}
