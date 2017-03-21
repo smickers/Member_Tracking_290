@@ -15,7 +15,7 @@ field_name = {
     'Position Begin Date': 'posBeginDate',
     'Position End Date': 'posEndDate',
     'Department': 'department',
-    'Job Suffix': 'jobSuffix',
+    # 'Job Suffix': 'jobSuffix',
     'Termination Date': 'terminationDate',
     'Membership Status': 'membershipStatus',
     'Member ID': 'memberID',

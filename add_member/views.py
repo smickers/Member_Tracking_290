@@ -97,18 +97,26 @@ def excel_to_json(request, *args, **kwargs):
 
 @decorators.api_view(['POST'])
 def json_to_members(request, *args, **kwargs):
-    # >> new
-    # temp = json.dumps(request.body)
-    # get the file pk and pass it the excel_to_json function 
-    # temp = excel_to_json(kwargs['pk']) 
-    # pass the resulting json response to json loads
-    # json_results = json.loads(request.body)
-
-    # >> old 
+    # >> old
     #json_results = json.loads(request.body)
     #for member in json_results['Result']:
     #   print(member['employeeClass'])
     #return Response({'Sample': 'sample'})
+
+    # >> new
+    # get the file pk and pass it the excel_to_json function
+    sample_file = PersonFile.objects.get(pk=kwargs['pk'])
+    json_results = convert_excel_json(sample_file.file.file)
+    for member in json_results['Result']:
+        serializer = MemberFileSerializer
+        print(member['employeeClass'])
+
+
+    # temp = excel_to_json(kwargs['pk']) 
+    # pass the resulting json response to json loads
+    # json_results = json.loads(request.body)
+
+
     
     
     # TRY CATCH: 
@@ -128,5 +136,8 @@ def json_to_members(request, *args, **kwargs):
     #    pass the data to the serializer and call the save method()
     
     # return the a success json object
-    #like: {'detail': 'Suh dude. The server guy created [number of created members] for you. Stay true'} 
+    #like: {'detail': 'Suh dude. The server guy created [number of created members] for you. Stay true'}
+
+
+
     pass 
