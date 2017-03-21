@@ -7,6 +7,7 @@ from datetime import date
 from django.core.urlresolvers import reverse
 from spfa_mt import settings
 from .validators import *
+from django.db import models
 
 
 # Class: Meeting
@@ -25,6 +26,20 @@ class Meeting(models.Model):
     def get_absolute_url(self):
         return reverse(viewname='meeting:create_meeting_success', kwargs={'pk': self.pk})
 
+    # Function: containsFile
+    # Purpose: Returns true or false, based on whether a file is associated with the member
+    # Returns: A boolean value; True is associated file eists; otherwise false
+    @property
+    def containsfile(self):
+        return MeetingFiles.objects.filter(relatedMeeting=self.id).count() != 0
+
+    # Function: get_files
+    # Purpose: Returns all files associated to the relatedMember
+    # Returns: The array of files associated to the relatedMember
+    @property
+    def get_files(self):
+        file_array = MeetingFiles.objects.filter(relatedMeeting=self.id)
+        return file_array
 
 class MeetingFiles(models.Model):
     # Attributes

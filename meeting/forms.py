@@ -2,6 +2,7 @@ from django.forms import ModelForm, SelectDateWidget, FileField, ClearableFileIn
 from .models import Meeting, MeetingFiles
 from datetime import date
 from django import forms
+from spfa_mt import kvp
 from django.core.files import File
 from .validators import *
 from spfa_mt.settings import MAX_FILE_SIZE, FILE_EXT_TO_ACCEPT, FILE_EXT_TO_ACCEPT_STR
@@ -48,10 +49,9 @@ class MeetingForm(ModelForm):
     # Function: clean_file_field()
     # Purpose: Cleans the model before data is saved to the database
     # Will really only happen if there are any files to be uploaded
-    def clean_file_fields(self):
+    def clean_file_field(self):
         if self.files != {}:
             # For each file we have; Currently only one allowed at a time
-
             for f in self.files.getlist('file_field'):
                 # Validate the size of the file
                 if f.size > MAX_FILE_SIZE:
@@ -72,22 +72,6 @@ class MeetingForm(ModelForm):
         YEARS = range(date.today().year - 5, date.today().year + 6)
         YEARS.sort()
 
-        # Define months so they're entered as three letters
-        MONTHS = {
-            1: 'Jan',
-            2: 'Feb',
-            3: 'Mar',
-            4: 'Apr',
-            5: 'May',
-            6: 'Jun',
-            7: 'Jul',
-            8: 'Aug',
-            9: 'Sep',
-            10: 'Oct',
-            11: 'Nov',
-            12: 'Dec'
-        }
-
         # Show all fields and set up labels
         fields = '__all__'
         labels = {
@@ -100,7 +84,7 @@ class MeetingForm(ModelForm):
 
         # Use some special widgets for certain fields
         widgets = {
-            'date': SelectDateWidget(months=MONTHS, years=YEARS),
+            'date': SelectDateWidget(months=kvp.MONTHS, years=YEARS),
             'description': Textarea(),
             'members_attending': forms.SelectMultiple(
                 attrs={'class': 'js-members_attending'}),
