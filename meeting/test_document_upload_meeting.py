@@ -103,7 +103,7 @@ class MeetingFileUploadTest(StaticLiveServerTestCase):
         # Open a regular sized file, since this is a valid test
         fp = open(self.path_midsizedFile, "r")
         # Associate the MeetingFile to the open file
-        meeting_file.filename = File(fp)
+        meeting_file.fileName = File(fp)
         # Associate the MeetingFile to the Meeting
         meeting_file.relatedMeeting = self.meeting
         # Call the clean method of the model, to do a file validation
@@ -113,11 +113,11 @@ class MeetingFileUploadTest(StaticLiveServerTestCase):
         # Close the file stream
         fp.close()
         # Assert that the file exists
-        self.assertTrue(MeetingFiles.objects.filter(filename=meeting_file.filename) !=0 )
+        self.assertTrue(MeetingFiles.objects.filter(fileName=meeting_file.fileName) !=0 )
 
     # This test tests that a file larger than 500mb cannot be uploaded
     def test_user_cannot_upload_oversize_file_to_meeting(self):
-        with self.assertRaisesRegExp(ValidationError, "Upload size limit exceeded exception"):
+        with self.assertRaisesRegexp(ValidationError, "Upload size limit exceeded exception"):
             # Create a new instance of MemberFiles to associate the File to
             meeting_file = MeetingFiles()
             # Open a regular sized file, since this is a valid test
@@ -170,7 +170,7 @@ class MeetingFileUploadTest(StaticLiveServerTestCase):
 
     # This test tests that files with invalid extensions cannot be uploaded
     def test_user_cannot_ulpload_file_with_invalid_extension(self):
-        with self.assertRaisesRegExp(ValidationError, "Invalid File Extension"):
+        with self.assertRaisesRegexp(ValidationError, "Invalid File Extension"):
             # Create a new instance of MemberFiles to associate the File to
             meeting_file = MeetingFiles()
             # Open a regular sized file, since this is a valid test
@@ -188,7 +188,7 @@ class MeetingFileUploadTest(StaticLiveServerTestCase):
 
     # This test tests that an empty file cannot be uploaded
     def test_user_cannot_upload_empty_file(self):
-        with self.assertRaisesRegExp(ValidationError, "The submitted file is empty."):
+        with self.assertRaisesRegexp(ValidationError, "The submitted file is empty."):
             # Create a new instance of MemberFiles to associate the File to
             meeting_file = MeetingFiles()
             # Open a regular sized file, since this is a valid test
@@ -213,10 +213,10 @@ class MeetingFileUploadTest(StaticLiveServerTestCase):
         second_file = MeetingFiles()
         # Open a regular sized file, since this is a valid test
         fp = open(self.path_smallFile, "r")
-        f2 = open(self.path_midsizedFileFile, "r")
+        f2 = open(self.path_midsizedFile, "r")
         # Associate the MeetingFile with the file we just opened
         meeting_file.fileName = File(fp)
-        meeting_file.fileName = File(f2)
+        second_file.fileName = File(f2)
         # Associate the MeetingFile to the Meeting
         meeting_file.relatedMeeting = self.meeting
         second_file.relatedMeeting = self.meeting
