@@ -96,24 +96,24 @@ class TestImplementCLsToMemberDetails(SimpleTestCase):
 
         self.cl_1.member = self.dw
         self.cl_1.date = '2017-02-12'
-        self.cl_1.description = "Deborah's contact log."
+        self.cl_1.description = "First contact log for Deb."
         self.cl_1.contactCode = 'E'
         self.cl_1.full_clean()
         self.cl_1.save()
 
-        self.cl_1.member = self.kk
-        self.cl_1.date = '2017-02-12'
-        self.cl_1.description = "Kelly's contact log."
-        self.cl_1.contactCode = 'M'
-        self.cl_1.full_clean()
-        self.cl_1.save()
+        self.cl_2.member = self.kk
+        self.cl_2.date = '2017-02-12'
+        self.cl_2.description = "First contact log for Kelly."
+        self.cl_2.contactCode = 'M'
+        self.cl_2.full_clean()
+        self.cl_2.save()
 
-        self.cl_1.member = self.dw
-        self.cl_1.date = '2017-02-12'
-        self.cl_1.description = "Deborah's second contact log."
-        self.cl_1.contactCode = 'P'
-        self.cl_1.full_clean()
-        self.cl_1.save()
+        self.cl_3.member = self.dw
+        self.cl_3.date = '2017-02-12'
+        self.cl_3.description = "Second contact log for De2b."
+        self.cl_3.contactCode = 'P'
+        self.cl_3.full_clean()
+        self.cl_3.save()
 
     # Test 1 : Test that the contact logs are associated with people (so, test that setUp worked correctly)
     def test_cl_associated_with_members_in_db(self):
@@ -142,7 +142,7 @@ class TestImplementCLsToMemberDetails(SimpleTestCase):
         # Ensure the response contains Kelly's name, so we know we have the right page.
         self.assertContains(response, "Kelly Kentucky")
         # Ensure that the contact log's description comes up, meaning that it appears on the page.
-        self.assertContains(response, "Kelly's contact log.")
+        self.assertContains(response, self.cl_2.description)
 
     # Test 4: User views a member's details page and sees multiple contact logs
     # NOTE: Using "Deborah Williams" as we know they have more than one contact log associated with them.
@@ -152,11 +152,11 @@ class TestImplementCLsToMemberDetails(SimpleTestCase):
         # Ensure the response contains Deb's name, so we know we have the right page.
         self.assertContains(response, "Deborah Williams")
         # Ensure the contact log descriptions are visible, meaning they all appear on the page, and not just one.
-        self.assertContains(response, "Deborah's contact log.")
-        self.assertContains(response, "Deborah's second contact log.")
+        self.assertContains(response, self.cl_1.description)
+        self.assertContains(response, self.cl_3.description)
 
     # Test 5: User views a member's details page and they do not have associated contact logs
-    # NOTE: Using "Wally Walkerton" as we know they do not have any contact logs associated with them.
+    # NOTE: Using "Walky Walkerton" as we know they do not have any contact logs associated with them.
     def test_no_cl_shown_when_none_associated_to_member(self):
         # Have the Client return the member's details page for Walky Walkerton, passing in Walky's PK as an argument
         response = self.client.get(reverse('add_member:member_detail', args=[self.ww.pk]))

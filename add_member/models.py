@@ -88,6 +88,10 @@ class Person(models.Model):
         file_array = MemberFiles.objects.filter(relatedMember=self.id)
         return file_array
 
+    # TODO: Document this method properly
+    def has_cl(self):
+        return self.contact_log_contactlog_related != 0
+
 
 # Joining class for Members and their associated files:
 class MemberFiles(models.Model):
