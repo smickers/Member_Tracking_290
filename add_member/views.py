@@ -37,7 +37,11 @@ class PersonDetail(DetailView):
     model = Person
     template_name = 'add_member/person_detail.html'
 
-    # TODO: Document this method properly.
+    # FUNCTION: get_context_data()
+    # PURPOSE: Allows us to return data regarding contact logs related to the member we are currently viewing.
+    # PARAMS:  **kwargs -> argument to be passed to the filter. In this case, is is the current member's PK.
+    # RETURNS: Context in which the filtered items exist (readable terms: returns instances of contact logs that match
+    #           the filter).
     def get_context_data(self, **kwargs):
         context = super(PersonDetail, self).get_context_data(**kwargs)
         try:
