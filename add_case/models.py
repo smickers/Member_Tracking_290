@@ -80,10 +80,6 @@ class Case(models.Model):
                                                                                  self.satellite,
                                                                                  self.get_caseType_display())
 
-    def save(self):
-        pass
-
-
 # Class: CaseMembers
 # Purpose: Joining class for Members to a Case.
 class CaseMembers(models.Model):

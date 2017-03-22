@@ -11,8 +11,6 @@ from contact_log.models import contactLog
 # Creating the Form data for Cases ...
 class CaseForm(ModelForm):
 
-    log = ModelMultipleChoiceField(queryset=(contactLog.objects.all()), to_field_name="pk",label='logs', required=False)
-
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
         self.fields['satellite'].widget = ListTextWidget(data_list=list(CaseSatellite.objects.all()),
@@ -22,6 +20,10 @@ class CaseForm(ModelForm):
             attrs={'multiple': False, 'accept': FILE_EXT_TO_ACCEPT_STR}))
         self.fields['file_description'] = CharField(required=False, label='File Description',
                                                     widget=forms.TextInput(attrs={'type': '', 'size': '100%'}))
+        self.fields['related_contact_logs'] = ModelMultipleChoiceField(queryset=(contactLog.objects.all()), to_field_name="pk",label='logs', required=False,
+                                                   widget = forms.SelectMultiple(attrs={'class': 'js-logs', 'style': 'width:65%;'}))
+
+
 
     def save(self, commit=False):
         """
@@ -36,6 +38,7 @@ class CaseForm(ModelForm):
             return ValidationError
 
         # Files do not have to be uploaded, but if they are, save the file
+        print(self.__dict__)
         if self.files != {}:
             f = self.files.getlist('file_field')[0]
             temp = File(file=f)
@@ -43,6 +46,19 @@ class CaseForm(ModelForm):
             case_file = CaseFiles(case=obj, file=temp,
                                         description=desc)
             case_file.save()
+
+        print(str(obj.pk))
+
+        for cl in self.cleaned_data['related_contact_logs']:
+            # curr_cl = (contactLog)(cl)
+            if cl.relatedCase is None:
+                print("Case NOT related!")
+                cl.relatedCase = (Case)(obj).pk
+                cl.save()
+                # curr_cl.save()
+            else:
+                raise ValidationError("Contact log is already related to a case!")
+
 
         return obj
 
@@ -97,7 +113,7 @@ class CaseForm(ModelForm):
             'additionalMembers': 'Additional SPFA Members',
             'additionalNonMembers': 'Additional Non-Members',
             'docs': 'Related Documents',
-            'logs': 'Logs',
+            # 'logs': 'Logs',
             'date': 'Date',
         }
 
@@ -110,9 +126,7 @@ class CaseForm(ModelForm):
              'program': forms.Select(
                 attrs={'style': 'width:50%;'}
              ),
-            'logs':forms.SelectMultiple(
-                attrs={'class': 'js-logs', 'style': 'width:65%;'}
-            )
+
         }
 
         error_messages = {

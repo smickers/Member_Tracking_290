@@ -36,7 +36,8 @@ class contactLog(models.Model):
     # Purpose: toString method for a contactLog object
     # Returns: A string representing the current object
     def __str__(self):
-        return self.member.__str__() + " - " + self.description + " " + self.date.__str__()
+        #return self.member.__str__() + " - " + self.description + " " + self.date.__str__()
+        return self.member.__str__() + " " + self.date.__str__()
 
     # Function: containsFile
     # Purpose: Returns true or false, based on whether or not a file is associated with this

@@ -10,4 +10,4 @@ REPLACE INTO add_case_casesatellite (name) values ("S - Ontario Ave");
 REPLACE INTO add_case_casesatellite (name) values ("S - Phoenix Building (20th St)");
 REPLACE INTO add_case_casesatellite (name) values ("S - Mining Building (33rd)");
 REPLACE INTO add_case_casesatellite (name) values ("S - Fourth Ave (Nursing)");
-REPLACE INTO add_cases_casesatellite (name) values ("S - Fourth Ave - SPAO");
+REPLACE INTO add_case_casesatellite (name) values ("S - Fourth Ave - SPAO");
