@@ -41,7 +41,7 @@
                     </div>
                     <div class="panel-body collapse" id="file_list">
                         {% if object.containsfile %}
-                            <table class="table table-bordered">
+                            <table class="table table-bordered table-hover">
                             <thead>
                             <tr class="info">
                                 <th>File Name</th>
@@ -54,7 +54,9 @@
                                     <tr>
                                         <td>{{ fi.fileName }}</td>
                                         <td>{{ fi.fileDesc }}</td>
-                                        <td><a href="download/{{ fi.fileName }}" download>Download</a></td>
+                                        <td style="text-align:center;">
+                                            <a href="download/{{ fi.fileName }}" download>[Download]</a>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -72,7 +74,7 @@
                     </div>
                     <div id="cl_list" class="panel panel-body collapse">
                         {% if object.contactlog_set.count != 0 %}
-                            <table class="table table-striped table-bordered table-hover">
+                            <table class="table table-bordered table-hover">
                             <thead>
                             <tr class="info">
                                 <th>ID</th>
@@ -93,7 +95,9 @@
                                         <td>{{ cl.description }}</td>
                                         <td> {{  cl.get_contactCode_display }}</td>
                                         <td><a href="{% url 'contact_log_creation:details' cl.pk %}">[View]</a></td>
-                                        <td><a href="{% url 'contact_log_creation:contact_log_edit' cl.pk %}">[Edit]</a></td>
+                                        <td>
+                                            <a href="{% url 'contact_log_creation:contact_log_edit' cl.pk %}">[Edit]</a>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -101,6 +105,15 @@
                         {% else %}
                             <p>No contact logs associated to {{ object.firstName }} {{ object.lastName }}.</p>
                         {% endif %}
+                        <br />
+                        <div style="text-align:center;">
+                            <a href="{% url 'contact_log_creation:contact_log_add_direct' object.pk %}">
+                                Create New Contact Log
+                            </a> |
+                            <a href="{% url 'contact_log_creation:contact_log_list_default' %}">
+                                View List of Contact Logs
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

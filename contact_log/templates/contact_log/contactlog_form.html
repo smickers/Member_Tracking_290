@@ -18,6 +18,36 @@
 
 {% block scripts %}
     <script>
+
+    /*
+    FUNCTION:   getUrlParameter
+    PURPOSE:    Returns parameters passed into the URL. Essentially lets us verify things are being passed in,
+                    and if we want to user them, we can!
+    PARAMS:     sParam -> the name of the parameter we're searching for
+    RETURNS:    the value matching the key (sParam) passed in, if found. False otherwise.
+     */
+    function getUrlParameter(sParam)
+    {
+        //get the URL we're on
+        var query = window.location.href;
+        //Split the URL up based on the /
+        var vars = query.split("/");
+        //for every section where we've split the URL
+        for(var i=0;i<vars.length;i++)
+        {
+            //split it on '=', meaning that we've hit a parameter passed in
+            var pair = vars[i].split("=");
+            //If it matches the parameter we're looking for,
+            if(pair[0] == sParam)
+            {
+                //return its value
+                return pair[1];
+            }
+        }
+        //if not found, return false
+        return(false);
+    }
+
         $(document).ready(function()
         {
             // These next lines will ensure that the member select element
@@ -31,7 +61,16 @@
 
             var members = $(".js-member");
 
-              members.select2({
+            //if a member id ("mid") has been passed in,
+            if(getUrlParameter("mid"))
+            {
+                //Disable the select box
+                members.attr("disabled", "disabled").trigger("chosen:updated");
+                //Nope, can't even click it.
+                members.off("click");
+            }
+
+            members.select2({
                 ajax: {
                     //a list of all members
                     url: "/api-root/members_list/search/", //URL of the REST API for querying the members
@@ -52,7 +91,7 @@
                         }
                    },
                 }
-              });
+            });
         });
     </script>
 {% endblock %}
@@ -60,6 +99,7 @@
 
 {% block content %}
     <div class="container">
+
         <h1 class="main-heading">Contact Log</h1>
         {% if form.instance.id %}
         {%  comment %}

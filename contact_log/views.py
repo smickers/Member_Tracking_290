@@ -6,7 +6,6 @@ from .models import contactLog
 from .forms import ContactLogForm, ContactLogDetailsForm
 from rest_framework import viewsets
 from .serializers import ContactLogSerializer
-import django_filters.rest_framework
 import rest_framework_filters as filters
 
 
@@ -16,6 +15,13 @@ import rest_framework_filters as filters
 class ContactLogCreate(CreateView):
     model = contactLog
     form_class = ContactLogForm
+
+    def get_initial(self):
+        initials = super(ContactLogCreate, self).get_initial()
+        if self.kwargs:
+            initials['member'] = self.kwargs['pk']
+        return initials
+
 
 
 class ContactLogEdit(UpdateView):
