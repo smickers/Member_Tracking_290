@@ -32,6 +32,7 @@ var BulkCreate = {
 
 
     bindEvents: function(){
+
         confirm_button_n.click( function(e){
             $("#progress").empty();
             $('#list_members').empty();
@@ -58,7 +59,6 @@ var BulkCreate = {
 
         upload_button.addEventListener('click', function(event){
             event.preventDefault() ;
-            upload_button.innerHTML = 'Uploading';
             var files = fileSelect.files;
             var formData = new FormData();
             formData.append('file', files[0]);
@@ -77,7 +77,6 @@ var BulkCreate = {
             // Set up a handler for when the request finishes.
             xhr.onload = function () {
                 // File(s) uploaded.
-                upload_button.innerHTML = 'Upload';
               if (xhr.status === 201) {
                   var json_response = JSON.parse(this.responseText);
                   var event = new CustomEvent('uploaded_valid_fl', {'detail': json_response.id });
@@ -90,8 +89,7 @@ var BulkCreate = {
 
         upload_button.addEventListener('uploaded_valid_fl', function(e){
             var xhr = new XMLHttpRequest();
-
-            xhr.open('GET', url_xlsx_json + e.detail + "?format=json", true); //TODO: use relative URL
+            xhr.open('GET', url_xlsx_json + e.detail + "?format=json", true);
             xhr.onload = function () {
               if (xhr.status === 200) {
                 BulkCreate.createTable( JSON.parse(this.responseText) ) ;
@@ -104,32 +102,28 @@ var BulkCreate = {
     createTable: function (json_members_temp) {
         list_members.empty();
         json_members = json_members_temp;
-        json_members_temp.Result.forEach(function (val) {
-            var ele = $('<tr></tr>');
-            ele.append(
-                $("<td></td>").text(val.fName)
-            );
-            ele.append(
-                $("<td></td>").text(val.mName)
-            );
-            ele.append(
-                $("<td></td>").text(val.lName)
-            );
-            ele.append(
-                $("<td></td>").text(val.department)
-            );
-            ele.append(
-                $("<td></td>").text(val.campus)
-            );
-            list_members.append(ele);
-        });
         var ele = $('<thead></thead>');
         ele.append($('<th>First Name</th>'));
         ele.append($('<th>Middle Name</th>'));
         ele.append($('<th>Last Name</th>'));
         ele.append($('<th>Department</th>'));
         ele.append($('<th>Campus</th>'));
+        ele.append($('<th>Employee Status</th>'));
+        ele.append($('<th>Position Title</th>'));
         list_members.append(ele);
+        var tbody = $('<tbody></tbody>');
+        json_members_temp.Result.forEach(function (val) {
+            var ele = $('<tr></tr>');
+            ele.append($("<td></td>").text(val.firstName));
+            ele.append($("<td></td>").text(val.middleName));
+            ele.append($("<td></td>").text(val.lastName));
+            ele.append($("<td></td>").text(val.department));
+            ele.append($("<td></td>").text(val.campus));
+            ele.append($("<td></td>").text(val.employeeStatus));
+            ele.append($("<td></td>").text(val.posTitle));
+            tbody.append(ele);
+        });
+        list_members.append(tbody);
         list_members.append($('<div>Please confirm if information is correct.</div>'));
         list_members.append(confirm_button_y);
         list_members.append(confirm_button_n);

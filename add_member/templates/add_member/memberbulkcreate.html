@@ -1,19 +1,40 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load bootstrap3 %}
 {% block metadata %}
+    <style>
+
+    </style>
     <title>File Upload</title>
 {% endblock %}
 
 {% block content %}
-    <div id="file-form">
+    <div class="container">
+        <div id="file-form">
+            <h3>Choose an excel sheet.</h3>
             <input type="file" name="pic" id='file-select'>
-            <button id="upload_button">Submit</button>
-            <button id="stop_upload">Stop</button>
+
+            <hr>
+            <div id="progress"></div>
+            <br>
+            <button id="upload_button" class="btn btn-primary">Submit</button>
+            <button id="stop_upload" class="btn btn-primary">Stop</button>
+        </div>
+
+
     </div>
 
-    <div id="progress"></div>
+    <div class="container">
+        <hr>
+        <table id="list_members" class="table table-bordered" fixed-header> </table>
+    </div>
 
-    <table id="list_members" class="table"></table>
+
+
+
+
+
+    </table>
 {% endblock %}
 
 {% block scripts %}
