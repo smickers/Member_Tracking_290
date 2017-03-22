@@ -5,6 +5,10 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from add_case.models import Case
+from .serializer import GAFilterSerializer
+from rest_framework import viewsets
+import rest_framework_filters as filters
+from rest_framework.pagination import LimitOffsetPagination
 
 
 # Create your views here.
@@ -17,20 +21,19 @@ class GrievanceAwardCreation(CreateView):
     form_class = GrievanceAwardForm
     context_object_name = "grievance_award"
 
-
     def get_context_data(self, **kwargs):
         context = super(GrievanceAwardCreation, self).get_context_data(**kwargs)
         context['case'] = Case.objects.get(pk=self.kwargs['pk'])
         return context
 
     def get_initial(self):
-        return { 'case': self.kwargs['pk']}
-
+        return {'case': self.kwargs['pk']}
 
 
 class GrievanceAwardCreationSuccess(DetailView):
     # Define the model
     model = GrievanceAward
+
 
 # Function: grievance_award_detail
 # Purpose: function based view for viewing the details of a grievance award and its files
@@ -60,5 +63,58 @@ class GrievanceAwardEditView(UpdateView):
 # This class declares the form to show a list of current grievance award
 class GrievanceAwardList(ListView):
     model = GrievanceAward
-    template_name = 'grievance_award/grievanceaward_list.html'
+    template_name = 'grievance_award_creation/grievanceaward_list.html'
 
+
+class GrievanceAwardFilter(filters.FilterSet):
+    """
+    This is the filter for our Grievance Award.
+    """
+    # Declaring our min/max date filters. This allows us to do range searches
+    min_date = filters.DateFilter(name='date', lookup_expr='gte')
+    max_date = filters.DateFilter(name='date', lookup_expr='lte')
+    min_amount = filters.NumberFilter(name='awardAmount', lookup_expr='gte')
+    max_amount = filters.NumberFilter(name='awardAmount', lookup_expr='lte')
+
+    class Meta:
+        """
+        Declaring our model and the fields we want
+        """
+        model = GrievanceAward
+
+        # This is a lovely dict of our fields and allowing all on them. This allows
+        # =, contains, IN, etc.
+        fields = {
+            # 'grievanceType': '__all__',
+            'awardAmount': '__all__',
+            'description': '__all__',
+            'date': '__all__',
+        }
+
+
+class FilterOffsetClass(LimitOffsetPagination):
+    """
+    This is our offset. It overwrites what we have in the settings page.
+    """
+    try:
+        default_limit = GrievanceAward.objects.count()
+        limit_query_param = 'limit'
+        offset_query_param = 'offset'
+    except Exception as e:
+        pass
+
+
+class GrievanceAwardFilterView(viewsets.ReadOnlyModelViewSet):
+    """
+    This is our API for filtering a Grievance Award. It queries the database for all Grievance Award and
+    filters based on the parameters passed in through the url
+    """
+    # Defining the queryset to use, serializer, filter class and the fields.
+    queryset = GrievanceAward.objects.all()
+    serializer_class = GAFilterSerializer
+    filter_class = GrievanceAwardFilter
+    # filter_fields might not be required but it's better to be safe
+    filter_fields = [
+        'awardAmount', 'description', 'date'
+    ]
+    pagination_class = FilterOffsetClass

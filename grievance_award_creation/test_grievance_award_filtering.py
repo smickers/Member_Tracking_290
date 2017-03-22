@@ -172,7 +172,7 @@ class FilterGrievanceAwards(TestCase):
 
     # Test that you can filter on Type and Amount in one Query
     def test_type_and_amount(self):
-        response = self.client.get('/api-root/grievance_award/filter',{'type': 'M', 'amount': '500.00'})
+        response = self.client.get('/api-root/grievance_award/filter', {'type': 'M', 'amount': '500.00'})
         self.assertEqual(response.json()['count'], 1)
         self.assertEqual(response.json()['results'][0]['id'], self.ga3.id)
 

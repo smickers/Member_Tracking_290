@@ -94,9 +94,13 @@ class FilterOffsetClass(LimitOffsetPagination):
     """
     This is our offset. It overwrites what we have in the settings page.
     """
-#    default_limit = Person.objects.count()
-#    limit_query_param = 'limit'
-#    offset_query_param = 'offset'
+    try:
+        default_limit = Person.objects.count()
+        limit_query_param = 'limit'
+        offset_query_param = 'offset'
+    except:
+        pass
+
 
 
 class MemberFilterView(viewsets.ReadOnlyModelViewSet):

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 
 {% block metadata %}
     <title>Committees</title>
@@ -7,6 +7,7 @@
 
 {% block content %}
 <body>
+
     <h2>List of Grievance Awards</h2>
     <table border="1" class="table table-bordered" style="width:50%;">
         <thead>
@@ -28,5 +29,11 @@
 
         {% endfor %}
     </table>
+
+
 </body>
+{% endblock %}
+
+{% block scripts %}
+    <script href="{% static 'scripts/filter_ga.js' %}" ></script>
 {% endblock %}
