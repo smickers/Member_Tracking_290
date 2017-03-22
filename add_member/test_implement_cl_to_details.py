@@ -163,3 +163,17 @@ class TestImplementCLsToMemberDetails(SimpleTestCase):
         # Ensure the response contains Walky's name, so we know we have the right page.
         self.assertContains(response, "Walky Walkerton")
         self.assertContains(response, "No contact logs associated to Walky Walkerton")
+
+    # Test 6: Test that select boxes are disabled when visiting from a url where a PK is passed in:
+    def test_select_box_disabled_when_pk_passed_in(self):
+        # Have the client return a contact log creation page, to create a new contact log specifically for Deb Williams
+        response = self.client.get(reverse('contact_log_creation:contact_log_add_direct', args=[self.dw.pk]))
+        # Ensure that the response indicates that the select box container for members is disabled
+        self.assertContains(response, 'disabled')
+
+    # Test 7: Test that select boxes are still enabled when visiting from a URL where a PK is not passed in:
+    def test_select_box_enabled_when_no_pk_passed_in(self):
+        # Have the client return a contact log creation page, to create a new contact log specifically for Deb Williams
+        response = self.client.get(reverse('contact_log_creation:contact_log_add'))
+        # Ensure that the response indicates that the select box container for members is disabled
+        self.assertContains(response, 'disabled')

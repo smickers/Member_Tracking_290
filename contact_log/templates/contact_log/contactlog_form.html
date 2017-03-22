@@ -66,9 +66,18 @@
             {
                 //Disable the select box
                 members.attr("disabled", "disabled").trigger("chosen:updated");
-                //Nope, can't even click it.
+                //Ensure the correct value is displayed
+                members.attr("value", getUrlParameter("mid"));
+                //Can't even click it.
                 members.off("click");
             }
+
+            //When the form is submitted,
+            $(".form").submit(function()
+            {
+                //Remove the 'disabled' attribute, so we still pass the members value from the form to the DB
+                members.removeAttr("disabled");
+            });
 
             members.select2({
                 ajax: {
