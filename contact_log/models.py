@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from add_member.models import Person
+from add_case.models import Case
 from datetime import date
 from django.db import models
 from spfa_mt import kvp, settings
@@ -20,6 +21,7 @@ class contactLog(models.Model):
     date = models.DateField(default=date.today())
     description = models.CharField(max_length=150, blank=True, null=True)
     contactCode = models.CharField(max_length=12, choices=kvp.CONTACT_LOG_STATUSES, default='Phone')
+    relatedCase = models.ForeignKey(Case, blank=True, null=True)
 
     # Function: get_absolute_url
     # Purpose: Returns a URL to redirect the user to after submitting

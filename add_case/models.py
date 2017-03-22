@@ -52,7 +52,7 @@ class Case(models.Model):
     additionalMembers = models.ManyToManyField(Person, blank=True, )
     additionalNonMembers = models.TextField(blank=True, null=True)
     docs = models.TextField(blank=True, null=True)
-    logs = models.TextField(blank=True, null=True)
+    #logs = models.TextField(blank=True, null=True)
     date = models.DateField(blank=True, null=True, default=datetime.date.today, validators=[validate_date])
 
     # Default get_absolute_url method
@@ -79,6 +79,10 @@ class Case(models.Model):
         return "<Case lead: {}, campus: {}, satellite: {}, caseType: {}>".format(self.lead, self.get_campus_display(),
                                                                                  self.satellite,
                                                                                  self.get_caseType_display())
+
+    def save(self):
+        pass
+
 
 # Class: CaseMembers
 # Purpose: Joining class for Members to a Case.

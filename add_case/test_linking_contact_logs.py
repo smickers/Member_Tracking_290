@@ -141,9 +141,9 @@ class CaseContactLogLinking(TestCase):
             self.cl_one.related_case = self.nonexistant_case
             self.cl_one.full_clean()
             self.cl_one.save()
-            self.assertTrue(True)
-        except:
             self.assertTrue(False)
+        except:
+            self.assertTrue(True)
 
     def ensure_that_only_unlinked_contact_logs_are_shown_in_api(self):
         # Link cl_one first

@@ -6,10 +6,12 @@ from .fields import ListTextWidget
 from spfa_mt import kvp
 from spfa_mt.settings import FILE_EXT_TO_ACCEPT_STR
 from django.core.files import File
-
+from contact_log.models import contactLog
 
 # Creating the Form data for Cases ...
 class CaseForm(ModelForm):
+
+    log = ModelMultipleChoiceField(queryset=(contactLog.objects.all()), to_field_name="pk",label='logs', required=False)
 
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
@@ -107,7 +109,10 @@ class CaseForm(ModelForm):
                 attrs={'class': 'js-additional_members', 'style': 'width:65%'}),
              'program': forms.Select(
                 attrs={'style': 'width:50%;'}
-             )
+             ),
+            'logs':forms.SelectMultiple(
+                attrs={'class': 'js-logs', 'style': 'width:65%;'}
+            )
         }
 
         error_messages = {
