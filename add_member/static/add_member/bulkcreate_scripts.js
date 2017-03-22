@@ -14,19 +14,21 @@ var list_members = undefined;
 var json_to_members = undefined;
 var pk_to_file = undefined;
 
+
 var BulkCreate = {
     init: function(url_file_endpoint, url_xlsx_to_json, json_to_members_in){
         xhr = new XMLHttpRequest();
         upload_button = document.getElementById('upload_button');
         fileSelect = document.getElementById("file-select");
         stop_upload = document.getElementById("stop_upload");
-        confirm_button_y = $('<button id="submit_json_y">Yes</button>');
-        confirm_button_n = $('<button id="submit_json_n">No</button>');
+        confirm_button_y = $('#submit_json_y');
+        confirm_button_n = $('#submit_json_n');
         json_members = undefined;
         list_members = $('#list_members');
         url_upload = url_file_endpoint;
         url_xlsx_json = url_xlsx_to_json;
         json_to_members = json_to_members_in;
+       $('#confirmation').hide();
         BulkCreate.bindEvents();
     },
 
@@ -36,6 +38,8 @@ var BulkCreate = {
         confirm_button_n.click( function(e){
             $("#progress").empty();
             $('#list_members').empty();
+            $('#confirmation').hide();
+            $("#success").hide();
             fileSelect.value = "";
         });
 
@@ -46,9 +50,15 @@ var BulkCreate = {
             // Set up a handler for when the request finishes.
             xhr.onload = function () {
                 //JSON sent
-              if (xhr.status === 201) {
+              if (xhr.status === 200) {
                 var json_response = JSON.parse(this.responseText);
+                $("#success").show();
+                $("#success").html('<h3>Successfully created' + json_response.count + ' members </h3> ');
                 console.log(json_response);
+                $("#progress").empty();
+                $('#list_members').empty();
+                $('#confirmation').hide();
+                fileSelect.value = "";
               }
             };
             xhr.send( JSON.stringify({pk: pk_to_file} ));
@@ -124,11 +134,9 @@ var BulkCreate = {
             tbody.append(ele);
         });
         list_members.append(tbody);
-        list_members.append($('<div>Please confirm if information is correct.</div>'));
-        list_members.append(confirm_button_y);
-        list_members.append(confirm_button_n);
-    },
-
+        $('#confirmation').show();
+        BulkCreate.bindEvents();
+    }
 
 };
 

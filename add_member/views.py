@@ -52,8 +52,10 @@ class FileListCreateView(generics.ListCreateAPIView):
     """
         View that's responsible for accepting a file and writing it into the database
     """
+
     queryset = PersonFile.objects.all()
     serializer_class = MemberFileSerializer
+
 
     def post(self, request, *args, **kwargs):
         file_obj = request.data['file']
@@ -113,7 +115,7 @@ def json_to_members(request, *args, **kwargs):
     except AssertionError:
         return Response({'Error': 'There is an error when creating the members, please contact admin'})
 
-    return Response({'Detail': 'Success'})
+    return Response({'Detail': 'Success', 'count': len(json_repr)})
 
 class FileTooLarge(APIException):
     """

@@ -16,17 +16,23 @@
 
             <hr>
             <div id="progress"></div>
+            <div id="success"></div>
             <br>
             <button id="upload_button" class="btn btn-primary">Submit</button>
             <button id="stop_upload" class="btn btn-primary">Stop</button>
         </div>
-
-
+        <hr>
+        <div id="confirmation">Please confirm if information is correct.
+                <button id="submit_json_y"  class="btn btn-primary">Yes</button>
+                <button id="submit_json_n"  class="btn btn-primary">No</button>
+        </div>
     </div>
 
-    <div class="container">
+    <div class="container" id="table_display">
+
         <hr>
         <table id="list_members" class="table table-bordered" fixed-header> </table>
+
     </div>
 
 
