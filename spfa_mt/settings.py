@@ -93,7 +93,7 @@ WSGI_APPLICATION = 'spfa_mt.wsgi.application'
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'default': { 
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'gamma',
         'HOST': '127.0.0.1',
