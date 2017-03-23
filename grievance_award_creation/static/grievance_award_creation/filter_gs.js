@@ -4,6 +4,7 @@
 var criteriaCount = 0;
 
 
+
 /***
  * Function:    runQuery
  * Parameters:  requestURL: The URL to run the request against.
@@ -38,7 +39,7 @@ function addCriteria()
        '<div class="form-group"> <label>Field</label> <select class="form-control" id="field-choice-' + criteriaCount + '" onchange="determineToShowEquality(' + criteriaCount + ')"> ' +
        '<option value="type">Type</option> <option value="amount">Award Amount</option> <option value="date">Date</option> <option value="description">Description</option> </select> </div> <div class="form-group"> ' +
        '<label>Criteria</label> <select class="form-control" id="field-criteria-' + criteriaCount + '"> <option value="gt">></option> <option value="ee" selected>==</option> <option value="lt">' +
-       '<</option> </select> </div><div class="form-group"> <label>Value</label> <input type="text" class="form-control" id="field-value-' + criteriaCount + '"> </div> <div class="form-group">' +
+       '<</option> </select> </div><div class="form-group" id="filter_values-' + criteriaCount + '"> <label>Value</label> <input type="text" class="form-control" id="field-value-' + criteriaCount + '"> </div> <div class="form-group">' +
        ' <label>Logical Join</label> <input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="AND" checked>AND <input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="OR">OR</div><div class="form-group"> ' +
        '<button class="form-control btn btn-info" onclick="addCriteria()"> <span class="glyphicon glyphicon-plus"></span> </button> ' +
        '<button class="form-control btn btn-warning close" id="remove-' + criteriaCount + '" onclick="removeCriteria(' + criteriaCount + ')"> <span aria-hidden="true">&times;</span> </button></div> </div>');
@@ -104,7 +105,15 @@ function applyFilter()
             {
                 // Run three queries: one on first name, one on middle name, and one on last name
                 // Next, combine them with an OR
-                request_url += "type=" + $("#field-value-" + i).val();
+                if($("#field-value-" + i).val() == 7)
+                {
+                    request_url += "case__caseType=" + $("#field-value-" + i).val();
+                }
+                else
+                {
+                    request_url += "policy=" + $("#field-value-" + i).val();
+                }
+
                 curr_records = runQuery(request_url);
             }
             else if ($("#field-choice-" + i).val() ==="amount")
@@ -241,14 +250,11 @@ function filterTable(newData)
     $("#grievance-award-table-data").html("");
     newData.forEach(function(item, index)
     {
-        console.log(item);
         var id = item.id;
         var amount = item.awardAmount;
         var date = formatDate(item.date);
         var description = item.description;
-        var type = item.type;
-        var rowToAdd = "<tr><td>" + id + "</td><td>" + amount + "</td><td>" + date + "</td><td>" + description + "</td><td>" +
-                        type + '</td><td><a href="/grievance/detail/' + id + '">[View]</a></td><td><a href="/grievance/edit/' + id + '">[Edit]</a></td></tr>';
+        var rowToAdd = "<tr><td>" + id + "</td><td>" + amount + "</td><td>" + date + "</td><td>" + description + '</td><td><a href="/grievance/detail/' + id + '">[View]</a></td><td><a href="/grievance/edit/' + id + '">[Edit]</a></td></tr>';
 
         $("#grievance-award-table-data").append(rowToAdd);
     });
@@ -300,10 +306,26 @@ function determineToShowEquality(elem)
         // Show the entire div that the equality selector is in - which happens
         // to be the parent of the field-choice select element
         $("#field-criteria-" + elem).parent().show();
+        if($("select #field-value"))
+        {
+            $("#field-value-" + elem).remove();
+            $("#filter_values").append('<input type="text" class="form-control" id="field-value-' + elem + '" name="field-value-' + elem + '">');
+        }
+    }
+    else if($("#field-choice-" + elem).val() === "type")
+    {
+        $("#field-value-" + elem).remove();
+        $("#filter_values-" + elem).append("<select class='form-control' id='field-value-" + elem + "'></select>");
+        $("#field-value-" + elem).append("<option value='7'>Member</option><option value='6'>Policy</option>");
     }
     else
     {
         $("#field-criteria-" + elem).parent().hide();
+        if($("select #field-value"))
+        {
+            $("#field-value-" + elem).remove();
+            $("#filter_values").append('<input type="text" class="form-control" id="field-value-' + elem + '" name="field-value-' + elem + '">');
+        }
     }
 }
 

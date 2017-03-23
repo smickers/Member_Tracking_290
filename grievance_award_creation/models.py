@@ -36,7 +36,7 @@ class GrievanceAward(models.Model):
     # Object properties
     case = models.OneToOneField(Case)
     awardAmount = models.FloatField(default=500.00, validators=[validators.validate_award_amt])
-    description = models.CharField(max_length=1000, null=True,blank=True, validators=[validators.validate_description])
+    description = models.CharField(max_length=1000, null=True, blank=True, validators=[validators.validate_description])
     date = models.DateField(default=date.today())
 
     # Default get_absolute_url method
@@ -46,18 +46,13 @@ class GrievanceAward(models.Model):
     @property
     def recipient(self):
         return self.case.members
+
     @property
     def grievanceType(self):
         if self.case.caseType == kvp.TYPE_CHOICES[0][0]:  # if caseType is individual
             return GrievanceAward.GRIEVANCE_TYPES[0][0]   # GA type must be "member"
         else:
             return GrievanceAward.GRIEVANCE_TYPES[1][0]   # otherwise, "policy"
-
-
-    # Method: __str__ (toString)
-    # Purpose: Return a string representation of this object.
-
-
 
 
 """

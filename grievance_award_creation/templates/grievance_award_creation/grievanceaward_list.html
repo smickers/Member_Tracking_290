@@ -29,9 +29,9 @@
                     <option value="lt"><</option>
                 </select>
             </div>
-            <div class="form-group">
+            <div class="form-group" id="filter_values-0">
                 <label>Value</label>
-                <input type="text" class="form-control" id="field-value-0">
+                <input type="text" class="form-control" id="field-value-0" name="field-value-0">
             </div>
             <div class="form-group">
                 <label>Logical Join</label>
@@ -55,7 +55,7 @@
             <th colspan="2" style="text-align:center;">Action</th>
         </thead>
         <tbody>
-         <tr><a href="{%  url 'add_case:case_list' %}">Add a Grievance Award for a Case</a></tr>
+         <tr><a href="{% url 'add_case:case_list' %}">Add a Grievance Award for a Case</a></tr>
         {% for grievance in object_list %}
         </tbody>
             <tr>

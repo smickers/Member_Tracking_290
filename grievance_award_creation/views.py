@@ -75,6 +75,7 @@ class GrievanceAwardFilter(filters.FilterSet):
     max_date = filters.DateFilter(name='date', lookup_expr='lte')
     min_amount = filters.NumberFilter(name='awardAmount', lookup_expr='gte')
     max_amount = filters.NumberFilter(name='awardAmount', lookup_expr='lte')
+    policy = filters.NumberFilter(name='case__caseType', lookup_expr='lte')
 
     class Meta:
         """
@@ -89,6 +90,7 @@ class GrievanceAwardFilter(filters.FilterSet):
             'awardAmount': '__all__',
             'description': '__all__',
             'date': '__all__',
+            'case__caseType': '__all__'
         }
 
 
