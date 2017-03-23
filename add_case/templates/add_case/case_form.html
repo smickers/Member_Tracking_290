@@ -48,7 +48,7 @@
                     }
                 },
                 processResults: function (data, params) {
-                    console.log(data.results);
+{#                    console.log(data.results);#}
                     return {
                         results: data.results,
                         pagination: {
@@ -125,44 +125,9 @@
                 $("#id_additionalMembers option").filter("[value='" + currComplainantID + "']").remove();
             });
 
-
-
-
-{#            $("#id_js-logs").change(function()#}
-{#            {#}
-{#                // Double check to make sure current users aren't the complainant#}
-{#                var currLog = $("#id_js-logs").val();#}
-{#                // Using a convoluted foreach loop to do this#}
-{#                var newValues = [];#}
-{#                if ($(this).val() !== null)#}
-{#                {#}
-{#                   $(this).val().forEach(function(value, index)#}
-{#                    {#}
-{#                        // Push valid values onto a new array#}
-{#                        if (value !== currLog)#}
-{#                        {#}
-{#                            // Push the user onto an array if they aren't the complainant#}
-{#                            newValues.push(value);#}
-{#                        }#}
-{#                        else#}
-{#                        {#}
-{#                            // If user is the current complainant, then remove them#}
-{#                            // from the list of additional members#}
-{#                            $("#id_js-logs option").filter("[value='" + currLog + "']").remove();#}
-{#                        }#}
-{#                    });#}
-{#                }#}
-{##}
-{#                // Now update the values listed#}
-{#                $(this).val(newValues);#}
-{#            });#}
-
-
-
+            // Setting up contact lookups for the select2 select box
             var logs = $("#id_related_contact_logs");
             var logResults = [];
-            var logid = [];
-            var offset = 10;
               logs.select2({
                 ajax: {
                     //a list of all logs
@@ -172,21 +137,19 @@
                     {
                         return {
                             q: params.term, //The term to be sent
-                            offset: (params.page ) * 10 //Which page of the REST page will be loaded
+                            offset: (params.page) * 10
+
                         }
                     },
                     processResults: function (data, params) {
-                        console.log(data);
-{#                        for(var i = 0; i < data.results.length; i++)#}
-{#                        {#}
-{#                            if(logid.indexOf(data.results[i].id)==-1)#}
-{#                            {#}
-{#                                var text = data.results[i].member.firstName + " " + data.results[i].member.lastName + " " + data.results[i].date  + " " + data.results[i].description;#}
-{#                                logResults.push({id:data.results[i].id, text:text});#}
-{#                                logid.push(data.results[i].id);#}
-{#                            }#}
-{##}
-{#                        }#}
+                        logResults = [];
+                        console.log(params)
+{#                        console.log(data);#}
+                        for(var i = 0; i < data.results.length; i++)
+                        {
+                            var text = data.results[i].member.firstName + " " + data.results[i].member.lastName + " " + data.results[i].date  + " " + data.results[i].description;
+                            logResults.push({id:data.results[i].id, text:text});
+                        }
 
                         //console.log(logResults)
                         return {
@@ -200,12 +163,6 @@
                    },
                 }
               });
-
-
-
-
-
-
         });
 
 

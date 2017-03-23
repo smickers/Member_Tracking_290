@@ -4,6 +4,7 @@ from contact_log.models import contactLog
 from add_member.models import Person
 from django.core.exceptions import ValidationError
 from rest_framework.test import APIRequestFactory
+from forms import CaseForm
 
 class CaseContactLogLinking(TestCase):
     member_one = Person()
@@ -107,12 +108,24 @@ class CaseContactLogLinking(TestCase):
         self.cl_one.related_case = self.case_one
         self.cl_one.full_clean()
         self.cl_one.save()
+        #
+        # # Now, try to repoint cl_one's related case
+        # with self.assertRaisesMessage(ValidationError, "Cannot link a contact log to more than one case!"):
+        #     self.cl_one.related_case = self.case_two
+        #     self.cl_one.full_clean()
+        #     self.cl_one.save()
 
-        # Now, try to repoint cl_one's related case
-        with self.assertRaisesMessage(ValidationError, "Cannot link a contact log to more than one case!"):
-            self.cl_one.related_case = self.case_two
-            self.cl_one.full_clean()
-            self.cl_one.save()
+        data = {
+            'lead' :'1',
+            'complainant': self.member_one,
+            'caseType' : 5,
+            'related_contact_logs': {self.cl_one.pk},
+            'school': 'School of Nursing'
+        }
+        form = CaseForm(data)
+        print(form["related_contact_logs"].errors)
+        print("New case FK is " + str(self.cl_one.relatedCase_id))
+        self.assertFalse(form.is_valid())
 
     def test_linking_unlinking_and_relinking_a_contact_log(self):
         try:

@@ -24,7 +24,6 @@ class CaseForm(ModelForm):
                                                    widget = forms.SelectMultiple(attrs={'class': 'js-logs', 'style': 'width:65%;'}))
 
 
-
     def save(self, commit=False):
         """
         Function: save
