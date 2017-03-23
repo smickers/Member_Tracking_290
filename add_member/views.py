@@ -16,6 +16,8 @@ from exceptions import ValueError
 import json
 import gc
 from django.core.exceptions import ValidationError
+from spfa_mt import settings
+# from rest_framework.parsers import FileUploadParser
 
 # view responsible for the member creation
 class PersonCreate(CreateView):
@@ -55,14 +57,23 @@ class FileListCreateView(generics.ListCreateAPIView):
 
     queryset = PersonFile.objects.all()
     serializer_class = MemberFileSerializer
-
+    # parser_classes = (FileUploadParser,)
 
     def post(self, request, *args, **kwargs):
         file_obj = request.data['file']
+
+        f_name = file_obj.name
+        if f_name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT:
+            raise InvalidFile
+
         if file_obj.size > MAX_FILE_SIZE:
             raise FileTooLarge
         return super(FileListCreateView, self).post(request, *args, **kwargs)
 
+    def put(self, request, filename, format=None):
+        file_obj = request.data['file']
+
+        return Response(status=204)
 
 
 class MemberFileUploadView(TemplateView):
@@ -124,7 +135,13 @@ class FileTooLarge(APIException):
     """
         This exceptions gets raised if the file uploaded is exceeding the file size limit
     """
-    status_code = 400
+    status_code = status.HTTP_400_BAD_REQUEST
     default_detail = 'The file exceeded the file size limit. Please upload a smaller file'
+    default_code = 'bad request'
+
+
+class InvalidFile(APIException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_detail = 'The file is an invalid format. Please supply a valid excel sheet.'
     default_code = 'bad request'
 

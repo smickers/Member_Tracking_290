@@ -2,7 +2,9 @@ from django.core.files.uploadhandler import TemporaryFileUploadHandler, FileUplo
 from django.core.files.uploadhandler import StopUpload, SkipFile, StopFutureHandlers
 from spfa_mt.settings import MAX_FILE_SIZE
 from django.core.exceptions import ValidationError
+from rest_framework.response import Response
 from spfa_mt import settings
+from rest_framework.exceptions import APIException
 """
 Class UploadValidator
 This class handles validating uploads for the entire website
@@ -33,7 +35,7 @@ class UploadValidator(TemporaryFileUploadHandler):
     def file_complete(self, file_size):
         if file_size > MAX_FILE_SIZE:
             print("File_complete running!")
-            raise ValidationError('Upload size limit exceeded exception')
+            raise FileTooLarge
         return super(UploadValidator, self).file_complete(file_size)
 
     """
@@ -41,9 +43,10 @@ class UploadValidator(TemporaryFileUploadHandler):
     Purpose: Allows the handler to completely override the parsing of the raw HTTP input.
     """
     def handle_raw_input(self, input_data, META, content_length, boundary, encoding=None):
-
         super(UploadValidator, self).handle_raw_input(input_data, META, content_length, boundary, encoding=None)
         self.total_size = content_length
+        if self.total_size > MAX_FILE_SIZE:
+            raise FileTooLarge
 
     """
     Method: new_file
@@ -57,4 +60,15 @@ class UploadValidator(TemporaryFileUploadHandler):
             """
                 Raises exception if the file extension is invalid
             """
+
             raise StopFutureHandlers("File type is not allowed")
+
+
+class FileTooLarge(APIException, StopFutureHandlers):
+    """
+        This exceptions gets raised if the file uploaded is exceeding the file size limit
+    """
+    status_code = 400
+    default_detail = 'The file exceeded the file size limit. Please upload a smaller file'
+    default_code = 'bad request'
+

@@ -130,7 +130,7 @@ HAYSTACK_CONNECTIONS = {
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
 }
 
 
@@ -175,3 +175,4 @@ MEDIA_URL = '/media/'
 FILE_UPLOAD_HANDLERS = ["file_handler.filehandler.UploadValidator",
                         "django.core.files.uploadhandler.MemoryFileUploadHandler",
                         "django.core.files.uploadhandler.TemporaryFileUploadHandler"]
+

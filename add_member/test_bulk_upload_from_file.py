@@ -7,6 +7,8 @@ from django.urls import reverse
 from spfa_mt import settings
 from django.core.files import File
 from rest_framework.test import APIClient
+import json
+
 
 
 # region Tests for Creating a person
@@ -22,6 +24,7 @@ class PersonUploadTestCase(TestCase):
         self.path_largefile = self.CONST_FILE_PATH % 'dummylarge.xlsx'
         self.path_emptyfile = self.CONST_FILE_PATH \
                               % 'empty.xlsx'
+        self.json_test_file = self.CONST_FILE_PATH % 'json_test.json'
 
 
     def setUp(self):
@@ -34,61 +37,58 @@ class PersonUploadTestCase(TestCase):
         f = open(self.path_emptyfile, "wb")
         f.write("")
         f.close()
-
-    '''
-    Name:       test_user_can_upload_excel_file
-    Function:   Test user is able to upload an excel file (.xlsx)
-    '''
-    def test_user_can_upload_excel_file(self):
-        fp = open(self.test_xlsx, "r")
-        xlsx_file = File(fp)
-
-        # TODO: Make an api endpoint that accepts a file and returns a JSON response.
-        # request = self.factory.post('{{endpoint_url}}', {'file': xlsx_file}, format='json')
-        # json_response = request.json()
-        # self.assertTrue( json_response.count == 1 )
-
-        factory = APIClient()
-
-        f_request = factory.post(reverse('add_member:excel-upload'), {'file': xlsx_file})
-        f_data = f_request.data['id']
-        person = PersonFile.objects.get(pk=f_data)
-
-        self.assertTrue(isinstance(person, PersonFile))
-
-
-
-
+    #
+    # '''
+    # Name:       test_user_can_upload_excel_file
+    # Function:   Test user is able to upload an excel file (.xlsx)
+    # '''
+    # def test_user_can_upload_excel_file(self):
+    #     fp = open(self.test_xlsx, "rb")
+    #     xlsx_file = File(fp)
+    #
+    #     factory = APIClient()
+    #
+    #     f_request = factory.post(reverse('add_member:excel-upload'), {'file': xlsx_file})
+    #     f_data = f_request.data['id']
+    #     person = PersonFile.objects.get(pk=f_data)
+    #
+    #     self.assertTrue(isinstance(person, PersonFile))
+    #
+    #
+    #
+    #
     # '''
     # Name:       test_user_cannot_upload_other_file_formats
     # Function:   Test user is not able to upload any other file format
     # '''
     # def test_user_cannot_upload_other_file_formats(self):
-    #     fp = open(self.invalid_file, "r")
+    #     fp = open(self.invalid_file, "rb")
     #     invalid_file = File(fp)
-    #
-    #     request = self.factory.post('{{endpoint_url}}', {'file': invalid_file}, format='json')
-    #     self.assertTrue(request.status_code == 400)  # Bad request
-    #
-    # '''
-    # Name:       test_user_sees_preview_table_with_member_information
-    # Function:   Test user is shown a preview table with member information after
-    #             they upload an excel file
-    # '''
-    # def test_user_sees_preview_table_with_member_information(self):
-    #     fp = open(self.test_xlsx, "r")
-    #     xlsx_file = File(fp)
-    #
-    #     request = self.factory.post('{{endpoint_url}}', {'file': xlsx_file}, format='json')
-    #     json_response = request.json()
-    #
-    #     #TODO: Create a view that accepts the file pk and return json repersentation of the excel file
-    #     request = self.factory.post('{{endpoint_url_of_xlsx_to_json_converter}}', {'id': json_response.id}, format='json')
-    #
-    #     json_response_of_converter = request.json()
-    #
-    #     self.assertTrue(json_response_of_converter != "")
-    #
+    #     factory = APIClient()
+    #     f_request = factory.post(reverse('add_member:excel-upload'), {'file': invalid_file})
+    #     self.assertEqual( json.loads(f_request.content), {'detail': 'The file is an invalid format.'
+    #                                                                 ' Please supply a valid excel sheet.'} )
+
+
+    '''
+    Name:       test_user_sees_preview_table_with_member_information
+    Function:   Test user is shown a preview table with member information after
+                they upload an excel file
+    '''
+    def test_user_sees_preview_table_with_member_information(self):
+        fp = open(self.test_xlsx, "rb")
+        xlsx_file = File(fp)
+
+        factory = APIClient()
+
+        f_request = factory.post(reverse('add_member:excel-upload'), {'file': xlsx_file})
+        f_data = f_request.data['id']
+        f_request = factory.get(reverse('add_member:excel-to-json', args=[f_data,]))
+        fp.close()
+        fp = open(self.json_test_file, "r")
+        json_data = fp.read()
+        self.assertEqual(f_request.content, json_data)
+
     # '''
     # Name:       test_preview_table_displays_all_member_information
     # Function:   Test preview table displays all member information that came
@@ -103,17 +103,19 @@ class PersonUploadTestCase(TestCase):
     #         5. Verify if the json response can be represented as a table.
     #     """
     #     pass
-    #
-    # '''
-    # Name:       test_user_cannot_upload_files_greater_than_500mb
-    # Function:   Test user cannot upload files that are greater than 500mb
-    # '''
-    # def test_user_cannot_upload_files_greater_than_500mb(self):
-    #     fp = open(self.path_largefile, "r")
-    #     very_large = File(fp)
-    #
-    #     request = self.factory.post('{{endpoint_url}}', {'file': very_large}, format='json')
-    #     self.assertTrue(request.status_code == 400)  # Bad request
+
+    '''
+    Name:       test_user_cannot_upload_files_greater_than_500mb
+    Function:   Test user cannot upload files that are greater than 500mb
+    '''
+    def test_user_cannot_upload_files_greater_than_500mb(self):
+        fp = open(self.path_largefile, "rb")
+        very_large = File(fp)
+
+        factory = APIClient()
+        f_request = factory.post(reverse('add_member:excel-upload'), {'file': very_large})
+        self.assertEqual( json.loads(f_request.content), {'detail': 'The file is an invalid format.'
+                                                                        ' Please supply a valid excel sheet.'} )
     #
     # '''
     # Name:       test_preview_table_is_not_shown_if_excel_file_is_empty
