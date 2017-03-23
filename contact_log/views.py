@@ -7,6 +7,7 @@ from .forms import ContactLogForm, ContactLogDetailsForm
 from rest_framework import viewsets
 from .serializers import ContactLogSerializer
 import django_filters.rest_framework
+from add_case.models import Case
 import rest_framework_filters as filters
 
 
@@ -42,6 +43,14 @@ class ContactLogFilter(filters.FilterSet):
     member__firstName = filters.CharFilter(name='member__firstName', lookup_expr='icontains')
     member__lastName = filters.CharFilter(name='member__lastName', lookup_expr='icontains')
     member__middleName = filters.CharFilter(name='member__middleName', lookup_expr='icontains')
+    relatedCase_filter = filters.ModelChoiceFilter(name='relatedCase', method='filter_contact_logs_related_cases', queryset=contactLog.objects.all())
+    # relatedCase_filter = filters.AllValuesFilter(name='relatedCase__id', lookup_expr='isnull')
+    # case = filters.CharFilter(name='relatedCase__id')
+
+    # Function:
+    def filter_contact_logs_related_cases(self, queryset, name, value):
+        # return contactLog.objects.all().filter(relatedCase__isnull=True)
+        return queryset.filter(relatedCase__isnull=True)
 
 
     class Meta:
@@ -56,7 +65,7 @@ class ContactLogFilter(filters.FilterSet):
         #     'date_gt': '__all__',
         #     'date_lt': '__all__',
         # }
-        fields = ['id', 'member', 'date', 'description', 'contactCode']
+        fields = ['id', 'member', 'date', 'description', 'contactCode', 'relatedCase']
 
 
 # Class:    ContactLogViewSet

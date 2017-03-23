@@ -38,7 +38,7 @@ class CaseForm(ModelForm):
             return ValidationError
 
         # Files do not have to be uploaded, but if they are, save the file
-        print(self.__dict__)
+        #print(self.__dict__)
         if self.files != {}:
             f = self.files.getlist('file_field')[0]
             temp = File(file=f)
