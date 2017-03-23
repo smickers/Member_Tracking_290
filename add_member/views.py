@@ -5,17 +5,17 @@ from .forms import PersonForm
 from drf_haystack.viewsets import HaystackViewSet
 from .serializer import MemberSearchSerializer, MemberFileSerializer, MemberSerializer
 from drf_haystack.filters import HaystackAutocompleteFilter
-from rest_framework import generics, decorators
+from rest_framework import decorators
 from spfa_mt.settings import MAX_FILE_SIZE
 from rest_framework.exceptions import APIException
 from django.db.models import ObjectDoesNotExist
 from rest_framework.response import Response
-from rest_framework import generics
+from rest_framework import generics, status
 from excel_to_json import convert_excel_json
 from exceptions import ValueError
 import json
 import gc
-
+from django.core.exceptions import ValidationError
 
 # view responsible for the member creation
 class PersonCreate(CreateView):
@@ -104,7 +104,8 @@ def json_to_members(request, *args, **kwargs):
             serializer = MemberSerializer(data=member)
             if not serializer.is_valid():
                 print(serializer.errors)
-                raise AssertionError("Some error")
+                raise AssertionError('The excel sheet contains invalid fields. '
+                                     'Please check the sheet and upload it again')
             gc.collect()
 
         for member in json_repr:
@@ -112,10 +113,12 @@ def json_to_members(request, *args, **kwargs):
             print(serializer)
             serializer.is_valid()
             serializer.save()
-    except AssertionError:
-        return Response({'Error': 'There is an error when creating the members, please contact admin'})
+    except AssertionError as e:
+        return Response({'Error': str(e)}, status.HTTP_406_NOT_ACCEPTABLE)
+    except ValidationError as e:
+        return Response({'Error': str(e)}, status.HTTP_400_BAD_REQUEST)
 
-    return Response({'Detail': 'Success', 'count': len(json_repr)})
+    return Response({'Detail': 'Success', 'count': len(json_repr)}, status.HTTP_201_CREATED)
 
 class FileTooLarge(APIException):
     """
