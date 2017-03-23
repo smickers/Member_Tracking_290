@@ -34,7 +34,14 @@ function runQuery(requestURL)
 function addCriteria()
 {
     criteriaCount++;
-   $("#filteringForm").append('<div id="filter-entry-' + criteriaCount + '"> <div class="form-group"> <label>Field</label> <select class="form-control" id="field-choice-' + criteriaCount + '" onchange="determineToShowEquality(' + criteriaCount + ')"> <option value="id">ID</option> <option value="member">Member</option> <option value="date">Date</option> <option value="description">Description</option> <option value="contactCode">Contact Code</option> </select> </div> <div class="form-group"> <label>Criteria</label> <select class="form-control" id="field-criteria-' + criteriaCount + '"> <option value="gt">></option> <option value="ee" selected>==</option> <option value="lt"><</option> </select> </div><div class="form-group"> <label>Value</label> <input type="text" class="form-control" id="field-value-' + criteriaCount + '"> </div> <div class="form-group"> <label>Logical Join</label> <input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="AND" checked>AND <input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="OR">OR</div><div class="form-group"> <button class="form-control btn btn-info" onclick="addCriteria()"> <span class="glyphicon glyphicon-plus"></span> </button> <button class="form-control btn btn-warning close" id="remove-' + criteriaCount + '" onclick="removeCriteria(' + criteriaCount + ')"> <span aria-hidden="true">&times;</span> </button></div> </div>');
+   $("#filteringForm").append('<div id="filter-entry-' + criteriaCount + '"> ' +
+       '<div class="form-group"> <label>Field</label> <select class="form-control" id="field-choice-' + criteriaCount + '" onchange="determineToShowEquality(' + criteriaCount + ')"> ' +
+       '<option value="type">Type</option> <option value="amount">Award Amount</option> <option value="date">Date</option> <option value="description">Description</option> </select> </div> <div class="form-group"> ' +
+       '<label>Criteria</label> <select class="form-control" id="field-criteria-' + criteriaCount + '"> <option value="gt">></option> <option value="ee" selected>==</option> <option value="lt">' +
+       '<</option> </select> </div><div class="form-group"> <label>Value</label> <input type="text" class="form-control" id="field-value-' + criteriaCount + '"> </div> <div class="form-group">' +
+       ' <label>Logical Join</label> <input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="AND" checked>AND <input type="radio" name="field-join-' + criteriaCount + '" class="form-control" value="OR">OR</div><div class="form-group"> ' +
+       '<button class="form-control btn btn-info" onclick="addCriteria()"> <span class="glyphicon glyphicon-plus"></span> </button> ' +
+       '<button class="form-control btn btn-warning close" id="remove-' + criteriaCount + '" onclick="removeCriteria(' + criteriaCount + ')"> <span aria-hidden="true">&times;</span> </button></div> </div>');
     determineToShowEquality(criteriaCount);
 }
 
@@ -62,9 +69,9 @@ function applyFilter()
     var all_records = [];
     var curr_records = [];
     //var currRecord = 0;
-    const BASE_REQUEST_URL = "http://127.0.0.1:8000/api-root/contact_log/search/?";
+    const BASE_REQUEST_URL = "http://127.0.0.1:8000/api-root/grievance_award/filter/?";
     var next_join = "OR";
-    $("#contact-log-table-data").html("");
+    $("#grievance-award-table-data").html("");
     for (var i = 0; i <= criteriaCount; i++)
     {
         var request_url = BASE_REQUEST_URL;
@@ -76,10 +83,10 @@ function applyFilter()
                 switch($("#field-criteria-" + i).val())
                 {
                     case 'gt':
-                        request_url += 'date_gt=' + convertDateFormat($("#field-value-" + i).val());
+                        request_url += 'min_date=' + convertDateFormat($("#field-value-" + i).val());
                         break;
                     case 'lt':
-                        request_url += 'date_lt=' + convertDateFormat($("#field-value-" + i).val());
+                        request_url += 'max_date=' + convertDateFormat($("#field-value-" + i).val());
                         break;
                     default:
                         request_url += 'date=' + convertDateFormat($("#field-value-" + i).val());
@@ -93,20 +100,29 @@ function applyFilter()
                 request_url += "empty_desc_filter=yes";
                 curr_records = runQuery(request_url);
             }
-            else if ($("#field-choice-" + i).val() === "member")
+            else if ($("#field-choice-" + i).val() === "type")
             {
                 // Run three queries: one on first name, one on middle name, and one on last name
                 // Next, combine them with an OR
-                request_url += "member__firstName=" + $("#field-value-" + i).val();
+                request_url += "type=" + $("#field-value-" + i).val();
                 curr_records = runQuery(request_url);
-
-                request_url = BASE_REQUEST_URL + "member__middleName=" + $("#field-value-" + i).val();
-                // Next, combine them with an OR
-                curr_records = combineArraysOR(curr_records, runQuery(request_url));
-
-                // And run the last name query
-                request_url = BASE_REQUEST_URL + "member__lastName=" + $("#field-value-" + i).val();
-                curr_records = combineArraysOR(curr_records, runQuery(request_url));
+            }
+            else if ($("#field-choice-" + i).val() ==="amount")
+            {
+                // Determine if less than, greater than, or equals was selected
+                switch($("#field-criteria-" + i).val())
+                {
+                    case 'gt':
+                        request_url += 'min_amount=' + $("#field-value-" + i).val();
+                        break;
+                    case 'lt':
+                        request_url += 'max_amount=' + $("#field-value-" + i).val();
+                        break;
+                    default:
+                        request_url += 'amount=' + $("#field-value-" + i).val();
+                        break;
+                }
+                curr_records = runQuery(request_url);
             }
             else
             {
@@ -159,7 +175,7 @@ function combineArraysAND(arrayOne, arrayTwo)
 
 /***
  * Function:    combineArraysOR
- * Purpose:     Combine two given arrays with an OR operator based on contact log IDs.
+ * Purpose:     Combine two given arrays with an OR operator.
  * @param arrayOne - The first array
  * @param arrayTwo - the second array
  * @returns {Array} - the arrays combined with an OR
@@ -188,37 +204,6 @@ function combineArraysOR(arrayOne, arrayTwo)
 
     // Return our new results
     return result_array;
-}
-
-/***
- * Function:    getContactCode
- * Purpose:     Given a contact code character, return a full contact code.
- * @param ccValue - the contact code to be looked up
- * @returns {*} - the full contact code as a string
- */
-function getContactCode(ccValue)
-{
-    switch(ccValue)
-    {
-        case "E":
-            return "Email";
-            break;
-        case "P":
-            return "Phone";
-            break;
-        case "F":
-            return "Face to face";
-            break;
-        case "M":
-            return "Meeting";
-            break;
-        case "T":
-            return "Text";
-            break;
-        default:
-            return "Unknown";
-            break;
-    }
 }
 
 /***
@@ -253,18 +238,19 @@ function formatDate(toFormat)
  */
 function filterTable(newData)
 {
-    $("#contact-log-table-data").html("");
+    $("#grievance-award-table-data").html("");
     newData.forEach(function(item, index)
     {
+        console.log(item);
         var id = item.id;
-        var name = item.member.firstName + " " + item.member.lastName;
+        var amount = item.awardAmount;
         var date = formatDate(item.date);
         var description = item.description;
-        var contactCode = getContactCode(item.contactCode);
-        var rowToAdd = "<tr><td>" + id + "</td><td>" + name + "</td><td>" + date + "</td><td>" + description + "</td><td>" +
-                        contactCode + '</td><td><a href="http://127.0.0.1:8000/contact_log/details/' + id + '">[View]</a></td><td><a href="http://127.0.0.1:8000/contact_log/update/' + id + '">[Edit]</a></td></tr>';
+        var type = item.type;
+        var rowToAdd = "<tr><td>" + id + "</td><td>" + amount + "</td><td>" + date + "</td><td>" + description + "</td><td>" +
+                        type + '</td><td><a href="/grievance/detail/' + id + '">[View]</a></td><td><a href="/grievance/edit/' + id + '">[Edit]</a></td></tr>';
 
-        $("#contact-log-table-data").append(rowToAdd);
+        $("#grievance-award-table-data").append(rowToAdd);
     });
 }
 
@@ -309,7 +295,7 @@ function removeCriteria(num)
 function determineToShowEquality(elem)
 {
 
-    if ($("#field-choice-" + elem).val() === "date")
+    if ($("#field-choice-" + elem).val() === "date" || $("#field-choice-" + elem).val() === "amount")
     {
         // Show the entire div that the equality selector is in - which happens
         // to be the parent of the field-choice select element
