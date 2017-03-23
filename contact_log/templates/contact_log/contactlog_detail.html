@@ -27,7 +27,16 @@
             </tr>
             <tr>
                 <th>Primary Complainant</th>
-                <td>{{ object.member }}</td>
+                <td>
+                {% comment %}
+                    If the member is not None, provide a link to the member's Details page. Else no link.
+                {% endcomment %}
+                    {% if object.member != None %}
+                    <a href="{% url 'add_member:member_detail' object.member_id %}">{{ object.member }}</a>
+                    {% else %}
+                    {{ object.member }}
+                    {% endif %}
+                </td>
             </tr>
             <tr>
                 <th>Contact Code</th>
