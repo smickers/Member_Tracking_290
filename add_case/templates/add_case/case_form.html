@@ -9,24 +9,6 @@
     {% endif %}
     <script type="text/javascript">
         $(document).ready(function() {
-        var x = $("#id_related_contact_logs");
-        var y = $(x).next().children()[0];
-
-            console.log(x);
-            // Fill in related contact logs, if there are any
-            setTimeout(function(){
-
-                $(".related-cl").each(function(index, val)
-                {
-                    //console.log($(val).attr("content"));
-
-                    //$(y).children().children().append('<li class="select2-selection__choice" title="Martha Smith"><span class="select2-selection__choice__remove" role="presentation">×</span>Martha Smith</li>');
-                });
-            },5000);
-
-
-
-
 
             $("#id_department").hide();
             $("label[for='id_department']").hide();
@@ -213,6 +195,14 @@
 
             {% bootstrap_form form %}
 
+                {% if related_contact_logs %}
+                    <div class="form-group">
+                    <label class="control-label"><u>Currently Linked Contact Logs</u></label><br />
+                    {% for i in related_contact_logs %}
+                        {{ i.member }} - {{ i.description }} - {{ i.date }}<br />
+                    {% endfor %}
+                    </div>
+                {% endif %}
             {% buttons %}
                 <button id="cancel_upload">Cancel</button>
                 <input type="submit" class="btn btn-secondary" name="submit" value="Submit" style="width:15%;
