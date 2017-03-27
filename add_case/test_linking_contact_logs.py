@@ -6,6 +6,8 @@ from django.core.exceptions import ValidationError
 from rest_framework.test import APIRequestFactory
 from forms import CaseForm
 
+# Class:    CaseContactLogLinking
+# Purpose:  Unit tests to ensure that behavior for relating contact logs to cases functions correctly.
 class CaseContactLogLinking(TestCase):
     member_one = Person()
     cl_one = contactLog()
@@ -14,7 +16,12 @@ class CaseContactLogLinking(TestCase):
     case_two = Case()
     program = CasePrograms()
 
+    # Function: setUp
+    # Purpose:  Set up some objects for use in the following unit tests.
     def setUp(self):
+
+        # First, empty out the case table
+        Case.objects.all().delete()
         # Set up the person
         self.member_one.memberID = 4204444
         self.member_one.firstName = 'First'
@@ -45,6 +52,7 @@ class CaseContactLogLinking(TestCase):
         self.cl_one.date = '2017-02-02'
         self.cl_one.description = 'Hello'
         self.cl_one.contactCode = 'F'
+        self.cl_one.relatedCase = None
         self.cl_one.clean()
         self.cl_one.save()
 
@@ -52,6 +60,7 @@ class CaseContactLogLinking(TestCase):
         self.cl_two.date = '2017-02-02'
         self.cl_two.description = 'Hello'
         self.cl_two.contactCode = 'F'
+        self.cl_two.relatedCase = None
         self.cl_two.clean()
         self.cl_two.save()
 
@@ -93,6 +102,9 @@ class CaseContactLogLinking(TestCase):
         self.case_two.additionalMembers.add(self.member_one)
         self.case_two.save()
 
+    # Function: test_adding_contact_log_to_case
+    # Purpose:  Ensure that a contact log can be linked to a case by creating a case and linking the contact log to the
+    #           case.
     def test_adding_contact_log_to_case(self):
         # Link contact log #1 to case #1 and try to save the changes
         try:
@@ -103,67 +115,91 @@ class CaseContactLogLinking(TestCase):
         except Exception:
             self.assertTrue(False)
 
+
+    # Function: test_linking_an_already_linked_contact_log
+    # Purpose:  Ensure that the user cannot link an already-linked contact log to a new case.
     def test_linking_an_already_linked_contact_log(self):
         # Link contact log #1 to case #1, then save the changes
-        self.cl_one.related_case = self.case_one
+        self.cl_one.relatedCase = self.case_one
         self.cl_one.full_clean()
         self.cl_one.save()
-        #
-        # # Now, try to repoint cl_one's related case
-        # with self.assertRaisesMessage(ValidationError, "Cannot link a contact log to more than one case!"):
-        #     self.cl_one.related_case = self.case_two
-        #     self.cl_one.full_clean()
-        #     self.cl_one.save()
 
         data = {
             'lead' :'1',
-            'complainant': self.member_one,
+            'complainant': self.member_one.pk,
             'caseType' : 5,
             'related_contact_logs': {self.cl_one.pk},
-            'school': 'School of Nursing'
+            'school': 'School of Nursing',
+            'status': 'OPEN',
+            'campus': 'Saskatoon'
         }
-        form = CaseForm(data)
-        print(form["related_contact_logs"].errors)
-        print("New case FK is " + str(self.cl_one.relatedCase_id))
-        self.assertFalse(form.is_valid())
 
+        # Build up a request to send off. Then, validate that it throws an exception.
+        with self.assertRaisesMessage(ValidationError, "Contact log is already related to a case!"):
+            self.client.post("/addCase/", data)
+
+    # Function: test_linking_unlinking_and_relinking_a_contact_log
+    # Purpose: Link a contact log to a case, manually un-link the contact log, and then ensure that the contact log
+    #           can be re-linked to a new case.
     def test_linking_unlinking_and_relinking_a_contact_log(self):
         try:
-            # Link the contact log
-            self.cl_one.related_case = self.case_one
+            # Link the contact log through case creation
+            data = {
+                'lead': '1',
+                'complainant': self.member_one.pk,
+                'caseType': 5,
+                'related_contact_logs': {self.cl_one.pk},
+                'school': 'School of Nursing',
+                'status': 'OPEN',
+                'campus': 'Saskatoon'
+            }
+
+            self.client.post("/addCase/", data)
+
+            # Unlink the contact log manually
+            self.cl_one.relateCase = None
             self.cl_one.full_clean()
             self.cl_one.save()
 
-            # Unlink the contact log
-            self.cl_one.related_case = None
-            self.cl_one.full_clean()
-            self.cl_one.save()
+            # Re-link the contact log through case creation
+            data = {
+                'lead': '1',
+                'complainant': self.member_one.pk,
+                'caseType': 5,
+                'related_contact_logs': {self.cl_one.pk},
+                'school': 'School of Nursing',
+                'status': 'OPEN',
+                'campus': 'Saskatoon'
+            }
 
-            # Re-link the contact log
-            self.cl_one.related_case = self.case_one
-            self.cl_one.full_clean()
-            self.cl_one.save()
+            self.client.post("/addCase/", data)
 
             # Assert true if this all exectuted without error
             self.assertTrue(True)
         except:
             self.assertTrue(False)
 
+    # Function: test_linking_an_invalid_contact_log
+    # Purpose:  Ensure that a valid contact log has to be linked to a case.
+    #           An invalid contact log will throw an error.
     def test_linking_an_invalid_contact_log(self):
         try:
-            self.cl_one.related_case = self.nonexistant_case
+            self.cl_one.relatedCase = self.nonexistant_case
             self.cl_one.full_clean()
             self.cl_one.save()
             self.assertTrue(False)
         except:
             self.assertTrue(True)
 
-    def ensure_that_only_unlinked_contact_logs_are_shown_in_api(self):
+    # Function: test_ensure_that_only_unlinked_contact_logs_are_shown_in_api
+    # Purpose:  Make sure that in API lookups, only UNLINKED contact logs are
+    #           shown for the unlinked query.
+    def test_ensure_that_only_unlinked_contact_logs_are_shown_in_api(self):
         # Link cl_one first
-        self.cl_one.related_case = self.case_one
+        self.cl_one.relatedCase = self.case_one
         self.cl_one.full_clean()
         self.cl_one.save()
 
         # Now ensure only one contact log is listed in the list which will fill the select box
-        request = self.client.get('/api-root/contact_log/search/?unlinked=true')
+        request = self.client.get('/api-root/contact_log/search/?relatedCase_filter=1')
         self.assertEquals(request.json()['count'], 1)

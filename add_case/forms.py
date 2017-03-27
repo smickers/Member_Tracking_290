@@ -46,13 +46,15 @@ class CaseForm(ModelForm):
                                         description=desc)
             case_file.save()
 
-        print(str(obj.pk))
+        # print(str(obj.pk))
 
+        # print("Cleaning contact logs!")
         for cl in self.cleaned_data['related_contact_logs']:
             # curr_cl = (contactLog)(cl)
+            # print("Current contact log: " + str(cl.pk))
             if cl.relatedCase is None:
-                print("Case NOT related!")
-                cl.relatedCase = (Case)(obj).pk
+                # print("Case NOT related!")
+                cl.relatedCase = (Case)(obj)#.pk
                 cl.save()
                 # curr_cl.save()
             else:
