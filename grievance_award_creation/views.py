@@ -9,6 +9,7 @@ from .serializer import GAFilterSerializer
 from rest_framework import viewsets
 import rest_framework_filters as filters
 from rest_framework.pagination import LimitOffsetPagination
+from django.core.validators import EMPTY_VALUES
 
 
 # Create your views here.
@@ -66,6 +67,20 @@ class GrievanceAwardList(ListView):
     template_name = 'grievance_award_creation/grievanceaward_list.html'
 
 
+class EmptyStringFilter(filters.BooleanFilter):
+    """
+    Writing a custom filter so we can get all results with empty strings.
+    """
+    def filter(self, qs, value):
+        if value in EMPTY_VALUES:
+            return qs
+
+        exclude = self.exclude ^ (value is False)
+        method = qs.exclude if exclude else qs.filter
+
+        return method(**{self.name: ""})
+
+
 class GrievanceAwardFilter(filters.FilterSet):
     """
     This is the filter for our Grievance Award.
@@ -76,6 +91,7 @@ class GrievanceAwardFilter(filters.FilterSet):
     min_amount = filters.NumberFilter(name='awardAmount', lookup_expr='gte')
     max_amount = filters.NumberFilter(name='awardAmount', lookup_expr='lte')
     policy = filters.NumberFilter(name='case__caseType', lookup_expr='lte')
+    empty_desc_filter = EmptyStringFilter(name='description')
 
     class Meta:
         """
@@ -113,6 +129,10 @@ class GrievanceAwardFilterView(viewsets.ReadOnlyModelViewSet):
     """
     # Defining the queryset to use, serializer, filter class and the fields.
     queryset = GrievanceAward.objects.all()
+    # def get_queryset(self):
+    #     if 'empty_desc_filter' in self.request.QUERY_PARAMS:
+    #         return self.model.objects.filter(description="")
+    #     return self.model.objects.all()
     serializer_class = GAFilterSerializer
     filter_class = GrievanceAwardFilter
     # filter_fields might not be required but it's better to be safe

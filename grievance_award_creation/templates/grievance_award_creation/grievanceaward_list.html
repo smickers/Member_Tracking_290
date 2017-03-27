@@ -50,24 +50,30 @@
 
     <h2>List of Grievance Awards</h2>
     <table border="1" id="grievance-award-table-data" class="table table-bordered" style="width:50%;">
-        <thead>
-            <th style="text-align:center;">Lead #</th>
+        <thead style="text-align:center;">
+            <th style="text-align:center;">ID</th>
+            <th>Award Amount</th>
+            <th>Date</th>
+            <th>Description</th>
             <th colspan="2" style="text-align:center;">Action</th>
         </thead>
         <tbody>
          <tr><a href="{% url 'add_case:case_list' %}">Add a Grievance Award for a Case</a></tr>
         {% for grievance in object_list %}
-        </tbody>
+
             <tr>
-                <td style="text-align:center;">{{ grievance.case.lead }}</td>
+                <td style="text-align:center;">{{ grievance.id }}</td>
+                <td style="text-align:center;">{{ grievance.awardAmount }}</td>
+                <td style="text-align:center;">{{ grievance.date }}</td>
+                <td style="text-align:center;">{{ grievance.description }}</td>
                 <td style="text-align:center;"><a href='{% url "add_case:case_detail" grievance.pk %}'>[View Detail]</a></td>
             </tr>
 
         <!-- only appears if no committees exist in the DB -->
         {% empty %}
             <tr>No grievances yet</tr>
-
         {% endfor %}
+    </tbody>
     </table>
 </div>
 

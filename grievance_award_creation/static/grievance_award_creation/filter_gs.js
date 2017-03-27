@@ -96,10 +96,20 @@ function applyFilter()
                 curr_records = runQuery(request_url);
             }
             // Check for an empty description
-            else if ($("#field-choice-" + i).val() === "description" && $("#field-value-" + i).val() === "")
+            else if ($("#field-choice-" + i).val() === "description")
             {
-                request_url += "empty_desc_filter=yes";
-                curr_records = runQuery(request_url);
+                console.log($("#field-value-" + i).val());
+                if($("#field-value-" + i).val() != null)
+                {
+                    request_url += "empty_desc_filter=True";
+                    curr_records = runQuery(request_url);
+                }
+                else
+                {
+                    request_url += "description__contains=" + $("#field-value" + i).val();
+                    curr_records = runQuery(request_url);
+                }
+                console.log(request_url);
             }
             else if ($("#field-choice-" + i).val() === "type")
             {
@@ -128,7 +138,7 @@ function applyFilter()
                         request_url += 'max_amount=' + $("#field-value-" + i).val();
                         break;
                     default:
-                        request_url += 'amount=' + $("#field-value-" + i).val();
+                        request_url += 'awardAmount=' + $("#field-value-" + i).val();
                         break;
                 }
                 curr_records = runQuery(request_url);
@@ -300,20 +310,17 @@ function removeCriteria(num)
  */
 function determineToShowEquality(elem)
 {
-
-    if ($("#field-choice-" + elem).val() === "date" || $("#field-choice-" + elem).val() === "amount")
+    if ($("#field-choice-" + elem).val() == "date" || $("#field-choice-" + elem).val() == "amount")
     {
         // Show the entire div that the equality selector is in - which happens
         // to be the parent of the field-choice select element
         $("#field-criteria-" + elem).parent().show();
-        if($("select #field-value"))
-        {
-            $("#field-value-" + elem).remove();
-            $("#filter_values").append('<input type="text" class="form-control" id="field-value-' + elem + '" name="field-value-' + elem + '">');
-        }
+        $("#field-value-" + elem).remove();
+        $("#filter_values-" + elem).append('<input type="text" class="form-control" id="field-value-' + elem + '" name="field-value-' + elem + '">');
     }
-    else if($("#field-choice-" + elem).val() === "type")
+    else if($("#field-choice-" + elem).val() == "type")
     {
+        $("#field-criteria-" + elem).parent().hide();
         $("#field-value-" + elem).remove();
         $("#filter_values-" + elem).append("<select class='form-control' id='field-value-" + elem + "'></select>");
         $("#field-value-" + elem).append("<option value='7'>Member</option><option value='6'>Policy</option>");
@@ -321,11 +328,8 @@ function determineToShowEquality(elem)
     else
     {
         $("#field-criteria-" + elem).parent().hide();
-        if($("select #field-value"))
-        {
-            $("#field-value-" + elem).remove();
-            $("#filter_values").append('<input type="text" class="form-control" id="field-value-' + elem + '" name="field-value-' + elem + '">');
-        }
+        $("#field-value-" + elem).remove();
+        $("#filter_values-" + elem).append('<input type="text" class="form-control" id="field-value-' + elem + '">');
     }
 }
 
