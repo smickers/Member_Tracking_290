@@ -142,17 +142,18 @@
                         }
                     },
                     processResults: function (data, params) {
+                        // An array for storing all the results in
                         logResults = [];
                         console.log(params)
-{#                        console.log(data);#}
+                        // Loop through results, putting IDs and descriptions in the logResults arrays
                         for(var i = 0; i < data.results.length; i++)
                         {
                             var text = data.results[i].member.firstName + " " + data.results[i].member.lastName + " " + data.results[i].date  + " " + data.results[i].description;
                             logResults.push({id:data.results[i].id, text:text});
                         }
 
-                        //console.log(logResults)
                         return {
+                            // Now return our logResults as the result array
                             results: logResults,
                             pagination: {
                                 more: true //enables the pagination feature
