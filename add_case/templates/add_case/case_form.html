@@ -2,8 +2,23 @@
 {% load bootstrap3 %}
 {% load static %}
 {% block scripts %}
+    {% if related_contact_logs %}
+        {% for i in related_contact_logs %}
+            <meta class="related-cl" content="{{ i }}">
+        {% endfor %}
+    {% endif %}
     <script type="text/javascript">
         $(document).ready(function() {
+
+            // Fill in related contact logs, if there are any
+            $(".related-cl").each(function(index, val)
+            {
+                console.log($(val).attr("content"));
+                $("#id_related_contact_logs.select2-selection__rendered").append('<li class="select2-selection__choice" title="Martha Smith"><span class="select2-selection__choice__remove" role="presentation">×</span>Martha Smith</li>');
+            });
+
+
+
             $("#id_department").hide();
             $("label[for='id_department']").hide();
 
@@ -18,7 +33,7 @@
                 {
                     return {
                         q: params.term, //The term to be sent
-                        offset: (params.page ) * 10 //Which page of the REST page will be loaded
+                        offset: (params.page) * 10 //Which page of the REST page will be loaded
                     }
                 },
                 processResults: function (data, params) {
@@ -137,14 +152,13 @@
                     {
                         return {
                             q: params.term, //The term to be sent
-                            offset: (params.page) * 10
-
+                            offset: ((params.page || 1) * 10) - 10
                         }
                     },
                     processResults: function (data, params) {
                         // An array for storing all the results in
                         logResults = [];
-                        console.log(params)
+{#                        console.log(params);#}
                         // Loop through results, putting IDs and descriptions in the logResults arrays
                         for(var i = 0; i < data.results.length; i++)
                         {
