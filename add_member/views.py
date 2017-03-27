@@ -17,7 +17,7 @@ import json
 import gc
 from django.core.exceptions import ValidationError
 from spfa_mt import settings
-# from rest_framework.parsers import FileUploadParser
+from rest_framework.parsers import FileUploadParser
 
 # view responsible for the member creation
 class PersonCreate(CreateView):
@@ -50,11 +50,10 @@ class MemberSearchView(HaystackViewSet):
     filter_backends = [HaystackAutocompleteFilter]
 
 
-class FileListCreateView(generics.ListCreateAPIView):
+class FileListCreateView(generics.CreateAPIView):
     """
         View that's responsible for accepting a file and writing it into the database
     """
-
     queryset = PersonFile.objects.all()
     serializer_class = MemberFileSerializer
     # parser_classes = (FileUploadParser,)
@@ -70,10 +69,6 @@ class FileListCreateView(generics.ListCreateAPIView):
             raise FileTooLarge
         return super(FileListCreateView, self).post(request, *args, **kwargs)
 
-    def put(self, request, filename, format=None):
-        file_obj = request.data['file']
-
-        return Response(status=204)
 
 
 class MemberFileUploadView(TemplateView):
@@ -114,17 +109,17 @@ def json_to_members(request, *args, **kwargs):
         for member in json_repr:
             serializer = MemberSerializer(data=member)
             if not serializer.is_valid():
-                print(serializer.errors)
                 raise AssertionError('The excel sheet contains invalid fields. '
                                      'Please check the sheet and upload it again')
-            gc.collect()
 
         for member in json_repr:
-            serializer = MemberSerializer(data=member)
-            print(serializer)
-            serializer.is_valid()
-            serializer.save()
+            serializer_t = MemberSerializer(data=member)
+            serializer_t.is_valid()
+            serializer_t.save()
+
     except AssertionError as e:
+        return Response({'Error': str(e)}, status.HTTP_406_NOT_ACCEPTABLE)
+    except TypeError as e:
         return Response({'Error': str(e)}, status.HTTP_406_NOT_ACCEPTABLE)
     except ValidationError as e:
         return Response({'Error': str(e)}, status.HTTP_400_BAD_REQUEST)

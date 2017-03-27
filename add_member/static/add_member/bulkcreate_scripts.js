@@ -20,7 +20,7 @@ var BulkCreate = {
         xhr = new XMLHttpRequest();
         upload_button = document.getElementById('upload_button');
         fileSelect = document.getElementById("file-select");
-        stop_upload = document.getElementById("stop_upload");
+        // stop_upload = document.getElementById("stop_upload");
         confirm_button_y = $('#submit_json_y');
         confirm_button_n = $('#submit_json_n');
         json_members = undefined;
@@ -28,7 +28,7 @@ var BulkCreate = {
         url_upload = url_file_endpoint;
         url_xlsx_json = url_xlsx_to_json;
         json_to_members = json_to_members_in;
-       $('#confirmation').hide();
+         $('#confirmation').hide();
         BulkCreate.bindEvents();
     },
 
@@ -44,13 +44,13 @@ var BulkCreate = {
         });
 
         confirm_button_y.click(function(e){
-            e.preventDefault() ;
-            xhr.open('POST', json_to_members , true);
+            e.preventDefault();
+            xhr.open('POST', json_to_members , false);
             xhr.setRequestHeader("Content-Type", "application/json");
             // Set up a handler for when the request finishes.
             xhr.onload = function () {
                 //JSON sent
-              if (xhr.status === 200) {
+              if (xhr.status !== 500) {
                 var json_response = JSON.parse(this.responseText);
                 $("#success").show();
                 $("#success").html('<h3>Successfully created' + json_response.count + ' members </h3> ');
@@ -63,10 +63,6 @@ var BulkCreate = {
             };
             xhr.send( JSON.stringify({pk: pk_to_file} ));
         });
-        stop_upload.addEventListener('click', function(){
-            xhr.abort();
-        });
-
         upload_button.addEventListener('click', function(event){
             event.preventDefault() ;
             var files = fileSelect.files;
@@ -135,7 +131,7 @@ var BulkCreate = {
         });
         list_members.append(tbody);
         $('#confirmation').show();
-        BulkCreate.bindEvents();
+        // BulkCreate.bindEvents();
     }
 
 };

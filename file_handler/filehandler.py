@@ -45,8 +45,8 @@ class UploadValidator(TemporaryFileUploadHandler):
     def handle_raw_input(self, input_data, META, content_length, boundary, encoding=None):
         super(UploadValidator, self).handle_raw_input(input_data, META, content_length, boundary, encoding=None)
         self.total_size = content_length
-        if self.total_size > MAX_FILE_SIZE:
-            raise FileTooLarge
+        # if self.total_size > MAX_FILE_SIZE:
+        #     raise FileTooLarge
 
     """
     Method: new_file

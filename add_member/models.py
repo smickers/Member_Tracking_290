@@ -47,8 +47,8 @@ class PersonBase(models.Model):
     lastName = models.CharField(max_length=30, validators=[validate_rightstringlen30])
     # jobType = models.CharField(max_length=30, choices=POSITION_CLASS_CHOICE)  # TODO:  Accepts Employee Class Long Description
     jobType = models.CharField(max_length=50)
-    membershipStatus = models.CharField(max_length=30, choices=MEMBERSHIP_STATUS, null=True)
-    hireDate = models.DateField(null=True)  # TODO: change to current hire date
+    membershipStatus = models.CharField(max_length=30, choices=MEMBERSHIP_STATUS, null=True, blank=True)
+    hireDate = models.DateField( null=True, blank=True)  # TODO: change to current hire date
 
     class Meta:
         abstract = True

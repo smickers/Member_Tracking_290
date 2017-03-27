@@ -55,7 +55,6 @@ def convert_excel_json(content):
                 while a <= 4 and valid is True:  # checks to see if the first four row is not empty
                     valid = row_temp[a] != ''
                     a += 1
-
                 temp2 = {}
                 if valid:  # If the row is valid
                     for z in range(0, len(temp), 1):  # loop each column of the row
@@ -80,4 +79,5 @@ def convert_excel_json(content):
                     all_dict.append(temp2)
     except BadZipfile:
         raise ValidationError("The file uploaded is not a valid excel file.")
+
     return all_dict
