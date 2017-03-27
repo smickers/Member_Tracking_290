@@ -45,7 +45,7 @@ class ContactLogFilter(filters.FilterSet):
     member__middleName = filters.CharFilter(name='member__middleName', lookup_expr='icontains')
     relatedCase_filter = filters.ModelChoiceFilter(name='relatedCase', method='filter_contact_logs_related_cases', queryset=contactLog.objects.all())
     # relatedCase_filter = filters.AllValuesFilter(name='relatedCase__id', lookup_expr='isnull')
-    # case = filters.CharFilter(name='relatedCase__id')
+    # case = filters.CharFilter(name='relatedCase__id') 
 
     # Function:
     def filter_contact_logs_related_cases(self, queryset, name, value):
