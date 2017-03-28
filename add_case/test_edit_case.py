@@ -1,9 +1,5 @@
 from django.test import TestCase
-from django.db import IntegrityError
-from django.core.exceptions import ValidationError
 from add_case.models import *
-from django.db import DataError
-import datetime
 from add_member.models import Person
 
 # Name: CaseEditTest

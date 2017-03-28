@@ -7,6 +7,7 @@ from serializer import CaseSearchSerializer
 from drf_haystack.filters import HaystackAutocompleteFilter
 from grievance_award_creation.models import GrievanceAward
 from django.core.exceptions import ObjectDoesNotExist
+from contact_log.models import contactLog
 import rest_framework_filters as filters
 
 
@@ -27,7 +28,19 @@ class CaseSearchView(HaystackViewSet):
 
 class UpdateCaseView(UpdateView):
     model = Case
+    template_name = 'add_case/case_form.html'
+    context_object_name = 'case'
     form_class = CaseForm
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateCaseView, self).get_context_data(**kwargs)
+        try:
+            # context['related_contact_logs'] = contactLog.objects.get(relatedCase__pk=self.kwargs['pk'])
+            context['related_contact_logs'] = contactLog.objects.all().filter(relatedCase__pk=self.kwargs['pk'])
+        except ObjectDoesNotExist:
+            pass
+
+        return context
 
 
 # view for displaying individual member info
