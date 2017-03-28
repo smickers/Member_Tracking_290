@@ -167,7 +167,7 @@ class FilterGrievanceAwards(TestCase):
 
     # Test that you can filter on an Award Date Range
     def test_award_date_range(self):
-        response = self.client.get('/api-root/grievance_award/filter/', {'min_date': '2015-12-01', 'max_date': '2017-12-01'})
+        response = self.client.get('/api-root/grievance_award/filter/', {'limit': 3, 'min_date': '2015-12-01', 'max_date': '2017-12-01'})
         self.assertEqual(response.json()['count'], 3)
         self.assertEqual(response.json()['results'][0]['id'], self.ga1.id)
         self.assertEqual(response.json()['results'][1]['id'], self.ga2.id)
@@ -181,9 +181,7 @@ class FilterGrievanceAwards(TestCase):
 
     # Test that you can filter with an Empty Filter
     def test_empty_filter(self):
-        response = self.client.get('/api-root/grievance_award/filter/')
-        print(response.json()['count'])
-        print(response.json()['results'])
+        response = self.client.get('/api-root/grievance_award/filter/?limit=3')
         self.assertEqual(response.json()['count'], 3)
         self.assertEqual(response.json()['results'][0]['id'], self.ga1.id)
         self.assertEqual(response.json()['results'][1]['id'], self.ga2.id)
