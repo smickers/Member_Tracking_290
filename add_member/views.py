@@ -5,23 +5,22 @@ from .forms import PersonForm, MemberFilterForm
 from drf_haystack.viewsets import HaystackViewSet
 from .serializer import MemberSearchSerializer, MemberFileSerializer, MemberSerializer, MemberFilterSerializer
 from drf_haystack.filters import HaystackAutocompleteFilter
-from rest_framework import decorators
+from rest_framework import decorators, viewsets, generics, status
 from spfa_mt.settings import MAX_FILE_SIZE
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
-from rest_framework import generics, status
+from rest_framework.pagination import LimitOffsetPagination
 from excel_to_json import convert_excel_json
 from exceptions import ValueError
 import json
-from django.core.exceptions import ValidationError
-from rest_framework import viewsets
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 import rest_framework_filters as filters
 from contact_log.models import contactLog
 from spfa_mt import settings
 from wsgiref.util import FileWrapper
 from mimetypes import MimeTypes
 from django.http import HttpResponse
-from django.core.exceptions import ObjectDoesNotExist
+
 
 # view responsible for the member creation
 class PersonCreate(CreateView):
@@ -103,7 +102,8 @@ def excel_to_json(request, *args, **kwargs):
     """
         Function-based view responsible for calling the function that converts the excel content to json.
         @:return JSON response that includes the following key/value pairs
-                    * count: count of the member info found in the excel sheet
+                    * count: count of the
+                     member info found in the excel sheet
                     * Result: Array of key/val pair that contains each member info found in the excel sheet.
     """
     try:
@@ -205,13 +205,18 @@ class MemberFilter(filters.FilterSet):
         }
 
 
-#class FilterOffsetClass(LimitOffsetPagination):
+class FilterOffsetClass(LimitOffsetPagination):
     """
     This is our offset. It overwrites what we have in the settings page.
     """
-    # default_limit = Person.objects.count()
-    # limit_query_param = 'limit'
-    # offset_query_param = 'offset'
+    try:
+        default_limit = Person.objects.count()
+        limit_query_param = 'limit'
+        offset_query_param = 'offset'
+    except Exception as e:
+        default_limit = 30
+        limit_query_param = 'limit'
+        offset_query_param = 'offset'
 
 
 class MemberFilterView(viewsets.ReadOnlyModelViewSet):
