@@ -49,7 +49,7 @@
     <button class="btn btn-primary" onclick="applyFilter()">Filter</button>
 
     <h2>List of Grievance Awards</h2>
-    <table border="1" id="grievance-award-table-data" class="table table-bordered" style="width:50%;">
+    <table border="1" class="table table-bordered" style="width:50%;">
         <thead style="text-align:center;">
             <th style="text-align:center;">ID</th>
             <th>Award Amount</th>
@@ -57,7 +57,7 @@
             <th>Description</th>
             <th colspan="2" style="text-align:center;">Action</th>
         </thead>
-        <tbody>
+        <tbody id="grievance-award-table-data">
          <tr><a href="{% url 'add_case:case_list' %}">Add a Grievance Award for a Case</a></tr>
         {% for grievance in object_list %}
 

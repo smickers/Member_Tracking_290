@@ -95,7 +95,7 @@ class FilterOffsetClass(LimitOffsetPagination):
     This is our offset. It overwrites what we have in the settings page.
     """
     try:
-        default_limit = Person.objects.count()
+        default_limit = Person.objects.all().count()
         limit_query_param = 'limit'
         offset_query_param = 'offset'
     except:

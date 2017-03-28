@@ -6,7 +6,11 @@ from django.test import LiveServerTestCase
 
 class FilterGrievanceAwards(TestCase):
     client = Client()
+    ga1 = GrievanceAward()
+    ga2 = GrievanceAward()
+    ga3 = GrievanceAward()
     def setUp(self):
+        GrievanceAward.objects.all().delete()
         # Set up a program
         self.program = CasePrograms()
         self.program.name = "Computer Systems Technology - Diploma"
@@ -15,7 +19,7 @@ class FilterGrievanceAwards(TestCase):
 
         # Set up a Member for testing
         self.tempPerson1 = Person()
-        self.tempPerson1.memberID = 1
+        self.tempPerson1.memberID = 689054
         self.tempPerson1.firstName = 'First'
         self.tempPerson1.middleName = 'Middle'
         self.tempPerson1.lastName = 'Last'
@@ -40,7 +44,7 @@ class FilterGrievanceAwards(TestCase):
         self.tempPerson1.save()
 
         self.tempPerson2 = Person()
-        self.tempPerson2.memberID = 1
+        self.tempPerson2.memberID = 99999
         self.tempPerson2.firstName = 'Last'
         self.tempPerson2.middleName = 'Middle'
         self.tempPerson2.lastName = 'First'
@@ -107,7 +111,6 @@ class FilterGrievanceAwards(TestCase):
         self.tempCase3.save()
 
         # Set up a grievence award to be edited
-        self.ga1 = GrievanceAward()
         self.ga1.case = self.tempCase1
         self.ga1.awardAmount = 2500.00
         self.ga1.description = "Test"
@@ -115,7 +118,6 @@ class FilterGrievanceAwards(TestCase):
         self.ga1.full_clean()
         self.ga1.save()
 
-        self.ga2 = GrievanceAward()
         self.ga2.case = self.tempCase2
         self.ga2.awardAmount = 50.00
         self.ga2.description = ""
@@ -123,7 +125,6 @@ class FilterGrievanceAwards(TestCase):
         self.ga2.full_clean()
         self.ga2.save()
 
-        self.ga3 = GrievanceAward()
         self.ga3.case = self.tempCase3
         self.ga3.awardAmount = 500.00
         self.ga3.description = "Rest"
@@ -181,6 +182,8 @@ class FilterGrievanceAwards(TestCase):
     # Test that you can filter with an Empty Filter
     def test_empty_filter(self):
         response = self.client.get('/api-root/grievance_award/filter/')
+        print(response.json()['count'])
+        print(response.json()['results'])
         self.assertEqual(response.json()['count'], 3)
         self.assertEqual(response.json()['results'][0]['id'], self.ga1.id)
         self.assertEqual(response.json()['results'][1]['id'], self.ga2.id)

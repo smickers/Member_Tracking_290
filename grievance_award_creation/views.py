@@ -115,12 +115,9 @@ class FilterOffsetClass(LimitOffsetPagination):
     This is our offset. It overwrites what we have in the settings page.
     """
     try:
-        default_limit = GrievanceAward.objects.count()
-        limit_query_param = 'limit'
-        offset_query_param = 'offset'
+        default_limit = GrievanceAward.objects.all().count()
     except Exception as e:
-        pass
-
+        default_limit = 100
 
 class GrievanceAwardFilterView(viewsets.ReadOnlyModelViewSet):
     """
