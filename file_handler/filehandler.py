@@ -11,6 +11,8 @@ This class handles validating uploads for the entire website
 TemporaryFileUploadHandler is a class used by Django and can overwritten to define custom handlers
 File extensions and the max size of a file are included in the settings
 """
+
+
 class UploadValidator(TemporaryFileUploadHandler):
     """
     Method: init

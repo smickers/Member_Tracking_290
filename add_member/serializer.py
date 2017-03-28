@@ -41,3 +41,13 @@ class MemberSerializer(serializers.ModelSerializer):
         instance = Person(**attrs)
         instance.clean()
         return attrs
+
+
+
+class MemberFilterSerializer(serializers.ModelSerializer):
+    """
+    Serializes our member/person with all fields.
+    """
+    class Meta:
+        model = Person
+        fields = '__all__'

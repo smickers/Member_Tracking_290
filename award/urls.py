@@ -20,5 +20,5 @@ urlpatterns = [
     # List page url record
     url(r'^pd/list/$', views.PDAwardList.as_view(), name='award_pd_list'),
     # PD Award Detail view
-    url(r'^/pd/detail/(?P<pk>[-\w]+)/$', views.PDAwardDetail.as_view(), name='award_pd_detail'),
+    url(r'^pd/detail/(?P<pk>[-\w]+)/$', views.PDAwardDetail.as_view(), name='award_pd_detail'),
 ]

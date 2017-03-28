@@ -13,7 +13,7 @@ from django.core.files import File
 # Purpose: This class is used to build up a form, that
 # can be used to enter a new contact log
 class ContactLogForm(ModelForm):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, mid=None, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
         self.fields['file_field'] = FileField(required=False,
                                               widget=ClearableFileInput(

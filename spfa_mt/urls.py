@@ -3,11 +3,13 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework import routers
-from add_member.views import MemberSearchView
+from add_member.views import MemberSearchView, MemberFilterView
 from django.conf.urls.static import static
 import settings
 from add_case.views import CaseSearchView
 from add_com.views import CommitteeSearchView
+from contact_log.views import ContactLogViewSet
+#from contact_log.views import ContactLogSearchView
 from . import views
 
 # initialize rest framework's router
@@ -21,6 +23,11 @@ router.register('case_list/search', CaseSearchView, base_name='case-search')
 
 # route the committee search functionality to 'meeting/view' url
 router.register('committee_list/search', CommitteeSearchView, base_name='committee-search')
+
+router.register('member/filter', MemberFilterView, base_name='member-filter')
+#router.register('contact_log/search', ContactLogSearchView, base_name='contact-log-search')
+#router.register(r'contact_log/search', ContactLogViewSet, base_name='contact_log')
+router.register('contact_log/search', ContactLogViewSet)
 
 
 urlpatterns = [
@@ -38,5 +45,5 @@ urlpatterns = [
     url(r'^award/', include('award.urls')),
     url(r'^grievance/', include('grievance_award_creation.urls')),
     url(r'^add_event/', include('create_event.urls')),
-    url(r'^add_com/', include('add_com.urls'))
+    url(r'^add_com/', include('add_com.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

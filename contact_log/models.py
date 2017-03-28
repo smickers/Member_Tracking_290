@@ -7,6 +7,7 @@ from datetime import date
 from django.db import models
 from spfa_mt import kvp, settings
 from django.core.exceptions import ValidationError
+from django.forms.models import model_to_dict
 
 # Contact Log Class
 # Purpose: This class will hold a contact log, and

@@ -83,6 +83,7 @@ class Person(PersonBase):
     position = models.CharField(blank=True, null=True, max_length=50)
     employeeStatus = models.CharField(blank=True, null=True, choices=PersonBase.EMPLOYEE_STATUS, max_length=1)
 
+    # when model gets updated, user will be routed to the member_detail url
     class Meta:
         # docs: https://docs.djangoproject.com/en/1.10/ref/models/options/#unique-together
         unique_together = ("firstName", "lastName", "campus")
@@ -107,3 +108,51 @@ class PersonFile(models.Model):
     description = models.CharField(max_length=50, blank=True, null=True)
 
     # TODO: Add department field
+    # FUNCTION:     containsFile
+    # PURPOSE:      Returns true or false, based on whether or not a file is associated with this member
+    # RETURNS:      boolean value: true if a file is associated to this Member, false otherwise.
+    @property
+    def containsfile(self):
+        return MemberFiles.objects.filter(relatedMember=self.id).count() != 0
+
+    # FUNCTION:     get_files
+    # PURPOSE:      Returns all files associated to the relatedMember
+    # RETURNS:      the array of files associated to the relatedMember
+    @property
+    def get_files(self):
+        file_array = MemberFiles.objects.filter(relatedMember=self.id)
+        return file_array
+
+    # FUNCTION:     has_cl
+    # PURPOSE:      Returns a boolean, indicating if there are contact logs related to the current member.
+    # RETURNS:      True if there is more than one contact log related to the member; False otherwise.
+    @property
+    def has_cl(self):
+        return self.contact_log_contactlog_related != 0
+
+
+# Joining class for Members and their associated files:
+class MemberFiles(models.Model):
+    # Attributes
+    dateUploaded = models.DateTimeField(auto_now=True, blank=True, null=True)
+    fileName = models.FileField(upload_to='members/', blank=True, null=True, validators=[validate_file_ext])
+    relatedMember = models.ForeignKey(Person, blank=True, null=True)
+    fileDesc = models.CharField(max_length=50, blank=True, null=True)
+
+    # FUNCTION:     clean()
+    # PURPOSE:      Override the existing clean method, in order to perform some file validation
+    def clean(self):
+        super(MemberFiles, self).clean()
+        if self.fileName.size > settings.MAX_FILE_SIZE:
+            raise ValidationError('Upload size limit exceeded exception')
+        if self.fileName.size == 0:
+            raise ValidationError('The submitted file is empty.')
+        if self.fileName.name.split(".")[-1] not in settings.FILE_EXT_TO_ACCEPT:
+            # Check if the uploaded file has a valid file extension
+            raise ValidationError("Invalid File Extension")
+
+    # FUNCTION:     __str__()
+    # PURPOSE:      Provide a readable name for the file we uploaded.
+    # RETURNS:      fileName, as a string.
+    def __str__(self):
+        return str(self.fileName.name)
