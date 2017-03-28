@@ -7,6 +7,7 @@ from serializer import CaseSearchSerializer
 from drf_haystack.filters import HaystackAutocompleteFilter
 from grievance_award_creation.models import GrievanceAward
 from django.core.exceptions import ObjectDoesNotExist
+import rest_framework_filters as filters
 
 
 class CaseCreate(CreateView):
@@ -49,3 +50,8 @@ class CaseDetail(DetailView):
 class CaseList(ListView):
     model = Case
     template_name = 'add_case/cases_list.html'
+
+
+# View to set up case filter options
+class CaseFilter(filters.FilterSet):
+    """"""
