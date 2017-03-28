@@ -1,8 +1,6 @@
 from .models import Person, PersonFile
-from .forms import PersonForm
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, FormMixin
-from .models import Person
 from .forms import PersonForm, MemberFilterForm
 from drf_haystack.viewsets import HaystackViewSet
 from .serializer import MemberSearchSerializer, MemberFileSerializer, MemberSerializer, MemberFilterSerializer
@@ -10,16 +8,12 @@ from drf_haystack.filters import HaystackAutocompleteFilter
 from rest_framework import decorators
 from spfa_mt.settings import MAX_FILE_SIZE
 from rest_framework.exceptions import APIException
-from django.db.models import ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework import generics, status
 from excel_to_json import convert_excel_json
 from exceptions import ValueError
 import json
-import gc
 from django.core.exceptions import ValidationError
-from spfa_mt import settings
-from rest_framework.parsers import FileUploadParser
 from rest_framework import viewsets
 import rest_framework_filters as filters
 from contact_log.models import contactLog
