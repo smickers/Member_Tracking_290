@@ -8,10 +8,12 @@ from drf_haystack.filters import HaystackAutocompleteFilter
 from rest_framework import viewsets
 import rest_framework_filters as filters
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
+from contact_log.models import contactLog
 from spfa_mt import settings
 from wsgiref.util import FileWrapper
 from mimetypes import MimeTypes
 from django.http import HttpResponse
+from django.core.exceptions import ObjectDoesNotExist
 
 # view responsible for the member creation
 class PersonCreate(CreateView):
@@ -36,6 +38,18 @@ class PersonDetail(DetailView):
     model = Person
     template_name = 'add_member/person_detail.html'
 
+    # FUNCTION: get_context_data()
+    # PURPOSE: Allows us to return data regarding contact logs related to the member we are currently viewing.
+    # PARAMS:  **kwargs -> argument to be passed to the filter. In this case, is is the current member's PK.
+    # RETURNS: Context in which the filtered items exist (readable terms: returns instances of contact logs that match
+    #           the filter).
+    def get_context_data(self, **kwargs):
+        context = super(PersonDetail, self).get_context_data(**kwargs)
+        try:
+            context['contact_log'] = contactLog.objects.filter(member=self.kwargs['pk'])
+        except ObjectDoesNotExist:
+            pass
+        return context
 
 class MemberSearchView(HaystackViewSet):
     """

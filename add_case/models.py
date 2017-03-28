@@ -52,7 +52,6 @@ class Case(models.Model):
     additionalMembers = models.ManyToManyField(Person, blank=True, )
     additionalNonMembers = models.TextField(blank=True, null=True)
     docs = models.TextField(blank=True, null=True)
-    logs = models.TextField(blank=True, null=True)
     date = models.DateField(blank=True, null=True, default=datetime.date.today, validators=[validate_date])
 
     # Default get_absolute_url method

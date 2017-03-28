@@ -2,8 +2,24 @@
 {% load bootstrap3 %}
 {% load static %}
 {% block scripts %}
+{#    {% if related_contact_logs %}#}
+{#        {% for i in related_contact_logs %}#}
+{#            <meta class="related-cl" content="{{ i }}">#}
+{#        {% endfor %}#}
+{#    {% endif %}#}
+
+    <!-- Need this select2 src above our javascript or contact logs won't prepopulate for editing a case-->
+    <script src="{% static 'spfa_mt/libraries/select2/select2.min.js' %}"></script>
+
     <script type="text/javascript">
         $(document).ready(function() {
+            {% if related_contact_logs %}
+                var logs = [];
+                {% for i in related_contact_logs %}
+                    logs.push("{{ i.pk }}");
+                {% endfor %}
+                $('#id_related_contact_logs').val(logs).trigger("change");
+            {% endif %}
             $("#id_department").hide();
             $("label[for='id_department']").hide();
 
@@ -18,7 +34,7 @@
                 {
                     return {
                         q: params.term, //The term to be sent
-                        offset: (params.page ) * 10 //Which page of the REST page will be loaded
+                        offset: (params.page) * 10 //Which page of the REST page will be loaded
                     }
                 },
                 processResults: function (data, params) {
@@ -48,6 +64,7 @@
                     }
                 },
                 processResults: function (data, params) {
+{#                    console.log(data.results);#}
                     return {
                         results: data.results,
                         pagination: {
@@ -123,11 +140,52 @@
                 // http://stackoverflow.com/questions/7375491/jquery-select-remove-option
                 $("#id_additionalMembers option").filter("[value='" + currComplainantID + "']").remove();
             });
+
+            // Setting up contact lookups for the select2 select box
+            var logs = $("#id_related_contact_logs");
+            var logResults = [];
+              logs.select2({
+                ajax: {
+                    //a list of all logs
+                    url: "/api-root/contact_log/search/?relatedCase_filter=1", //URL of the REST API for querying the members
+                    dataType: 'json',
+                    data: function(params)
+                    {
+                        return {
+                            q: params.term, //The term to be sent
+                            offset: ((params.page || 1) * 10) - 10
+                        }
+                    },
+                    processResults: function (data, params) {
+                        // An array for storing all the results in
+                        logResults = [];
+{#                        console.log(params);#}
+                        // Loop through results, putting IDs and descriptions in the logResults arrays
+                        for(var i = 0; i < data.results.length; i++)
+                        {
+                            var text = data.results[i].member.firstName + " " + data.results[i].member.lastName + " " + data.results[i].date  + " " + data.results[i].description;
+                            logResults.push({id:data.results[i].id, text:text});
+                        }
+
+                        return {
+                            // Now return our logResults as the result array
+                            results: logResults,
+                            pagination: {
+                                more: true //enables the pagination feature
+                            }
+
+                        }
+
+                   },
+                }
+              });
         });
+
+
  </script>
 
 
-<script src="{% static 'spfa_mt/libraries/select2/select2.min.js' %}"></script>
+
 {% endblock %}
 
 
@@ -147,6 +205,14 @@
 
             {% bootstrap_form form %}
 
+{#                {% if related_contact_logs %}#}
+{#                    <div class="form-group">#}
+{#                    <label class="control-label"><u>Currently Linked Contact Logs</u></label><br />#}
+{#                    {% for i in related_contact_logs %}#}
+{#                        {{ i.member }} - {{ i.description }} - {{ i.date }}<br />#}
+{#                    {% endfor %}#}
+{#                    </div>#}
+{#                {% endif %}#}
             {% buttons %}
                 <button id="cancel_upload">Cancel</button>
                 <input type="submit" class="btn btn-secondary" name="submit" value="Submit" style="width:15%;

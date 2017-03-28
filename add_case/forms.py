@@ -6,7 +6,7 @@ from .fields import ListTextWidget
 from spfa_mt import kvp
 from spfa_mt.settings import FILE_EXT_TO_ACCEPT_STR
 from django.core.files import File
-
+from contact_log.models import contactLog
 
 # Creating the Form data for Cases ...
 class CaseForm(ModelForm):
@@ -20,6 +20,9 @@ class CaseForm(ModelForm):
             attrs={'multiple': False, 'accept': FILE_EXT_TO_ACCEPT_STR}))
         self.fields['file_description'] = CharField(required=False, label='File Description',
                                                     widget=forms.TextInput(attrs={'type': '', 'size': '100%'}))
+        self.fields['related_contact_logs'] = ModelMultipleChoiceField(queryset=(contactLog.objects.all()), to_field_name="pk",label='logs', required=False,
+                                                   widget = forms.SelectMultiple(attrs={'class': 'js-logs', 'style': 'width:65%;'}))
+
 
     def save(self, commit=False):
         """
@@ -27,13 +30,14 @@ class CaseForm(ModelForm):
         Purpose: When grievance award is saved this method will be called to do some extra validation
         :param commit:
         :return: obj - Model Form
-        """
+        """ 
         try:
             obj = super(ModelForm, self).save()
         except ValidationError:
             return ValidationError
 
         # Files do not have to be uploaded, but if they are, save the file
+        #print(self.__dict__)
         if self.files != {}:
             f = self.files.getlist('file_field')[0]
             temp = File(file=f)
@@ -42,6 +46,27 @@ class CaseForm(ModelForm):
                                         description=desc)
             case_file.save()
 
+        # Unlink all the contact logs currently associated with this
+        # case (to allow for deletion)
+        # I'm running each of these individually so I can call the save()
+        # method to update each CL as we loop through them
+        for curr_cl in contactLog.objects.filter(relatedCase=obj):
+            curr_cl.relatedCase = None
+            curr_cl.save()
+
+
+        # Loop through all associated contact logs, and ensure
+        # that none of them are associated with a case already
+        # But there is the case the contact log already belongs
+        # to the current case, if so then pass.
+        for cl in self.cleaned_data['related_contact_logs']:
+            # If the CL has no related case, or the ID is the same as the current case,
+            # set the related case to this case
+            if cl.relatedCase is None or cl.relatedCase.id == self.instance.pk:
+                cl.relatedCase = (Case)(obj)
+                cl.save()
+            else:
+                raise ValidationError("Contact log is already related to a case!")
         return obj
 
     def clean(self):
@@ -95,7 +120,7 @@ class CaseForm(ModelForm):
             'additionalMembers': 'Additional SPFA Members',
             'additionalNonMembers': 'Additional Non-Members',
             'docs': 'Related Documents',
-            'logs': 'Logs',
+            # 'logs': 'Logs',
             'date': 'Date',
         }
 
@@ -107,7 +132,8 @@ class CaseForm(ModelForm):
                 attrs={'class': 'js-additional_members', 'style': 'width:65%'}),
              'program': forms.Select(
                 attrs={'style': 'width:50%;'}
-             )
+             ),
+
         }
 
         error_messages = {
