@@ -29,7 +29,7 @@ class UpdateCaseView(UpdateView):
     form_class = CaseForm
 
 
-#view for displaying individual member info
+# view for displaying individual member info
 class CaseDetail(DetailView):
     model = Case
     template_name = 'add_case/cases_detail.html'
@@ -44,7 +44,8 @@ class CaseDetail(DetailView):
 
         return context
 
-#view for listing all the members found in the db
+
+# view for listing all the members found in the db
 class CaseList(ListView):
     model = Case
     template_name = 'add_case/cases_list.html'

@@ -3,9 +3,126 @@
 {% block metadata %}
     <title>Person Detail</title>
 {% endblock %}
-
-
 {% block content %}
-    <h1>Name: {{ object.firstName }}</h1>
-    <p>SIN NUMBER: {{ object.socNum }}</p>
+    <div class="container">
+        <h1>Member Details for {{ object.firstName }} {{ object.lastName }}</h1>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Member Information</h3>
+            </div>
+            <div class="panel panel-body panel-group">
+                <div class="col-sm-4" id="gen">
+                    <p>
+                        Member ID: {{ object.memberID }} <br />
+                        Full Name: {{ object.firstName }} {{ object.middleName }} {{ object.lastName }}<br />
+                        Date of Birth: {{ object.bDay }}
+                    </p>
+                </div>
+                <div class="col-sm-4" id="address">
+                    City: {{ object.city }}<br />
+                    Address: {{ object.mailAddress }} <br />
+                    Address 2: {{ object.mailAddress2 }}<br />
+                    Postal Code: {{ object.pCode }}<br />
+                    Home Phone: {{ object.hPhone }}<br />
+                    Cell Phone: {{ object.cPhone }}<br />
+                    Email: {{ object.hEmail }}
+                </div>
+                <div class="col-sm-4" id="job">
+                    Campus of Employment: {{ object.campus }}<br />
+                    Position Class: {{ object.get_jobType_display }}<br />
+                    Department or Program: {{ object.programChoice }}<br />
+                    Hire Date: {{ object.hireDate }}<br />
+                </div>
+                <div class="panel panel-info col-sm-12" id="files" style="padding-left:0; padding-right:0;">
+                    <div href="#file_list" class="panel panel-heading col-sm-12" data-toggle="collapse">
+                        <h3 class="panel-title">Files Associated to {{ object.firstName }} {{ object.lastName }}:
+                            <span class="glyphicon glyphicon-chevron-down" style="float: right;"></span>
+                        </h3>
+                    </div>
+                    <div class="panel-body collapse" id="file_list">
+                        {% if object.containsfile %}
+                            <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr class="info">
+                                <th>File Name</th>
+                                <th>File Description</th>
+                                <th>Link to Download</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for fi in object.get_files %}
+                                    <tr>
+                                        <td>{{ fi.fileName }}</td>
+                                        <td>{{ fi.fileDesc }}</td>
+                                        <td style="text-align:center;">
+                                            <a href="download/{{ fi.fileName }}" download>[Download]</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            </table>
+                        {% elif not object.containsfile %}
+                            <p>No files associated.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="panel panel-info col-sm-12" id="cls" style="padding-left:0; padding-right:0;">
+                    <div href="#cl_list" class="panel panel-heading" data-toggle="collapse">
+                        <h3 class="panel-title">Contact Logs Associated to {{ object.firstName }} {{ object.lastName }}
+                        <span class="glyphicon glyphicon-chevron-down" style="float:right;"></span>
+                        </h3>
+                    </div>
+                    <div id="cl_list" class="panel panel-body collapse">
+                        {% if object.contactlog_set.count != 0 %}
+                            <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr class="info">
+                                <th>ID</th>
+                                <th>Related Member</th>
+                                <th>Date</th>
+                                <th class="col-md-4">Description</th>
+                                <th>Contact Code</th>
+                                <th>View</th>
+                                <th>Edit</th>
+                            </tr>
+                            </thead>
+                            <tbody id="contact-log-table-data">
+                                {% for cl in object.contactlog_set.all %}
+                                    <tr>
+                                        <td>{{ cl.pk }}</td>
+                                        <td>{{ cl.member }}</td>
+                                        <td>{{ cl.date }}</td>
+                                        <td>{{ cl.description }}</td>
+                                        <td> {{  cl.get_contactCode_display }}</td>
+                                        <td><a href="{% url 'contact_log_creation:details' cl.pk %}">[View]</a></td>
+                                        <td>
+                                            <a href="{% url 'contact_log_creation:contact_log_edit' cl.pk %}">[Edit]</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                            <p>No contact logs associated to {{ object.firstName }} {{ object.lastName }}.</p>
+                        {% endif %}
+                        <br />
+                        <div style="text-align:center;">
+                            <a href="{% url 'contact_log_creation:contact_log_add_direct' object.pk %}">
+                                Create New Contact Log
+                            </a> |
+                            <a href="{% url 'contact_log_creation:contact_log_list_default' %}">
+                                View List of Contact Logs
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="text-align:center;">
+        <a href="{% url 'add_member:member_update' object.id %}">Edit this Member</a> |
+        <a href="{% url 'add_member:member_add' %}">Add New Member</a> |
+        <a href="{% url 'add_member:member_list' %}">View All Members</a>
+    </div>
+
 {% endblock %}

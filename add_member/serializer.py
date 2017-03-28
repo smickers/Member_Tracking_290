@@ -3,6 +3,8 @@ from add_member.search_indexes import MembersIndex
 from rest_framework import serializers
 from add_member.models import PersonFile, Person
 
+from rest_framework import serializers
+from models import Person
 
 class MemberSearchSerializer(HaystackSerializer):
     """
@@ -41,3 +43,13 @@ class MemberSerializer(serializers.ModelSerializer):
         instance = Person(**attrs)
         instance.clean()
         return attrs
+
+
+
+class MemberFilterSerializer(serializers.ModelSerializer):
+    """
+    Serializes our member/person with all fields.
+    """
+    class Meta:
+        model = Person
+        fields = '__all__'
