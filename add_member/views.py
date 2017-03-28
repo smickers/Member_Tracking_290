@@ -1,5 +1,3 @@
-from django.views.generic import ListView, DetailView, TemplateView
-from django.views.generic.edit import CreateView, UpdateView
 from .models import Person, PersonFile
 from .forms import PersonForm
 from django.views.generic import ListView, DetailView, TemplateView
@@ -7,7 +5,7 @@ from django.views.generic.edit import CreateView, UpdateView, FormMixin
 from .models import Person
 from .forms import PersonForm, MemberFilterForm
 from drf_haystack.viewsets import HaystackViewSet
-from .serializer import MemberSearchSerializer, MemberFileSerializer, MemberSerializer
+from .serializer import MemberSearchSerializer, MemberFileSerializer, MemberSerializer, MemberFilterSerializer
 from drf_haystack.filters import HaystackAutocompleteFilter
 from rest_framework import decorators
 from spfa_mt.settings import MAX_FILE_SIZE

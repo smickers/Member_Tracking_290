@@ -9,7 +9,6 @@ from .validators import *
 class PersonBase(models.Model):
 
     #bound fields choices for gender field
->>>>>>>>> Temporary merge branch 2
     GENDER_CHOICE = [
         ('MALE', 'Male'),
         ('FEMALE', 'Female'),
@@ -89,10 +88,9 @@ class Person(PersonBase):
         unique_together = ("firstName", "lastName", "campus")
 
 
-<<<<<<<<< Temporary merge branch 1
+
     # when model gets updated, user will be routed to the member_detail url
-=========
->>>>>>>>> Temporary merge branch 2
+
     def get_absolute_url(self):
         return reverse(viewname='add_member:member_detail', kwargs={'pk':self.pk})
 
