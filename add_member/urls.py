@@ -15,12 +15,8 @@ urlpatterns = [
     url(r'^update/(?P<pk>[-\w]+)/$', views.PersonUpdate.as_view(), name='member_update'),
     url(r'^filter/$', views.MemberFilterList.as_view(), name='member_filter'),
     url(r'^(?P<pk>[-\w]+)/$', views.PersonDetail.as_view(), name='member_detail'),
-    #url(r'^(?P<pk>[-\w]+)/$', views.PersonDetail.as_view(), name='member_detail'),
-    #url(r'^media/(?P<path>.*)$', views.static.serve.as_view(),{'document_root': settings.MEDIA_ROOT}),
     url(r'download/(?P<file_name>.+)$', views.download, name='member_file_download')
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-# if settings.DEBUG:
-#      urlpatterns += ('', (r'^media/(?P<path>.*)$', 'django.views.static.serve',
-#                                  {'document_root': settings.MEDIA_ROOT}))
+
 

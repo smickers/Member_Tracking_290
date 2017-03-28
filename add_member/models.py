@@ -83,9 +83,9 @@ class Person(PersonBase):
     position = models.CharField(blank=True, null=True, max_length=50)
     employeeStatus = models.CharField(blank=True, null=True, choices=PersonBase.EMPLOYEE_STATUS, max_length=1)
 
-    class Meta:
-        # docs: https://docs.djangoproject.com/en/1.10/ref/models/options/#unique-together
-        unique_together = ("firstName", "lastName", "campus")
+    # class Meta:
+    #     # docs: https://docs.djangoproject.com/en/1.10/ref/models/options/#unique-together
+    #     unique_together = ("firstName", "lastName", "campus")
 
 
 

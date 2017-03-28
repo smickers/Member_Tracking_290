@@ -8,6 +8,7 @@ from spfa_mt import settings
 from django.core.files import File
 from rest_framework.test import APIClient
 import json
+from django.urls import resolve
 
 
 
@@ -20,6 +21,7 @@ class PersonUploadTestCase(TestCase):
         self.factory = APIRequestFactory()
         self.CONST_FILE_PATH = settings.STATIC_ROOT + 'add_member/%s'
         self.test_xlsx = self.CONST_FILE_PATH % 'member_upload.xlsx'
+        self.invalid_test_xlsx = self.CONST_FILE_PATH % 'not_valid.xlsx'
         self.invalid_file = self.CONST_FILE_PATH % 'member_upload_invalid_file.jpeg'
         self.path_largefile = self.CONST_FILE_PATH % 'dummylarge.xlsx'
         self.path_emptyfile = self.CONST_FILE_PATH \
@@ -116,7 +118,7 @@ class PersonUploadTestCase(TestCase):
         f_request = factory.post(reverse('add_member:excel-upload'), {'file': very_large})
         self.assertEqual( json.loads(f_request.content), {'detail': 'The file exceeded the file size limit. Please upload a smaller file'} )
 
-    #
+
     # '''
     # Name:       test_members_are_created_if_non_required_fields_are_missing_in_file
     # Function:   Test members are created and inputted into database if excel file has missing member info
@@ -131,7 +133,22 @@ class PersonUploadTestCase(TestCase):
             5. Verify if the json response can be represented as a table.
             6. Check to see if the list of members included witht he xlsx file now exists on the DB
         """
-        pass
+
+        fp = open(self.invalid_test_xlsx, "rb")
+        xlsx_file = File(fp)
+
+        factory = APIClient()
+
+        f_request = factory.post(reverse('add_member:excel-upload'), {'file': xlsx_file})
+
+        f_request_2 = factory.post('/addmember/exceltojson/',{'pk': f_request.data['id']} )
+
+
+        # print(f_request_2.data)
+        print(f_request_2)
+
+
+
     #
     # '''
     # Name:       test_members_are_not_created_if_file_is_invalid_format

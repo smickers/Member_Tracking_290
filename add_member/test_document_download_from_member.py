@@ -12,7 +12,7 @@ import os.path
 import shutil
 
 
-@override_settings(MEDIA_ROOT='test/')
+@override_settings(MEDIA_ROOT='media/')
 class DocumentDownloadTestCase(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
