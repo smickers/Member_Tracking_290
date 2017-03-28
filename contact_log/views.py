@@ -18,6 +18,13 @@ class ContactLogCreate(CreateView):
     model = contactLog
     form_class = ContactLogForm
 
+    def get_initial(self):
+        initials = super(ContactLogCreate, self).get_initial()
+        if self.kwargs:
+            initials['member'] = self.kwargs['pk']
+        return initials
+
+
 
 class ContactLogEdit(UpdateView):
     model = contactLog

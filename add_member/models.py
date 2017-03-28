@@ -88,6 +88,13 @@ class Person(models.Model):
         file_array = MemberFiles.objects.filter(relatedMember=self.id)
         return file_array
 
+    # FUNCTION:     has_cl
+    # PURPOSE:      Returns a boolean, indicating if there are contact logs related to the current member.
+    # RETURNS:      True if there is more than one contact log related to the member; False otherwise.
+    @property
+    def has_cl(self):
+        return self.contact_log_contactlog_related != 0
+
 
 # Joining class for Members and their associated files:
 class MemberFiles(models.Model):
