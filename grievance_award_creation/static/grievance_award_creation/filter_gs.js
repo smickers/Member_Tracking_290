@@ -99,14 +99,14 @@ function applyFilter()
             else if ($("#field-choice-" + i).val() === "description")
             {
                 console.log($("#field-value-" + i).val());
-                if($("#field-value-" + i).val() != null)
+                if($("#field-value-" + i).val() == "")
                 {
                     request_url += "empty_desc_filter=True";
                     curr_records = runQuery(request_url);
                 }
                 else
                 {
-                    request_url += "description__contains=" + $("#field-value" + i).val();
+                    request_url += "description__icontains=" + $("#field-value-" + i).val();
                     curr_records = runQuery(request_url);
                 }
                 console.log(request_url);
