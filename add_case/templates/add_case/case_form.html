@@ -2,14 +2,24 @@
 {% load bootstrap3 %}
 {% load static %}
 {% block scripts %}
-    {% if related_contact_logs %}
-        {% for i in related_contact_logs %}
-            <meta class="related-cl" content="{{ i }}">
-        {% endfor %}
-    {% endif %}
+{#    {% if related_contact_logs %}#}
+{#        {% for i in related_contact_logs %}#}
+{#            <meta class="related-cl" content="{{ i }}">#}
+{#        {% endfor %}#}
+{#    {% endif %}#}
+
+    <!-- Need this select2 src above our javascript or contact logs won't prepopulate for editing a case-->
+    <script src="{% static 'spfa_mt/libraries/select2/select2.min.js' %}"></script>
+
     <script type="text/javascript">
         $(document).ready(function() {
-
+            {% if related_contact_logs %}
+                var logs = [];
+                {% for i in related_contact_logs %}
+                    logs.push("{{ i.pk }}");
+                {% endfor %}
+                $('#id_related_contact_logs').val(logs).trigger("change");
+            {% endif %}
             $("#id_department").hide();
             $("label[for='id_department']").hide();
 
@@ -175,7 +185,7 @@
  </script>
 
 
-<script src="{% static 'spfa_mt/libraries/select2/select2.min.js' %}"></script>
+
 {% endblock %}
 
 
@@ -195,14 +205,14 @@
 
             {% bootstrap_form form %}
 
-                {% if related_contact_logs %}
-                    <div class="form-group">
-                    <label class="control-label"><u>Currently Linked Contact Logs</u></label><br />
-                    {% for i in related_contact_logs %}
-                        {{ i.member }} - {{ i.description }} - {{ i.date }}<br />
-                    {% endfor %}
-                    </div>
-                {% endif %}
+{#                {% if related_contact_logs %}#}
+{#                    <div class="form-group">#}
+{#                    <label class="control-label"><u>Currently Linked Contact Logs</u></label><br />#}
+{#                    {% for i in related_contact_logs %}#}
+{#                        {{ i.member }} - {{ i.description }} - {{ i.date }}<br />#}
+{#                    {% endfor %}#}
+{#                    </div>#}
+{#                {% endif %}#}
             {% buttons %}
                 <button id="cancel_upload">Cancel</button>
                 <input type="submit" class="btn btn-secondary" name="submit" value="Submit" style="width:15%;

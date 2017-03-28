@@ -48,15 +48,16 @@ class CaseForm(ModelForm):
 
         # Loop through all associated contact logs, and ensure
         # that none of them are associated with a case already
+        # But there is the case the contact log already belongs
+        # to the current case, if so then pass.
         for cl in self.cleaned_data['related_contact_logs']:
-
             if cl.relatedCase is None:
                 cl.relatedCase = (Case)(obj)
                 cl.save()
+            elif cl.relatedCase.id == self.instance.pk:
+                pass
             else:
                 raise ValidationError("Contact log is already related to a case!")
-
-
         return obj
 
     def clean(self):
