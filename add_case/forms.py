@@ -46,16 +46,25 @@ class CaseForm(ModelForm):
                                         description=desc)
             case_file.save()
 
+        # Unlink all the contact logs currently associated with this
+        # case (to allow for deletion)
+        # I'm running each of these individually so I can call the save()
+        # method to update each CL as we loop through them
+        for curr_cl in contactLog.objects.filter(relatedCase=obj):
+            curr_cl.relatedCase = None
+            curr_cl.save()
+
+
         # Loop through all associated contact logs, and ensure
         # that none of them are associated with a case already
         # But there is the case the contact log already belongs
         # to the current case, if so then pass.
         for cl in self.cleaned_data['related_contact_logs']:
-            if cl.relatedCase is None:
+            # If the CL has no related case, or the ID is the same as the current case,
+            # set the related case to this case
+            if cl.relatedCase is None or cl.relatedCase.id == self.instance.pk:
                 cl.relatedCase = (Case)(obj)
                 cl.save()
-            elif cl.relatedCase.id == self.instance.pk:
-                pass
             else:
                 raise ValidationError("Contact log is already related to a case!")
         return obj
