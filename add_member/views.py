@@ -9,14 +9,6 @@ from .forms import PersonForm, MemberFilterForm
 from drf_haystack.viewsets import HaystackViewSet
 from .serializer import MemberSearchSerializer, MemberFileSerializer, MemberSerializer
 from drf_haystack.filters import HaystackAutocompleteFilter
-from rest_framework import viewsets
-import rest_framework_filters as filters
-from contact_log.models import contactLog
-from spfa_mt import settings
-from wsgiref.util import FileWrapper
-from mimetypes import MimeTypes
-from django.http import HttpResponse
-from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import decorators
 from spfa_mt.settings import MAX_FILE_SIZE
 from rest_framework.exceptions import APIException
@@ -30,6 +22,14 @@ import gc
 from django.core.exceptions import ValidationError
 from spfa_mt import settings
 from rest_framework.parsers import FileUploadParser
+from rest_framework import viewsets
+import rest_framework_filters as filters
+from contact_log.models import contactLog
+from spfa_mt import settings
+from wsgiref.util import FileWrapper
+from mimetypes import MimeTypes
+from django.http import HttpResponse
+from django.core.exceptions import ObjectDoesNotExist
 
 # view responsible for the member creation
 class PersonCreate(CreateView):

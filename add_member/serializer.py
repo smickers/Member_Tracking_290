@@ -3,6 +3,7 @@ from add_member.search_indexes import MembersIndex
 from rest_framework import serializers
 from add_member.models import PersonFile, Person
 
+>>>>>>>>> Temporary merge branch 2
 
 class MemberSearchSerializer(HaystackSerializer):
     """

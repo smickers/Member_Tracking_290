@@ -3,10 +3,13 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from .validators import *
 
+
+
 # Create your models here.
 class PersonBase(models.Model):
 
     #bound fields choices for gender field
+>>>>>>>>> Temporary merge branch 2
     GENDER_CHOICE = [
         ('MALE', 'Male'),
         ('FEMALE', 'Female'),
@@ -81,12 +84,15 @@ class Person(PersonBase):
     position = models.CharField(blank=True, null=True, max_length=50)
     employeeStatus = models.CharField(blank=True, null=True, choices=PersonBase.EMPLOYEE_STATUS, max_length=1)
 
-    # when model gets updated, user will be routed to the member_detail url
     class Meta:
         # docs: https://docs.djangoproject.com/en/1.10/ref/models/options/#unique-together
         unique_together = ("firstName", "lastName", "campus")
 
 
+<<<<<<<<< Temporary merge branch 1
+    # when model gets updated, user will be routed to the member_detail url
+=========
+>>>>>>>>> Temporary merge branch 2
     def get_absolute_url(self):
         return reverse(viewname='add_member:member_detail', kwargs={'pk':self.pk})
 
