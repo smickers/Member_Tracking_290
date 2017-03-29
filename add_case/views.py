@@ -9,6 +9,7 @@ from grievance_award_creation.models import GrievanceAward
 from django.core.exceptions import ObjectDoesNotExist
 from contact_log.models import contactLog
 import rest_framework_filters as filters
+from rest_framework import viewsets
 
 
 class CaseCreate(CreateView):
@@ -67,7 +68,26 @@ class CaseList(ListView):
 
 # View to set up case filter options
 class CaseFilter(filters.FilterSet):
-    # Setting up the filters for date ranges, empty descriptions, etc.
+    # Setting up the filters for date ranges
     date_before = filters.DateFilter(name='date', lookup_expr='before')
     date_after = filters.DateFilter(name='date', lookup_expr='after')
-    
+    # Filters for complainants by firstName, lastName, and blank
+    cn_fn = filters.CharFilter(name='complainant__firstName', lookup_expr='with')
+    cn_ln = filters.CharFilter(name='complainant__lastName', lookup_expr='with')
+    cn_blank = filters.CharFilter(name='complainant', lookup_expr='is_n')
+
+    class Meta:
+        model = Case
+        fields = ['id', 'lead', 'complainant', 'campus', 'satellite', 'school',
+                  'program', 'department', 'caseType', 'status', 'additionalMembers',
+                  'additionalNonMembers', 'date']
+
+
+# View to allow serialized cases ... essentially, what allows our filtering to happen.
+class CaseViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Case.objects.all()
+    serializer_class = CaseSearchSerializer
+    filter_class = CaseFilter
+    filter_fields = ['id', 'lead', 'complainant' 'campus', 'satellite', 'school',
+                  'program', 'department', 'caseType', 'status', 'additionalMembers',
+                  'additionalNonMembers', 'date_before', 'date_after']

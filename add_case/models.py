@@ -38,7 +38,7 @@ class CasePrograms(models.Model):
 # Purpose:    This is the model for the case. This is used by the web page to help generate the form.
 #               Also saves data to the DB.
 class Case(models.Model):
-    lead = models.IntegerField(max_length=9)
+    lead = models.IntegerField()
     complainant = models.ForeignKey(Person, related_name='case_complainant')
     campus = models.CharField(choices=kvp.CAMPUS_CHOICES.iteritems(), max_length=25, validators=[validate_location],
                               default="Saskatoon")
@@ -51,7 +51,6 @@ class Case(models.Model):
     status = models.CharField(choices=kvp.STATUS_CHOICES, default="OPEN", max_length=15)
     additionalMembers = models.ManyToManyField(Person, blank=True, )
     additionalNonMembers = models.TextField(blank=True, null=True)
-    docs = models.TextField(blank=True, null=True)
     date = models.DateField(blank=True, null=True, default=datetime.date.today, validators=[validate_date])
 
     # Default get_absolute_url method
