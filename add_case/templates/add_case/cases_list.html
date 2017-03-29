@@ -64,10 +64,18 @@
                                +'<select class="form-control" id="field-criteria-' + criteriaCount + '">'
                                +'<option value="AND" selected="selected">AND</option><option value="OR">OR'
                                +'</option></select></td><td class="form-group" style="padding: 2px;">'
-                               +'<button class="form-control btn btn-info" onclick="addCriteria()">'
-                               +'<span class="glyphicon glyphicon-plus"></span> </button> </td>';
+                               +'<button class="form-control btn btn-info" onclick="addCriteria()" style="width: 45%;">'
+                               +'<span class="glyphicon glyphicon-plus"></span> </button>'
+                               +'<button class="form-control btn btn-info" onclick="removeCriteria(' + criteriaCount +')" '
+                               +'style="width: 45%;" style="padding: 2px; padding-left: 2px;"><span class="glyphicon glyphicon-minus"></span></button></td>';
            $("#filteringForm").append(newRow);
             determineToShowEquality(criteriaCount);
+        }
+
+        function remFilter()
+        {
+            criteriaCount--;
+
         }
 
         // This function is courtesy of:
@@ -93,7 +101,7 @@
             var all_records = [];
             var curr_records = [];
             //var currRecord = 0;
-            const BASE_REQUEST_URL = "http://127.0.0.1:8000/api-root/addCase/filter/";
+            const BASE_REQUEST_URL = "http://127.0.0.1:8000/api-root/case_list/search/?";
             var next_join = "OR";
             $("#case-list-data").html("");
             for (var i = 0; i <= criteriaCount; i++)
@@ -106,10 +114,10 @@
                         // Determine if less than, greater than, or equals was selected
                         switch($("#field-criteria-" + i).val())
                         {
-                            case 'gt':
+                            case 'before':
                                 request_url += 'date_before=' + convertDateFormat($("#field-value-" + i).val());
                                 break;
-                            case 'lt':
+                            case 'after':
                                 request_url += 'date_after=' + convertDateFormat($("#field-value-" + i).val());
                                 break;
                             default:
@@ -121,16 +129,27 @@
                     // Check for an empty satellite
                     else if ($("#field-choice-" + i).val() === "satellite" && $("#field-value-" + i).val() === "")
                     {
-                        request_url += "sat_blank=yes";
-                        curr_records = runQuery(request_url);
+                        if($("#field-value-" + i).val() == "")
+                        {
+                            request_url +="sat_blank=yes";
+                            curr_records = runQuery(request_url);
+                        }
+                        else
+                        {
+                            request_url += "satellite__contains" + $("#field-value-" + i).val();
+                            curr_records = runQuery(request_url);
+
+                        }
                     }
+
+                    //Check for complainant's name
                     else if ($("#field-choice-" + i).val() === "complainant")
                     {
                         // Run two queries: one on first name, and one on last name
-                        request_url += "complainant__firstName=" + $("#field-value-" + i).val();
+                        request_url += "cn_fn=" + $("#field-value-" + i).val();
                         curr_records = runQuery(request_url);
                         // And run the last name query
-                        request_url = BASE_REQUEST_URL + "complainant__lastName=" + $("#field-value-" + i).val();
+                        request_url = BASE_REQUEST_URL + "cn_ln=" + $("#field-value-" + i).val();
                         // Next, combine them with an OR
                         curr_records = combineArraysOR(curr_records, runQuery(request_url));
                     }
@@ -155,6 +174,192 @@
             // Now display the result
             filterTable(all_records);
         }
+
+        /***
+         * Function:    combineArraysAND
+         * Purpose:     Combine two given arrays with an AND operator based on contact log IDs.
+         * @param arrayOne - The first array
+         * @param arrayTwo - the second array
+         * @returns {Array} - the arrays combined with an AND
+         */
+        function combineArraysAND(arrayOne, arrayTwo)
+        {
+            var result_array = [];
+            for(var i = 0; i < arrayOne.length; i++)
+            {
+                var found = false;
+                for(var j = 0; j < arrayTwo.length && !found; j++)
+                {
+                    if (arrayOne[i].id === arrayTwo[j].id)
+                    {
+                        found = true;
+                        result_array.push(arrayOne[i]);
+                    }
+                }
+            }
+
+            return result_array;
+        }
+
+        /***
+         * Function:    combineArraysOR
+         * Purpose:     Combine two given arrays with an OR operator based on contact log IDs.
+         * @param arrayOne - The first array
+         * @param arrayTwo - the second array
+         * @returns {Array} - the arrays combined with an OR
+         */
+        function combineArraysOR(arrayOne, arrayTwo)
+        {
+            var result_array = arrayOne;
+
+            // Loop through all items in the second array
+            for (var i = 0; i < arrayTwo.length; i++)
+            {
+                var found = false;
+                // Check to see if it exists in the first array
+                for (var j = 0; j < arrayOne.length && !found; j++)
+                {
+                    // If it exists, quit looping
+                    found = arrayTwo[i].id === arrayOne[j].id;
+                }
+
+                // If it wasn't found, add the item to the array
+                if (!found)
+                {
+                    result_array.push(arrayTwo[i]);
+                }
+            }
+
+            // Return our new results
+            return result_array;
+        }
+
+        /***
+         * Function:    formatDate
+         * Purpose:     Given a date in the form YYYY-MM-DD, format and return it in the form DD-MMM-YYYY.
+         * @param toFormat
+         * @returns {string}
+         */
+        function formatDate(toFormat)
+        {
+            var monthNames = [
+                "Jan", "Feb", "Mar",
+                "Apr", "May", "Jun", "Jul",
+                "Aug", "Sep", "Oct",
+                "Nov", "Dec"
+              ];
+
+            // Grab the year, month, and date
+            var year = toFormat.substring(0, 4);
+            var monthIndex = parseInt(toFormat.substring(6, 9));
+            var date = toFormat.substring(8, 11);
+
+            // Put together the new date and return it
+            var toReturn = date + ", " + monthNames[monthIndex - 1] + ". " + year;
+            return toReturn;
+        }
+
+        /***
+         * Function:    filterTable
+         * Purpose:     Add new data to the table according to the passed-in data.
+         * @param newData - The data to be added.
+         */
+        function filterTable(newData)
+        {
+            $("#case-list-data").html("");
+            console.log(newData);
+            newData.forEach(function(ca, index)
+            {
+                var id = ca.id;
+                var complainant = ca.complainant;
+                var caseType = ca.caseType;
+                var status = ca.description;
+                var date = ca.date;
+                var rowToAdd = "<tr><td>" + id + "</td><td>"
+                                + complainant + "</td><td>"
+                                + caseType + "</td><td>"
+                                + status + "</td><td>"
+                                + date + '</td><td>'
+                                + '<a href="http://127.0.0.1:8000/addCase/' + id + '">[View]</a></td><td> '
+                                + '<a href="http://127.0.0.1:8000/addCase/edit/' + id + '">[Edit]</a></td></tr>'
+                                + '<a href="http://127.0.0.1:8000/grievance/' + id + '">[Add Award]</a></td>';
+
+                $("#case-list-data").append(rowToAdd);
+            });
+        }
+
+        /***
+         * Function:    removeCriteria
+         * Purpose:     Removes criteria with the given number from the table.
+         * @param num - The criteria ID/row to remove.
+         */
+        function removeCriteria(num)
+        {
+            // Remove the entire row of filtering
+            $("#filter-entry-" + num).remove();
+
+            // Decrement the IDs of inputs that occur after
+            for (var i = num + 1; i <= criteriaCount; i++)
+            {
+                // Decrement filter-entry
+                $("#filter-entry-" + i).attr('id', 'filter-entry-' + (i - 1));
+                // Decrement field-choice
+                $("#field-choice-" + i).attr('id', 'field-choice-' + (i - 1));
+                // Decrement field-criteria
+                $("#field-criteria-" + i).attr('id', 'field-criteria-' + (i - 1));
+                // Decrement field-value
+                 $("#field-value-" + i).attr('id', 'field-value-' + (i - 1));
+                // Decrement field-join
+                $("#field-join-" + i).attr('id', 'field-join-' + (i - 1));
+                // Change the onclick value + ID of the onclick button
+                $("#remove-" + i).attr('id', 'remove-' + (i - 1));
+                $("#remove-" + (i - 1)).attr('onclick', 'removeCriteria(' + (i - 1) + ')');
+            }
+
+            // Decrement criteria count
+            criteriaCount--;
+        }
+
+        /***
+         * Function:    determineToShowEquality
+         * Purpose:     Determine whether or not to show the equality select box for a specific field based
+         *              on its current value.
+         * @param elem - the element to look at
+         */
+        function determineToShowEquality(elem)
+        {
+
+            if ($("#field-choice-" + elem).val() === "date")
+            {
+                // Show the entire div that the equality selector is in - which happens
+                // to be the parent of the field-choice select element
+               // $("#field-criteria-" + elem).parent();
+            }
+            else
+            {
+                $("#field-criteria-" + elem).parent().prop("disabled", "disabled");
+            }
+        }
+
+        // This function is courtesy of:
+        // http://stackoverflow.com/questions/17445585/javascript-convert-string-into-date-with-format-dd-mmm-yyyy-i-e-01-jun-2012
+        function convertDateFormat(enteredDate)
+        {
+            var dateToReturn = new Date(enteredDate);
+            // Convert the date to a string in the form DD/MM/YYYY, and then
+            // change all the slashes to hyphens
+            return dateToReturn.toLocaleDateString("en-CA");
+        }
+
+        $(document).ready(function()
+        {
+            // Hide the equality selector for the first criteria by default
+            determineToShowEquality(0);
+            $("#rem").on("click", function()
+            {
+                $(this).parent("tr:first").remove()
+            });
+        })
 
     </script>
 {% endblock %}
@@ -212,25 +417,27 @@
                         </td>
                         {# Value we're filtering on #}
                         <td class="form-group" style="padding: 2px;">
-                            <input type="text" class="form-control" id="field-value-0">
+                            <input type="text" class="form-control" id="field-value-0" />
                         </td>
                         {# Adding an additional filter, and specifying the join #}
                         <td class="form-group" style="padding: 2px;">
-                            <select class="form-control" id="field-criteria-0">
+                            <select class="form-control" id="field-join-0">
                                 <option value="AND" selected="selected">AND</option>
                                 <option value="OR">OR</option>
                             </select>
                         </td>
                         <td class="form-group" style="padding: 2px;">
-                            <button class="form-control btn btn-info" onclick="addCriteria()">
+                            <button class="form-control btn btn-info" onclick="addCriteria()" style="width: 50%;">
                                 <span class="glyphicon glyphicon-plus"></span>
                             </button>
+                            <span style="width:50%;"></span>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <div class="form-group">
-                <input type="button" class="form-control btn btn-info col-sm-1" onclick="addCriteria()" value="Filter" style="width:10%" />
+                <input type="button" class="form-control btn btn-info col-sm-1" onclick="applyFilter()"
+                       value="Filter" style="width:10%" />
             </div>
 
 

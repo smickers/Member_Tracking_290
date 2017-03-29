@@ -72,11 +72,11 @@ class CaseFilter(filters.FilterSet):
     date_before = filters.DateFilter(name='date', lookup_expr='before')
     date_after = filters.DateFilter(name='date', lookup_expr='after')
     # Filters for complainants by firstName, lastName, and blank
-    cn_fn = filters.CharFilter(name='complainant__firstName', lookup_expr='with')
-    cn_ln = filters.CharFilter(name='complainant__lastName', lookup_expr='with')
+    cn_fn = filters.CharFilter(name='complainant__firstName', lookup_expr='icontains')
+    cn_ln = filters.CharFilter(name='complainant__lastName', lookup_expr='icontains')
     # Satellites field is left blank or is null
     sat_blank = filters.CharFilter(name='satellite', lookup_expr='isnull')
-
+    sat = filters.CharFilter(name='satellite', lookup_expr='icontains')
 
     class Meta:
         model = Case

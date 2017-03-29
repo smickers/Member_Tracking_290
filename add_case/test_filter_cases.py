@@ -189,84 +189,85 @@ class TestFilteringCases(TestCase):
     # Test 1: Filters can be applied to a cases's complainant
     def test_filter_complainant(self):
         # Test full name filter
-        request = self.client.get("/api-root/addCase/filter/", {"complainant": "Deborah Williams"})
+        request = self.client.get("/api-root/case_list/search/?", {"complainant": "Deborah Williams"})
         self.assertEquals(request.json()['count'], 1)
         self.assertEquals(request.json()['results'][0]["complainant"], self.c1.complainant)
         # Test partial first name filter
-        r2 = self.client.get("/api-root/addCase/filter/", {"complainant": "Deb"})
+        r2 = self.client.get("/api-root/case_list/search/?", {"complainant": "Deb"})
         self.assertEquals(r2.json()['count'], 1)
         self.assertEquals(r2.json()['results'][0]["complainant"], self.c1.complainant)
         # Test partial last name filter
-        r3 = self.client.get("/api-root/addCase/filter/", {"complainant": "Williams"})
+        r3 = self.client.get("/api-root/case_list/search/?", {"complainant": "Williams"})
         self.assertEquals(r3.json()['count'], 1)
         self.assertEquals(r3.json()['results'][0]["complainant"], self.c1.complainant)
 
     # Test 2: Filters can be applied to a case's campus
     def test_filter_campus(self):
-        request = self.client.get("/api-root/addCase/filter/", {"campus": "Saskatoon"})
+        request = self.client.get("/api-root/case_list/search/?", {"campus": "Saskatoon"})
         self.assertEquals(request.json()['count'], 1)
 
     # Test 3: Filters can be applied to a case's school
     def test_filter_school(self):
-        request = self.client.get("/api-root/addCase/filter/", {"school": "School of Health Sciences"})
+        request = self.client.get("/api-root/case_list/search/?", {"school": "School of Health Sciences"})
         self.assertEquals(request.json()['count'], 1)
 
     # Test 4: Filters can be applied to a case's program
     def test_filter_program(self):
-        request = self.client.get("/api-root/addCase/filter/", {"program": "School of Health Sciences"})
+        request = self.client.get("/api-root/case_list/search/?", {"program": "School of Health Sciences"})
         self.assertEquals(request.json()['count'], 1)
 
     # Test 5: Filters can be applied to a case's department
     def test_filter_dept(self):
-        request = self.client.get("/api-root/addCase/filter/", {"department": "Student Development"})
+        request = self.client.get("/api-root/case_list/search/?", {"department": "Student Development"})
         self.assertEquals(request.json()['count'], 1)
-        r2 = self.client.get("/api-root/addCase/filter/", {"department": "PLAR"})
+        r2 = self.client.get("/api-root/case_list/search/", {"department": "PLAR"})
         self.assertEquals(r2.json()['count'], 0)
 
     # Test 6: Filters can be applied to a case's case type
     def test_filter_caseType(self):
-        request = self.client.get("/api-root/addCase/filter/", {"caseType": 2})
+        request = self.client.get("/api-root/case_list/search/?", {"caseType": 2})
         self.assertEquals(request.json()['count'], 2)
 
     # Test 7: Filters can be applied to a case's status
     def test_filter_status(self):
-        request = self.client.get("/api-root/addCase/filter/", {"status": "OPEN"})
+        request = self.client.get("/api-root/case_list/search/?", {"status": "OPEN"})
         self.assertEquals(request.json()['count'], 4)
 
     # Test 8: Multiple filters can be applied with a logical AND
     def test_AND_filter(self):
-        request = self.client.get("/api-root/addCase/filter/", {"complainant": "Walky", "campus": "MJ"})
+        request = self.client.get("/api-root/case_list/search/?", {"complainant": "Walky", "campus": "MJ"})
+        print(request)
         self.assertEquals(request.json()['count'], 2)
 
     # Test 9: Multiple filters can be applied with a logical OR
     def test_OR_filter(self):
-        request = self.client.get("/api-root/addCase/filter/", {"complainant": "Walky"})
+        request = self.client.get("/api-root/case_list/search/?", {"complainant": "Walky"})
         r1 = request.json()['results']
-        request2 = self.client.get("/api-root/addCase/filter/", {"school": "Other"})
+        request2 = self.client.get("/api-root/case_list/search/?", {"school": "Other"})
         r2 = request.json()['results']
         everything = result_combine(r1, r2)
         self.assertEquals(len(everything), 2)
 
     # Test 10: Logical AND/OR can be strung together
     def test_logic_chaining(self):
-        request = self.client.get("/api-root/addCase/filter/", {"complainant": "Walky", "caseType": 2})
+        request = self.client.get("/api-root/case_list/search/?", {"complainant": "Walky", "caseType": 2})
         r1 = request.json()['results']
-        request2 = self.client.get("/api-root/addCase/filter/", {"school": "Other"})
+        request2 = self.client.get("/api-root/case_list/search/?", {"school": "Other"})
         r2 = request.json()['results']
         everything = result_combine(r1, r2)
         self.assertEquals(len(everything), 3)
 
     # Test 11: Filter cases on a date
     def test_filter_dates(self):
-        response = self.client.get('/api-root/addCase/filter/', {"date": "2016-10-20"})
+        response = self.client.get('/api-root/case_list/search/?', {"date": "2016-10-20"})
         self.assertEquals(response.json()['count'], 2)
 
     # Test 12: Filter cases on a range of dates
     def test_filter_dates_with_range(self):
-        response = self.client.get('/api-root/addCase/filter/', {"date": "2016-09-20", "date": "2016-12-20"})
+        response = self.client.get('/api-root/case_list/search/?', {"date": "2016-09-20", "date": "2016-12-20"})
         self.assertEquals(response.json()['count'], 2)
 
     # Test 13: Empty filter returns the entire list
     def test_filter_with_empty_filter(self):
-        request = self.client.get("/api-root/addCase/filter/")
+        request = self.client.get("/api-root/case_list/search/?")
         self.assertEqual(request.json()['count'], 4)
