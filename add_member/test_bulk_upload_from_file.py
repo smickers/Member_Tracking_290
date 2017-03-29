@@ -1,4 +1,4 @@
-from django.test import TestCase, Client
+from django.test import TestCase, Client, LiveServerTestCase
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from add_member.models import Person, PersonFile
@@ -9,11 +9,14 @@ from django.core.files import File
 from rest_framework.test import APIClient
 import json
 from django.urls import resolve
+from spfa_mt.settings import MEDIA_ROOT
+import os
+import shutil
 
 
 
 # region Tests for Creating a person
-class PersonUploadTestCase(TestCase):
+class PersonUploadTestCase(LiveServerTestCase):
     """Test multiple users can be uploaded from an excel file"""
 
     def __init__(self, *args, **kwargs):
@@ -55,21 +58,18 @@ class PersonUploadTestCase(TestCase):
         person = PersonFile.objects.get(pk=f_data)
 
         self.assertTrue(isinstance(person, PersonFile))
-    #
-    #
-    #
-    #
-    # '''
-    # Name:       test_user_cannot_upload_other_file_formats
-    # Function:   Test user is not able to upload any other file format
-    # '''
-    # def test_user_cannot_upload_other_file_formats(self):
-    #     fp = open(self.invalid_file, "rb")
-    #     invalid_file = File(fp)
-    #     factory = APIClient()
-    #     f_request = factory.post(reverse('add_member:excel-upload'), {'file': invalid_file})
-    #     self.assertEqual( json.loads(f_request.content), {'detail': 'The file is an invalid format.'
-    #                                                                 ' Please supply a valid excel sheet.'} )
+
+    '''
+    Name:       test_user_cannot_upload_other_file_formats
+    Function:   Test user is not able to upload any other file format
+    '''
+    def test_user_cannot_upload_other_file_formats(self):
+        fp = open(self.invalid_file, "rb")
+        invalid_file = File(fp)
+        factory = APIClient()
+        f_request = factory.post(reverse('add_member:excel-upload'), {'file': invalid_file})
+        self.assertEqual( json.loads(f_request.content), {'detail': 'The file is an invalid format.'
+                                                                    ' Please supply a valid excel sheet.'} )
 
 
     '''
@@ -91,20 +91,7 @@ class PersonUploadTestCase(TestCase):
         json_data = fp.read()
         self.assertEqual(f_request.content, json_data)
 
-    # '''
-    # Name:       test_preview_table_displays_all_member_information
-    # Function:   Test preview table displays all member information that came
-    #             from the excel file
-    # '''
-    # def test_preview_table_displays_all_member_information(self):
-    #     """
-    #         1. Upload the xlsx file to the endpoint url
-    #         2. Parse the request to json
-    #         3. Send the primary key of the uploaded xlsx file to the xlsx-to-json endpoint
-    #         4. Parse the request response to json
-    #         5. Verify if the json response can be represented as a table.
-    #     """
-    #     pass
+
 
     '''
     Name:       test_user_cannot_upload_files_greater_than_500mb
@@ -119,48 +106,6 @@ class PersonUploadTestCase(TestCase):
         self.assertEqual( json.loads(f_request.content), {'detail': 'The file exceeded the file size limit. Please upload a smaller file'} )
 
 
-    # '''
-    # Name:       test_members_are_created_if_non_required_fields_are_missing_in_file
-    # Function:   Test members are created and inputted into database if excel file has missing member info
-    #             (ex: no address, no phone number) etc
-    # '''
-    def test_members_are_created_if_non_required_fields_are_missing_in_file(self):
-        """
-            1. Upload the xlsx file to the endpoint url
-            2. Parse the request to json
-            3. Send the primary key of the uploaded xlsx file to the xlsx-to-json endpoint
-            4. Parse the request response to json
-            5. Verify if the json response can be represented as a table.
-            6. Check to see if the list of members included witht he xlsx file now exists on the DB
-        """
-
-        fp = open(self.invalid_test_xlsx, "rb")
-        xlsx_file = File(fp)
-
-        factory = APIClient()
-
-        f_request = factory.post(reverse('add_member:excel-upload'), {'file': xlsx_file})
-
-        f_request_2 = factory.post('/addmember/exceltojson/',{'pk': f_request.data['id']} )
-
-
-        # print(f_request_2.data)
-        print(f_request_2)
-
-
-
-    #
-    # '''
-    # Name:       test_members_are_not_created_if_file_is_invalid_format
-    # Function:   Test members are not created and not inputted into database if file is invalid format
-    #             (ex: file has improper headers: no header for address, sin, ID, etc)
-    # '''
-    def test_members_are_not_created_if_file_is_invalid_format(self):
-        """
-            1. Upload the xlsx file to the endpoint url
-            2. Parse the request to json
-            3. Send the primary key of the uploaded xlsx file to the xlsx-to-json endpoint
-            4. Parse the request response to json
-            5. Check if json response contains an error attribute
-        """
-        pass
+    def tearDown(self):
+        if os.path.exists(MEDIA_ROOT):
+            shutil.rmtree(MEDIA_ROOT)
