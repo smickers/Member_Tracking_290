@@ -67,4 +67,7 @@ class CaseList(ListView):
 
 # View to set up case filter options
 class CaseFilter(filters.FilterSet):
-    """"""
+    # Setting up the filters for date ranges, empty descriptions, etc.
+    date_before = filters.DateFilter(name='date', lookup_expr='before')
+    date_after = filters.DateFilter(name='date', lookup_expr='after')
+    
