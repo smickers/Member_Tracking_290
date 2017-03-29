@@ -1,6 +1,4 @@
-from django.test import TestCase, Client, LiveServerTestCase
-from django.db import IntegrityError
-from django.core.exceptions import ValidationError
+from django.test import LiveServerTestCase
 from add_member.models import Person, PersonFile
 from rest_framework.test import APIRequestFactory
 from django.urls import reverse
@@ -8,11 +6,6 @@ from spfa_mt import settings
 from django.core.files import File
 from rest_framework.test import APIClient
 import json
-from django.urls import resolve
-from spfa_mt.settings import MEDIA_ROOT
-import os
-import shutil
-
 
 
 # region Tests for Creating a person
@@ -58,6 +51,7 @@ class PersonUploadTestCase(LiveServerTestCase):
         person = PersonFile.objects.get(pk=f_data)
 
         self.assertTrue(isinstance(person, PersonFile))
+        fp.close()
 
     '''
     Name:       test_user_cannot_upload_other_file_formats
@@ -70,7 +64,7 @@ class PersonUploadTestCase(LiveServerTestCase):
         f_request = factory.post(reverse('add_member:excel-upload'), {'file': invalid_file})
         self.assertEqual( json.loads(f_request.content), {'detail': 'The file is an invalid format.'
                                                                     ' Please supply a valid excel sheet.'} )
-
+        fp.close()
 
     '''
     Name:       test_user_sees_preview_table_with_member_information
@@ -90,6 +84,7 @@ class PersonUploadTestCase(LiveServerTestCase):
         fp = open(self.json_test_file, "r")
         json_data = fp.read()
         self.assertEqual(f_request.content, json_data)
+        fp.close()
 
 
 
@@ -104,8 +99,8 @@ class PersonUploadTestCase(LiveServerTestCase):
         factory = APIClient()
         f_request = factory.post(reverse('add_member:excel-upload'), {'file': very_large})
         self.assertEqual( json.loads(f_request.content), {'detail': 'The file exceeded the file size limit. Please upload a smaller file'} )
-
-
-    def tearDown(self):
-        if os.path.exists(MEDIA_ROOT):
-            shutil.rmtree(MEDIA_ROOT)
+        fp.close()
+    #
+    # def tearDown(self):
+    #     if os.path.exists(MEDIA_ROOT):
+    #         shutil.rmtree(MEDIA_ROOT)
