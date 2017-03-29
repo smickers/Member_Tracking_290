@@ -126,10 +126,6 @@ class GrievanceAwardFilterView(viewsets.ReadOnlyModelViewSet):
     """
     # Defining the queryset to use, serializer, filter class and the fields.
     queryset = GrievanceAward.objects.all()
-    # def get_queryset(self):
-    #     if 'empty_desc_filter' in self.request.QUERY_PARAMS:
-    #         return self.model.objects.filter(description="")
-    #     return self.model.objects.all()
     serializer_class = GAFilterSerializer
     filter_class = GrievanceAwardFilter
     # filter_fields might not be required but it's better to be safe

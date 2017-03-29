@@ -347,4 +347,4 @@ $(document).ready(function()
 {
     // Hide the equality selector for the first criteria by default
     determineToShowEquality(0);
-})
+});
