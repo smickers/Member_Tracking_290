@@ -4,9 +4,11 @@ from django.db import models
 from .validators import *
 
 
-# Original class created to add a Member object:
-class Person(models.Model):
-    # bound fields choices for gender field
+
+# Create your models here.
+class PersonBase(models.Model):
+
+    #bound fields choices for gender field
     GENDER_CHOICE = [
         ('MALE', 'Male'),
         ('FEMALE', 'Female'),
@@ -36,30 +38,59 @@ class Person(models.Model):
         ('RECORDER', 'RECORDER'),
     ]
 
-    # Attributes:
-    memberID = models.IntegerField(validators=[validate_ninedigits])
+    EMPLOYEE_STATUS = [
+        ('A', 'ACTIVE'),
+        ('T', 'TERMINATED')
+    ]
+
     firstName = models.CharField(max_length=30, validators=[validate_rightstringlen30])
-    middleName = models.CharField(max_length=30, validators=[validate_rightstringlen30])
     lastName = models.CharField(max_length=30, validators=[validate_rightstringlen30])
-    socNum = models.IntegerField(validators=[validate_ninedigits])
-    city = models.CharField(max_length=20, validators=[validate_rightstringlen20])
-    mailAddress = models.CharField(max_length=50, validators=[validate_rightstringlen50])
+    # jobType = models.CharField(max_length=30, choices=POSITION_CLASS_CHOICE)  # TODO:  Accepts Employee Class Long Description
+    jobType = models.CharField(max_length=50)
+    membershipStatus = models.CharField(max_length=30, choices=MEMBERSHIP_STATUS, null=True, blank=True)
+    hireDate = models.DateField( null=True, blank=True)  # TODO: change to current hire date
+
+    class Meta:
+        abstract = True
+
+
+class Person(PersonBase):
+    memberID = models.IntegerField(validators=[validate_ninedigits], null=True, blank=True)
+    middleName = models.CharField(max_length=30, validators=[validate_rightstringlen30], null=True, blank=True)
+    socNum = models.IntegerField(validators=[validate_ninedigits],  null=True, blank=True)
+    city = models.CharField(max_length=20, validators=[validate_rightstringlen20],  null=True, blank=True)
+    mailAddress = models.CharField(max_length=50, validators=[validate_rightstringlen50],  null=True, blank=True)
     mailAddress2 = models.CharField(max_length=50, null=True, blank=True, validators=[validate_rightstringlen50])
     pCode = models.CharField(null=True, max_length=7, blank=True, validators=[validate_pCode])
-    bDay = models.DateField()
-    gender = models.CharField(choices=GENDER_CHOICE, max_length=10)
+    bDay = models.DateField(null=True, blank=True)
+    gender = models.CharField(choices=PersonBase.GENDER_CHOICE, max_length=10,  null=True, blank=True)
     hPhone = models.CharField(max_length=13, null=True, blank=True, validators=[validate_numbers])
     cPhone = models.CharField(max_length=13, null=True, blank=True, validators=[validate_numbers])
-    hEmail = models.EmailField()
-    campus = models.CharField(max_length=20, choices=CAMPUS_CHOICE)
-    jobType = models.CharField(max_length=30, choices=POSITION_CLASS_CHOICE)
-    committee = models.CharField(max_length=30, validators=[validate_rightstringlen30])
+    hEmail = models.EmailField(null=True, blank=True)
+    # campus = models.CharField(max_length=20, choices=PersonBase.CAMPUS_CHOICE, null=True, blank=True)
+    campus = models.CharField(max_length=20, null=True, blank=True)
+
+    committee = models.CharField(max_length=30, validators=[validate_rightstringlen30],  null=True, blank=True)
     memberImage = models.CharField(max_length=30, blank=True, null=True)
-    programChoice = models.CharField(max_length=30, null=True, validators=[validate_rightstringlen30])
-    membershipStatus = models.CharField(max_length=30, choices=MEMBERSHIP_STATUS, null=True)
-    hireDate = models.DateField(null=True)
+    programChoice = models.CharField(max_length=30,blank=True, null=True, validators=[validate_rightstringlen30])
+    posBeginDate = models.DateField(blank=True, null=True)
+    posEndDate = models.DateField(blank=True, null=True)
+    terminationDate = models.DateField(blank=True, null=True)
+    employeeClass = models.CharField(blank=True, null=True, max_length=4)
+    department = models.CharField(blank=True, null=True, max_length=50)
+    jobSuffix = models.CharField(blank=True, null=True, max_length=4)
+    posTitle = models.CharField(blank=True, null=True, max_length=50)
+    position = models.CharField(blank=True, null=True, max_length=50)
+    employeeStatus = models.CharField(blank=True, null=True, choices=PersonBase.EMPLOYEE_STATUS, max_length=1)
+
+    # class Meta:
+    #     # docs: https://docs.djangoproject.com/en/1.10/ref/models/options/#unique-together
+    #     unique_together = ("firstName", "lastName", "campus")
+
+
 
     # when model gets updated, user will be routed to the member_detail url
+
     def get_absolute_url(self):
         return reverse(viewname='add_member:member_detail', kwargs={'pk':self.pk})
 
@@ -73,6 +104,12 @@ class Person(models.Model):
             if len(self.pCode) == 6:
                 self.pCode = self.pCode[:3] + ' ' + self.pCode[3:]
 
+
+class PersonFile(models.Model):
+    file = models.FileField(blank=True, null=True)
+    description = models.CharField(max_length=50, blank=True, null=True)
+
+    # TODO: Add department field
     # FUNCTION:     containsFile
     # PURPOSE:      Returns true or false, based on whether or not a file is associated with this member
     # RETURNS:      boolean value: true if a file is associated to this Member, false otherwise.
