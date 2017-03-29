@@ -258,12 +258,12 @@ class TestFilteringCases(TestCase):
 
     # Test 11: Filter cases on a date
     def test_filter_dates(self):
-        response = self.client.get('/api-root/member/filter/', {"date": "2016-10-20"})
+        response = self.client.get('/api-root/addCase/filter/', {"date": "2016-10-20"})
         self.assertEquals(response.json()['count'], 2)
 
     # Test 12: Filter cases on a range of dates
     def test_filter_dates_with_range(self):
-        response = self.client.get('/api-root/member/filter/', {"date": "2016-09-20", "date": "2016-12-20"})
+        response = self.client.get('/api-root/addCase/filter/', {"date": "2016-09-20", "date": "2016-12-20"})
         self.assertEquals(response.json()['count'], 2)
 
     # Test 13: Empty filter returns the entire list

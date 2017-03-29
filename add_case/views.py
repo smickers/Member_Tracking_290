@@ -74,7 +74,9 @@ class CaseFilter(filters.FilterSet):
     # Filters for complainants by firstName, lastName, and blank
     cn_fn = filters.CharFilter(name='complainant__firstName', lookup_expr='with')
     cn_ln = filters.CharFilter(name='complainant__lastName', lookup_expr='with')
-    cn_blank = filters.CharFilter(name='complainant', lookup_expr='is_n')
+    # Satellites field is left blank or is null
+    sat_blank = filters.CharFilter(name='satellite', lookup_expr='isnull')
+
 
     class Meta:
         model = Case
