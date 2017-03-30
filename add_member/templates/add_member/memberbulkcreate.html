@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap3 %}
+{% block metadata %}
+    <style>
+
+    </style>
+    <title>File Upload</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div id="file-form">
+            <h3>Choose an excel sheet.</h3>
+            <input type="file" name="pic" id='file-select'>
+
+            <hr>
+            <div id="progress"></div>
+            <div id="success"></div>
+            <br>
+            <button id="upload_button" class="btn btn-primary">Submit</button>
+        </div>
+        <hr>
+        <div id="confirmation">Please confirm if information is correct.
+                <button id="submit_json_y"  class="btn btn-primary">Yes</button>
+                <button id="submit_json_n"  class="btn btn-primary">No</button>
+        </div>
+    </div>
+
+    <div class="container" id="table_display">
+
+        <hr>
+        <table id="list_members" class="table table-bordered" fixed-header> </table>
+
+    </div>
+
+
+
+
+
+
+    </table>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'jquery-3.1.1.js' %}"></script>
+    <script src="{% static 'add_member/bulkcreate_scripts.js' %}"></script>
+    <script>
+        temp = BulkCreate;
+        temp.init('{% url 'add_member:excel-upload' %}?format=json', '{% url 'add_member:excel-to-json' 0 %}', '{% url 'add_member:json-to-members' %}');
+    </script>
+{% endblock %}

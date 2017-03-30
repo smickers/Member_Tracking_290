@@ -1,7 +1,9 @@
 from drf_haystack.serializers import HaystackSerializer
 from add_member.search_indexes import MembersIndex
 from rest_framework import serializers
-from models import Person
+from add_member.models import PersonFile, Person
+
+
 
 class MemberSearchSerializer(HaystackSerializer):
     """
@@ -17,6 +19,30 @@ class MemberSearchSerializer(HaystackSerializer):
         field_aliases = {
             'q': 'auto_complete'
         }
+
+
+class MemberFileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = PersonFile
+        fields = ['file', 'id']
+
+    def validate(self, attrs):
+        instance = PersonFile(**attrs)
+        instance.clean()
+        return attrs
+
+class MemberSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Person
+        fields = '__all__'
+
+    def validate(self, attrs):
+        instance = Person(**attrs)
+        instance.clean()
+        return attrs
+
 
 
 class MemberFilterSerializer(serializers.ModelSerializer):
