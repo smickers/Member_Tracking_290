@@ -60,7 +60,6 @@
                                 <th>Date</th>
                                 <th class="col-md-4">Description</th>
                                 <th>Contact Code</th>
-                                <th>View</th>
                                 <th>Edit</th>
                             </tr>
                             </thead>
@@ -72,7 +71,6 @@
                                         <td>{{ cl.date|date:"F j, Y" }}</td>
                                         <td>{{ cl.description }}</td>
                                         <td> {{  cl.get_contactCode_display }}</td>
-                                        <td><a href="{% url 'contact_log_creation:details' cl.pk %}">[View]</a></td>
                                         <td>
                                             <a href="{% url 'contact_log_creation:contact_log_edit' cl.pk %}">[Edit]</a>
                                         </td>
