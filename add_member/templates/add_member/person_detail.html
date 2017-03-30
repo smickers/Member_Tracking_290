@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load bootstrap3 %}
 {% block metadata %}
     <title>Member Details</title>
 {% endblock %}
@@ -28,7 +28,7 @@
                 </tr>
                 <tr>
                     <th>Gender</th>
-                    <td>{{ object.gender }}</td>
+                    <td>{{ object.get_gender_display }}</td>
                 </tr>
                 <tr>
                     <th>Address</th>
@@ -60,10 +60,22 @@
                     <th>Home Email</th>
                     <td>{{ object.hEmail }}</td>
                 </tr>
+                {% if object.socNum %}
+                    <tr>
+                        <th>Social Insurance Number</th>
+                        <td>*** *** ***</td>
+                    </tr>
+                {% endif %}
             </table>
 
             <h3>Employment Information</h3>
             <table class="table table-striped">
+                {% if object.employeeClass %}
+                <tr>
+                    <th>Employee Class</th>
+                    <td>{{ object.employeeClass }}</td>
+                </tr>
+                {% endif %}
                 <tr>
                     <th>Campus of Employment</th>
                     <td>{{ object.campus }}</td>
@@ -78,188 +90,104 @@
                     <th>Primary Program</th>
                     <td>{{ object.programChoice }}</td>
                 </tr>
-
-{#                <tr>#}
-{#                    <th>Award Description</th>#}
-{#                    <td>{{ object.description }}</td>#}
-{#                </tr>#}
-{#                <tr>#}
-{#                    <th>Awarded Member</th>#}
-{#                    <td>{{ object.awardedMember }}</td>#}
-{#                </tr>#}
-{#                <tr>#}
-{#                    <th>Award Recipient</th>#}
-{#                    <td>{{ object.awardRecipient }}</td>#}
-{#                </tr>#}
-{#                <tr>#}
-{#                    <th>Award Amount</th>#}
-{#                    <td>{{ object.awardAmount|floatformat:2 }}</td>#}
-{#                </tr>#}
-{#                <tr>#}
-{#                    <th>Award Type</th>#}
-{#                    <td>{{ object.awardType }}</td>#}
-{#                </tr>#}
-{#                <tr>#}
-{#                    <th>Year Awarded</th>#}
-{#                    <td>{{ object.yearAwarded }}</td>#}
-{#                </tr>#}
+                {% if object.posBeginDate %}
+                <tr>
+                    <th>Position Begin Date</th>
+                    <td>{{ object.posBeginDate }}</td>
+                </tr>
+                {% endif %}
+                {% if object.posEndDate %}
+                <tr>
+                    <th>Position End Date</th>
+                    <td>{{ object.posEndDate }}</td>
+                </tr>
+                {% endif %}
+                {% if object.terminationDate %}
+                <tr>
+                    <th>Termination Date</th>
+                    <td>{{ object.terminationDate }}</td>
+                </tr>
+                {% endif %}
+                {% if object.department %}
+                <tr>
+                    <th>Department</th>
+                    <td>{{ object.department }}</td>
+                </tr>
+                {% endif %}
+                {% if object.jobSuffix %}
+                <tr>
+                    <th>Job Suffix</th>
+                    <td>{{ object.jobSuffix }}</td>
+                </tr>
+                {% endif %}
+                {% if object.posTitle %}
+                <tr>
+                    <th>Position Title</th>
+                    <td>{{ object.posTitle }}</td>
+                </tr>
+                {% endif %}
+                {% if object.position %}
+                <tr>
+                    <th>Position</th>
+                    <td>{{ object.position }}</td>
+                </tr>
+                {% endif %}
+                {% if object.employeeStatus %}
+                <tr>
+                    <th>Employee Status</th>
+                    <td>{{ object.employeeStatus }}</td>
+                </tr>
+                {% endif %}
             </table>
-{#        {% else %}#}
-        {# The award hasn't been given out yet, so just shown general info. #}
-{#            <h4 id="awardNotGiven" class="bg-warning">This award has not been awarded yet.</h4>#}
-{#            <table class="table table-striped">#}
-{#            <tr>#}
-{#                <th>Award ID</th>#}
-{#                <td>{{ object.pk }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Award Description</th>#}
-{#                <td>{{ object.description }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Award Amount</th>#}
-{#                <td>{{ object.awardAmount|floatformat:2 }}</td>#}
-{#            </tr>#}
-{#            </table>#}
-{#        {% endif %}#}
-{% endblock %}
-{#        {% buttons %}#}
+
+            {% if object.memberfiles_set.all %}
+                <h3>Related Files</h3>
+                <table class="table table-striped">
+                <thead>
+                    <th>File Name</th>
+                    <th>Date Uploaded</th>
+                    <th>Link</th>
+                </thead>
+                {% for file in object.memberfiles_set.all %}
+                    <tr>
+                        <td>{{ file.fileName }}</td>
+                        <td>{{ file.dateUploaded }}</td>
+                        <td><a href="download/{{ file.fileName }}" download>[Download]</a></td>
+                    </tr>
+                {% endfor %}
+                </table>
+            {% endif %}
+
+            {% if object.contactlog_set.count > 0 %}
+                <h3>Related Contact Logs</h3>
+                <table class="table table-striped">
+                <thead>
+                    <th>Date</th>
+                    <th>Contact Code</th>
+                    <th>Description</th>
+                    <th>Link</th>
+                </thead>
+                {% for cl in object.contactlog_set.all %}
+                    <tr>
+                        <td>{{ cl.date }}</td>
+                        <td>{{ cl.get_contactCode_display }}</td>
+                        <td>{{ cl.description }}</td>
+                        <td> <a href="{% url 'contact_log_creation:details' cl.pk %}">[Link]</a></td>
+                    </tr>
+                {% endfor %}
+                </table>
+            {% endif %}
+{#    {{ object.memberfiles_set.all }}#}
+
+
+        {% buttons %}
         <input type="button" class="btn btn-primary" value="Back" onclick="window.history.back()" />
-{#        {% endbuttons %}#}
+        {% endbuttons %}
         <hr>
         <center>
-            <a href="{% url 'award:edu_edit' object.id %}">Edit this Award</a> |
-            <a href="{% url 'award:edu_create' %}">Create New Educational Award</a> |
-            <a href="{% url 'award:edu_list' %}">View List of Educational Awards</a>
+            <a href="{% url 'add_member:member_update' object.id %}">Edit this Member</a> |
+            <a href="{% url 'add_member:member_add' %}">Create New Member</a> |
+            <a href="{% url 'add_member:member_list' %}">View List of Members</a>
         </center>
+    {% endblock %}
     </div>
-
-
-
-
-
-
-
-{#{% block content %}#}
-{#    <div class="container">#}
-{#        <h1>Member Details for {{ object.firstName }} {{ object.lastName }}</h1>#}
-{#        <div class="panel panel-default">#}
-{#            <div class="panel-heading">#}
-{#                <h3 class="panel-title">Member Information</h3>#}
-{#            </div>#}
-{#            <div class="panel panel-body panel-group">#}
-{#                <div class="col-sm-4" id="gen">#}
-{#                    <p>#}
-{#                        Member ID: {{ object.memberID }} <br />#}
-{#                        Full Name: {{ object.firstName }} {{ object.middleName }} {{ object.lastName }}<br />#}
-{#                        Date of Birth: {{ object.bDay }}#}
-{#                    </p>#}
-{#                </div>#}
-{#                <div class="col-sm-4" id="address">#}
-{#                    City: {{ object.city }}<br />#}
-{#                    Address: {{ object.mailAddress }} <br />#}
-{#                    Address 2: {{ object.mailAddress2 }}<br />#}
-{#                    Postal Code: {{ object.pCode }}<br />#}
-{#                    Home Phone: {{ object.hPhone }}<br />#}
-{#                    Cell Phone: {{ object.cPhone }}<br />#}
-{#                    Email: {{ object.hEmail }}#}
-{#                </div>#}
-{#                <div class="col-sm-4" id="job">#}
-{#                    Campus of Employment: {{ object.campus }}<br />#}
-{#                    Position Class: {{ object.get_jobType_display }}<br />#}
-{#                    Department or Program: {{ object.programChoice }}<br />#}
-{#                    Hire Date: {{ object.hireDate }}<br />#}
-{#                </div>#}
-{#                <div class="panel panel-info col-sm-12" id="files" style="padding-left:0; padding-right:0;">#}
-{#                    <div href="#file_list" class="panel panel-heading col-sm-12" data-toggle="collapse">#}
-{#                        <h3 class="panel-title">Files Associated to {{ object.firstName }} {{ object.lastName }}:#}
-{#                            <span class="glyphicon glyphicon-chevron-down" style="float: right;"></span>#}
-{#                        </h3>#}
-{#                    </div>#}
-{#                    <div class="panel-body collapse" id="file_list">#}
-{#                        {% if object.containsfile %}#}
-{#                            <table class="table table-bordered table-hover">#}
-{#                            <thead>#}
-{#                            <tr class="info">#}
-{#                                <th>File Name</th>#}
-{#                                <th>File Description</th>#}
-{#                                <th>Link to Download</th>#}
-{#                            </tr>#}
-{#                            </thead>#}
-{#                            <tbody>#}
-{#                                {% for fi in object.get_files %}#}
-{#                                    <tr>#}
-{#                                        <td>{{ fi.fileName }}</td>#}
-{#                                        <td>{{ fi.fileDesc }}</td>#}
-{#                                        <td style="text-align:center;">#}
-{#                                            <a href="download/{{ fi.fileName }}" download>[Download]</a>#}
-{#                                        </td>#}
-{#                                    </tr>#}
-{#                                {% endfor %}#}
-{#                            </tbody>#}
-{#                            </table>#}
-{#                        {% elif not object.containsfile %}#}
-{#                            <p>No files associated.</p>#}
-{#                        {% endif %}#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="panel panel-info col-sm-12" id="cls" style="padding-left:0; padding-right:0;">#}
-{#                    <div href="#cl_list" class="panel panel-heading" data-toggle="collapse">#}
-{#                        <h3 class="panel-title">Contact Logs Associated to {{ object.firstName }} {{ object.lastName }}#}
-{#                        <span class="glyphicon glyphicon-chevron-down" style="float:right;"></span>#}
-{#                        </h3>#}
-{#                    </div>#}
-{#                    <div id="cl_list" class="panel panel-body collapse">#}
-{#                        {% if object.contactlog_set.count != 0 %}#}
-{#                            <table class="table table-bordered table-hover">#}
-{#                            <thead>#}
-{#                            <tr class="info">#}
-{#                                <th>ID</th>#}
-{#                                <th>Related Member</th>#}
-{#                                <th>Date</th>#}
-{#                                <th class="col-md-4">Description</th>#}
-{#                                <th>Contact Code</th>#}
-{#                                <th>View</th>#}
-{#                                <th>Edit</th>#}
-{#                            </tr>#}
-{#                            </thead>#}
-{#                            <tbody id="contact-log-table-data">#}
-{#                                {% for cl in object.contactlog_set.all %}#}
-{#                                    <tr>#}
-{#                                        <td>{{ cl.pk }}</td>#}
-{#                                        <td>{{ cl.member }}</td>#}
-{#                                        <td>{{ cl.date }}</td>#}
-{#                                        <td>{{ cl.description }}</td>#}
-{#                                        <td> {{  cl.get_contactCode_display }}</td>#}
-{#                                        <td><a href="{% url 'contact_log_creation:details' cl.pk %}">[View]</a></td>#}
-{#                                        <td>#}
-{#                                            <a href="{% url 'contact_log_creation:contact_log_edit' cl.pk %}">[Edit]</a>#}
-{#                                        </td>#}
-{#                                    </tr>#}
-{#                                {% endfor %}#}
-{#                            </tbody>#}
-{#                        </table>#}
-{#                        {% else %}#}
-{#                            <p>No contact logs associated to {{ object.firstName }} {{ object.lastName }}.</p>#}
-{#                        {% endif %}#}
-{#                        <br />#}
-{#                        <div style="text-align:center;">#}
-{#                            <a href="{% url 'contact_log_creation:contact_log_add_direct' object.pk %}">#}
-{#                                Create New Contact Log#}
-{#                            </a> |#}
-{#                            <a href="{% url 'contact_log_creation:contact_log_list_default' %}">#}
-{#                                View List of Contact Logs#}
-{#                            </a>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-{#    <div style="text-align:center;">#}
-{#        <a href="{% url 'add_member:member_update' object.id %}">Edit this Member</a> |#}
-{#        <a href="{% url 'add_member:member_add' %}">Add New Member</a> |#}
-{#        <a href="{% url 'add_member:member_list' %}">View All Members</a>#}
-{#    </div>#}
-{##}
-{#{% endblock %}#}

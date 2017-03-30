@@ -6,33 +6,65 @@
 
 {% block content %}
     <div class="container">
-        <div class="case_info panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Case Information</h3>
-            </div>
-            <div class="panel-body">
-                <p>Lead: {{ object.lead }}</p>
-                <p>Case Type: {{ object.get_caseType_display }}</p>
-                <p>Status: {{ object.status }}</p>
-                <p>Complainant: <em>{{ object.complainant }}</em></p>
-                <p>Additional Non-members: {{ object.additionalNonMembers }}</p>
+        <h2>Case #{{ object.id }} - {{ object.caseType }}</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>Lead</th>
+                <td>{{ object.lead }}</td>
+            </tr>
+            <tr>
+                <th>Complainant</th>
+                <td><a href="{% url 'add_member:member_detail' object.complainant_id %}">{{ object.complainant }}</a></td>
+            </tr>
+            <tr>
+                <th>Campus</th>
+                <td>{{ object.campus }}</td>
+            </tr>
+            {% if object.satellite %}
+            <tr>
+                <th>Satellite</th>
+                <td>{{ object.satellite }}</td>
+            </tr>
+            <tr>
+                <th>School</th>
+                <td>{{ object.get_school_display }}</td>
+            </tr>
+            {% if object.program %}
+            <tr>
+                <th>Program</th>
+            <td>{{ object.program }}</td>
+            </tr>
+            {% endif %}
+            {% endif %}
+        </table>
+{#        <div class="case_info panel panel-default">#}
+{#            <div class="panel-heading">#}
+{#                <h3 class="panel-title">Case Information</h3>#}
+{#            </div>#}
+{#            <div class="panel-body">#}
+{#                <p>Lead: {{ object.lead }}</p>#}
+{#                <p>Case Type: {{ object.get_caseType_display }}</p>#}
+{#                <p>Status: {{ object.status }}</p>#}
+{#                <p>Complainant: <em>{{ object.complainant }}</em></p>#}
+{#                <p>Additional Non-members: {{ object.additionalNonMembers }}</p>#}
+{##}
+{#                {% if object.get_caseType_display != "GRIEVANCES - INDIVIDUAL" %}#}
+{#                    <div class="panel panel-info">#}
+{#                        <div class="panel panel-heading">#}
+{#                            <p>#}
+{#                                {% if object.grievanceaward %}#}
+{#                                    {{ 'Recipients' }}#}
+{#                                {% else %}#}
+{#                                    {{ 'Members' }}#}
+{#                                {% endif %}#}
+{#                            </p>#}
+{#                        </div>#}
+{#                        {% include 'add_case/case_members.html' %}#}
+{#                    </div>#}
+{#                {% endif %}#}
+{#            </div>#}
+{#        </div>#}
 
-                {% if object.get_caseType_display != "GRIEVANCES - INDIVIDUAL" %}
-                    <div class="panel panel-info">
-                        <div class="panel panel-heading">
-                            <p>
-                                {% if object.grievanceaward %}
-                                    {{ 'Recipients' }}
-                                {% else %}
-                                    {{ 'Members' }}
-                                {% endif %}
-                            </p>
-                        </div>
-                        {% include 'add_case/case_members.html' %}
-                    </div>
-                {% endif %}
-            </div>
-        </div>
 
 
         {% if object.grievanceaward %}
