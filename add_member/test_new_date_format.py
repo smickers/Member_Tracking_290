@@ -1,10 +1,8 @@
-from django.test import TestCase, Client
-import re
-from django.db import IntegrityError
-from django.core.exceptions import ValidationError
+from django.test import TestCase, Client, LiveServerTestCase
+from django.urls import reverse
 from .models import Person
 
-class DateFormatTestCase(TestCase):
+class DateFormatTestCase(LiveServerTestCase):
     def setUp(self):
         tempPerson = Person()
         tempPerson.memberID = 123456789
@@ -37,7 +35,7 @@ class DateFormatTestCase(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}),)
         # Get the initial values found in the model & view
         #print(response.context)
         oldresponsevalues = response.context['form']
@@ -51,7 +49,7 @@ class DateFormatTestCase(TestCase):
         # Instantiate the Client
         client = Client()
         # Connect to the actual sites
-        response = client.get('/member/update/' + str(person_to_edit.pk) + '/')
+        response = client.get(reverse('add_member:member_update', kwargs={'pk': person_to_edit.pk}))
         # Get the initial values found in the model & view
         # print(response.context)
         oldresponsevalues = response.context['form']

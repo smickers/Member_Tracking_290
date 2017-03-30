@@ -10,6 +10,7 @@ from add_case.views import CaseSearchView
 from add_com.views import CommitteeSearchView
 from contact_log.views import ContactLogViewSet
 #from contact_log.views import ContactLogSearchView
+from grievance_award_creation.views import GrievanceAwardFilterView
 from . import views
 
 # initialize rest framework's router
@@ -28,7 +29,7 @@ router.register('member/filter', MemberFilterView, base_name='member-filter')
 #router.register('contact_log/search', ContactLogSearchView, base_name='contact-log-search')
 #router.register(r'contact_log/search', ContactLogViewSet, base_name='contact_log')
 router.register('contact_log/search', ContactLogViewSet)
-
+router.register('grievance_award/filter', GrievanceAwardFilterView)
 
 urlpatterns = [
     url(r'^index.html$', views.spfaView.as_view(), name='index_default'),
@@ -40,7 +41,7 @@ urlpatterns = [
     url(r'^meeting/', include('meeting.urls')),
     url(r'^addCase/', include('add_case.urls')),
     url(r'^contact_log/', include('contact_log.urls')),
-    url(r'^member/', include('add_member.urls')),
+    # url(r'^member/', include('add_member.urls')),
     url(r'^event/', include('create_event.urls')),
     url(r'^award/', include('award.urls')),
     url(r'^grievance/', include('grievance_award_creation.urls')),

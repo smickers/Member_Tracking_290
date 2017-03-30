@@ -2,10 +2,10 @@
     <body>
         <p id="award">Award ID: {{ grievance_award.id }}</p>
         <p>Grievance Type:
-            {%  if grievance_award.grievanceType == 7 %}
-                {{ 'Individual' }}
-            {% else %}
+            {%  if grievance_award.case.caseType == 7 %}
                 {{ 'Member' }}
+            {% else %}
+                {{ 'Policy' }}
             {% endif %}
         </p>
         <p>Award Amount: {{ grievance_award.awardAmount }}</p>
