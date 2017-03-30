@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.core.exceptions import ValidationError
 from .models import Person, MemberFiles
 from django.test import override_settings
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase, LiveServerTestCase
 from spfa_mt import settings
 from django.core.files import File
 from django.http import HttpResponse
@@ -12,8 +12,8 @@ import os.path
 import shutil
 
 
-@override_settings(MEDIA_ROOT='test/')
-class DocumentDownloadTestCase(StaticLiveServerTestCase):
+@override_settings(MEDIA_ROOT='media/')
+class DocumentDownloadTestCase(LiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         super(DocumentDownloadTestCase, cls).setUpClass()
