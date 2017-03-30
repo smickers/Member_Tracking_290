@@ -50,8 +50,12 @@
         {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}
-            <button type="submit" class="btn btn-primary">Save</button>
-            <button type="reset" class="btn btn-warning">Reset</button>
+            {% if form.instance.id %}
+                <input type="submit" class="btn btn-primary" name="submit" value="Update Event" />
+            {% else %}
+                <input type="submit" class="btn btn-primary" name="submit" value="Create Event" />
+            {% endif %}
+            <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
         {% endbuttons %}
     </form>
 </body>

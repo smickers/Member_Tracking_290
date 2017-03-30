@@ -16,7 +16,14 @@
         {% csrf_token %}
         {% bootstrap_form form %}
 
-        <button type="submit">Save</button><br />
+        {% buttons %}
+            {% if form.instance.id %}
+                <input type="submit" class="btn btn-primary" name="submit" value="Update Committee" />
+            {% else %}
+                <input type="submit" class="btn btn-primary" name="submit" value="Create Committee" />
+            {% endif %}
+            <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
+            {% endbuttons %}
         <a href="{%  url 'add_com:committee_list' %}">View All Committees</a>
     </form>
 {% endblock %}

@@ -45,10 +45,12 @@
             {% bootstrap_form form %}
             {% bootstrap_form_errors form %}
             {% buttons %}
-                <center>
-                <button class="btn btn-primary" type="submit" style="width: 49%">Submit</button>
-                <button class="btn btn-warning" type="reset" style="width: 49%">Reset</button>
-                </center>
+                {% if form.instance.id %}
+                    <input type="submit" class="btn btn-primary" name="submit" value="Update PD Award" />
+                {% else %}
+                    <input type="submit" class="btn btn-primary" name="submit" value="Create PD Award" />
+                {% endif %}
+                <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
             {% endbuttons %}
         </form>
     </div>

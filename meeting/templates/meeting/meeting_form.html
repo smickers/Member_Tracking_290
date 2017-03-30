@@ -74,10 +74,16 @@
         {% bootstrap_form form %}
         {% bootstrap_form_errors form %}
         {% buttons %}
-            <center>
-            <button class="btn btn-primary" type="submit" style="width: 49%">Submit</button>
-            <button class="btn btn-warning" type="reset" style="width: 49%">Reset</button>
-            </center>
+            {% if form.instance.id %}
+                {%  comment %}
+                These next few lines are used to determine whether
+                a create or modify button should be shown
+                {% endcomment %}
+                <button class="btn btn-primary" type="submit">Update Meeting</button>
+            {% else %}
+                <button class="btn btn-primary" type="submit">Create Meeting</button>
+            {% endif %}
+            <button class="btn btn-warning" type="reset">Reset</button>
         {% endbuttons %}
     </form>
 {% endblock %}
