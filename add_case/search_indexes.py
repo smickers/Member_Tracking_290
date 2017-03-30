@@ -7,6 +7,6 @@ class CasesIndex(indexes.SearchIndex, indexes.Indexable):
     id = indexes.IntegerField(use_template=True, indexed=False)
     auto_complete = indexes.EdgeNgramField(index_fieldname='text')
 
-    # Returns the person.
+    # Returns the case.
     def get_model(self):
         return Case

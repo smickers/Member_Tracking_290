@@ -10,6 +10,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from contact_log.models import contactLog
 import rest_framework_filters as filters
 from rest_framework import viewsets
+from rest_framework.pagination import LimitOffsetPagination
+from django.core.validators import EMPTY_VALUES
 
 
 class CaseCreate(CreateView):
@@ -66,6 +68,28 @@ class CaseList(ListView):
     template_name = 'add_case/cases_list.html'
 
 
+class EmptyStringFilter(filters.BooleanFilter):
+    """
+    Writing a custom filter so we can get all results with empty strings.
+    """
+    def filter(self, qs, value):
+        if value in EMPTY_VALUES:
+            return qs
+
+        exclude = self.exclude ^ (value is False)
+        method = qs.exclude if exclude else qs.filter
+
+        return method(**{self.name: ""})
+
+class FilterOffsetClass(LimitOffsetPagination):
+    """
+    This is our offset. It overwrites what we have in the settings page.
+    """
+    try:
+        default_limit = Case.objects.all().count()
+    except Exception as e:
+        default_limit = 100
+
 # View to set up case filter options
 class CaseFilter(filters.FilterSet):
     # Setting up the filters for date ranges
@@ -75,21 +99,32 @@ class CaseFilter(filters.FilterSet):
     cn_fn = filters.CharFilter(name='complainant__firstName', lookup_expr='icontains')
     cn_ln = filters.CharFilter(name='complainant__lastName', lookup_expr='icontains')
     # Satellites field is left blank or is null
-    sat_blank = filters.CharFilter(name='satellite', lookup_expr='isnull')
+    sat_blank = EmptyStringFilter(name='satellite')
     sat = filters.CharFilter(name='satellite', lookup_expr='icontains')
 
     class Meta:
         model = Case
-        fields = ['id', 'lead', 'complainant', 'campus', 'satellite', 'school',
-                  'program', 'department', 'caseType', 'status', 'additionalMembers',
-                  'additionalNonMembers', 'date']
+        fields = {'id': '__all__',
+                  'lead': '__all__',
+                  'complainant': '__all__',
+                  'campus': '__all__',
+                  'satellite': '__all__',
+                  'school': '__all__',
+                  'program': '__all__',
+                  'department': '__all__',
+                  'caseType': '__all__',
+                  'status': '__all__',
+                  'additionalMembers': '__all__',
+                  'additionalNonMembers': '__all__',
+                  'date': '__all__'}
 
 
 # View to allow serialized cases ... essentially, what allows our filtering to happen.
-class CaseViewSet(viewsets.ReadOnlyModelViewSet):
+class CaseFilterView(viewsets.ReadOnlyModelViewSet):
     queryset = Case.objects.all()
     serializer_class = CaseSearchSerializer
     filter_class = CaseFilter
     filter_fields = ['id', 'lead', 'complainant' 'campus', 'satellite', 'school',
                   'program', 'department', 'caseType', 'status', 'additionalMembers',
                   'additionalNonMembers', 'date_before', 'date_after']
+    pagination_class = FilterOffsetClass
