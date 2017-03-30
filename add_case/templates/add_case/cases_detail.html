@@ -3,7 +3,15 @@
 {% block metadata %}
     <title>Case Detail</title>
     <style>
+    #caselogs{
+        padding-left:0;
+        padding-right:0;
 
+    }
+    #caselogs_list{
+        height: 400px;
+        overflow-y: scroll;
+    }
     </style>
 {% endblock %}
 
@@ -36,13 +44,13 @@
 
                     </div>
                 {% endif %}
-                        <div class="panel panel-info col-sm-12" id="cls" style="padding-left:0; padding-right:0;">
-                    <div href="#cl_list" class="panel panel-heading" data-toggle="collapse">
+                        <div class="panel panel-info col-sm-12" id="caselogs" style="">
+                    <div href="#caselogs_list" class="panel panel-heading" data-toggle="collapse">
                         <h3 class="panel-title">Contact Logs Associated to Case {{ object.id }}
                         <span class="glyphicon glyphicon-chevron-down" style="float:right;"></span>
                         </h3>
                     </div>
-                    <div id="cl_list" class="panel panel-body collapse">
+                    <div id="caselogs_list" class="panel panel-body collapse">
                         {% if object.contactlog_set.count != 0 %}
                             <table class="table table-bordered table-hover">
                             <thead>
@@ -61,7 +69,7 @@
                                     <tr>
                                         <td>{{ cl.pk }}</td>
                                         <td>{{ cl.member }}</td>
-                                        <td>{{ cl.date }}</td>
+                                        <td>{{ cl.date|date:"F j, Y" }}</td>
                                         <td>{{ cl.description }}</td>
                                         <td> {{  cl.get_contactCode_display }}</td>
                                         <td><a href="{% url 'contact_log_creation:details' cl.pk %}">[View]</a></td>

@@ -52,7 +52,7 @@ class CaseDetail(DetailView):
         context = super(CaseDetail, self).get_context_data(**kwargs)
         try:
             context['grievance_award'] = GrievanceAward.objects.get(pk=self.kwargs['pk'])
-            context['contact_log'] = contactLog.objects.filter(pk =self.kwargs['pk'])
+            context['contact_log'] = contactLog.objects.filter(pk=self.kwargs['pk']).order_by('-date')
         except ObjectDoesNotExist:
             pass
 
