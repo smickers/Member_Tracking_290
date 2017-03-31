@@ -10,30 +10,92 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
-    <h2>Meeting Detail</h2>
+    <h2>Meeting #{{ object.pk }}: {{ object.description }}</h2>
+    <h3>General Information</h3>
+    <table class="table table-striped">
+        <tr>
+            <th>Committee</th>
+            <td><a href="{% url 'add_com:committee_detail' object.committee %}">{{ object.committee }}</a></td>
+        </tr>
+        <tr>
+            <th>SPFA Liaison</th>
+            <td>{{ object.liaison }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ object.description }}</td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <td>{{ object.date|date:'d M, Y' }}</td>
+        </tr>
+    </table>
 
-        <h3>Meeting ID: {{ object.id }}</h3>
-        <p>Committee: {{ object.committee }}</p>
-        <p>SPFA Liason: {{ object.liaison }}</p>
-        {%  for members in object.members_attending.all %}
-        <p>
-            Members Attending : {{ members.firstName }} {{ members.lastName }}
-        </p>
-        {% empty %}
-            <h2>
-                No members associated
-            </h2>
+    {% if object.members_attending %}
+    <h3>Members Present</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Member Name</th>
+                <th>Member ID</th>
+                <th>Member Link</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for member in object.members_attending.all %}
+            <tr>
+                <td>{{ member.firstName }} {{ member.lastName }}</td>
+                <td>{{ member.memberID }}</td>
+                <td><a href="{% url 'add_member:member_detail' member.pk %}">[Link]</a></td>
+            </tr>
         {% endfor %}
-        <p>Description: {{ object.description }}</p>
-        <p>Date: {{ object.date }}</p>
-        <p>Files(s) Associated to Meeting{{ object.id }}:</p>
-        {% for file in object.get_files %}
-            <p>{{ file.fileName }}: {{ file.fileDesc }}</p>
-        {% endfor %}
-        {%  buttons %}
-            <input type="button" value="View Meeting List" class="btn btn-primary" onclick="location.href='{% url 'meeting:meeting_list' %}'" />
-            <input type="button" value="Edit Meeting" class="btn btn-warning" onclick="location.href='{% url "meeting:meeting_edit" object.id %}'" />
-        {%  endbuttons %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    {% if object.get_files %}
+        <h3>Related Filse</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>File Name</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for file in object.get_files %}
+                <tr>
+                    <td>{{ file.fileName }}</td>
+                    <td>{{ file.fileDesc }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{#    <h2>Meeting Detail</h2>#}
+{##}
+{#        <h3>Meeting ID: {{ object.id }}</h3>#}
+{#        <p>Committee: {{ object.committee }}</p>#}
+{#        <p>SPFA Liason: {{ object.liaison }}</p>#}
+{#        {%  for members in object.members_attending.all %}#}
+{#        <p>#}
+{#            Members Attending : {{ members.firstName }} {{ members.lastName }}#}
+{#        </p>#}
+{#        {% empty %}#}
+{#            <h2>#}
+{#                No members associated#}
+{#            </h2>#}
+{#        {% endfor %}#}
+{#        <p>Description: {{ object.description }}</p>#}
+{#        <p>Date: {{ object.date }}</p>#}
+{#        <p>Files(s) Associated to Meeting{{ object.id }}:</p>#}
+{#        {% for file in object.get_files %}#}
+{#            <p>{{ file.fileName }}: {{ file.fileDesc }}</p>#}
+{#        {% endfor %}#}
+{#        {%  buttons %}#}
+{#            <input type="button" value="View Meeting List" class="btn btn-primary" onclick="location.href='{% url 'meeting:meeting_list' %}'" />#}
+{#            <input type="button" value="Edit Meeting" class="btn btn-warning" onclick="location.href='{% url "meeting:meeting_edit" object.id %}'" />#}
+{#        {%  endbuttons %}#}
 </body>
 {% include 'footer.html' %}
 </html>

@@ -20,7 +20,7 @@
     {# TODO: make the context render a key value pair (use for loop yield) #}
 {#    <h1>End Field List</h1>#}
 
-    <div class="container"> 
+    <div class="container">
         <h2>Case #{{ object.id }} - {{ object.get_caseType_display }}</h2>
         <h3>General Information</h3>
         <table class="table table-striped">
@@ -116,8 +116,8 @@
         <hr>
         <center>
             <a href="{% url 'add_case:case_edit' object.id %}">Edit this Case</a> |
-            <a href="{% url 'add_case:case_add' %}">Create New Case</a> |
-            <a href="{% url 'add_case:case_list' %}">View List of Cases</a>
+            <a href="{% url 'add_case:case_add' %}">Add new Case</a> |
+            <a href="{% url 'add_case:case_list' %}">View all Cases</a>
         </center>
 
     </div>
