@@ -1,18 +1,28 @@
 {% extends 'base.html' %}
-
+{% load bootstrap3 %}
 {% block metadata %}
     <title>Case Detail</title>
 {% endblock %}
 
 {% block content %}
+{#    <h1>Field list</h1>#}
+
+    {# TODO: This seems to work - we need to loop through 'fields', not 'form' as suggested online #}
+    {# This makes sense though, as we're putting items into the fields variable in the forms.py file. #}
+    {# Ex. self.fields['satellite'].widget = .... #}
+{#    {% for field in fields %}#}
+{#      {{ field}} <br />#}
+{#    {% endfor %}#}
     {# TODO: Experimental for loop   #}
-    {#    {% for i in fields %}#}
-    {#    {{ i }}#}
-    {#    {% endfor %}#}
+{#        {% for field in form %}#}
+{#        {{ i }}#}
+{#        {% endfor %}#}
     {# TODO: make the context render a key value pair (use for loop yield) #}
+{#    <h1>End Field List</h1>#}
 
     <div class="container">
         <h2>Case #{{ object.id }} - {{ object.get_caseType_display }}</h2>
+        <h3>General Information</h3>
         <table class="table table-striped">
             <tr>
                 <th>Lead</th>
@@ -64,72 +74,51 @@
                 <td>{{ object.date }}</td>
             </tr>
 
-            <tr>
-                <th>Additional Members</th>
-                <td>{{ object.additionalNonMembers }}</td>
-            </tr>
+{#            <tr>#}
+{#                <th>Additional Members</th>#}
+{#                <td>{{ object.additionalNonMembers }}</td>#}
+{#            </tr>#}
 
         </table>
 
 
 {# TODO: Copy paste after#}
-{#            {% if object.additionalMembers %}#}
-{#            <tr>#}
-{#                <th>Additional Members</th>#}
-{#                #}
-{#                <td>{{ object.get_department_display }}</td>#}
-{#            </tr>#}
-{#            {% endif %}    #}
-
-
-{#        <div class="case_info panel panel-default">#}
-{#            <div class="panel-heading">#}
-{#                <h3 class="panel-title">Case Information</h3>#}
-{#            </div>#}
-{#            <div class="panel-body">#}
-{#                <p>Lead: {{ object.lead }}</p>#}
-{#                <p>Case Type: {{ object.get_caseType_display }}</p>#}
-{#                <p>Status: {{ object.status }}</p>#}
-{#                <p>Complainant: <em>{{ object.complainant }}</em></p>#}
-{#                <p>Additional Non-members: {{ object.additionalNonMembers }}</p>#}
-{##}
-{#                {% if object.get_caseType_display != "GRIEVANCES - INDIVIDUAL" %}#}
-{#                    <div class="panel panel-info">#}
-{#                        <div class="panel panel-heading">#}
-{#                            <p>#}
-{#                                {% if object.grievanceaward %}#}
-{#                                    {{ 'Recipients' }}#}
-{#                                {% else %}#}
-{#                                    {{ 'Members' }}#}
-{#                                {% endif %}#}
-{#                            </p>#}
-{#                        </div>#}
-{#                        {% include 'add_case/case_members.html' %}#}
-{#                    </div>#}
-{#                {% endif %}#}
-{#            </div>#}
-{#        </div>#}
-
-
+            {% if object.additionalMembers %}
+                <h3>Members Involved</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Member ID</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for curr_member in object.additionalMembers.all %}
+                        <tr>
+                            <td>{{ curr_member.firstName }} {{ curr_member.lastName }}</td>
+                            <td>{{ curr_member.memberID }}</td>
+                            <td><a href="{% url 'add_member:member_detail' curr_member.pk %}">[Link]</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
 
         {% if object.grievanceaward %}
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">Grievance Award</h3>
-              </div>
-              <div class="panel-body">
+            <h3>Grievance Award</h3>
                   {% include 'grievance_award_creation/grievanceaward_actual_detail.html'  %}
-              </div>
-            </div>
-
-
         {% endif %}
-
-
-
-        <a href="{% url 'add_case:case_edit' object.pk %}">Edit This Case</a><br />
-        <a href="{%  url 'add_case:case_add' %}">Add New Case</a><br />
-        <a href="{%  url 'add_case:case_list' %}">View All Cases</a>
+{#        {% endblock %}#}
+        {% buttons %}
+        <input type="button" class="btn btn-primary" value="Back" onclick="window.history.back()" />
+        {% endbuttons %}
+        <hr>
+        <center>
+            <a href="{% url 'add_case:case_edit' object.id %}">Edit this Case</a> |
+            <a href="{% url 'add_case:case_add' %}">Create New Case</a> |
+            <a href="{% url 'add_case:case_list' %}">View List of Cases</a>
+        </center>
 
     </div>
 {% endblock %}
