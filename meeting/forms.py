@@ -87,8 +87,8 @@ class MeetingForm(ModelForm):
             'date': SelectDateWidget(months=kvp.MONTHS, years=YEARS),
             'description': Textarea(),
             'members_attending': forms.SelectMultiple(
-                attrs={'class': 'js-members_attending'}),
+                attrs={'class': 'js-members_attending', 'style': 'width: 100%'}),
             'committee': forms.Select(
-                attrs={'class': 'js-committee'})
+                attrs={'class': 'js-committee', 'style': 'width: 100%'})
         }
 

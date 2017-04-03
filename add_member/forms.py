@@ -67,19 +67,36 @@ class PersonForm(ModelForm):
     class Meta:
         model = Person
         # specifies which field are going to be used on the form
-        fields = '__all__'
-
+        fields = ['memberID',
+                  'firstName',
+                  'middleName',
+                  'lastName',
+                  'socNum',
+                  'city',
+                  'mailAddress',
+                  'mailAddress2',
+                  'pCode',
+                  'bDay',
+                  'gender',
+                  'hPhone',
+                  'cPhone',
+                  'hEmail',
+                  'campus',
+                  'jobType',
+                  'committee',
+                  'memberImage']
         # specifies labels for all the fields found in the model
         labels = {
-            'memberID': 'Member ID/Saskpoly ID',
+            'memberID': 'SaskPolytech ID',
             'firstName': 'First Name',
             'middleName': 'Middle Name',
-            'socNum': 'SIN',
+            'lastName': 'Last Name',
+            'socNum': 'Social Insurance Number',
             'city': 'City',
             'mailAddress': 'Mail Address',
             'mailAddress2': 'Mail Address 2',
-            'pCode':'Postal Code',
-            'bDay':'Birth Date',
+            'pCode': 'Postal Code',
+            'bDay': 'Birth Date',
             'gender': 'Gender',
             'hPhone': 'Home Phone',
             'cPhone': 'Cell Phone',

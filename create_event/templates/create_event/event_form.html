@@ -1,5 +1,6 @@
 {% include 'nav.html' %}
 {%  load bootstrap3 %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,8 +45,20 @@
 
 
      </script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'spfa_mt/select2_responsive.css' %}" />
 </head>
 <body>
+<div class="container">
+    {% if form.instance.id %}
+    {%  comment %}
+    These next few lines are used to determine whether
+    a create or modify heading should be shown
+    {% endcomment %}
+    <h2>Edit Event</h2>
+    {% else %}
+    <h2>Create an Event</h2>
+    {% endif %}
     <form action="" method="POST" enctype="multipart/form-data" class="form">
         {% csrf_token %}
         {% bootstrap_form form %}
@@ -58,6 +71,7 @@
             <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
         {% endbuttons %}
     </form>
+</div>
 </body>
 {% include 'footer.html' %}
 </html>

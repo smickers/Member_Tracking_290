@@ -1,16 +1,18 @@
 {% extends 'base.html' %}
 
 {%  load bootstrap3 %}
-
+{% load static %}
 {% block metadata %}
     <title>Create a Committee</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'spfa_mt/select2_responsive.css' %}" />
 {% endblock %}
 
 {% block content %}
+    <div class="container">
 {% if form.instance.id %}
-    <h2><strong>Edit Committee</strong></h2>
+    <h2>Edit Committee</h2>
 {% else %}
-    <h2><strong>Create A New Committee</strong></h2>
+    <h2>Create A New Committee</h2>
 {% endif %}
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -26,4 +28,5 @@
             {% endbuttons %}
         <a href="{%  url 'add_com:committee_list' %}">View All Committees</a>
     </form>
+    </div>
 {% endblock %}

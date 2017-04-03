@@ -192,11 +192,18 @@
 {% block metadata %}
     <link  rel="stylesheet" type="text/css"
            href="{% static 'spfa_mt/libraries/select2/select2.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'spfa_mt/select2_responsive.css' %}" />
 {%  endblock%}
+
+
 
 {% block content %}
     <div class="container">
-        <h1><strong>Create a Case</strong></h1>
+        {% if form.instance.id %}
+            <h2>Edit a Case</h2>
+        {% else %}
+            <h2>Create a Case</h2>
+        {% endif %}
         <form class="form form-group" action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form_errors">

@@ -6,7 +6,7 @@
 {% block scripts %}
     {% load static %}
     <script src="{% static 'spfa_mt/libraries/select2/select2.min.js' %}"></script>
-    <link  rel="stylesheet" type="text/css" href="{% static 'spfa_mt/libraries/select2/select2.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'spfa_mt/libraries/select2/select2.min.css' %}" />
     {% load bootstrap3 %}
     <script type="text/javascript">
             $(document).ready(function() {
@@ -69,13 +69,19 @@
 {% endblock %}
 
 {% block content %}
+    <div class="container">
+    {% if form.instance.id %}
+        <h2>Edit Meeting</h2>
+    {% else %}
+        <h2>Add a Meeting</h2>
+    {% endif %}
     <form action="" method="POST" class="form" enctype="multipart/form-data">
         {% csrf_token %}
         {% bootstrap_form form %}
         {% bootstrap_form_errors form %}
         {% buttons %}
             {% if form.instance.id %}
-                {%  comment %}
+                {% comment %}
                 These next few lines are used to determine whether
                 a create or modify button should be shown
                 {% endcomment %}
@@ -86,4 +92,5 @@
             <button class="btn btn-warning" type="reset">Reset</button>
         {% endbuttons %}
     </form>
+    </div>
 {% endblock %}

@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
 {% load bootstrap3 %}
-
+{% load static %}
 {% block metadata %}
+    <script src="{% static 'spfa_mt/libraries/select2/select2.min.js' %}"></script>
+    <link  rel="stylesheet" type="text/css"
+           href="{% static 'spfa_mt/libraries/select2/select2.min.css' %}" />
     {% if form.instance.id %}
         <title>Update Education Award</title>
     {% else %}
         <title>Create Education Award</title>
     {% endif %}
+    <link rel="stylesheet" type="text/css" href="{% static 'spfa_mt/select2_responsive.css' %}" />
 {% endblock %}
 
 {% block scripts %}

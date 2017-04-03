@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 {%  load bootstrap3 %}
+{% load static %}
 
 {% block metadata %}
     <title>Contact Log Creation</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'spfa_mt/select2_responsive.css' %}" />
     <style>
         .sub-heading {
             margin: 0 0 0.3em 0;
@@ -110,15 +112,14 @@
 {% block content %}
     <div class="container">
 
-        <h1 class="main-heading">Contact Log</h1>
         {% if form.instance.id %}
         {%  comment %}
         These next few lines are used to determine whether
         a create or modify heading should be shown
         {% endcomment %}
-        <h3 class="sub-heading"><i><strong>Modify</strong></i></h3>
+        <h2>Edit Contact Log</h2>
         {% else %}
-        <h3 class="sub-heading"><i><strong>Creation</strong></i></h3>
+        <h2>Create a Contact Log</h2>
         {% endif %}
         <form action="" method="post" enctype="multipart/form-data" class="form">
             {% csrf_token %}
