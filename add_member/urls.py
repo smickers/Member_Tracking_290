@@ -7,7 +7,7 @@ app_name = 'add_member'
 
 urlpatterns = [
     url(r'add/$', views.PersonCreate.as_view(), name='member_add'),
-    url(r'bulkcreate/$', views.MemberFileUploadView.as_view(), name='member_add'),
+    url(r'bulkcreate/$', views.MemberFileUploadView.as_view(), name='bulk_create'),
     url(r'exceltojson/(?P<pk>[-\d]+)$', views.excel_to_json, name='excel-to-json'),
     url(r'json_to_members/', views.json_to_members, name='json-to-members'),
     url(r'upload/$', views.FileListCreateView.as_view(), name='excel-upload'),
