@@ -10,6 +10,7 @@ from spfa_mt import kvp
 from spfa_mt.settings import MAX_FILE_SIZE, FILE_EXT_TO_ACCEPT
 
 
+
 # Name:       CaseSatellite
 # Purpose:    This is a satellite location to be selected. Saves data to the DB.
 class CaseSatellite(models.Model):
