@@ -10,6 +10,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
+    <div class="container">
     <h2>Meeting #{{ object.pk }}: {{ object.description }}</h2>
     <h3>General Information</h3>
     <table class="table table-striped">
@@ -72,30 +73,17 @@
             </tbody>
         </table>
     {% endif %}
-{#    <h2>Meeting Detail</h2>#}
-{##}
-{#        <h3>Meeting ID: {{ object.id }}</h3>#}
-{#        <p>Committee: {{ object.committee }}</p>#}
-{#        <p>SPFA Liason: {{ object.liaison }}</p>#}
-{#        {%  for members in object.members_attending.all %}#}
-{#        <p>#}
-{#            Members Attending : {{ members.firstName }} {{ members.lastName }}#}
-{#        </p>#}
-{#        {% empty %}#}
-{#            <h2>#}
-{#                No members associated#}
-{#            </h2>#}
-{#        {% endfor %}#}
-{#        <p>Description: {{ object.description }}</p>#}
-{#        <p>Date: {{ object.date }}</p>#}
-{#        <p>Files(s) Associated to Meeting{{ object.id }}:</p>#}
-{#        {% for file in object.get_files %}#}
-{#            <p>{{ file.fileName }}: {{ file.fileDesc }}</p>#}
-{#        {% endfor %}#}
-{#        {%  buttons %}#}
-{#            <input type="button" value="View Meeting List" class="btn btn-primary" onclick="location.href='{% url 'meeting:meeting_list' %}'" />#}
-{#            <input type="button" value="Edit Meeting" class="btn btn-warning" onclick="location.href='{% url "meeting:meeting_edit" object.id %}'" />#}
-{#        {%  endbuttons %}#}
+
+    {% buttons %}
+    <input type="button" class="btn btn-primary" value="Back" onclick="window.history.back()" />
+    {% endbuttons %}
+    <hr>
+    <center>
+        <a href="{% url 'meeting:meeting_edit' object.pk %}">Edit this Meeting</a> |
+        <a href="{% url 'meeting:create_meeting' %}">Add new Meeting</a> |
+        <a href="{% url 'meeting:meeting_list' %}">View all Meetings</a>
+    </center>
+</div>
 </body>
 {% include 'footer.html' %}
 </html>

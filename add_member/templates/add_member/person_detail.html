@@ -2,7 +2,31 @@
 {% load bootstrap3 %}
 {% block metadata %}
     <title>Member Details</title>
+    <style>
+    #file_header {
+        padding-right: 0;
+        padding-left: 0;
+        border: none;
+        background-color: transparent;
+        color: rgb(51, 51, 51);
+    }
+
+    #file_header_h3 {
+        margin: 0;
+    }
+
+    .panel-info {
+        padding: 0;
+        border: none;
+    }
+
+    #file_list {
+        padding: 0;
+    }
+</style>
 {% endblock %}
+
+
 
 
 {% block content %}
@@ -141,7 +165,11 @@
             </table>
 
             {% if object.memberfiles_set.all %}
-                <h3>Related Files</h3>
+                <div class="panel panel-info col-sm-12">
+                <div href="#file_list" class="panel panel-heading col-sm-12" data-toggle="collapse" id="file_header">
+                <h3 id="file_header_h3">Related Files <span class="glyphicon glyphicon-chevron-down" style="float: right;"></span></h3>
+                </div>
+                <div class="panel-body collapse" id="file_list">
                 <table class="table table-striped">
                 <thead>
                     <th>File Name</th>
@@ -156,6 +184,8 @@
                     </tr>
                 {% endfor %}
                 </table>
+                </div>
+                </div>
             {% endif %}
 
             {% if object.contactlog_set.count > 0 %}
@@ -177,8 +207,6 @@
                 {% endfor %}
                 </table>
             {% endif %}
-{#    {{ object.memberfiles_set.all }}#}
-
 
         {% buttons %}
         <input type="button" class="btn btn-primary" value="Back" onclick="window.history.back()" />
