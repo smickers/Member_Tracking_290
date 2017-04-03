@@ -28,11 +28,28 @@
                     <th>Date</th>
                     <td>{{ grievance_award.date| date:"d, M. Y" }}</td>
                 </tr>
-
 {#                <th>Description</th>#}
 {#                <th>Date</th>#}
             </tbody>
         </table>
+        {% if grievance_award.file_name %}
+            <h3>Related File Information</h3>
+            <table class="table table-striped">
+                <tr>
+                    <th>Document: </th>
+                    <td><a id="download" target="_blank" href="../../media/grievance/{{ grievance_award.file_name }}">{{ grievance_award.file_name }}</a></td>
+                </tr>
+                <tr>
+                    <th>Document Description: </th>
+                    <td>{{ grievance_award.file_desc }}</td>
+                </tr>
+                <tr>
+                    <th>Document Upload Date:</th>
+                    <td>{{ grievance_award.file_date_uploaded|date:"d, M. Y" }}</td>
+                </tr>
+            </table>
+        {% endif %}
+
 {#        <p id="award">Award ID: {{ grievance_award.id }}</p>#}
 {#        <p>Grievance Type:#}
 {#            #}
