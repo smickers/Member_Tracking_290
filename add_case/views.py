@@ -3,7 +3,7 @@ from .forms import CaseForm
 from django.views.generic import *
 from django.views.generic.edit import *
 from drf_haystack.viewsets import HaystackViewSet
-from serializer import CaseSearchSerializer
+from serializer import CaseSearchSerializer, CaseFilterSerializer
 from drf_haystack.filters import HaystackAutocompleteFilter
 from grievance_award_creation.models import GrievanceAward
 from django.core.exceptions import ObjectDoesNotExist
@@ -12,6 +12,7 @@ import rest_framework_filters as filters
 from rest_framework import viewsets
 from rest_framework.pagination import LimitOffsetPagination
 from django.core.validators import EMPTY_VALUES
+from rest_framework import serializers
 
 
 class CaseCreate(CreateView):
@@ -63,7 +64,6 @@ class CaseDetail(DetailView):
         return context
 
 
-
 # view for listing all the members found in the db
 class CaseList(ListView):
     model = Case
@@ -83,20 +83,12 @@ class EmptyStringFilter(filters.BooleanFilter):
 
         return method(**{self.name: ""})
 
-class FilterOffsetClass(LimitOffsetPagination):
-    """
-    This is our offset. It overwrites what we have in the settings page.
-    """
-    try:
-        default_limit = Case.objects.all().count()
-    except Exception as e:
-        default_limit = 100
 
 # View to set up case filter options
 class CaseFilter(filters.FilterSet):
     # Setting up the filters for date ranges
-    date_before = filters.DateFilter(name='date', lookup_expr='before')
-    date_after = filters.DateFilter(name='date', lookup_expr='after')
+    date_before = filters.DateFilter(name='date', lookup_expr='gte')
+    date_after = filters.DateFilter(name='date', lookup_expr='lte')
     # Filters for complainants by firstName, lastName, and blank
     cn_fn = filters.CharFilter(name='complainant__firstName', lookup_expr='icontains')
     cn_ln = filters.CharFilter(name='complainant__lastName', lookup_expr='icontains')
@@ -106,27 +98,27 @@ class CaseFilter(filters.FilterSet):
 
     class Meta:
         model = Case
-        fields = {'id': '__all__',
-                  'lead': '__all__',
-                  'complainant': '__all__',
-                  'campus': '__all__',
-                  'satellite': '__all__',
-                  'school': '__all__',
-                  'program': '__all__',
-                  'department': '__all__',
-                  'caseType': '__all__',
-                  'status': '__all__',
-                  'additionalMembers': '__all__',
-                  'additionalNonMembers': '__all__',
-                  'date': '__all__'}
+        fields = ['id', 'lead', 'complainant', 'campus', 'satellite', 'school',
+                  'program', 'department', 'caseType', 'status', 'additionalMembers',
+                  'additionalNonMembers', 'date']
+
+
+class FilterOffsetClass(LimitOffsetPagination):
+    """
+    This is our offset. It overwrites what we have in the settings page.
+    """
+    try:
+        default_limit = Case.objects.all().count()
+    except Exception as e:
+        default_limit = 100
 
 
 # View to allow serialized cases ... essentially, what allows our filtering to happen.
 class CaseFilterView(viewsets.ReadOnlyModelViewSet):
     queryset = Case.objects.all()
-    serializer_class = CaseSearchSerializer
+    serializer_class = CaseFilterSerializer
     filter_class = CaseFilter
-    filter_fields = ['id', 'lead', 'complainant' 'campus', 'satellite', 'school',
+    filter_fields = ['id', 'lead', 'complainant', 'campus', 'satellite', 'school',
                   'program', 'department', 'caseType', 'status', 'additionalMembers',
-                  'additionalNonMembers', 'date_before', 'date_after']
+                  'additionalNonMembers', 'date']
     pagination_class = FilterOffsetClass

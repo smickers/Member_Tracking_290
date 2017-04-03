@@ -6,7 +6,7 @@ from rest_framework import routers
 from add_member.views import MemberSearchView, MemberFilterView
 from django.conf.urls.static import static
 import settings
-from add_case.views import CaseSearchView
+from add_case.views import CaseSearchView, CaseFilterView
 from add_com.views import CommitteeSearchView
 from contact_log.views import ContactLogViewSet
 #from contact_log.views import ContactLogSearchView
@@ -21,6 +21,7 @@ router.register('members_list/search', MemberSearchView, base_name='member-searc
 
 # route the case search functionality to 'case_list/view' url
 router.register('case_list/search', CaseSearchView, base_name='case-search')
+router.register('case_list/filter', CaseFilterView, base_name='case-filter')
 
 # route the committee search functionality to 'meeting/view' url
 router.register('committee_list/search', CommitteeSearchView, base_name='committee-search')

@@ -9,3 +9,13 @@ class CaseSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Case
         fields = '__all__'
+        ignore_fields = ["auto_complete"]
+        field_aliases = {
+            'q': 'auto_complete'
+        }
+
+
+class CaseFilterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Case
+        fields = '__all__'
