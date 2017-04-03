@@ -2,6 +2,17 @@
 
 {% block metadata %}
     <title>Case Detail</title>
+    <style>
+    #caselogs{
+        padding-left:0;
+        padding-right:0;
+
+    }
+    #caselogs_list{
+        max-height: 400px;
+        overflow-y: scroll;
+    }
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -31,6 +42,50 @@
                         {% include 'add_case/case_members.html' %}
                     </div>
                 {% endif %}
+                        <div class="panel panel-info col-sm-12" id="caselogs" style="">
+                    <div href="#caselogs_list" class="panel panel-heading" data-toggle="collapse">
+                        <h3 class="panel-title">Contact Logs Associated to Case {{ object.id }}
+                        <span class="glyphicon glyphicon-chevron-down" style="float:right;"></span>
+                        </h3>
+                    </div>
+                    <div id="caselogs_list" class="panel panel-body collapse">
+                        {% if object.contactlog_set.count != 0 %}
+                            <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr class="info">
+                                <th>ID</th>
+                                <th>Related Member</th>
+                                <th>Date</th>
+                                <th class="col-md-4">Description</th>
+                                <th>Contact Code</th>
+                                <th>File</th>
+                                <th>Edit</th>
+                            </tr>
+                            </thead>
+                            <tbody id="contact-log-table-data">
+                                {% for cl in object.contactlog_set.all %}
+                                    <tr>
+                                        <td>{{ cl.pk }}</td>
+                                        <td>{{ cl.member }}</td>
+                                        <td>{{ cl.date|date:"F j, Y" }}</td>
+                                        <td>{{ cl.description }}</td>
+                                        <td> {{  cl.get_contactCode_display }}</td>
+                                         {% if cl.containsfile %}
+                                                <td>{{ cl.getfilename }}</td>
+                                         {% else %}
+                                                <td>No File</td>
+                                        {% endif %}
+                                        <td>
+                                            <a href="{% url 'contact_log_creation:contact_log_edit' cl.pk %}">[Edit]</a>
+                                        </td>
+
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                            <p>No contact logs available.</p>
+                        {% endif %}
             </div>
         </div>
 
