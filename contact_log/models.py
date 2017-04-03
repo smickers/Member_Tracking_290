@@ -23,6 +23,15 @@ class contactLog(models.Model):
     contactCode = models.CharField(max_length=12, choices=kvp.CONTACT_LOG_STATUSES, default='Phone')
     relatedCase = models.ForeignKey(Case, blank=True, null=True)
 
+
+    #Class: Meta
+    #Purpose: Created this inner class so contact logs will be ordered in descending date
+        #this affects ALL INSTANCES of contact logs
+    class Meta:
+        #contacts logs will be ordered by descending date
+        ordering = ["-date"]
+
+
     # Function: get_absolute_url
     # Purpose: Returns a URL to redirect the user to after submitting
     # a new contact log entry.

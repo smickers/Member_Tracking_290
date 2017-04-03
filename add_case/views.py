@@ -55,10 +55,12 @@ class CaseDetail(DetailView):
             fields = [f.name for f in Case._meta.get_fields()]
             context['fields'] = fields
             context['grievance_award'] = GrievanceAward.objects.get(pk=self.kwargs['pk'])
+            context['contact_log'] = contactLog.objects.filter(pk=self.kwargs['pk'])
         except ObjectDoesNotExist:
             pass
 
         return context
+
 
 
 # view for listing all the members found in the db
