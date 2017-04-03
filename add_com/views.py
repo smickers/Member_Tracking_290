@@ -15,14 +15,15 @@ class ComCreate(SuccessMessageMixin, CreateView):
     model = Committee
     form_class = ComForm
     form = ComForm()
-    success_url = reverse_lazy('add_com:committee_add')
-    success_message = 'Committee created.'
-
 
 # Creates the 'success' view
 class ComCreateSuccess(DetailView):
     model = Committee
     template_name = 'add_com/committee_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ComCreateSuccess, self).get_context_data(**kwargs)
+        return context
     # # FUNCTION: get_context_data
     # # PURPOSE: Gets the context data from the previous page. In this case,
     # #           it gathers the primary key (pk)
