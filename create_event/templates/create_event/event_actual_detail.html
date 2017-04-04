@@ -10,7 +10,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
    <style>
-        #file_header {
+        #attending_members_header {
             padding-right: 0;
             padding-left: 0;
             border: none;
@@ -18,7 +18,7 @@
             color: rgb(51, 51, 51);
         }
 
-        #file_header_h3 {
+        #attending_members_h3 {
             margin: 0;
         }
 
@@ -27,10 +27,26 @@
             border: none;
         }
 
-        #file_list {
+        #attending_members {
             padding: 0;
         }
     </style>
+    <script>
+        // These next few lines of code are courtesy of:
+        // http://stackoverflow.com/questions/19024218/bootstrap-3-collapse-change-chevron-icon-on-click/
+        $(document).ready(function()
+        {
+            $("#attending_members").on("shown.bs.collapse", function()
+            {
+               $("#attending_members_chevron").addClass('glyphicon-chevron-up').removeClass('glyphicon-chevron-down');
+            });
+
+            $('#attending_members').on('hidden.bs.collapse', function()
+            {
+                $("#attending_members_chevron").addClass('glyphicon-chevron-down').removeClass('glyphicon-chevron-up');
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="container">
@@ -53,10 +69,10 @@
 
         {% if object.members.all %}
         <div class="panel panel-info col-sm-12">
-            <div href="#file_list" class="panel panel-heading col-sm-12" data-toggle="collapse" id="file_header">
-            <h3 id="file_header_h3">Attending Members<span class="glyphicon glyphicon-chevron-down" style="float: right;"></span></h3>
+            <div href="#attending_members" class="panel panel-heading col-sm-12" data-toggle="collapse" id="attending_members_header">
+            <h3 id="attending_members_h3">Attending Members<span class="glyphicon glyphicon-chevron-down" id="attending_members_chevron" style="float: right;"></span></h3>
             </div>
-            <div class="panel-body collapse" id="file_list">
+            <div class="panel-body collapse" id="attending_members">
 {#        <h3></h3>#}
         <table class="table table-striped">
         <thead>
