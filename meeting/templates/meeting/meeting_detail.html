@@ -8,32 +8,123 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <style>
+    #attending_members_header {
+        padding-right: 0;
+        padding-left: 0;
+        border: none;
+        background-color: transparent;
+        color: rgb(51, 51, 51);
+    }
+
+    #attending_members_h3 {
+        margin: 0;
+    }
+
+    .panel-info {
+        padding: 0;
+        border: none;
+    }
+    </style>
+
+    <script>
+        // These next few lines of code are courtesy of:
+        // http://stackoverflow.com/questions/19024218/bootstrap-3-collapse-change-chevron-icon-on-click/
+        $(document).ready(function()
+        {
+            $("#attending_members").on("shown.bs.collapse", function()
+            {
+               $("#attending_members_chevron").addClass('glyphicon-chevron-up').removeClass('glyphicon-chevron-down');
+            });
+
+            $('#attending_members').on('hidden.bs.collapse', function()
+            {
+                $("#attending_members_chevron").addClass('glyphicon-chevron-down').removeClass('glyphicon-chevron-up');
+            });
+        });
+    </script>
 </head>
 <body>
-    <h2>Meeting Detail</h2>
+    <div class="container">
+    <h2>Meeting #{{ object.pk }}: {{ object.description }}</h2>
+    <h3>General Information</h3>
+    <table class="table table-striped">
+        <tr>
+            <th>Committee</th>
+            <td><a href="{% url 'add_com:committee_detail' object.committee %}">{{ object.committee }}</a></td>
+        </tr>
+        <tr>
+            <th>SPFA Liaison</th>
+            <td>{{ object.liaison }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ object.description }}</td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <td>{{ object.date|date:'d M, Y' }}</td>
+        </tr>
+    </table>
 
-        <h3>Meeting ID: {{ object.id }}</h3>
-        <p>Committee: {{ object.committee }}</p>
-        <p>SPFA Liason: {{ object.liaison }}</p>
-        {%  for members in object.members_attending.all %}
-        <p>
-            Members Attending : {{ members.firstName }} {{ members.lastName }}
-        </p>
-        {% empty %}
-            <h2>
-                No members associated
-            </h2>
+    {% if object.members_attending %}
+    <div class="panel panel-info col-sm-12">
+    <div href="#attending_members" class="panel panel-heading col-sm-12" data-toggle="collapse" id="attending_members_header">
+    <h3 id="attending_members_h3">Attending Members<span id="attending_members_chevron" class="glyphicon glyphicon-chevron-down" style="float: right;"></span></h3>
+    </div>
+    <div class="panel-body collapse" id="attending_members">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Member Name</th>
+                <th>Member ID</th>
+                <th>Member Link</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for member in object.members_attending.all %}
+            <tr>
+                <td>{{ member.firstName }} {{ member.lastName }}</td>
+                <td>{{ member.memberID }}</td>
+                <td><a href="{% url 'add_member:member_detail' member.pk %}">[Link]</a></td>
+            </tr>
         {% endfor %}
-        <p>Description: {{ object.description }}</p>
-        <p>Date: {{ object.date }}</p>
-        <p>Files(s) Associated to Meeting{{ object.id }}:</p>
-        {% for file in object.get_files %}
-            <p>{{ file.fileName }}: {{ file.fileDesc }}</p>
-        {% endfor %}
-        {%  buttons %}
-            <input type="button" value="View Meeting List" class="btn btn-primary" onclick="location.href='{% url 'meeting:meeting_list' %}'" />
-            <input type="button" value="Edit Meeting" class="btn btn-warning" onclick="location.href='{% url "meeting:meeting_edit" object.id %}'" />
-        {%  endbuttons %}
+        </tbody>
+    </table>
+    </div>
+    </div>
+    {% endif %}
+
+    {% if object.get_files %}
+        <h3>Related Filse</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>File Name</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for file in object.get_files %}
+                <tr>
+                    <td>{{ file.fileName }}</td>
+                    <td>{{ file.fileDesc }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% buttons %}
+    <input type="button" class="btn btn-primary" value="Back" onclick="window.history.back()" />
+    {% endbuttons %}
+    <hr>
+    <center>
+        <a href="{% url 'meeting:meeting_edit' object.pk %}">Edit this Meeting</a> |
+        <a href="{% url 'meeting:create_meeting' %}">Add new Meeting</a> |
+        <a href="{% url 'meeting:meeting_list' %}">View all Meetings</a>
+    </center>
+</div>
 </body>
 {% include 'footer.html' %}
 </html>

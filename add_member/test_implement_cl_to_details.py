@@ -1,5 +1,6 @@
 from django.test import SimpleTestCase
 from .models import Person
+from add_case.models import Case
 from contact_log.models import contactLog
 from django.urls import reverse
 
@@ -22,6 +23,9 @@ class TestImplementCLsToMemberDetails(SimpleTestCase):
 
     # Setup method to initialize all of the essential objects
     def setUp(self):
+        contactLog.objects.all().delete()
+        Person.objects.all().delete()
+        Case.objects.all().delete()
         self.dw.memberID = 4204444
         self.dw.firstName = 'Deborah'
         self.dw.middleName = 'Mary'
@@ -161,8 +165,8 @@ class TestImplementCLsToMemberDetails(SimpleTestCase):
         # Have the Client return the member's details page for Walky Walkerton, passing in Walky's PK as an argument
         response = self.client.get(reverse('add_member:member_detail', args=[self.ww.pk]))
         # Ensure the response contains Walky's name, so we know we have the right page.
-        self.assertContains(response, "Walky Walkerton")
-        self.assertContains(response, "No contact logs associated to Walky Walkerton")
+        self.assertTrue(response.context['person'].__str__(), "Walky Walkerton")
+        self.assertTrue("Contact Log" in response.content)
 
     # Test 6: Test that select boxes are disabled when visiting from a url where a PK is passed in:
     def test_select_box_disabled_when_pk_passed_in(self):

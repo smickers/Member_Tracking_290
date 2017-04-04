@@ -37,7 +37,7 @@
                 </tr>
                 <tr>
                     <th>Award Amount</th>
-                    <td>{{ object.awardAmount|floatformat:2 }}</td>
+                    <td>${{ object.awardAmount|floatformat:2 }}</td>
                 </tr>
                 <tr>
                     <th>Award Type</th>
@@ -62,7 +62,7 @@
             </tr>
             <tr>
                 <th>Award Amount</th>
-                <td>{{ object.awardAmount|floatformat:2 }}</td>
+                <td>${{ object.awardAmount|floatformat:2 }}</td>
             </tr>
             </table>
         {% endif %}
@@ -73,8 +73,8 @@
         <hr>
         <center>
             <a href="{% url 'award:edu_edit' object.id %}">Edit this Award</a> |
-            <a href="{% url 'award:edu_create' %}">Create New Educational Award</a> |
-            <a href="{% url 'award:edu_list' %}">View List of Educational Awards</a>
+            <a href="{% url 'award:edu_create' %}">Add new Educational Award</a> |
+            <a href="{% url 'award:edu_list' %}">View list of Educational Awards</a>
         </center>
     </div>
 {% endblock %}
