@@ -185,19 +185,18 @@ class TestFilteringCases(LiveServerTestCase):
     # Test 1: Filters can be applied to a cases's complainant
     def test_filter_complainant(self):
         # Test full name filter
-        request = self.client.get("/api-root/case_list/filter/?", {"complainant": self.c1.complainant.pk})
-        print (request.json())
+        request = self.client.get("/api-root/case_list/filter/?", {"complainant": str(self.c1.complainant.pk)})
         self.assertEquals(request.json()['count'], 1)
         self.assertEquals(request.json()['results'][0]["id"], self.c1.complainant.pk)
-        # Test partial first name filter
-        r2 = self.client.get("/api-root/case_list/filter/?", {"complainant": "Deb"})
-        print(r2.json())
-        self.assertEquals(r2.json()['count'], 1)
-        self.assertEquals(r2.json()['results'][0]["complainant"], self.c1.complainant)
-        # Test partial last name filter
-        r3 = self.client.get("/api-root/case_list/filter/?", {"complainant": "Williams"})
-        self.assertEquals(r3.json()['count'], 1)
-        self.assertEquals(r3.json()['results'][0]["complainant"], self.c1.complainant)
+        # # Test partial first name filter
+        # r2 = self.client.get("/api-root/case_list/filter/?", {"complainant": "Deb"})
+        # print(r2.json())
+        # self.assertEquals(r2.json()['count'], 1)
+        # self.assertEquals(r2.json()['results'][0]["complainant"], self.c1.complainant)
+        # # Test partial last name filter
+        # r3 = self.client.get("/api-root/case_list/filter/?", {"complainant": "Williams"})
+        # self.assertEquals(r3.json()['count'], 1)
+        # self.assertEquals(r3.json()['results'][0]["complainant"], self.c1.complainant)
 
     # Test 2: Filters can be applied to a case's campus
     def test_filter_campus(self):
@@ -211,7 +210,7 @@ class TestFilteringCases(LiveServerTestCase):
 
     # Test 4: Filters can be applied to a case's program
     def test_filter_program(self):
-        request = self.client.get("/api-root/case_list/filter/?", {"program": "School of Health Sciences"})
+        request = self.client.get("/api-root/case_list/filter/?", {"program": str(self.c1.program.id)})
         self.assertEquals(request.json()['count'], 1)
 
     # Test 5: Filters can be applied to a case's department
@@ -233,26 +232,28 @@ class TestFilteringCases(LiveServerTestCase):
 
     # Test 8: Multiple filters can be applied with a logical AND
     def test_AND_filter(self):
-        request = self.client.get("/api-root/case_list/filter/?", {"complainant": "Walky", "campus": "MJ"})
-        self.assertEquals(request.json()['count'], 2)
+        request = self.client.get("/api-root/case_list/filter/?", {"complainant": str(self.c3.complainant.pk),
+                                                                   "campus": "Saskatoon"})
+        self.assertEquals(request.json()['count'], 1)
 
     # Test 9: Multiple filters can be applied with a logical OR
     def test_OR_filter(self):
-        request = self.client.get("/api-root/case_list/filter/?", {"complainant": "Walky"})
+        request = self.client.get("/api-root/case_list/filter/?", {"complainant": str(self.c3.complainant.pk)})
         r1 = request.json()['results']
         request2 = self.client.get("/api-root/case_list/filter/?", {"school": "Other"})
-        r2 = request.json()['results']
+        r2 = request2.json()['results']
         everything = result_combine(r1, r2)
         self.assertEquals(len(everything), 2)
 
     # Test 10: Logical AND/OR can be strung together
     def test_logic_chaining(self):
-        request = self.client.get("/api-root/case_list/filter/?", {"complainant": "Walky", "caseType": 2})
+        request = self.client.get("/api-root/case_list/filter/?", {"complainant": str(self.c3.complainant.pk),
+                                                                   "caseType": 3})
         r1 = request.json()['results']
         request2 = self.client.get("/api-root/case_list/filter/?", {"school": "Other"})
-        r2 = request.json()['results']
+        r2 = request2.json()['results']
         everything = result_combine(r1, r2)
-        self.assertEquals(len(everything), 3)
+        self.assertEquals(len(everything), 2)
 
     # Test 11: Filter cases on a date
     def test_filter_dates(self):
@@ -261,7 +262,8 @@ class TestFilteringCases(LiveServerTestCase):
 
     # Test 12: Filter cases on a range of dates
     def test_filter_dates_with_range(self):
-        response = self.client.get('/api-root/case_list/filter/?', {"date": "2016-09-20", "date": "2016-12-20"})
+        response = self.client.get('/api-root/case_list/filter/?', {"date_before": "2016-09-20",
+                                                                    "date_after": "2016-12-20"})
         self.assertEquals(response.json()['count'], 2)
 
     # Test 13: Empty filter returns the entire list

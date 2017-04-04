@@ -90,8 +90,8 @@ class CaseFilter(filters.FilterSet):
     date_before = filters.DateFilter(name='date', lookup_expr='gte')
     date_after = filters.DateFilter(name='date', lookup_expr='lte')
     # Filters for complainants by firstName, lastName, and blank
-    cn_fn = filters.CharFilter(name='complainant__firstName', lookup_expr='icontains')
-    cn_ln = filters.CharFilter(name='complainant__lastName', lookup_expr='icontains')
+    case_complainant__firstName = filters.CharFilter(name='complainant__firstName', lookup_expr='icontains')
+    case_complainant__lastName = filters.CharFilter(name='complainant__lastName', lookup_expr='icontains')
     # Satellites field is left blank or is null
     sat_blank = EmptyStringFilter(name='satellite')
     sat = filters.CharFilter(name='satellite', lookup_expr='icontains')
