@@ -76,11 +76,17 @@
             //a list of cases
 
         });
+
+        function resetSelect2(){
+                $('span.select2-selection__rendered').empty();
+                $("ul.select2-selection__rendered").empty();
+            }
     </script>
 
 {% endblock %}
 
 {% block content %}
+    <title>Grievance Ruling Creation</title>
     <body>
         <div class="container">
             <h1>Case Information</h1>
@@ -111,7 +117,7 @@
             </table>
 
             <h3>Grievance Info</h3>
-            <form action="" method="POST" enctype="multipart/form-data" class="form">
+            <form action="" method="POST" enctype="multipart/form-data" class="form" onreset="resetSelect2()">
                 {% csrf_token %}
                 {% bootstrap_form form %}
                 {% buttons %}
@@ -120,10 +126,12 @@
                         <button type="submit" class="btn btn-primary">Edit Ruling</button>
                     {% else %}
                         <button type="submit" class="btn btn-primary">Create Ruling</button>
+                        <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
                     {% endif %}
-                    <button type="reset" class="btn btn-warning">Reset</button>
                 {% endbuttons %}
             </form>
+        <hr />
+                <a href="{% url 'grievance_award_creation:grievance_award_list' %}">View List of Grievance Awards</a>
         </div>
 
     </body>

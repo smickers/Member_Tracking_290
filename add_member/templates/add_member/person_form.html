@@ -22,9 +22,11 @@
                     <input type="submit" class="btn btn-primary" name="submit" value="Update Member" />
                 {% else %}
                     <input type="submit" class="btn btn-primary" name="submit" value="Create Member" />
+                    <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
                 {% endif %}
-                <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
             {% endbuttons %}
         </form>
+    <hr />
+    <a href="{% url 'add_member:member_list' %}">View List of Members</a>
     </div>
 {% endblock %}Complainant

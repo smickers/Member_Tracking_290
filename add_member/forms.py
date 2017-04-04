@@ -83,6 +83,7 @@ class PersonForm(ModelForm):
                   'hEmail',
                   'campus',
                   'jobType',
+                  'hireDate',
                   'committee',
                   'memberImage']
         # specifies labels for all the fields found in the model
@@ -103,6 +104,7 @@ class PersonForm(ModelForm):
             'hEmail': 'Home Email',
             'campus': 'Campus',
             'jobType': 'Job Type',
+            'hireDate': 'Hire Date',
             'committee': 'Committee',
             'memberImage': 'Member Image',
             }
@@ -118,7 +120,10 @@ class PersonForm(ModelForm):
         # modifies the date fields to have a valid range
         widgets = {
             'bDay': SelectDateWidget(months=kvp.MONTHS, years=range(1900, datetime.datetime.now().year + 1)),
-            'hireDate': SelectDateWidget(months=kvp.MONTHS, years=range(1900, datetime.datetime.now().year + 1))
+            'hireDate': SelectDateWidget(months=kvp.MONTHS, years=range(1900, datetime.datetime.now().year + 1)),
+            'pCode': forms.TextInput(attrs={'placeholder': 'A1A 1A1'}),
+            'hPhone': forms.TextInput(attrs={'placeholder': '(123)123-4567'}),
+            'cPhone': forms.TextInput(attrs={'placeholder': '(123)123-4567'}),
             }
 
 

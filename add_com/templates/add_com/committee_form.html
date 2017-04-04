@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{%  load bootstrap3 %}
+{% load bootstrap3 %}
 {% load static %}
 {% block metadata %}
     <title>Create a Committee</title>
@@ -8,13 +8,19 @@
 {% endblock %}
 
 {% block content %}
+    <script>
+        function resetSelect2(){
+                $('span.select2-selection__rendered').empty();
+                $("ul.select2-selection__rendered").empty();
+            }
+    </script>
     <div class="container">
 {% if form.instance.id %}
     <h2>Edit Committee</h2>
 {% else %}
     <h2>Create A New Committee</h2>
 {% endif %}
-    <form action="" method="POST" enctype="multipart/form-data">
+    <form action="" method="POST" enctype="multipart/form-data" onreset="resetSelect2()">
         {% csrf_token %}
         {% bootstrap_form form %}
 
@@ -23,10 +29,11 @@
                 <input type="submit" class="btn btn-primary" name="submit" value="Update Committee" />
             {% else %}
                 <input type="submit" class="btn btn-primary" name="submit" value="Create Committee" />
+                <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
             {% endif %}
-            <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
             {% endbuttons %}
-        <a href="{%  url 'add_com:committee_list' %}">View All Committees</a>
     </form>
+    <hr />
+    <a href="{% url 'add_com:committee_list' %}">View List of Committees</a>
     </div>
 {% endblock %}

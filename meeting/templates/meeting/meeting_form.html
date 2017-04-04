@@ -65,6 +65,11 @@
               });
 
             });//end ready
+
+        function resetSelect2(){
+                $('span.select2-selection__rendered').empty();
+                $("ul.select2-selection__rendered").empty();
+            }
             </script>
 {% endblock %}
 
@@ -75,7 +80,7 @@
     {% else %}
         <h2>Add a Meeting</h2>
     {% endif %}
-    <form action="" method="POST" class="form" enctype="multipart/form-data">
+    <form action="" method="POST" class="form" enctype="multipart/form-data" onreset="resetSelect2()">
         {% csrf_token %}
         {% bootstrap_form form %}
         {% bootstrap_form_errors form %}
@@ -88,9 +93,11 @@
                 <button class="btn btn-primary" type="submit">Update Meeting</button>
             {% else %}
                 <button class="btn btn-primary" type="submit">Create Meeting</button>
+                <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
             {% endif %}
-            <button class="btn btn-warning" type="reset">Reset</button>
         {% endbuttons %}
     </form>
+    <hr />
+                <a href="{% url 'meeting:meeting_list' %}">View List of Meetings</a>
     </div>
 {% endblock %}

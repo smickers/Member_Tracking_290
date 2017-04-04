@@ -105,6 +105,11 @@
                 }
             });
         });
+
+        function resetSelect2(){
+                $('span.select2-selection__rendered').empty();
+                $("ul.select2-selection__rendered").empty();
+            }
     </script>
 {% endblock %}
 
@@ -121,7 +126,7 @@
         {% else %}
         <h2>Create a Contact Log</h2>
         {% endif %}
-        <form action="" method="post" enctype="multipart/form-data" class="form">
+        <form action="" method="post" enctype="multipart/form-data" class="form" onreset="resetSelect2()">
             {% csrf_token %}
             {% bootstrap_form form %}
             {% if form.instance.id %}
@@ -132,8 +137,10 @@
                 <button class="btn btn-primary" type="submit">Update Contact Log</button>
             {% else %}
                 <button class="btn btn-primary" type="submit">Create Contact Log</button>
+                <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
             {% endif %}
-            <button class="btn btn-warning" type="reset">Reset</button>
         </form>
+    <hr />
+                <a href="{% url 'contact_log_creation:contact_log_list_default' %}">View List of Contact Logs</a>
     </div>
 {% endblock %}

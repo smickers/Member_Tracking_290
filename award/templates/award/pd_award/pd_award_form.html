@@ -40,6 +40,11 @@
                 }
               });
             });//end ready
+
+        function resetSelect2(){
+                $('span.select2-selection__rendered').empty();
+                $("ul.select2-selection__rendered").empty();
+            }
             </script>
 {% endblock %}
 
@@ -50,7 +55,7 @@
     {% else %}
         <h2>Create Professional Development Award</h2>
     {% endif %}
-        <form action="" method="POST" class="form" enctype="multipart/form-data">
+        <form action="" method="POST" class="form" enctype="multipart/form-data" onreset="resetSelect2()">
             {% csrf_token %}
             {% bootstrap_form form %}
             {% bootstrap_form_errors form %}
@@ -59,10 +64,12 @@
                     <input type="submit" class="btn btn-primary" name="submit" value="Update PD Award" />
                 {% else %}
                     <input type="submit" class="btn btn-primary" name="submit" value="Create PD Award" />
+                    <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
                 {% endif %}
-                <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
             {% endbuttons %}
         </form>
+    <hr />
+                <a href="{% url 'award:award_pd_list' %}">View List of Professional Development Funding</a>
     </div>
 
 {% endblock %}

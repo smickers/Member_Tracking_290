@@ -43,6 +43,11 @@
                 }
               });
             });//end ready
+
+            function resetSelect2(){
+                $('span.select2-selection__rendered').empty();
+                $("ul.select2-selection__rendered").empty();
+            }
             </script>
 {% endblock %}
 
@@ -54,7 +59,7 @@
         {% else %}
             <h2>Create Education Award</h2>
         {% endif %}
-        <form class="form form-group" action="" method="POST" enctype="multipart/form-data">
+        <form class="form form-group" action="" method="POST" enctype="multipart/form-data" onreset="resetSelect2()">
             {% csrf_token %}
             {# With these next two lines enabled, errors seem to be displayed twice. It's something worth looking into #}
             {# in another story. #}
@@ -66,13 +71,12 @@
                     <input type="submit" class="btn btn-primary" name="submit" value="Update Award" />
                 {% else %}
                     <input type="submit" class="btn btn-primary" name="submit" value="Create Award"/>
+                    <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
                 {% endif %}
-
-                <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
             {% endbuttons %}
         </form>
 
-        <hr>
+        <hr />
                 <a href="{% url 'award:edu_list' %}">View List of Educational Awards</a>
     </div>
 {% endblock %}

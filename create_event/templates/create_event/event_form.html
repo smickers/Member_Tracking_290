@@ -42,8 +42,10 @@
               });
 
             });
-
-
+        function resetSelect2(){
+                $('span.select2-selection__rendered').empty();
+                $("ul.select2-selection__rendered").empty();
+            }
      </script>
 
     <link rel="stylesheet" type="text/css" href="{% static 'spfa_mt/select2_responsive.css' %}" />
@@ -59,7 +61,7 @@
     {% else %}
     <h2>Create an Event</h2>
     {% endif %}
-    <form action="" method="POST" enctype="multipart/form-data" class="form">
+    <form action="" method="POST" enctype="multipart/form-data" class="form" onreset="resetSelect2()">
         {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}
@@ -67,10 +69,12 @@
                 <input type="submit" class="btn btn-primary" name="submit" value="Update Event" />
             {% else %}
                 <input type="submit" class="btn btn-primary" name="submit" value="Create Event" />
+                <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
             {% endif %}
-            <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
         {% endbuttons %}
     </form>
+    <hr />
+    <a href="{% url 'create_event:list_event' %}">View List of Events</a>
 </div>
 </body>
 {% include 'footer.html' %}
