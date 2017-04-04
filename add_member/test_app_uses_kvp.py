@@ -1,46 +1,40 @@
 from django.test import TestCase
 from spfa_mt import kvp
+from .models import Person
 
 class KVPTestCase(TestCase):
-    print("hello")
-    # bound fields choices for gender field
-    GENDER_CHOICE = [
-        ('MALE', 'Male'),
-        ('FEMALE', 'Female'),
-        ('UNDEFINED', 'Undefined'),
-    ]
+    person1 = Person()
 
-    # bound fields choices for campus field
-    CAMPUS_CHOICE = [
-        ('SASKATOON', 'SASKATOON'),
-        ('REGINA', 'REGINA'),
-        ('MOOSEJAW', 'MOOSE JAW'),
-        ('PA', 'PRINCE ALBERT'),
-    ]
-
-    # bound fields choices for position field
-    POSITION_CLASS_CHOICE = [
-        ('FTO', 'Full-time ongoing'),
-        ('FTED', 'Full-time end dated'),
-        ('PTO', 'Part-time ongoing'),
-        ('PTED', 'Part-time end dated'),
-    ]
-
-    # bound fields choices for membership status field
-    MEMBERSHIP_STATUS = [
-        ('RESOURCE', 'RESOURCE'),
-        ('COMCHAIR', 'COMMITTEE CHAIR'),
-        ('RECORDER', 'RECORDER'),
-    ]
-
-    EMPLOYEE_STATUS = [
-        ('A', 'ACTIVE'),
-        ('T', 'TERMINATED')
-    ]
+    def setUp(self):
+        self.person1.memberID = 4204444
+        self.person1.firstName = 'First'
+        self.person1.middleName = 'Middle'
+        self.person1.lastName = 'Last'
+        self.person1.socNum = 123456789
+        self.person1.city = 'Sample City'
+        self.person1.mailAddress = 'Sample address'
+        self.person1.mailAddress2 = 'Sample Address 2'
+        self.person1.pCode = 's7k5j8'
+        self.person1.hPhone = '(306)812-1234'
+        self.person1.cPhone = '(306)812-1234'
+        self.person1.hEmail = 'sample@sample.com'
+        self.person1.campus = 'SASKATOON'
+        self.person1.jobType = 'FTO'
+        self.person1.committee = 'Sample Commitee'
+        self.person1.memberImage = 'image.img'
+        self.person1.bDay = '2012-03-03'
+        self.person1.hireDate = '2012-03-03'
+        self.person1.gender = 'MALE'
+        self.person1.membershipStatus = 'RESOURCE'
+        self.person1.programChoice = 'Sample Program'
+        self.person1.full_clean()
+        self.person1.save()
 
     def test_that_kvp_contains_proper_gender_choices(self):
-        for x in range(0, len(self.GENDER_CHOICE)):
-            self.assertEquals(kvp.GENDER_CHOICE[x], self.GENDER_CHOICE[x])
+        for x in range(0, len(kvp.GENDER_CHOICE)):
+            self.person1.gender = kvp.GENDER_CHOICE[x]
+            self.assertEquals(self.person1.gender, kvp.GENDER_CHOICE[x])
+        self.person1.gender = "Not a Gender"
 
     def test_that_kvp_contains_proper_campus_choice(self):
         for x in range(0, len(self.CAMPUS_CHOICE)):
