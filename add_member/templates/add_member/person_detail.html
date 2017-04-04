@@ -48,7 +48,7 @@
                 </tr>
                 <tr>
                     <th>Date of Birth</th>
-                    <td>{{ object.bDay }}</td>
+                    <td>{{ object.bDay|date:"d, M. Y" }}</td>
                 </tr>
                 <tr>
                     <th>Gender</th>
@@ -117,19 +117,19 @@
                 {% if object.posBeginDate %}
                 <tr>
                     <th>Position Begin Date</th>
-                    <td>{{ object.posBeginDate }}</td>
+                    <td>{{ object.posBeginDate|date:"d, M. Y" }}</td>
                 </tr>
                 {% endif %}
                 {% if object.posEndDate %}
                 <tr>
                     <th>Position End Date</th>
-                    <td>{{ object.posEndDate }}</td>
+                    <td>{{ object.posEndDate|date:"d, M. Y" }}</td>
                 </tr>
                 {% endif %}
                 {% if object.terminationDate %}
                 <tr>
                     <th>Termination Date</th>
-                    <td>{{ object.terminationDate }}</td>
+                    <td>{{ object.terminationDate|date:"d, M. Y" }}</td>
                 </tr>
                 {% endif %}
                 {% if object.department %}

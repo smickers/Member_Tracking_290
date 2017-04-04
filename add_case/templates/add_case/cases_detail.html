@@ -3,16 +3,63 @@
 {% block metadata %}
     <title>Case Detail</title>
     <style>
-    #caselogs{
-        padding-left:0;
-        padding-right:0;
+{#    #caselogs{#}
+{#        padding-left:0;#}
+{#        padding-right:0;#}
+{##}
+{#    }#}
+{#    #caselogs_list{#}
+{#        max-height: 400px;#}
+{#        overflow-y: scroll;#}
+{#    }#}
 
+    #additional_members_header, #contact_logs_header {
+        padding-right: 0;
+        padding-left: 0;
+        border: none;
+        background-color: transparent;
+        color: rgb(51, 51, 51);
     }
-    #caselogs_list{
-        max-height: 400px;
-        overflow-y: scroll;
+
+    #additional_members_h3, #contact_logs_h3 {
+        margin: 0;
+    }
+
+    .panel-info {
+        padding: 0;
+        border: none;
     }
     </style>
+
+    <script>
+{#        $("#contact_log_chevron")#}
+
+        // These next few lines of code are courtesy of:
+        // http://stackoverflow.com/questions/19024218/bootstrap-3-collapse-change-chevron-icon-on-click/
+        $(document).ready(function()
+        {
+            $("#additional_members").on("shown.bs.collapse", function()
+            {
+               $("#additional_members_chevron").addClass('glyphicon-chevron-up').removeClass('glyphicon-chevron-down');
+            });
+
+            $('#additional_members').on('hidden.bs.collapse', function()
+            {
+                $("#additional_members_chevron").addClass('glyphicon-chevron-down').removeClass('glyphicon-chevron-up');
+            });
+
+            $("#contact_logs").on("shown.bs.collapse", function()
+            {
+               $("#contact_log_chevron").addClass('glyphicon-chevron-up').removeClass('glyphicon-chevron-down');
+            });
+
+            $('#contact_logs').on('hidden.bs.collapse', function()
+            {
+                $("#contact_log_chevron").addClass('glyphicon-chevron-down').removeClass('glyphicon-chevron-up');
+            });
+        });
+
+    </script>
 {% endblock %}
 {% block content %}
     <div class="container">
@@ -66,13 +113,18 @@
 
             <tr>
                 <th>Date Created</th>
-                <td>{{ object.date }}</td>
+                <td>{{ object.date|date:"d, M. Y" }}</td>
             </tr>
 
         </table>
 
             {% if object.additionalMembers %}
-                <h3>Members Involved</h3>
+                <div class="panel panel-info col-sm-12">
+                <div href="#additional_members" class="panel panel-heading col-sm-12" data-toggle="collapse" id="additional_members_header">
+                <h3 id="additional_members_h3">Attending Members<span id="additional_members_chevron" class="glyphicon glyphicon-chevron-down" style="float: right;"></span></h3>
+                </div>
+                <div class="panel-body collapse" id="additional_members">
+{#                <h3>Members Involved</h3>#}
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -91,6 +143,43 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                </div>
+                </div>
+            {% endif %}
+
+
+            {% if object.contactlog_set.count > 0 %}
+                <div class="panel panel-info col-sm-12">
+                <div href="#contact_logs" class="panel panel-heading col-sm-12" data-toggle="collapse" id="contact_logs_header">
+                <h3 id="contact_logs_h3">Related Contact Logs<span id="contact_log_chevron" class="glyphicon glyphicon-chevron-down" style="float: right;"></span></h3>
+                </div>
+                <div class="panel-body collapse" id="contact_logs">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Related Member</th>
+                            <th>Date</th>
+                            <th class="col-md-4">Description</th>
+                            <th>Contact Code</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for cl in object.contactlog_set.all %}
+                        <tr>
+                            <td>{{ cl.pk }}</td>
+                            <td>{{ cl.member }}</td>
+                            <td>{{ cl.date|date:"d, M. Y" }}</td>
+                            <td>{{ cl.description }}</td>
+                            <td>{{ cl.get_contactCode_display }}</td>
+                            <td><a href="{% url 'contact_log_creation:details' cl.pk %}">[Link]</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+                </div>
             {% endif %}
 
         {% if object.grievanceaward %}
