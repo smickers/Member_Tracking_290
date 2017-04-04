@@ -51,11 +51,16 @@ class CaseDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super(CaseDetail, self).get_context_data(**kwargs)
         try:
+            #   will get all the field names of the case model
+            fields = [f.name for f in Case._meta.get_fields()]
+            context['fields'] = fields
             context['grievance_award'] = GrievanceAward.objects.get(pk=self.kwargs['pk'])
+            context['contact_log'] = contactLog.objects.filter(pk=self.kwargs['pk'])
         except ObjectDoesNotExist:
             pass
 
         return context
+
 
 
 # view for listing all the members found in the db

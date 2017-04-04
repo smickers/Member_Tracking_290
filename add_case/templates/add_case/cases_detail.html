@@ -1,58 +1,201 @@
 {% extends 'base.html' %}
-
+{% load bootstrap3 %}
 {% block metadata %}
     <title>Case Detail</title>
-{% endblock %}
+    <style>
+{#    #caselogs{#}
+{#        padding-left:0;#}
+{#        padding-right:0;#}
+{##}
+{#    }#}
+{#    #caselogs_list{#}
+{#        max-height: 400px;#}
+{#        overflow-y: scroll;#}
+{#    }#}
 
+    #additional_members_header, #contact_logs_header {
+        padding-right: 0;
+        padding-left: 0;
+        border: none;
+        background-color: transparent;
+        color: rgb(51, 51, 51);
+    }
+
+    #additional_members_h3, #contact_logs_h3 {
+        margin: 0;
+    }
+
+    .panel-info {
+        padding: 0;
+        border: none;
+    }
+    </style>
+
+    <script>
+{#        $("#contact_log_chevron")#}
+
+        // These next few lines of code are courtesy of:
+        // http://stackoverflow.com/questions/19024218/bootstrap-3-collapse-change-chevron-icon-on-click/
+        $(document).ready(function()
+        {
+            $("#additional_members").on("shown.bs.collapse", function()
+            {
+               $("#additional_members_chevron").addClass('glyphicon-chevron-up').removeClass('glyphicon-chevron-down');
+            });
+
+            $('#additional_members').on('hidden.bs.collapse', function()
+            {
+                $("#additional_members_chevron").addClass('glyphicon-chevron-down').removeClass('glyphicon-chevron-up');
+            });
+
+            $("#contact_logs").on("shown.bs.collapse", function()
+            {
+               $("#contact_log_chevron").addClass('glyphicon-chevron-up').removeClass('glyphicon-chevron-down');
+            });
+
+            $('#contact_logs').on('hidden.bs.collapse', function()
+            {
+                $("#contact_log_chevron").addClass('glyphicon-chevron-down').removeClass('glyphicon-chevron-up');
+            });
+        });
+
+    </script>
+{% endblock %}
 {% block content %}
     <div class="container">
-        <div class="case_info panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Case Information</h3>
-            </div>
-            <div class="panel-body">
-                <p>Lead: {{ object.lead }}</p>
-                <p>Case Type: {{ object.get_caseType_display }}</p>
-                <p>Status: {{ object.status }}</p>
-                <p>Complainant: <em>{{ object.complainant }}</em></p>
-                <p>Additional Non-members: {{ object.additionalNonMembers }}</p>
+        <h2>Case #{{ object.id }}: {{ object.get_caseType_display }}</h2>
+        <h3>General Information</h3>
+        <table class="table table-striped">
+            <tr>
+                <th>Lead</th>
+                <td>{{ object.lead }}</td>
+            </tr>
+            <tr>
+                <th>Complainant</th>
+                <td><a href="{% url 'add_member:member_detail' object.complainant_id %}">{{ object.complainant }}</a></td>
+            </tr>
+            <tr>
+                <th>Campus</th>
+                <td>{{ object.campus }}</td>
+            </tr>
+            {% if object.satellite %}
+            <tr>
+                <th>Satellite</th>
+                <td>{{ object.satellite }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>School</th>
+                <td>{{ object.get_school_display }}</td>
+            </tr>
 
-                {% if object.get_caseType_display != "GRIEVANCES - INDIVIDUAL" %}
-                    <div class="panel panel-info">
-                        <div class="panel panel-heading">
-                            <p>
-                                {% if object.grievanceaward %}
-                                    {{ 'Recipients' }}
-                                {% else %}
-                                    {{ 'Members' }}
-                                {% endif %}
-                            </p>
-                        </div>
-                        {% include 'add_case/case_members.html' %}
-                    </div>
-                {% endif %}
-            </div>
-        </div>
+            {% if object.program %}
+            <tr>
+                <th>Program</th>
+            <td>{{ object.program }}</td>
+            </tr>
+            {% endif %}
 
+            <tr>
+                <th>Department</th>
+            <td>{{ object.get_department_display }}</td>
+            </tr>
+
+            <tr>
+                <th>Case Type</th>
+            <td>{{ object.get_caseType_display }}</td>
+            </tr>
+
+            <tr>
+                <th>Status</th>
+            <td>{{ object.get_status_display }}</td>
+            </tr>
+
+            <tr>
+                <th>Date Created</th>
+                <td>{{ object.date|date:"d, M. Y" }}</td>
+            </tr>
+
+        </table>
+
+            {% if object.additionalMembers %}
+                <div class="panel panel-info col-sm-12">
+                <div href="#additional_members" class="panel panel-heading col-sm-12" data-toggle="collapse" id="additional_members_header">
+                <h3 id="additional_members_h3">Attending Members<span id="additional_members_chevron" class="glyphicon glyphicon-chevron-down" style="float: right;"></span></h3>
+                </div>
+                <div class="panel-body collapse" id="additional_members">
+{#                <h3>Members Involved</h3>#}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Member ID</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for curr_member in object.additionalMembers.all %}
+                        <tr>
+                            <td>{{ curr_member.firstName }} {{ curr_member.lastName }}</td>
+                            <td>{{ curr_member.memberID }}</td>
+                            <td><a href="{% url 'add_member:member_detail' curr_member.pk %}">[Link]</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+                </div>
+            {% endif %}
+
+
+            {% if object.contactlog_set.count > 0 %}
+                <div class="panel panel-info col-sm-12">
+                <div href="#contact_logs" class="panel panel-heading col-sm-12" data-toggle="collapse" id="contact_logs_header">
+                <h3 id="contact_logs_h3">Related Contact Logs<span id="contact_log_chevron" class="glyphicon glyphicon-chevron-down" style="float: right;"></span></h3>
+                </div>
+                <div class="panel-body collapse" id="contact_logs">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Related Member</th>
+                            <th>Date</th>
+                            <th class="col-md-4">Description</th>
+                            <th>Contact Code</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for cl in object.contactlog_set.all %}
+                        <tr>
+                            <td>{{ cl.pk }}</td>
+                            <td>{{ cl.member }}</td>
+                            <td>{{ cl.date|date:"d, M. Y" }}</td>
+                            <td>{{ cl.description }}</td>
+                            <td>{{ cl.get_contactCode_display }}</td>
+                            <td><a href="{% url 'contact_log_creation:details' cl.pk %}">[Link]</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+                </div>
+            {% endif %}
 
         {% if object.grievanceaward %}
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">Grievance Award</h3>
-              </div>
-              <div class="panel-body">
+            <h3>Grievance Award</h3>
                   {% include 'grievance_award_creation/grievanceaward_actual_detail.html'  %}
-              </div>
-            </div>
-
-
         {% endif %}
-
-
-
-        <a href="{% url 'add_case:case_edit' object.pk %}">Edit This Case</a><br />
-        <a href="{%  url 'add_case:case_add' %}">Add New Case</a><br />
-        <a href="{%  url 'add_case:case_list' %}">View All Cases</a>
+{#        {% endblock %}#}
+        {% buttons %}
+        <input type="button" class="btn btn-primary" value="Back" onclick="window.history.back()" />
+        {% endbuttons %}
+        <hr>
+        <center>
+            <a href="{% url 'add_case:case_edit' object.id %}">Edit this Case</a> |
+            <a href="{% url 'add_case:case_add' %}">Add new Case</a> |
+            <a href="{% url 'add_case:case_list' %}">View all Cases</a>
+        </center>
 
     </div>
 {% endblock %}

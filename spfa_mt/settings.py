@@ -102,7 +102,7 @@ DATABASES = {
         'USER': 'root',
         'OPTIONS': {
             'sql_mode': 'traditional',
-        },
+        }, 
     }
 }
 

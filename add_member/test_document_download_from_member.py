@@ -139,4 +139,3 @@ class DocumentDownloadTestCase(LiveServerTestCase):
     #     if os.path.exists(self._overridden_settings["MEDIA_ROOT"]):
     #         shutil.rmtree(self._overridden_settings["MEDIA_ROOT"])
 
-

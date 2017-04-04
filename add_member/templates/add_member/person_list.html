@@ -8,7 +8,8 @@
 {% block content %}
     <div class="container">
         <h2><strong>List of Members</strong></h2>
-        <a href="{% url 'add_member:member_add' %}">Add a New Member</a>
+        <a href="{% url 'add_member:member_add' %}">Add a New Member</a></br>
+        <a href="{% url 'add_member:bulk_create' %}">Member Bulk Upload</a>
         <table class="table table-bordered" style="width:50%;" border="1">
             <thead>
                 <th>Name</th>
