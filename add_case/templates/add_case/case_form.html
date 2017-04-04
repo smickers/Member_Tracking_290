@@ -26,6 +26,8 @@
           var members = $(".js-complainant");
 
           members.select2({
+            allowClear: true,
+            placeholder: "Select a member",
             ajax: {
                 //a list of all members
                 url: "/api-root/members_list/search/", //URL of the REST API for querying the members
@@ -131,14 +133,21 @@
 
             $("#id_complainant").change(function()
             {
-                // Make sure that this member doesn't show up in the list of additional members
-                currComplainantID = $(this).val();
 
-                // Now update the query to be run, and remove this person from the current
-                // list of additional members
-                // This code is courtesy of:
-                // http://stackoverflow.com/questions/7375491/jquery-select-remove-option
-                $("#id_additionalMembers option").filter("[value='" + currComplainantID + "']").remove();
+
+                //if complaintant has been added
+                //check if currComplainantID isNumeric
+                //          NOTE: currComplaintantID is not "" or null when removing complaintant
+                //Do not have to do anything extra when removing complaintant
+                if($.isNumeric($(this).val())){
+                    // Now update the query to be run, and remove this person from the current
+                    // list of additional members
+                    // This code is courtesy of:
+                    // http://stackoverflow.com/questions/7375491/jquery-select-remove-option
+                    $("#id_additionalMembers option").filter("[value='" + $(this).val() + "']").remove();
+                }
+
+
             });
 
             // Setting up contact lookups for the select2 select box

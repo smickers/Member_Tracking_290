@@ -10,6 +10,7 @@ from spfa_mt import kvp
 from spfa_mt.settings import MAX_FILE_SIZE, FILE_EXT_TO_ACCEPT
 
 
+
 # Name:       CaseSatellite
 # Purpose:    This is a satellite location to be selected. Saves data to the DB.
 class CaseSatellite(models.Model):
@@ -39,7 +40,7 @@ class CasePrograms(models.Model):
 #               Also saves data to the DB.
 class Case(models.Model):
     lead = models.IntegerField(max_length=9)
-    complainant = models.ForeignKey(Person, related_name='case_complainant')
+    complainant = models.ForeignKey(Person, related_name='case_complainant', null=True, blank=True)
     campus = models.CharField(choices=kvp.CAMPUS_CHOICES.iteritems(), max_length=25, validators=[validate_location],
                               default="Saskatoon")
     satellite = models.CharField(max_length=50, default=None, null=True, blank=True)
