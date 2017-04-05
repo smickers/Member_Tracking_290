@@ -26,7 +26,6 @@
                 toReturn = data.results;
             }
         });
-
         return toReturn;
     }
 
@@ -39,8 +38,7 @@
         criteriaCount++;
         var newRow = '<tr id="filter-entry-' + criteriaCount + '">'
                            +'<td class="form-group" style="padding: 2px;"> '
-                           +'<select class="form-control" id="field-choice-'+ criteriaCount
-                           +'" onchange="' + determineToShowEquality(0) + '"> '
+                           +'<select class="form-control" id="field-choice-'+ criteriaCount + '">'
                            +'<option value="id">ID</option> '
                            +'<option value="lead">Lead</option>'
                            +'<option value="complainant">Complainant</option>'
@@ -69,7 +67,6 @@
                            +'<button class="form-control btn btn-info" onclick="removeCriteria(' + criteriaCount +')" '
                            +'style="width: 45%;" style="padding: 2px; padding-left: 2px;"><span class="glyphicon glyphicon-minus"></span></button></td>';
        $("#filteringForm").append(newRow);
-        determineToShowEquality(criteriaCount);
     }
 
     // This function is courtesy of:
@@ -100,67 +97,68 @@
         for (var i = 0; i <= criteriaCount; i++)
         {
             var request_url = BASE_REQUEST_URL;
-                // Run a query right now on the current criteria and combine it with
-                // the previous results
-                if ($("#field-choice-" + i).val() === "date")
+            // Run a query right now on the current criteria and combine it with
+            // the previous results
+            if ($("#field-choice-" + i).val() === "date")
+            {
+                // Determine if less than, greater than, or equals was selected
+                switch($("#field-criteria-" + i).val())
                 {
-                    // Determine if less than, greater than, or equals was selected
-                    switch($("#field-criteria-" + i).val())
-                    {
-                        case 'gt':
-                            request_url += 'date_before=' + convertDateFormat($("#field-value-" + i).val());
-                            break;
-                        case 'lt':
-                            request_url += 'date_after=' + convertDateFormat($("#field-value-" + i).val());
-                            break;
-                        default:
-                            request_url += 'date=' + convertDateFormat($("#field-value-" + i).val());
-                            break;
-                    }
-                    curr_records = runQuery(request_url);
+                    case 'gt':
+                        request_url += 'date_before=' + convertDateFormat($("#field-value-" + i).val());
+                        break;
+                    case 'lt':
+                        request_url += 'date_after=' + convertDateFormat($("#field-value-" + i).val());
+                        break;
+                    default:
+                        request_url += 'date=' + convertDateFormat($("#field-value-" + i).val());
+                        break;
                 }
-                // Check for an empty satellite (the only optional field when creating)
-                else if ($("#field-choice-" + i).val() === "satellite")
+                curr_records = runQuery(request_url);
+            }
+            // Check for an empty satellite (the only optional field when creating)
+            else if ($("#field-choice-" + i).val() === "satellite")
+            {
+                if($("#field-value-" + i).val() == "")
                 {
-                    if($("#field-value-" + i).val() == "")
-                    {
-                        request_url +="sat_blank=True";
-                    }
-                    else
-                    {
-                        request_url += "satellite__icontains" + $("#field-value-" + i).val();
-                    }
-                    curr_records = runQuery(request_url);
-                }
-
-                //Check for complainant's name
-                else if ($("#field-choice-" + i).val() === "complainant")
-                {
-                    // Run two queries: one on first name, and one on last name
-                    request_url += "case_complainant__firstName=" + $("#field-value-" + i).val();
-                    curr_records = runQuery(request_url);
-                    // And run the last name query
-                    request_url = BASE_REQUEST_URL + "case_complainant__lastName=" + $("#field-value-" + i).val();
-                    // Next, combine them with an OR
-                    curr_records = combineArraysOR(curr_records, runQuery(request_url));
+                    request_url +="sat_blank=True";
                 }
                 else
                 {
-                    // If no other conditions have been met, just run the query
-                    request_url += $("#field-choice-" + i).val() + "=" + $("#field-value-" + i).val();
-                    curr_records = runQuery(request_url);
+                    request_url += "satellite__icontains" + $("#field-value-" + i).val();
                 }
+                curr_records = runQuery(request_url);
+            }
 
-                // Determine how to combine all of our arrays depending on the join type selected
-                if (next_join === "OR")
-                {
-                    all_records = combineArraysOR(all_records, curr_records);
-                }
-                else
-                {
-                    all_records = combineArraysAND(all_records, curr_records);
-                }
-            next_join = $("[name=field-join-" + i + "]:selected").val();
+            //Check for complainant's name
+            else if ($("#field-choice-" + i).val() === "complainant")
+            {
+                // Run two queries: one on first name, and one on last name
+                request_url += "complainant__firstName=" + $("#field-value-" + i).val();
+                curr_records = runQuery(request_url);
+                // And run the last name query
+                request_url = BASE_REQUEST_URL + "complainant__lastName=" + $("#field-value-" + i).val();
+                // Next, combine them with an OR
+                curr_records = combineArraysOR(curr_records, runQuery(request_url));
+            }
+            else
+            {
+                // If no other conditions have been met, just run the query
+                request_url += $("#field-choice-" + i).val() + "=" + $("#field-value-" + i).val();
+                curr_records = runQuery(request_url);
+            }
+
+            // Determine how to combine all of our arrays depending on the join type selected
+            if (next_join === "OR")
+            {
+                all_records = combineArraysOR(all_records, curr_records);
+            }
+            else
+            {
+                all_records = combineArraysAND(all_records, curr_records);
+            }
+            next_join = $("#field-join-" + i + " option:selected").val();
+            console.log(next_join)
         }
         // Now display the result
         filterTable(all_records);
@@ -282,14 +280,14 @@
     function filterTable(newData)
     {
         $("#case-list-data").html("");
-        $("#case-list-data").append("<table border='1' class='table table-bordered table-striped' id='case-list-data'>" +
+        $("#case-list-data").append("<table border='1' class='table table-bordered table-striped' id='case-list-data' " +
+                "style='text-align:center;'>" +
                 "<thead><th style='text-align:center;'>ID</th><th style='text-align: center;'>Complainant</th>" +
                 "<th style='text-align:center;'>Case Type</th><th style='text-align:center;'>Status</th>" +
                 "<th style='text-align:center;'>Date Created</th><th colspan='3' style='text-align:center;'>Action</th>" +
                 "</thead><tbody>");
         newData.forEach(function(ca, index)
         {
-            console.log(ca);
             var id = ca.id;
             var complainant = ca.complainant.firstName + " " + ca.complainant.lastName;
             var caseType = getCaseType(ca.caseType);
@@ -300,8 +298,8 @@
                             + caseType + "</td><td>"
                             + status + "</td><td>"
                             + date + '</td><td>'
-                            + '<a href="http://127.0.0.1:8000/addCase/' + id + '">[View]</a></td><td> '
-                            + '<a href="http://127.0.0.1:8000/addCase/edit/' + id + '">[Edit]</a></td><td>'
+                            + '<a href="http://127.0.0.1:8000/addCase/edit/' + id + '">[Edit Case]</a></td><td>'
+                            + '<a href="http://127.0.0.1:8000/addCase/' + id + '">[View Detail]</a></td><td> '
                             + '<a href="http://127.0.0.1:8000/grievance/' + id + '">[Add Award]</a></td></tr>';
 
             $("#case-list-data").append(rowToAdd);
@@ -341,27 +339,6 @@
         criteriaCount--;
     }
 
-    /***
-     * Function:    determineToShowEquality
-     * Purpose:     Determine whether or not to show the equality select box for a specific field based
-     *              on its current value.
-     * @param elem - the element to look at
-     */
-    function determineToShowEquality(elem)
-    {
-
-        if ($("#field-choice-" + elem).val() === "date")
-        {
-            // Show the entire div that the equality selector is in - which happens
-            // to be the parent of the field-choice select element
-            $("#field-criteria-" + elem).prop("enabled", "enabled");
-        }
-        else
-        {
-            $("#field-criteria-" + elem).prop("disabled", "disabled");
-        }
-    }
-
     // This function is courtesy of:
     // http://stackoverflow.com/questions/17445585/javascript-convert-string-into-date-with-format-dd-mmm-yyyy-i-e-01-jun-2012
     function convertDateFormat(enteredDate)
@@ -372,16 +349,6 @@
         return dateToReturn.toLocaleDateString("en-CA");
     }
 
-    $(document).ready(function()
-    {
-        // Hide the equality selector for the first criteria by default
-        determineToShowEquality(0);
-{#            $("#rem").on("click", function()#}
-{#            {#}
-{#                $(this).parent("tr:first").remove()#}
-{#            });#}
-    })
-
     </script>
 {% endblock %}
 {% block content %}
@@ -389,7 +356,7 @@
     <div class="container">
         <h2>List of Cases</h2>
         <div id="add" style="text-align: center;">
-            <a href="{%  url 'add_case:case_add' %}">Add New Case</a>
+            <a href="{%  url 'add_case:case_add' %}">[Add New Case]</a>
         </div>
         <div id="filter" class="panel panel-info" style="padding:0;">
             <div href="#filter_ops" class="panel panel-heading col-sm-12" data-toggle="collapse">
@@ -412,7 +379,7 @@
                     <tr id="filter-entry-0">
                         {# Field to filter #}
                         <td class="form-group" style="padding: 2px;">
-                            <select class="form-control" id="field-choice-0" onchange="determineToShowEquality(0)">
+                            <select class="form-control" id="field-choice-0">
                                 <option value="id">ID</option>
                                 <option value="lead">Lead</option>
                                 <option value="complainant">Complainant</option>
@@ -459,6 +426,8 @@
             <div class="form-group">
                 <input type="button" class="form-control btn btn-info col-sm-1" onclick="applyFilter()"
                        value="Filter" style="width:10%" />
+                <input type="button" class="form-control btn btn-info col-sm-1" onclick="location.reload()"
+                       value="Reset List" style="width:10%" />
             </div>
 
 
@@ -498,7 +467,7 @@
         </div>
 
         <div id="add" style="text-align: center;">
-            <a href="{%  url 'add_case:case_add' %}">Add New Case</a>
+            <a href="{%  url 'add_case:case_add' %}">[Add New Case]</a>
         </div>
     </div>
 </body>

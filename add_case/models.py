@@ -39,7 +39,7 @@ class CasePrograms(models.Model):
 #               Also saves data to the DB.
 class Case(models.Model):
     lead = models.IntegerField()
-    complainant = models.ForeignKey(Person, related_name='case_complainant')
+    complainant = models.ForeignKey(Person, related_name='case_complainant',null=True, blank=True)
     campus = models.CharField(choices=kvp.CAMPUS_CHOICES.iteritems(), max_length=25, validators=[validate_location],
                               default="Saskatoon")
     satellite = models.CharField(max_length=50, default=None, null=True, blank=True)

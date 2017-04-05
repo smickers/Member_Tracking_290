@@ -166,7 +166,6 @@ class FileViewTests(TestCase):
         client = Client()
         response = client.get('/grievance/detail/{}'.format(self.ga.id))
         file_name = self.grievance_files.file.__str__().split('/')
-        # TODO: Fix this
         self.assertTrue(file_name[1] in response.content)
         self.assertTrue(response.content.__contains__("Document:"))
         self.assertTrue(response.content.__contains__("Document Description:"))

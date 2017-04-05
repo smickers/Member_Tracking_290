@@ -221,7 +221,6 @@ $(document).ready( function() {
         (maxBday != null ) ? temp_endpoint += "max_bDay=" + encodeURIComponent(maxBday)+ "&": temp_endpoint += '';
         $('#id_gender').val() != null ? temp_endpoint += "gender=" + encodeURIComponent($('#id_gender').val()) + "&": false;
         // Make our ajax call to our API
-        console.log(temp_endpoint);
         ajax_call(temp_endpoint);
 
         // If we have multiple fields, we use this loop. We build a new url for each form and the results are added on to our

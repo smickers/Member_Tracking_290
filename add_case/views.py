@@ -89,12 +89,18 @@ class EmptyStringFilter(filters.BooleanFilter):
 
 # View to set up case filter options
 class CaseFilter(filters.FilterSet):
+    # Filters for complainants by firstName, lastName, and blank
+    complainant__firstName = filters.CharFilter(name='complainant__firstName', lookup_expr='icontains')
+    complainant__lastName = filters.CharFilter(name='complainant__lastName', lookup_expr='icontains')
+    school = filters.CharFilter(name='school', lookup_expr='contains')
+    program = filters.CharFilter(name='program', lookup_expr='contains')
+    campus = filters.CharFilter(name='campus', lookup_expr='icontains')
+    department = filters.CharFilter(name='department', lookup_expr='contains')
+    status = filters.CharFilter(name='status', lookup_expr='contains')
     # Setting up the filters for date ranges
     date_before = filters.DateFilter(name='date', lookup_expr='gte')
     date_after = filters.DateFilter(name='date', lookup_expr='lte')
-    # Filters for complainants by firstName, lastName, and blank
-    case_complainant__firstName = filters.CharFilter(name='complainant__firstName', lookup_expr='icontains')
-    case_complainant__lastName = filters.CharFilter(name='complainant__lastName', lookup_expr='icontains')
+
     # Satellites field is left blank or is null
     sat_blank = EmptyStringFilter(name='satellite')
     sat = filters.CharFilter(name='satellite', lookup_expr='icontains')
@@ -122,6 +128,6 @@ class CaseFilterView(viewsets.ReadOnlyModelViewSet):
     serializer_class = CaseFilterSerializer
     filter_class = CaseFilter
     filter_fields = ['id', 'lead', 'complainant', 'campus', 'satellite', 'school',
-                  'program', 'department', 'caseType', 'status', 'additionalMembers',
-                  'additionalNonMembers', 'date']
+                     'program', 'department', 'caseType', 'status', 'additionalMembers',
+                     'additionalNonMembers', 'date']
     pagination_class = FilterOffsetClass
