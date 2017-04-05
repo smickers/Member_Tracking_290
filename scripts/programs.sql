@@ -113,6 +113,7 @@ replace into add_case_caseprograms (name) values ("Occupational Health and Safet
 replace into add_case_caseprograms (name) values ("Occupational Health Nursing - Post-Graduate Certificate");
 replace into add_case_caseprograms (name) values ("Office Administration - Certificate");
 replace into add_case_caseprograms (name) values ("Orientation to Nursing in Canada for Internationally Educated Nurses - Applied Certificate");
+replace into add_case_caseprograms (name) values ("Other");
 
 replace into add_case_caseprograms (name) values ("Parts Management Technician - Certificate");
 replace into add_case_caseprograms (name) values ("Parts Person - Applied Certificate");

@@ -72,7 +72,7 @@ class ContactLogForm(ModelForm):
         ]
         # Giving labels to fields defined above
         labels = {
-            'member': 'Saskpolytech Member',
+            'member': 'SaskPolytech Member',
             'description': 'Contact Description',
             'contactCode': 'Contact Code',
             'date': 'Date of Contact',
@@ -104,7 +104,7 @@ class ContactLogDetailsForm(ModelForm):
     ]
     # Giving labels to fields defined above
     labels = {
-        'member': 'Saskpolytech Member',
+        'member': 'SaskPolytech Member',
         'description': 'Contact Description',
         'contactCode': 'Contact Code',
         'date': 'Date of Contact',

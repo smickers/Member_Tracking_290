@@ -1,7 +1,8 @@
 use gamma;
+DELETE FROM add_case_casesatellite WHERE 1 = 1;
 REPLACE INTO add_case_casesatellite (name) values ("PA - Academic Building");
 REPLACE INTO add_case_casesatellite (name) values ("R - Parkway Building");
-REPLACE INTO add_case_casesatellite (name) values ("S - Albert Ave");
+REPLACE INTO add_case_casesatellite (name) values ("S - Alberta Ave");
 REPLACE INTO add_case_casesatellite (name) values ("S - Avenue W");
 REPLACE INTO add_case_casesatellite (name) values ("S - English Cres (HETT)");
 REPLACE INTO add_case_casesatellite (name) values ("S - Fred Davies");

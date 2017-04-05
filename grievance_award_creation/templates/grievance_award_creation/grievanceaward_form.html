@@ -13,9 +13,10 @@
 {% block scripts %}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
-    {%  load bootstrap3 %}
+    {% load bootstrap3 %}
     {% load static %}
     <script src="{% static 'grievance_award_creation/sample.js' %}" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'spfa_mt/select2_responsive.css' %}" />
     <style>
         .radio {
             display: inline;
@@ -75,11 +76,17 @@
             //a list of cases
 
         });
+
+        function resetSelect2(){
+                $('span.select2-selection__rendered').empty();
+                $("ul.select2-selection__rendered").empty();
+            }
     </script>
 
 {% endblock %}
 
 {% block content %}
+    <title>Grievance Ruling Creation</title>
     <body>
         <div class="container">
             <h1>Case Information</h1>
@@ -101,24 +108,30 @@
                     <td>{{ case.status }}</td>
                 </tr>
 
-                <tr><td>Members</td></tr>
+                <tr><td colspan="2">Members</td></tr>
                 <tr>
-                    <td>
+                    <td colspan="2">
                     {% include 'add_case/case_members.html' %}
                     </td>
                 </tr>
             </table>
 
             <h3>Grievance Info</h3>
-            <form action="" method="POST" enctype="multipart/form-data" class="form">
+            <form action="" method="POST" enctype="multipart/form-data" class="form" onreset="resetSelect2()">
                 {% csrf_token %}
                 {% bootstrap_form form %}
                 {% buttons %}
                     <button id="cancel_upload">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create Ruling</button>
-                    <button type="reset" class="btn btn-warning">Reset</button>
+                    {% if form.instance.id %}
+                        <button type="submit" class="btn btn-primary">Edit Ruling</button>
+                    {% else %}
+                        <button type="submit" class="btn btn-primary">Create Ruling</button>
+                        <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
+                    {% endif %}
                 {% endbuttons %}
             </form>
+        <hr />
+                <a href="{% url 'grievance_award_creation:grievance_award_list' %}">View List of Grievance Awards</a>
         </div>
 
     </body>

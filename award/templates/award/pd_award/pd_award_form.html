@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% load bootstrap3 %}
+{% load static %}
 {% block metadata %}
     <title>PD Funding</title>
+    <script src="{% static 'spfa_mt/libraries/select2/select2.min.js' %}"></script>
+    <link  rel="stylesheet" type="text/css"
+           href="{% static 'spfa_mt/libraries/select2/select2.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'spfa_mt/select2_responsive.css' %}" />
 {% endblock %}
 
 
@@ -35,22 +40,36 @@
                 }
               });
             });//end ready
+
+        function resetSelect2(){
+                $('span.select2-selection__rendered').empty();
+                $("ul.select2-selection__rendered").empty();
+            }
             </script>
 {% endblock %}
 
 {% block content %}
     <div class="container">
-        <form action="" method="POST" class="form" enctype="multipart/form-data">
+    {% if form.instance.id %}
+        <h2>Edit Professional Development Award</h2>
+    {% else %}
+        <h2>Create Professional Development Award</h2>
+    {% endif %}
+        <form action="" method="POST" class="form" enctype="multipart/form-data" onreset="resetSelect2()">
             {% csrf_token %}
             {% bootstrap_form form %}
             {% bootstrap_form_errors form %}
             {% buttons %}
-                <center>
-                <button class="btn btn-primary" type="submit" style="width: 49%">Submit</button>
-                <button class="btn btn-warning" type="reset" style="width: 49%">Reset</button>
-                </center>
+                {% if form.instance.id %}
+                    <input type="submit" class="btn btn-primary" name="submit" value="Update PD Award" />
+                {% else %}
+                    <input type="submit" class="btn btn-primary" name="submit" value="Create PD Award" />
+                    <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
+                {% endif %}
             {% endbuttons %}
         </form>
+    <hr />
+                <a href="{% url 'award:award_pd_list' %}">View List of Professional Development Funding</a>
     </div>
 
 {% endblock %}
