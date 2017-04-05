@@ -54,6 +54,9 @@ INSTALLED_APPS = [
     'grievance_award_creation.apps.GrievanceAwardCreationConfig',
     'url_filter',
     'django_filters',
+    # 'django-easy-pdf',
+    # 'inputstream',
+    # 'wkhtmltopdf',
 ]
 
 MIDDLEWARE = [
@@ -185,3 +188,4 @@ FILE_UPLOAD_HANDLERS = ["file_handler.filehandler.UploadValidator",
                         "django.core.files.uploadhandler.MemoryFileUploadHandler",
                         "django.core.files.uploadhandler.TemporaryFileUploadHandler"]
 
+WKHTMLTOPDF_CMD = "C:/Python27/Lib/site-packages/wkhtmltopdf"

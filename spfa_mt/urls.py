@@ -12,6 +12,7 @@ from contact_log.views import ContactLogViewSet
 #from contact_log.views import ContactLogSearchView
 from grievance_award_creation.views import GrievanceAwardFilterView
 from . import views
+from wkhtmltopdf.views import PDFTemplateView
 
 # initialize rest framework's router
 router = routers.DefaultRouter()
@@ -34,6 +35,7 @@ router.register('grievance_award/filter', GrievanceAwardFilterView)
 urlpatterns = [
     url(r'^index.html$', views.spfaView.as_view(), name='index_default'),
     url(r'^$', views.spfaView.as_view(), name='index'),
+    # url(r'^$', PDFTemplateView.as_view(template_name='contact_log/contactlog_list.html', filename='busta.pdf'), name='index'),
     #rest service's root url
     url(r'^api-root/', include(router.urls)),
     url(r'^admin/', admin.site.urls),
@@ -47,4 +49,5 @@ urlpatterns = [
     url(r'^grievance/', include('grievance_award_creation.urls')),
     url(r'^add_event/', include('create_event.urls')),
     url(r'^add_com/', include('add_com.urls')),
+    url(r'^pdf/', views.PDFView.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
