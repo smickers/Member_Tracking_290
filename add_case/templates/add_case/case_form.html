@@ -205,7 +205,11 @@
 
 {% block content %}
     <div class="container">
-        <h1><strong>Create a Case</strong></h1>
+        {% if form.instance.id %}
+            <h2><strong>Edit Case</strong></h2>
+        {% else %}
+            <h2><strong>Create a Case</strong></h2>
+        {% endif %}
         <form class="form form-group" action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form_errors">

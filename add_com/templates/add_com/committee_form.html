@@ -16,7 +16,10 @@
         {% csrf_token %}
         {% bootstrap_form form %}
 
-        <button type="submit">Save</button><br />
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-warning">Reset</button>
+        {% endbuttons %}
         <a href="{%  url 'add_com:committee_list' %}">View All Committees</a>
     </form>
 {% endblock %}

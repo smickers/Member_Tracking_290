@@ -46,6 +46,11 @@
      </script>
 </head>
 <body>
+    {% if form.instance.id %}
+            <h2><strong>Edit Event</strong></h2>
+        {% else %}
+            <h2><strong>Create an Event</strong></h2>
+        {% endif %}
     <form action="" method="POST" enctype="multipart/form-data" class="form">
         {% csrf_token %}
         {% bootstrap_form form %}

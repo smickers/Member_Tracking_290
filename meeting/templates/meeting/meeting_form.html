@@ -69,6 +69,11 @@
 {% endblock %}
 
 {% block content %}
+    {% if form.instance.id %}
+            <h2><strong>Edit Meeting</strong></h2>
+        {% else %}
+            <h2><strong>Create a Meeting</strong></h2>
+        {% endif %}
     <form action="" method="POST" class="form" enctype="multipart/form-data">
         {% csrf_token %}
         {% bootstrap_form form %}
