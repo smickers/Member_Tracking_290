@@ -3,7 +3,12 @@
 {% block metadata %}
     <title>Cases</title>
 {% endblock %}
+{% load static %}
 {% block scripts %}
+    <script src="{% static 'spfa_mt/libraries/select2/select2.min.js' %}"></script>
+      <link  rel="stylesheet" type="text/css"
+           href="{% static 'spfa_mt/libraries/select2/select2.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'spfa_mt/select2_responsive.css' %}" />
     <script type="text/javascript">
     var criteriaCount = 0;
 
@@ -67,6 +72,7 @@
                            +'<button class="form-control btn btn-info" onclick="removeCriteria(' + criteriaCount +')" '
                            +'style="width: 45%;" style="padding: 2px; padding-left: 2px;"><span class="glyphicon glyphicon-minus"></span></button></td>';
        $("#filteringForm").append(newRow);
+        $("#field-choice-" + criteriaCount).addEventListener("change", inputChange);
     }
 
     // This function is courtesy of:
@@ -163,6 +169,7 @@
         // Now display the result
         filterTable(all_records);
     }
+
 
     /***
      * Function:    combineArraysAND
@@ -348,6 +355,61 @@
         // change all the slashes to hyphens
         return dateToReturn.toLocaleDateString("en-CA");
     }
+
+    $(document).ready(function()
+    {
+
+
+         /**
+         * Function:    inputChange
+         * Purpose:     Change the type of input box in the 'value' column, based on
+         * selection in the 'field' column.
+         */
+        function inputChange()
+        {
+            var inputBox = $("#field-value-" +criteriaCount);
+            switch (this.value)
+            {
+                case "complainant":
+                    inputBox.type = "select";
+                        var members = $("form-value-" + criteriaCount);
+
+                    members.select2({
+                        allowClear: true,
+                        placeholder: "Select a member",
+                        ajax: {
+                            //a list of all members
+                            url: "/api-root/members_list/search/", //URL of the REST API for querying the members
+                            dataType: 'json',
+                            data: function(params)
+                            {
+                                return {
+                                    q: params.term, //The term to be sent
+                                    offset: (params.page) * 10 //Which page of the REST page will be loaded
+                                }
+                            },
+                            processResults: function (data, params)
+                            {
+                                return {
+                                    results: data.results,
+                                    pagination: {
+                                        more: true //enables the pagination feature
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    break;
+                default: "null";
+                    break;
+            }
+        }
+        document.getElementById('field-choice-' + criteriaCount).addEventListener('change', inputChange);
+
+    });
+
+
+
 
     </script>
 {% endblock %}
