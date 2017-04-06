@@ -3,7 +3,6 @@ from datetime import date
 from .models import EducationAward, PDAward
 from django import forms
 
-
 ###
 # Form for creating an Education Award:
 ###
@@ -59,7 +58,8 @@ class EducationAwardUpdateForm(ModelForm):
                 'invalid': 'Award value must be a whole number (no decimals).',
                 'max_value': 'Amount must be greater than $0 and less than $10,000.',
                 'min_value': 'Amount must be greater than $0 and less than $10,000.'
-            }
+            },
+
         }
         widgets={
             'description': TextInput(attrs={'readonly':'readonly'}),

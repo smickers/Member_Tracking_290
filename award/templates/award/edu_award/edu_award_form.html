@@ -11,6 +11,8 @@
 
 {% block scripts %}
         <script type="text/javascript">
+            var valid = true
+
             $(document).ready(function() {
 
                 //Search functionality for members attending a committee
@@ -39,6 +41,18 @@
                 }
               });
             });//end ready
+
+            function submitForm()
+            {
+                //$("#id_awardedMember").closest(".form-group").addClass("has-error");
+                //$("#id_awardRecipient").closest(".form-group").addClass("has-error");
+
+                if(valid)
+                {
+                    $("form").submit()
+                }
+            }
+
             </script>
 {% endblock %}
 
@@ -50,7 +64,7 @@
         {% else %}
             <h2>Create Education Award</h2>
         {% endif %}
-        <form class="form form-group" action="" method="POST" enctype="multipart/form-data">
+        <form onsubmit="javascript:submitForm()" class="form form-group" action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {# With these next two lines enabled, errors seem to be displayed twice. It's something worth looking into #}
             {# in another story. #}

@@ -1,6 +1,11 @@
 from __future__ import unicode_literals
+
+from encodings import undefined
+
 from django.core.urlresolvers import reverse
 from django.db import models
+from setuptools.package_index import unique_values
+
 from .validators import *
 from add_member.models import Person
 from datetime import date
@@ -27,27 +32,25 @@ class EducationAward(models.Model):
     def __str__(self):
         return self.description.__str__()
 
+
     #Method: clean
     #Purpose Cleans the model before submitting to database
     def clean(self):
             # First, ensure both the member and recipient have been entered
             if (self.awardedMember != None and self.awardRecipient != None and self.awardRecipient != ""):
-
-            #if (self.awardedMember != None and (self.awardRecipient != None or self.awardRecipient != "")):
                 if EducationAward.objects.exclude(id=self.id).filter(awardedMember=self.awardedMember).filter(awardRecipient=self.awardRecipient).count() > 0:
                     raise ValidationError('Cannot assign recipient to more than one award')
             else:
                 # Is only member entered?
                 if self.awardedMember != None:# and (self.awardRecipient == None or self.awardRecipient == ""):
                     raise ValidationError('Cannot assign an award with only a member')
-                # Is only recipient entered?
-                #elif self.awardedMember == None and (self.awardRecipient != None or self.awardRecipient != ""):
                 # Either the recipient is None
                 # or the recipient is an empty string
                 elif self.awardRecipient != None and self.awardRecipient != "":
                 #elif self.awardRecipient != None:# or self.awardRecipient != "":
-                    raise ValidationError('Cannot assign an award without an associated member.')
+                    raise ValidationError('Cannot assign an award without an associated member')
             self.awardAmount = round(self.awardAmount, 2);
+
 
 
 
