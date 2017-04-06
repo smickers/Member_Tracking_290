@@ -9,6 +9,7 @@ from .serializers import ContactLogSerializer
 import django_filters.rest_framework
 from add_case.models import Case
 import rest_framework_filters as filters
+from url_filter.integrations.drf import DjangoFilterBackend
 
 
 # View ContactLogCreate
@@ -82,5 +83,11 @@ class ContactLogViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = contactLog.objects.all()
     serializer_class = ContactLogSerializer
     filter_class = ContactLogFilter
-
     filter_fields = ['id', 'member', 'date', 'description', 'contactCode', 'date_gt', 'date_lt']
+
+
+class ReportContactLogViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = contactLog.objects.all()
+    serializer_class = ContactLogSerializer
+    filter_backends = [DjangoFilterBackend]
+    filter_fields = ['id', 'member', 'date', 'description', 'contactCode']
