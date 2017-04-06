@@ -65,7 +65,7 @@ class EducationAwardUpdateForm(ModelForm):
             'description': TextInput(attrs={'readonly':'readonly'}),
             "awardAmount": TextInput(attrs={'readonly':'readonly'}),
             'awardedMember': forms.Select(
-                attrs={'class': 'js-eduAward'}),
+                attrs={'class': 'js-eduAward', 'style': 'width: 100%'}),
         }
 
 
@@ -74,9 +74,9 @@ class PDAwardForm(ModelForm):
         model=PDAward
         fields='__all__'
         labels={
-            'awardName':'Professional Development Description',
+            'awardName':'Description',
             'memberAwarded':'Member Awarded',
-            'awardCost':'Professional Development Cost',
+            'awardCost':'Cost',
             'startDate': 'Start Date',
             'endDate': 'End Date'
         }
@@ -98,5 +98,5 @@ class PDAwardForm(ModelForm):
             'startDate': SelectDateWidget(months=MONTHS),
             'endDate': SelectDateWidget(months=MONTHS),
             'memberAwarded': forms.Select(
-                attrs={'class': 'js-membersAwarded'}),
+                attrs={'class': 'js-membersAwarded', 'style': 'width: 100%'}),
         }

@@ -1,22 +1,68 @@
 {% block content %}
-    <body>
-        <p id="award">Award ID: {{ grievance_award.id }}</p>
-        <p>Grievance Type:
-            {%  if grievance_award.case.caseType == 7 %}
-                {{ 'Member' }}
-            {% else %}
-                {{ 'Policy' }}
-            {% endif %}
-        </p>
-        <p>Award Amount: {{ grievance_award.awardAmount }}</p>
-        <p>Description: {{ grievance_award.description }}</p>
-        <p>Date: {{ grievance_award.date| date:"d, M. Y" }}</p>
+{#    <body>#}
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <th>Award ID</th>
+                    <td>{{ grievance_award.id }}</td>
+                </tr>
+                <tr>
+                    <th>Grievance Type</th>
+                    <td>
+                        {%  if grievance_award.case.caseType == 7 %}
+                            {{ 'Member' }}
+                        {% else %}
+                            {{ 'Policy' }}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Award Amount</th>
+                    <td>{{ grievance_award.awardAmount }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ grievance_award.description }}</td>
+                </tr>
+                <tr>
+                    <th>Date</th>
+                    <td>{{ grievance_award.date| date:"d, M. Y" }}</td>
+                </tr>
+{#                <th>Description</th>#}
+{#                <th>Date</th>#}
+            </tbody>
+        </table>
         {% if grievance_award.file_name %}
-            <p>Document: <a id="download" target="_blank" href="../../media/grievance/{{ grievance_award.file_name }}">{{ grievance_award.file_name }}</a></p>
-            <p>Document Description: {{ grievance_award.file_desc }}</p>
-            <p>Document Upload Date: {{ grievance_award.file_date_uploaded|date:"d, M. Y" }}</p>
+            <h3>Related File Information</h3>
+            <table class="table table-striped">
+                <tr>
+                    <th>Document: </th>
+                    <td><a id="download" target="_blank" href="../../media/grievance/{{ grievance_award.file_name }}">{{ grievance_award.file_name }}</a></td>
+                </tr>
+                <tr>
+                    <th>Document Description: </th>
+                    <td>{{ grievance_award.file_desc }}</td>
+                </tr>
+                <tr>
+                    <th>Document Upload Date:</th>
+                    <td>{{ grievance_award.file_date_uploaded|date:"d, M. Y" }}</td>
+                </tr>
+            </table>
         {% endif %}
-        <input type="button" value="Back" onclick="window.history.back()" />
-        <br>
-    </body>
+
+{#        <p id="award">Award ID: {{ grievance_award.id }}</p>#}
+{#        <p>Grievance Type:#}
+{#            #}
+{#        </p>#}
+{#        <p>Award Amount: {{ grievance_award.awardAmount }}</p>#}
+{#        <p>Description: {{ grievance_award.description }}</p>#}
+{#        <p>Date: {{ grievance_award.date| date:"d, M. Y" }}</p>#}
+{#        {% if grievance_award.file_name %}#}
+{#            <p>Document: <a id="download" target="_blank" href="../../media/grievance/{{ grievance_award.file_name }}">{{ grievance_award.file_name }}</a></p>#}
+{#            <p>Document Description: {{ grievance_award.file_desc }}</p>#}
+{#            <p>Document Upload Date: {{ grievance_award.file_date_uploaded|date:"d, M. Y" }}</p>#}
+{#        {% endif %}#}
+{#        <input type="button" value="Back" onclick="window.history.back()" />#}
+{#        <br>#}
+{#    </body>#}
 {% endblock %}

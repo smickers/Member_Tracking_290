@@ -20,8 +20,8 @@ class CaseForm(ModelForm):
             attrs={'multiple': False, 'accept': FILE_EXT_TO_ACCEPT_STR}))
         self.fields['file_description'] = CharField(required=False, label='File Description',
                                                     widget=forms.TextInput(attrs={'type': '', 'size': '100%'}))
-        self.fields['related_contact_logs'] = ModelMultipleChoiceField(queryset=(contactLog.objects.all()), to_field_name="pk",label='logs', required=False,
-                                                   widget = forms.SelectMultiple(attrs={'class': 'js-logs', 'style': 'width:65%;'}))
+        self.fields['related_contact_logs'] = ModelMultipleChoiceField(queryset=(contactLog.objects.all()), to_field_name="pk",label='Related Contact Logs', required=False,
+                                                   widget = forms.SelectMultiple(attrs={'class': 'js-logs', 'style': 'width:100%;'}))
 
 
     def save(self, commit=False):
@@ -127,11 +127,11 @@ class CaseForm(ModelForm):
         widgets = {
              'date': SelectDateWidget(months=kvp.MONTHS, years=YEARS),
              'complainant': forms.Select(
-                attrs={'class': 'js-complainant', 'style': 'width:65%;'}),
+                attrs={'class': 'js-complainant', 'style': 'width:100%;'}),
              'additionalMembers': forms.SelectMultiple(
-                attrs={'class': 'js-additional_members', 'style': 'width:65%'}),
+                attrs={'class': 'js-additional_members', 'style': 'width:100%'}),
              'program': forms.Select(
-                attrs={'style': 'width:50%;'}
+                attrs={'style': 'width:100%;'}
              ),
 
         }

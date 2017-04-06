@@ -1,15 +1,31 @@
 {% extends 'base.html' %}
-
+{% load bootstrap3 %}
 {% block metadata %}
     <title>Committee Details</title>
 {% endblock %}
 
 {% block content %}
-    <h2>Committee: {{ object.name }}</h2>
-    <!-- Note: this isn't the most ideal (not great if other statuses are implemented)
-    however it works for what we need. -->
-    <h3>Status: {% if not object.status == 1 %}Inactive{% else %}Active{% endif %}</h3>
-    <a href="{% url 'add_com:committee_edit' object.pk %}">Edit This Committee</a><br />
-    <a href="{%  url 'add_com:committee_add' %}">Add New Committee</a><br />
-    <a href="{%  url 'add_com:committee_list' %}">View All Committees</a>
+    <div class="container">
+    <h2>Committee #{{ object.pk }}: {{ object.name }}</h2>
+    <table class="table table-striped">
+    <tr>
+        <th>Committee Name</th>
+        <td>{{ object.name }}</td>
+    </tr>
+    <tr>
+        <th>Committee Status</th>
+        <td>{% if object.status == 1 %}Active{% else %}Inactive{% endif %}</td>
+    </tr>
+    </table>
+
+    {% buttons %}
+    <input type="button" class="btn btn-primary" value="Back" onclick="window.history.back()" />
+    {% endbuttons %}
+    <hr>
+    <center>
+        <a href="{% url 'add_com:committee_edit' object.pk %}">Edit this Committee</a> |
+        <a href="{%  url 'add_com:committee_add' %}">Add new Committee</a> |
+        <a href="{%  url 'add_com:committee_list' %}">View all Committees</a>
+    </center>
+    </div>
 {% endblock %}

@@ -1,5 +1,6 @@
 {% include 'nav.html' %}
 {%  load bootstrap3 %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,19 +42,40 @@
               });
 
             });
-
-
+        function resetSelect2(){
+                $('span.select2-selection__rendered').empty();
+                $("ul.select2-selection__rendered").empty();
+            }
      </script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'spfa_mt/select2_responsive.css' %}" />
 </head>
 <body>
-    <form action="" method="POST" enctype="multipart/form-data" class="form">
+<div class="container">
+    {% if form.instance.id %}
+    {%  comment %}
+    These next few lines are used to determine whether
+    a create or modify heading should be shown
+    {% endcomment %}
+    <h2>Edit Event</h2>
+    {% else %}
+    <h2>Create an Event</h2>
+    {% endif %}
+    <form action="" method="POST" enctype="multipart/form-data" class="form" onreset="resetSelect2()">
         {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}
-            <button type="submit" class="btn btn-primary">Save</button>
-            <button type="reset" class="btn btn-warning">Reset</button>
+            {% if form.instance.id %}
+                <input type="submit" class="btn btn-primary" name="submit" value="Update Event" />
+            {% else %}
+                <input type="submit" class="btn btn-primary" name="submit" value="Create Event" />
+                <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
+            {% endif %}
         {% endbuttons %}
     </form>
+    <hr />
+    <a href="{% url 'create_event:list_event' %}">View List of Events</a>
+</div>
 </body>
 {% include 'footer.html' %}
 </html>

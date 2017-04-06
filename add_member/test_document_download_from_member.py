@@ -135,8 +135,7 @@ class DocumentDownloadTestCase(LiveServerTestCase):
         self.assertEquals( response.content, lines[0])
 
     # Tear down and trash all the old files
-    def tearDown(self):
-        if os.path.exists(self._overridden_settings["MEDIA_ROOT"]):
-            shutil.rmtree(self._overridden_settings["MEDIA_ROOT"])
-
+    # def tearDown(self):
+    #     if os.path.exists(self._overridden_settings["MEDIA_ROOT"]):
+    #         shutil.rmtree(self._overridden_settings["MEDIA_ROOT"])
 
