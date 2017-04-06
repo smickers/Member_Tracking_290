@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% block metadata %}
+
+{% endblock %}
+
+{% block content %}
+<div>
+    <div hidden id="endpoint" value="{{ report_endpoint }}"></div>
+
+    <div class="container">
+        <div class="row">
+            <div id="filter_widget" class="col-lg-3">
+                <form onsubmit="filter(event)" id="filter_form">
+                    ID: <br><input type="text" id="fname" name="id"><br>
+                    Filter By:<br>
+                    <input type="radio" onclick="d_filter_method(event)"
+                           name="dradio" value="bydate" checked> Specific Date &nbsp;
+                    <input type="radio" onclick="d_filter_method(event)" name="dradio"
+                           value="byrange"> Range<br>
+                    <div id="bydate">
+                        Date: <br><input type="date" id="sdate" name="date"><br>
+                    </div>
+                    <div id="byrange" hidden>
+                        Start Date: <br><input type="date" id="sdate" name="date__gte"><br>
+                        End Date: <br><input type="date" id="edate" name="date__lte"><br>
+                    </div>
+                    Contact Code: <br><input type="text" id="ccode" name="contactCode"><br>
+                  <button type="submit">Submit</button>
+                </form>
+            </div>
+
+            <div class="col-lg-9">
+                <div id="prompt_section">
+                    <button class="btn-default" onclick="generate_rep()">Generate Report</button>
+                </div>
+                <table id="data-table" border="2"><!----- INSERT TABLE ------></table>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    /**
+     * Purpose: Does an AJAX request to the server (specifically to the DRF endpoint)
+     * @param e - event - used cancel the default form behavior.
+     *            DOCS: https://developer.mozilla.org/en/docs/Web/API/Event/preventDefault
+     */
+    var data_response;
+    var ccode_dict;
+
+    ccode_dict = {"E": "Email", "P": "Phone", "F": "Face to face", "M": "Meeting", "T": "Text"};
+
+    function filter(e) {
+        e.preventDefault();
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', $("#endpoint").attr("value") +"?" + $("form").serialize(), true); // buil the url query
+        xhr.onload = function () {
+          // Request finished. Do processing here.
+            data_response = JSON.parse(this.responseText);
+            table_display();
+        };
+        console.log($("form").serialize());
+        xhr.send(null); // send the request
+    } // TODO: This is my implementaiton of filtering. Feel free to remove this later.
+
+    // Display the table representation of the pdf here.
+    function table_display(){
+        $("#prompt_section").show();
+        var dtable = $("#data-table");
+        dtable.empty();
+        var ele = $('<thead></thead>');
+        ele.append($('<th>ID</th>'));
+        ele.append($('<th>Date</th>'));
+        ele.append($('<th>Description</th>'));
+        ele.append($('<th>Contact Code</th>'));
+        ele.append($('<th>Case</th>'));
+        dtable.append(ele);
+        var tbody = $('<tbody></tbody>');
+        data_response.results.forEach(function (val) {
+            var ele = $('<tr></tr>');
+            ele.append($("<td></td>").text(val.id));
+            ele.append($("<td></td>").text(val.date));
+            ele.append($("<td></td>").text(val.description));
+            ele.append($("<td></td>").text(ccode_dict[val.contactCode]));;
+            ele.append($("<td></td>").text(val.relatedCase)); // TODO: modify this later
+            tbody.append(ele);
+        });
+        dtable.append(tbody);
+    }
+
+    /**
+     * Function for hiding/showing the date fields
+     * @param e - event
+     */
+    function d_filter_method(e) {
+        var selected = e.target.defaultValue;
+        var to_hide = (selected == "byrange") ? "bydate" : "byrange";
+        $("#" + to_hide).hide();
+        $("#" + selected).show();
+        // TODO: Clear data later
+    }
+
+    /**
+     * Generates the report in a pdf file
+     */
+    function generate_rep() {
+
+    }
+
+
+</script>
+{% endblock %}
