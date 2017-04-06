@@ -97,6 +97,41 @@ CONTACT_LOG_STATUSES = (('E', 'Email'),
                         ('P', 'Phone'),
                         ('M', 'Meeting'),
                         ('T', 'Text'))
+GENDER_CHOICE = [
+    ('MALE', 'Male'),
+    ('FEMALE', 'Female'),
+    ('UNDEFINED', 'Undefined'),
+    ('Test', 'Test')
+]
+
+# bound fields choices for campus field
+CAMPUS_CHOICE = [
+    ('SASKATOON', 'SASKATOON'),
+    ('REGINA', 'REGINA'),
+    ('MOOSEJAW', 'MOOSE JAW'),
+    ('PA', 'PRINCE ALBERT'),
+]
+
+# bound fields choices for position field
+POSITION_CLASS_CHOICE = [
+    ('FTO', 'Full-time ongoing'),
+    ('FTED', 'Full-time end dated'),
+    ('PTO', 'Part-time ongoing'),
+    ('PTED', 'Part-time end dated'),
+]
+
+# bound fields choices for membership status field
+MEMBERSHIP_STATUS = [
+    ('RESOURCE', 'RESOURCE'),
+    ('COMCHAIR', 'COMMITTEE CHAIR'),
+    ('RECORDER', 'RECORDER'),
+]
+
+# Fields for Employee Status
+EMPLOYEE_STATUS = [
+    ('A', 'ACTIVE'),
+    ('T', 'TERMINATED'),
+]
 
 # CONTACT_LOG_FILE_EXTENSIONS = [
 #     'mp3',
