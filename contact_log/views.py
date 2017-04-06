@@ -1,7 +1,7 @@
 # SPFA MT CST Project
 # November 7, 2016
 from django.views.generic.edit import CreateView, UpdateView
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 from .models import contactLog
 from .forms import ContactLogForm, ContactLogDetailsForm
 from rest_framework import viewsets
@@ -10,6 +10,7 @@ import django_filters.rest_framework
 from add_case.models import Case
 import rest_framework_filters as filters
 from url_filter.integrations.drf import DjangoFilterBackend
+from rest_framework.reverse import reverse_lazy
 
 
 # View ContactLogCreate
@@ -91,3 +92,13 @@ class ReportContactLogViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ContactLogSerializer
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['id', 'member', 'date', 'description', 'contactCode']
+
+class ReportGeneratorView(TemplateView):
+    template_name = "contact_log/reports_contactlog.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ReportGeneratorView, self).get_context_data(**kwargs)
+        # By passing the endpoint URL to the context, it will enable us to dynamically reverse-lookup the url
+        #    of an endpoint instead of hardcoding it from the javascript. #TODO: Remove this comment before pushing to master
+        context['report_endpoint'] = reverse_lazy('report-search-list', request=self.request)
+        return context

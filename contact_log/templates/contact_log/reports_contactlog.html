@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+{#    This is just to test if the dyncami URL reverse stuff is working. #}
+{#{{ report_endpoint }}#}
+    <div hidden id="endpoint" value="{{ report_endpoint }}">
+    </div>
+    <div class="container">
+        <form onsubmit="filter(event)" id="filter_form">
+          ID: <br><input type="text" id="fname" name="id"><br>
+          Start Date: <br><input type="date" id="sdate" name="date__gte"><br>
+          End Date: <br><input type="date" id="edate" name="date__lte"><br>
+          Contact Code: <br><input type="text" id="ccode" name="contactCode"><br>
+          <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        /**
+         * Purpose: Does an AJAX request to the server (specifically to the DRF endpoint)
+         * @param e - event - used cancel the default form behavior. DOCS: https://developer.mozilla.org/en/docs/Web/API/Event/preventDefault
+         */
+        function filter(e) {
+            e.preventDefault();
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', $("#endpoint").attr("value") +"?" + $("form").serialize(), true);
+            xhr.onload = function (e) {
+              // Request finished. Do processing here.
+                console.log(this.responseText);
+            };
+            console.log($("form").serialize());
+            xhr.send(null);
+        } // TODO: This is my implementaiton of filtering. Feel free to remove this later.
+    </script>
+{% endblock %}

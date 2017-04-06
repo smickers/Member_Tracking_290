@@ -30,7 +30,7 @@ router.register('member/filter', MemberFilterView, base_name='member-filter')
 #router.register('contact_log/search', ContactLogSearchView, base_name='contact-log-search')
 #router.register(r'contact_log/search', ContactLogViewSet, base_name='contact_log')
 router.register('contact_log/search', ContactLogViewSet)
-router.register('contact_log/report_search', ReportContactLogViewSet)
+router.register('contact_log/report_search', ReportContactLogViewSet, base_name='report-search')
 router.register('grievance_award/filter', GrievanceAwardFilterView)
 
 urlpatterns = [
