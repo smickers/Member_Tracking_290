@@ -10,7 +10,7 @@ from add_case.views import CaseSearchView
 from add_com.views import CommitteeSearchView
 from contact_log.views import ContactLogViewSet
 #from contact_log.views import ContactLogSearchView
-from grievance_award_creation.views import GrievanceAwardFilterView
+from grievance_award_creation.views import GrievanceAwardFilterView, ReportGrievanceAwardViewSet
 from . import views
 
 # initialize rest framework's router
@@ -30,6 +30,7 @@ router.register('member/filter', MemberFilterView, base_name='member-filter')
 #router.register(r'contact_log/search', ContactLogViewSet, base_name='contact_log')
 router.register('contact_log/search', ContactLogViewSet)
 router.register('grievance_award/filter', GrievanceAwardFilterView)
+router.register('grievance_award/report_search', ReportGrievanceAwardViewSet, base_name='report-search')
 
 urlpatterns = [
     url(r'^index.html$', views.spfaView.as_view(), name='index_default'),

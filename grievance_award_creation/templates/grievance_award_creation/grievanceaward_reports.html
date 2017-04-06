@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% block metadata %}
+<link rel="stylesheet" type="text/css" href="https://printjs-4de6.kxcdn.com/print.min.css">
+    <style>
+        th, td {
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div>
+    <div hidden id="endpoint" value="{{ report_endpoint }}"></div>
+    <div class="container">
+        <div class="row">
+            <div id="filter_widget" class="col-lg-3">
+                <div>
+                    Filter By:<br>
+                    <input type="radio" onclick="d_filter_method(event)"
+                           name="dradio" value="bydate" checked> Specific Date &nbsp;
+                    <input type="radio" onclick="d_filter_method(event)" name="dradio"
+                           value="byrange"> Range<br>
+                    <div id="bydate">
+                        Date: <br><input type="date" id="sdate" name="date"><br>
+                    </div>
+                </div>
+                <form onsubmit="filter(event)" id="filter_form">
+                    ID: <br><input type="text" id="fname" name="id"><br>
+                    <div id="byrange" hidden>
+                        Start Date: <br><input type="date" id="sdate" name="date__gte"><br>
+                        End Date: <br><input type="date" id="edate" name="date__lte"><br>
+                    </div>
+                    Award Amount <br><input type="text" id="aAmount" name="awardAmount"><br>
+                    Description: <br><input type="text" id="ccode" name="description__icontains"><br>
+                  <button type="submit">Submit</button>
+                </form>
+            </div>
+
+            <div id="prompt_section">
+                <button class="btn-default" onclick="printJS('report_container', 'html')">Generate Report</button>
+            </div>
+
+            <div class="col-lg-9" id="report_container">
+
+                <table id="data-table" border="2" align="center"><!----- INSERT TABLE ------></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+<script type="text/javascript">
+    /**
+     * Purpose: Does an AJAX request to the server (specifically to the DRF endpoint)
+     * @param e - event - used cancel the default form behavior.
+     *            DOCS: https://developer.mozilla.org/en/docs/Web/API/Event/preventDefault
+     */
+    var data_response;
+
+    function filter(e) {
+        e.preventDefault();
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('GET', $("#endpoint").attr("value") +"?" + $("form").serialize(), true); // build the url query
+        xhr.onload = function () {
+          // Request finished. Do processing here.
+            data_response = JSON.parse(this.responseText);
+            table_display();
+        };
+        console.log($("form").serialize());
+        xhr.send(null); // send the request
+    } // TODO: This is my implementaiton of filtering. Feel free to remove this later.
+
+    // Display the table representation of the pdf here.
+    function table_display(){
+        $("#prompt_section").show();
+        var dtable = $("#data-table");
+        dtable.empty();
+        var ele = $('<thead></thead>');
+        ele.append($('<th>ID</th>'));
+        ele.append($('<th>Date</th>'));
+        ele.append($('<th>Description</th>'));
+        ele.append($('<th>Award Amount</th>'));
+        dtable.append(ele);
+        var tbody = $('<tbody></tbody>');
+        data_response.results.forEach(function (val) {
+            var ele = $('<tr></tr>');
+            ele.append($("<td></td>").text(val.id));
+            ele.append($("<td></td>").text(val.date));
+            ele.append($("<td></td>").text(val.description));
+            if( val.relatedCase ){
+                ele.append($("<td></td>").html(" Lead: " + val.relatedCase.lead + "<br/> "+
+                                            "Campus: " + val.relatedCase.campus + "<br /> " +
+                                            "Case Type: " + casetype_dict[val.relatedCase.caseType] + "<br /> "));
+            }else {
+                ele.append($("<td></td>").text(""));
+            }
+            tbody.append(ele);
+        });
+        dtable.append(tbody);
+    }
+
+    /**
+     * Function for hiding/showing the date fields
+     * @param e - event
+     */
+    function d_filter_method(e) {
+        var selected = e.target.defaultValue;
+        var to_hide = (selected == "byrange") ? "bydate" : "byrange";
+        $("#" + to_hide).hide();
+        $("#" + selected).show();
+        // TODO: Clear data later
+    }
+</script>
+{% endblock %}

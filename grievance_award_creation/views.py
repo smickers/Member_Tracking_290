@@ -4,12 +4,16 @@ from .forms import GrievanceAwardForm
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+from django.views.generic import TemplateView
 from add_case.models import Case
-from .serializer import GAFilterSerializer
+from .serializer import GAFilterSerializer, GrievanceAwardSerializer
 from rest_framework import viewsets
 import rest_framework_filters as filters
 from rest_framework.pagination import LimitOffsetPagination
 from django.core.validators import EMPTY_VALUES
+from rest_framework.reverse import reverse_lazy
+from url_filter.integrations.drf import DjangoFilterBackend
+
 
 
 # Create your views here.
@@ -133,3 +137,17 @@ class GrievanceAwardFilterView(viewsets.ReadOnlyModelViewSet):
         'awardAmount', 'description', 'date'
     ]
     pagination_class = FilterOffsetClass
+
+class ReportGrievanceAwardViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = GrievanceAward.objects.all()
+    serializer_class = GrievanceAwardSerializer
+    filter_backends = [DjangoFilterBackend]
+    filter_fields = ['id', 'awardAmount', 'date', 'description']
+
+class ReportGeneratorView(TemplateView):
+    template_name = "grievance_award_creation/grievanceaward_reports.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ReportGeneratorView, self).get_context_data(**kwargs)
+        context['report_endpoint'] = reverse_lazy('report-search-list', request=self.request)
+        return context
