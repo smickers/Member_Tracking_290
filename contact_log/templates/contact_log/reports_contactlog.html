@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load bootstrap3 %}
+{% load static %}
 {% block metadata %}
 <link rel="stylesheet" type="text/css" href="https://printjs-4de6.kxcdn.com/print.min.css">
     <style>
@@ -16,6 +17,7 @@
 
 
     <div class="container">
+        <h2>Contact Log Report Generation</h2>
         <div class="row">
             <div id="filter_widget" class="col-lg-3">
                 <div>
@@ -35,18 +37,21 @@
                         End Date: <br><input type="date" id="edate" name="date__lte"><br>
                     </div>
                     Contact Code: <br><input type="text" id="ccode" name="contactCode"><br>
-                    Description: <br><input type="text" id="ccode" name="description__icontains"><br>
-                  <button type="submit">Submit</button>
+                    Description: <br><input type="text" id="description" name="description__icontains"><br>
+                <button type="submit" class="btn btn-primary">Filter</button>
+
+                <button class="btn btn-success" onclick="printJS('report_container', 'html')" id="prompt_section">
+                    Generate Report</button>
                 </form>
             </div>
 
-            <div id="prompt_section">
-                <button class="btn-default" onclick="printJS('report_container', 'html')">Generate Report</button>
-            </div>
+{#            <div id="prompt_section">#}
+{#                <button class="btn-default" onclick="printJS('report_container', 'html')">Generate Report</button>#}
+{#            </div>#}
 
             <div class="col-lg-9" id="report_container">
-
-                <table id="data-table" border="2" align="center"><!----- INSERT TABLE ------></table>
+                <div id="report-info"></div>
+                <table id="data-table" class='table' border="2" align="center"><!----- INSERT TABLE ------></table>
             </div>
 
 
@@ -85,8 +90,13 @@
     function filter(e) {
         e.preventDefault();
         var xhr = new XMLHttpRequest();
+        var url= $("form").serialize();
+        if( $("#description").val() == ""){
 
-        xhr.open('GET', $("#endpoint").attr("value") +"?" + $("form").serialize(), true); // buil the url query
+            url = url.slice(0, -24)
+        }
+        url += "&limit=100000"; 
+        xhr.open('GET', $("#endpoint").attr("value") +"?" + url , true); // buil the url query
         xhr.onload = function () {
           // Request finished. Do processing here.
             data_response = JSON.parse(this.responseText);
@@ -94,11 +104,15 @@
         };
         console.log($("form").serialize());
         xhr.send(null); // send the request
-    } // TODO: This is my implementaiton of filtering. Feel free to remove this later.
+    }
 
     // Display the table representation of the pdf here.
     function table_display(){
-        $("#prompt_section").show();
+        // Clear report header info
+        $("#report-info").html("");
+        $("#report-info").html("<h3>Contact Log Report</h3><h5>Report generated on " + (new Date()) + "</h5>");
+
+
         var dtable = $("#data-table");
         dtable.empty();
         var ele = $('<thead></thead>');
@@ -113,7 +127,7 @@
             var ele = $('<tr></tr>');
             ele.append($("<td></td>").text(val.id));
             ele.append($("<td></td>").text(val.date));
-            ele.append($("<td></td>").text(val.description));
+            ele.append($("<td></td>").text( (val.description != null)? val.description: "" ));
             ele.append($("<td></td>").text(ccode_dict[val.contactCode]));;
             if( val.relatedCase ){
                 ele.append($("<td></td>").html(" Lead: " + val.relatedCase.lead + "<br/> "+
@@ -122,8 +136,6 @@
             }else {
                 ele.append($("<td></td>").text(""));
             }
-
-
 
 
             tbody.append(ele);
@@ -143,13 +155,6 @@
         // TODO: Clear data later
     }
 
-    /**
-     * Generates the report in a pdf file
-     */
-    function generate_rep()
-    {
-
-    }
 
 
 </script>
