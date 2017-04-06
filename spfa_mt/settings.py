@@ -101,7 +101,7 @@ DATABASES = {
         'NAME': 'gamma',
         'HOST': '127.0.0.1',
         'PORT': '3306',
-        'PASSWORD': 'bitnami',
+        # 'PASSWORD': 'bitnami',
         'USER': 'root',
         'OPTIONS': {
             'sql_mode': 'traditional',

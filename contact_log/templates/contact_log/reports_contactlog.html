@@ -8,10 +8,20 @@
 
     <div id="filter_widget">
         <form onsubmit="filter(event)" id="filter_form">
-          ID: <br><input type="text" id="fname" name="id"><br>
-          Start Date: <br><input type="date" id="sdate" name="date__gte"><br>
-          End Date: <br><input type="date" id="edate" name="date__lte"><br>
-          Contact Code: <br><input type="text" id="ccode" name="contactCode"><br>
+            ID: <br><input type="text" id="fname" name="id"><br>
+            Filter By:<br>
+            <input type="radio" onclick="d_filter_method(event)"
+                   name="dradio" value="bydate" checked> Specific Date &nbsp;
+            <input type="radio" onclick="d_filter_method(event)" name="dradio"
+                   value="byrange"> Range<br>
+            <div id="bydate">
+                Date: <br><input type="date" id="sdate" name="date"><br>
+            </div>
+            <div id="byrange" hidden>
+                Start Date: <br><input type="date" id="sdate" name="date__gte"><br>
+                End Date: <br><input type="date" id="edate" name="date__lte"><br>
+            </div>
+            Contact Code: <br><input type="text" id="ccode" name="contactCode"><br>
           <button type="submit">Submit</button>
         </form>
     </div>
@@ -36,6 +46,10 @@
      *            DOCS: https://developer.mozilla.org/en/docs/Web/API/Event/preventDefault
      */
     var data_response;
+    var ccode_dict;
+
+    ccode_dict = {"E": "Email", "P": "Phone", "F": "Face to face", "M": "Meeting", "T": "Text"};
+
     function filter(e) {
         e.preventDefault();
         var xhr = new XMLHttpRequest();
@@ -66,11 +80,19 @@
             ele.append($("<td></td>").text(val.id));
             ele.append($("<td></td>").text(val.date));
             ele.append($("<td></td>").text(val.description));
-            ele.append($("<td></td>").text(val.contactCode));;
+            ele.append($("<td></td>").text(ccode_dict[val.contactCode]));;
             ele.append($("<td></td>").text("INSERT_CASE"));;
             tbody.append(ele);
         });
         dtable.append(tbody);
+    }
+
+    function d_filter_method(e) {
+        var selected = e.target.defaultValue;
+        var to_hide = (selected == "byrange") ? "bydate" : "byrange";
+        $("#" + to_hide).hide();
+        $("#" + selected).show();
+        // TODO: Clear data later
     }
 
 </script>
