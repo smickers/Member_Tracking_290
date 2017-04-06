@@ -10,7 +10,7 @@ app_name = 'contact_log_creation'
 urlpatterns = [
     #url(r'^api/', include(router.urls)),
     #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^add/$', views.ContactLogCreate.as_view(), name='contact_log_add'),
+    url(r'^add/$', views.ContactLogCreate.as_view(), name='contact_log_add'), 
     # Add a new contact log, and pass in a member's PK (same as edit essentially, but we don't want that URL)
     url(r'^add_direct/mid=(?P<pk>[-\d]+)$', views.ContactLogCreate.as_view(), name='contact_log_add_direct'),
     url(r'^(list)/$', views.ContactLogList.as_view(), name='contact_log_list'),
