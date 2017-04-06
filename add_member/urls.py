@@ -16,7 +16,7 @@ urlpatterns = [
     url(r'^filter/$', views.MemberFilterList.as_view(), name='member_filter'),
     url(r'^(?P<pk>[-\w]+)/$', views.PersonDetail.as_view(), name='member_detail'),
     url(r'download/(?P<file_name>.+)$', views.download, name='member_file_download')
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 

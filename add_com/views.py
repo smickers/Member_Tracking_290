@@ -10,11 +10,15 @@ from serializer import CommitteeSearchSerializer
 from drf_haystack.filters import HaystackAutocompleteFilter
 
 
-# View for Committee creation:
-class ComCreate(SuccessMessageMixin, CreateView):
+# # View for Committee creation:
+# class ComCreate(SuccessMessageMixin, CreateView):
+#     model = Committee
+#     form_class = ComForm
+#     form = ComForm()
+#     success_url = reverse_lazy('add_com:committee_detail')
+class ComCreate(CreateView):
     model = Committee
     form_class = ComForm
-    form = ComForm()
 
 # Creates the 'success' view
 class ComCreateSuccess(DetailView):

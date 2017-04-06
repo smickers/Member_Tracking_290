@@ -10,7 +10,7 @@
 {% block content %}
 <body>
 <div class="container">
-<div class="form-inline center" id="filteringForm">
+<div class="form-inline center" id="filteringForm" style="text-align: center;">
         <div id="filter-entry-0">
             <div class="form-group">
                 <label>Field</label>
@@ -46,10 +46,10 @@
         </div>
     </div>
     <br />
-    <button class="btn btn-primary" onclick="applyFilter()">Filter</button>
+    <button class="btn btn-primary center-block" onclick="applyFilter()">Filter</button>
 
     <h2>List of Grievance Awards</h2>
-    <table border="1" class="table table-bordered" style="width:50%;">
+    <table border="1" class="table table-bordered" style="width:100%;">
         <thead style="text-align:center;">
             <th style="text-align:center;">ID</th>
             <th>Award Amount</th>
@@ -67,6 +67,7 @@
                 <td style="text-align:center;">{{ grievance.date }}</td>
                 <td style="text-align:center;">{{ grievance.description }}</td>
                 <td style="text-align:center;"><a href='{% url "add_case:case_detail" grievance.pk %}'>[View Detail]</a></td>
+                <td style="text-align:center;"><a href='{% url "grievance_award_creation:grievance_award_edit" grievance.pk %}'>[Edit]</a></td>
             </tr>
 
         <!-- only appears if no committees exist in the DB -->

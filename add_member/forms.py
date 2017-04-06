@@ -67,25 +67,44 @@ class PersonForm(ModelForm):
     class Meta:
         model = Person
         # specifies which field are going to be used on the form
-        fields = '__all__'
-
+        fields = ['memberID',
+                  'firstName',
+                  'middleName',
+                  'lastName',
+                  'socNum',
+                  'city',
+                  'mailAddress',
+                  'mailAddress2',
+                  'pCode',
+                  'bDay',
+                  'gender',
+                  'hPhone',
+                  'cPhone',
+                  'hEmail',
+                  'campus',
+                  'jobType',
+                  'hireDate',
+                  'committee',
+                  'memberImage']
         # specifies labels for all the fields found in the model
         labels = {
-            'memberID': 'Member ID/Saskpoly ID',
+            'memberID': 'SaskPolytech ID',
             'firstName': 'First Name',
             'middleName': 'Middle Name',
-            'socNum': 'SIN',
+            'lastName': 'Last Name',
+            'socNum': 'Social Insurance Number',
             'city': 'City',
             'mailAddress': 'Mail Address',
             'mailAddress2': 'Mail Address 2',
-            'pCode':'Postal Code',
-            'bDay':'Birth Date',
+            'pCode': 'Postal Code',
+            'bDay': 'Birth Date',
             'gender': 'Gender',
             'hPhone': 'Home Phone',
             'cPhone': 'Cell Phone',
             'hEmail': 'Home Email',
             'campus': 'Campus',
             'jobType': 'Job Type',
+            'hireDate': 'Hire Date',
             'committee': 'Committee',
             'memberImage': 'Member Image',
             }
@@ -101,7 +120,10 @@ class PersonForm(ModelForm):
         # modifies the date fields to have a valid range
         widgets = {
             'bDay': SelectDateWidget(months=kvp.MONTHS, years=range(1900, datetime.datetime.now().year + 1)),
-            'hireDate': SelectDateWidget(months=kvp.MONTHS, years=range(1900, datetime.datetime.now().year + 1))
+            'hireDate': SelectDateWidget(months=kvp.MONTHS, years=range(1900, datetime.datetime.now().year + 1)),
+            'pCode': forms.TextInput(attrs={'placeholder': 'A1A 1A1'}),
+            'hPhone': forms.TextInput(attrs={'placeholder': '(123)123-4567'}),
+            'cPhone': forms.TextInput(attrs={'placeholder': '(123)123-4567'}),
             }
 
 

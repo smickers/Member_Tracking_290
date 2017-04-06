@@ -1,19 +1,32 @@
 {% extends 'base.html' %}
 {% load bootstrap3 %}
-
+{% load static %}
 {% block metadata %}
     <title>Add Member</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'spfa_mt/select2_responsive.css' %}" />
 {% endblock %}
 
 {% block content %}
+
     <div class="container">
+        {% if form.instance.id %}
+            <h2>Edit a Member</h2>
+        {% else %}
+            <h2>Create a Member</h2>
+        {% endif %}
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
                 {% bootstrap_form form %}
             {% buttons %}
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <button type="reset" class="btn btn-warning">Reset</button>
+                {% if form.instance.id %}
+                    <input type="submit" class="btn btn-primary" name="submit" value="Update Member" />
+                {% else %}
+                    <input type="submit" class="btn btn-primary" name="submit" value="Create Member" />
+                    <input type="reset" class="btn btn-warning" name="reset" value="Reset" />
+                {% endif %}
             {% endbuttons %}
         </form>
+    <hr />
+    <a href="{% url 'add_member:member_list' %}">View List of Members</a>
     </div>
 {% endblock %}Complainant

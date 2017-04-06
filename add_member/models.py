@@ -72,7 +72,7 @@ class Person(PersonBase):
 
     committee = models.CharField(max_length=30, validators=[validate_rightstringlen30],  null=True, blank=True)
     memberImage = models.CharField(max_length=30, blank=True, null=True)
-    programChoice = models.CharField(max_length=30,blank=True, null=True, validators=[validate_rightstringlen30])
+    programChoice = models.CharField(max_length=30, blank=True, null=True, validators=[validate_rightstringlen30])
     posBeginDate = models.DateField(blank=True, null=True)
     posEndDate = models.DateField(blank=True, null=True)
     terminationDate = models.DateField(blank=True, null=True)
