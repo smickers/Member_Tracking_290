@@ -36,7 +36,7 @@ router.register('grievance_award/filter', GrievanceAwardFilterView)
 urlpatterns = [
     url(r'^index.html$', views.spfaView.as_view(), name='index_default'),
     url(r'^$', views.spfaView.as_view(), name='index'),
-    # url(r'^$', PDFTemplateView.as_view(template_name='contact_log/contactlog_list.html', filename='busta.pdf'), name='index'),
+    # url(r'^$', PDFTemplateView.as_view(template_name='test.html', filename='busta.pdf'), name='index'),
     #rest service's root url
     url(r'^api-root/', include(router.urls)),
     url(r'^admin/', admin.site.urls),

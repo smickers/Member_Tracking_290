@@ -1,18 +1,24 @@
 {% extends "base.html" %}
 {% load bootstrap3 %}
 {% block metadata %}
-
+<link rel="stylesheet" type="text/css" href="https://printjs-4de6.kxcdn.com/print.min.css">
+    <style>
+        th, td {
+            text-align: center;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
 <div>
     <div hidden id="endpoint" value="{{ report_endpoint }}"></div>
 
+
+
     <div class="container">
         <div class="row">
             <div id="filter_widget" class="col-lg-3">
-                <form onsubmit="filter(event)" id="filter_form">
-                    ID: <br><input type="text" id="fname" name="id"><br>
+                <div>
                     Filter By:<br>
                     <input type="radio" onclick="d_filter_method(event)"
                            name="dradio" value="bydate" checked> Specific Date &nbsp;
@@ -21,21 +27,29 @@
                     <div id="bydate">
                         Date: <br><input type="date" id="sdate" name="date"><br>
                     </div>
+                </div>
+                <form onsubmit="filter(event)" id="filter_form">
+                    ID: <br><input type="text" id="fname" name="id"><br>
                     <div id="byrange" hidden>
                         Start Date: <br><input type="date" id="sdate" name="date__gte"><br>
                         End Date: <br><input type="date" id="edate" name="date__lte"><br>
                     </div>
                     Contact Code: <br><input type="text" id="ccode" name="contactCode"><br>
+                    Description: <br><input type="text" id="ccode" name="description__icontains"><br>
                   <button type="submit">Submit</button>
                 </form>
             </div>
 
-            <div class="col-lg-9">
-                <div id="prompt_section">
-                    <button class="btn-default" onclick="generate_rep()">Generate Report</button>
-                </div>
-                <table id="data-table" border="2"><!----- INSERT TABLE ------></table>
+            <div id="prompt_section">
+                <button class="btn-default" onclick="printJS('report_container', 'html')">Generate Report</button>
             </div>
+
+            <div class="col-lg-9" id="report_container">
+
+                <table id="data-table" border="2" align="center"><!----- INSERT TABLE ------></table>
+            </div>
+
+
         </div>
 
 
@@ -48,6 +62,7 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 <script type="text/javascript">
     /**
      * Purpose: Does an AJAX request to the server (specifically to the DRF endpoint)
@@ -57,11 +72,20 @@
     var data_response;
     var ccode_dict;
 
-    ccode_dict = {"E": "Email", "P": "Phone", "F": "Face to face", "M": "Meeting", "T": "Text"};
+    var ccode_dict = {"E": "Email", "P": "Phone", "F": "Face to face", "M": "Meeting", "T": "Text"};
+    var casetype_dict = {'7': "GRIEVANCES - INDIVIDUAL",
+                    '6':"GRIEVANCES - GROUP",
+                    '5':"GRIEVANCES - POLICY",
+                    '4':"GRIEVANCES - CLASSIFICATION",
+                    '3':"GRIEVANCES - COMPLAINTS",
+                    '2':"DISABILITY CLAIMS",
+                    '1':"ARBITRATION",
+                    '0':"COMPLAINT" }
 
     function filter(e) {
         e.preventDefault();
         var xhr = new XMLHttpRequest();
+
         xhr.open('GET', $("#endpoint").attr("value") +"?" + $("form").serialize(), true); // buil the url query
         xhr.onload = function () {
           // Request finished. Do processing here.
@@ -91,7 +115,17 @@
             ele.append($("<td></td>").text(val.date));
             ele.append($("<td></td>").text(val.description));
             ele.append($("<td></td>").text(ccode_dict[val.contactCode]));;
-            ele.append($("<td></td>").text(val.relatedCase)); // TODO: modify this later
+            if( val.relatedCase ){
+                ele.append($("<td></td>").html(" Lead: " + val.relatedCase.lead + "<br/> "+
+                                            "Campus: " + val.relatedCase.campus + "<br /> " +
+                                            "Case Type: " + casetype_dict[val.relatedCase.caseType] + "<br /> "));
+            }else {
+                ele.append($("<td></td>").text(""));
+            }
+
+
+
+
             tbody.append(ele);
         });
         dtable.append(tbody);
@@ -112,7 +146,8 @@
     /**
      * Generates the report in a pdf file
      */
-    function generate_rep() {
+    function generate_rep()
+    {
 
     }
 
