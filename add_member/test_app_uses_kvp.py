@@ -31,24 +31,47 @@ class KVPTestCase(TestCase):
         self.person1.save()
 
     def test_that_kvp_contains_proper_gender_choices(self):
-        for x in range(0, len(kvp.GENDER_CHOICE)):
-            self.person1.gender = kvp.GENDER_CHOICE[x]
-            self.assertEquals(self.person1.gender, kvp.GENDER_CHOICE[x])
-        self.person1.gender = "Not a Gender"
+        try:
+            Person.GENDER_CHOICE
+            exists = False
+        except:
+            if(kvp.GENDER_CHOICE):
+                exists = True
+        self.assertEquals(True, exists)
 
     def test_that_kvp_contains_proper_campus_choice(self):
-        for x in range(0, len(self.CAMPUS_CHOICE)):
-            self.assertEquals(kvp.CAMPUS_CHOICE[x], self.CAMPUS_CHOICE[x])
+        try:
+            Person.CAMPUS_CHOICE
+            exists = False
+        except:
+            if (kvp.CAMPUS_CHOICE):
+                exists = True
+        self.assertEquals(True, exists)
 
     def test_that_kvp_contains_proper_position_class_choice(self):
-        for x in range(0, len(self.POSITION_CLASS_CHOICE)):
-            self.assertEquals(kvp.POSITION_CLASS_CHOICE[x], self.POSITION_CLASS_CHOICE[x])
+        try:
+            Person.POSITION_CLASS_CHOICE
+            exists = False
+        except:
+            if (kvp.POSITION_CLASS_CHOICE):
+                exists = True
+        self.assertEquals(True, exists)
 
     def test_that_kvp_contains_proper_membership_status(self):
-        for x in range(0, len(self.MEMBERSHIP_STATUS)):
-            self.assertEquals(kvp.MEMBERSHIP_STATUS[x], self.MEMBERSHIP_STATUS[x])
+        try:
+            Person.MEMBERSHIP_STATUS
+            exists = False
+        except:
+            if (kvp.MEMBERSHIP_STATUS):
+                exists = True
+        self.assertEquals(True, exists)
 
     def test_that_kvp_contains_proper_employee_status(self):
-        for x in range(0, len(self.EMPLOYEE_STATUS)):
-            self.assertEquals(kvp.EMPLOYEE_STATUS[x], self.EMPLOYEE_STATUS[x])
+        try:
+            Person.EMPLOYEE_STATUS
+            exists = False
+        except:
+            if (kvp.EMPLOYEE_STATUS):
+                exists = True
+        self.assertEquals(True, exists)
 
