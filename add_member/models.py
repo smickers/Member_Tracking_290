@@ -33,7 +33,6 @@ class Person(PersonBase):
     hEmail = models.EmailField(null=True, blank=True)
     # campus = models.CharField(max_length=20, choices=kvp.CAMPUS_CHOICE, null=True, blank=True)
     campus = models.CharField(max_length=20, null=True, blank=True)
-
     committee = models.CharField(max_length=30, validators=[validate_rightstringlen30],  null=True, blank=True)
     memberImage = models.CharField(max_length=30, blank=True, null=True)
     programChoice = models.CharField(max_length=30, blank=True, null=True, validators=[validate_rightstringlen30])

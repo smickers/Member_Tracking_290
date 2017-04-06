@@ -39,24 +39,6 @@ class KVPTestCase(TestCase):
                 exists = True
         self.assertEquals(True, exists)
 
-    def test_that_kvp_contains_proper_campus_choice(self):
-        try:
-            Person.CAMPUS_CHOICE
-            exists = False
-        except:
-            if (kvp.CAMPUS_CHOICE):
-                exists = True
-        self.assertEquals(True, exists)
-
-    def test_that_kvp_contains_proper_position_class_choice(self):
-        try:
-            Person.POSITION_CLASS_CHOICE
-            exists = False
-        except:
-            if (kvp.POSITION_CLASS_CHOICE):
-                exists = True
-        self.assertEquals(True, exists)
-
     def test_that_kvp_contains_proper_membership_status(self):
         try:
             Person.MEMBERSHIP_STATUS

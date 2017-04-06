@@ -101,6 +101,7 @@ GENDER_CHOICE = [
     ('MALE', 'Male'),
     ('FEMALE', 'Female'),
     ('UNDEFINED', 'Undefined'),
+    ('Test', 'Test')
 ]
 
 # bound fields choices for campus field
@@ -126,6 +127,7 @@ MEMBERSHIP_STATUS = [
     ('RECORDER', 'RECORDER'),
 ]
 
+# Fields for Employee Status
 EMPLOYEE_STATUS = [
     ('A', 'ACTIVE'),
     ('T', 'TERMINATED'),

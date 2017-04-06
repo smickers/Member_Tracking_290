@@ -85,7 +85,9 @@ class PersonForm(ModelForm):
                   'jobType',
                   'hireDate',
                   'committee',
-                  'memberImage']
+                  'memberImage',
+                  'membershipStatus',
+                  'employeeClass']
         # specifies labels for all the fields found in the model
         labels = {
             'memberID': 'SaskPolytech ID',
@@ -107,6 +109,8 @@ class PersonForm(ModelForm):
             'hireDate': 'Hire Date',
             'committee': 'Committee',
             'memberImage': 'Member Image',
+            'membershipStatus' : 'Membership Status',
+            'employeeClass' : 'Employee Class'
             }
 
         # Set up a custom error message for postal codes that are too long
