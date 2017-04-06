@@ -17,4 +17,4 @@ class GrievanceAwardSerializer(serializers.ModelSerializer):
     class Meta:
         model = GrievanceAward
         # What fields should be serialized
-        fields = ('id', 'awardAmount', 'date', 'description')
+        fields = '__all__'

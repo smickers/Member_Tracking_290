@@ -123,6 +123,7 @@ class FilterOffsetClass(LimitOffsetPagination):
     except Exception as e:
         default_limit = 100
 
+
 class GrievanceAwardFilterView(viewsets.ReadOnlyModelViewSet):
     """
     This is our API for filtering a Grievance Award. It queries the database for all Grievance Award and
@@ -138,11 +139,13 @@ class GrievanceAwardFilterView(viewsets.ReadOnlyModelViewSet):
     ]
     pagination_class = FilterOffsetClass
 
+
 class ReportGrievanceAwardViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = GrievanceAward.objects.all()
     serializer_class = GrievanceAwardSerializer
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['id', 'awardAmount', 'date', 'description']
+
 
 class ReportGeneratorView(TemplateView):
     template_name = "grievance_award_creation/grievanceaward_reports.html"
