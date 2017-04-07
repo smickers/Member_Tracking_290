@@ -26,12 +26,13 @@
                            name="dradio" value="bydate" checked> Specific Date &nbsp;
                     <input type="radio" onclick="d_filter_method(event)" name="dradio"
                            value="byrange"> Range<br>
-                    <div id="bydate">
-                        Date: <br><input type="date" id="sdate" name="date"><br>
-                    </div>
+
                 </div>
                 <form onsubmit="filter(event)" id="filter_form">
                     ID: <br><input type="text" id="fname" name="id"><br>
+                    <div id="bydate">
+                        Date: <br><input type="date" id="sdate" name="date"><br>
+                    </div>
                     <div id="byrange" hidden>
                         Start Date: <br><input type="date" id="sdate" name="date__gte"><br>
                         End Date: <br><input type="date" id="edate" name="date__lte"><br>
@@ -40,9 +41,10 @@
                     Description: <br><input type="text" id="description" name="description__icontains"><br>
                 <button type="submit" class="btn btn-primary">Filter</button>
 
-                <button class="btn btn-success" onclick="printJS('report_container', 'html')" id="prompt_section">
-                    Generate Report</button>
+
                 </form>
+                <button disabled class="btn btn-success" onclick="printJS('report_container', 'html')" id="prompt_section">
+                    Generate Report</button>
             </div>
 
 {#            <div id="prompt_section">#}
@@ -69,11 +71,7 @@
 {% block scripts %}
 <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 <script type="text/javascript">
-    /**
-     * Purpose: Does an AJAX request to the server (specifically to the DRF endpoint)
-     * @param e - event - used cancel the default form behavior.
-     *            DOCS: https://developer.mozilla.org/en/docs/Web/API/Event/preventDefault
-     */
+
     var data_response;
     var ccode_dict;
 
@@ -87,6 +85,11 @@
                     '1':"ARBITRATION",
                     '0':"COMPLAINT" }
 
+    /**
+     * Purpose: Does an AJAX request to the server (specifically to the DRF endpoint)
+     * @param e - event - used cancel the default form behavior.
+     *            DOCS: https://developer.mozilla.org/en/docs/Web/API/Event/preventDefault
+     */
     function filter(e) {
         e.preventDefault();
         var xhr = new XMLHttpRequest();
@@ -101,6 +104,7 @@
           // Request finished. Do processing here.
             data_response = JSON.parse(this.responseText);
             table_display();
+            $("#prompt_section").removeAttr("disabled");
         };
         console.log($("form").serialize());
         xhr.send(null); // send the request
