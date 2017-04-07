@@ -95,8 +95,8 @@
 
             url = url.slice(0, -24)
         }
-        url += "&limit=100000"; 
-        xhr.open('GET', $("#endpoint").attr("value") +"?" + url , true); // buil the url query
+        url += "&limit=100000";
+        xhr.open('GET', $("#endpoint").attr("value") +"?" + url , true); // build the url query
         xhr.onload = function () {
           // Request finished. Do processing here.
             data_response = JSON.parse(this.responseText);

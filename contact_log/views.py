@@ -88,7 +88,7 @@ class ContactLogViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class ReportContactLogViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = contactLog.objects.all()
+    queryset = contactLog.objects.all().order_by('id')
     serializer_class = ContactLogSerializer
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['id', 'member', 'date', 'description', 'contactCode']
