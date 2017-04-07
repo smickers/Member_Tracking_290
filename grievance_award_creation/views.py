@@ -141,7 +141,7 @@ class GrievanceAwardFilterView(viewsets.ReadOnlyModelViewSet):
 
 
 class ReportGrievanceAwardViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = GrievanceAward.objects.all()
+    queryset = GrievanceAward.objects.all().order_by('id')
     serializer_class = GrievanceAwardSerializer
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['id', 'awardAmount', 'date', 'description']

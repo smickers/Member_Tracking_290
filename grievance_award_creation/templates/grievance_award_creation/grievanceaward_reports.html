@@ -35,28 +35,22 @@
                                 <option value="7">Member</option>
                                 <option value="6">Policy</option>
                             </select><br>
-                  <button type="submit">Submit</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button class="btn btn-success" onclick="printJS('report_container', 'html')">Generate Report</button>
                 </form>
             </div>
 
-            <div class="col-lg-9">
-                <div id="prompt_section">
-                    <button class="btn-default" onclick="printJS('data-table', 'html')">Generate Report</button>
-                </div>
+            <div class="col-lg-9" id="report_container">
+                <div id="report-info"></div>
                 <table id="data-table" border="2"><!----- INSERT TABLE ------></table>
             </div>
         </div>
-
-
     </div>
-
-
-
-
 </div>
 {% endblock %}
 
 {% block scripts %}
+<script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 <script type="text/javascript">
     /**
      * Purpose: Does an AJAX request to the server (specifically to the DRF endpoint)
@@ -67,11 +61,19 @@
     var type_dict;
 
     type_dict = {"7": "Member", "6": "Policy"};
+    var casetype_dict = {'7': "GRIEVANCES - INDIVIDUAL",
+                    '6':"GRIEVANCES - GROUP",
+                    '5':"GRIEVANCES - POLICY",
+                    '4':"GRIEVANCES - CLASSIFICATION",
+                    '3':"GRIEVANCES - COMPLAINTS",
+                    '2':"DISABILITY CLAIMS",
+                    '1':"ARBITRATION",
+                    '0':"COMPLAINT" }
 
     function filter(e) {
         e.preventDefault();
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', $("#endpoint").attr("value") +"?" + $("form").serialize(), true); // buil the url query
+        xhr.open('GET', $("#endpoint").attr("value") +"?" + $("form").serialize(), true); // build the url query
         xhr.onload = function () {
           // Request finished. Do processing here.
             data_response = JSON.parse(this.responseText);
@@ -79,10 +81,13 @@
         };
         console.log($("form").serialize());
         xhr.send(null); // send the request
-    } // TODO: This is my implementaiton of filtering. Feel free to remove this later.
+    }
 
     // Display the table representation of the pdf here.
     function table_display(){
+        $("#report-info").html("");
+        $("#report-info").html("<h3>Grievance Award Report</h3><h5>Report generated on " + (new Date()) + "</h5>");
+
         $("#prompt_section").show();
         var dtable = $("#data-table");
         dtable.empty();
@@ -90,7 +95,7 @@
         ele.append($('<th>ID</th>'));
         ele.append($('<th>Date</th>'));
         ele.append($('<th>Description</th>'));
-        ele.append($('<th>Contact Code</th>'));
+        ele.append($('<th>Type</th>'));
         ele.append($('<th>Case</th>'));
         dtable.append(ele);
         var tbody = $('<tbody></tbody>');
@@ -100,7 +105,19 @@
             ele.append($("<td></td>").text(val.date));
             ele.append($("<td></td>").text(val.description));
             ele.append($("<td></td>").text(type_dict[val.type]));;
-            ele.append($("<td></td>").text(val.relatedCase)); // TODO: modify this later
+            if(val.relatedCase){
+                ele.append($("<td></td>").html(" Lead: " + val.relatedCase.lead + "<br/> "+
+                                            "Campus: " + val.relatedCase.campus + "<br /> " +
+                                            "Case Type: " + casetype_dict[val.relatedCase.caseType] + "<br /> "));
+            }
+            else {
+                ele.append($("<td></td>").text(""));
+            }
+
+
+
+
+            //ele.append($("<td></td>").text(val.relatedCase)); // TODO: modify this later
             tbody.append(ele);
         });
         dtable.append(tbody);
