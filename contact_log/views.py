@@ -81,7 +81,7 @@ class ContactLogFilter(filters.FilterSet):
 # Class:    ContactLogViewSet
 # Purpose:  Setting up a view for serialized contact logs while allowing for filtering contact logs.
 class ContactLogViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = contactLog.objects.all()
+    queryset = contactLog.objects.all().order_by('pk')
     serializer_class = ContactLogSerializer
     filter_class = ContactLogFilter
     filter_fields = ['id', 'member', 'date', 'description', 'contactCode', 'date_gt', 'date_lt']

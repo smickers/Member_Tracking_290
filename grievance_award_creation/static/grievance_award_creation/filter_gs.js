@@ -70,7 +70,7 @@ function applyFilter()
     var all_records = [];
     var curr_records = [];
     //var currRecord = 0;
-    const BASE_REQUEST_URL = "http://127.0.0.1:8000/api-root/grievance_award/filter/?";
+    const BASE_REQUEST_URL = window.location.origin + "/api-root/grievance_award/filter/?";
     var next_join = "OR";
     $("#grievance-award-table-data").html("");
     for (var i = 0; i <= criteriaCount; i++)

@@ -78,7 +78,7 @@
             var all_records = [];
             var curr_records = [];
             //var currRecord = 0;
-            const BASE_REQUEST_URL = "http://127.0.0.1:8000/api-root/contact_log/search/?";
+            const BASE_REQUEST_URL =  window.location.origin + "/api-root/contact_log/search/?limit=100000&";
             var next_join = "OR";
             $("#contact-log-table-data").html("");
             for (var i = 0; i <= criteriaCount; i++)
@@ -278,7 +278,7 @@
                 var description = item.description;
                 var contactCode = getContactCode(item.contactCode);
                 var rowToAdd = "<tr><td>" + id + "</td><td>" + name + "</td><td>" + date + "</td><td>" + description + "</td><td>" +
-                                contactCode + '</td><td><a href="http://127.0.0.1:8000/contact_log/details/' + id + '">[View]</a></td><td><a href="http://127.0.0.1:8000/contact_log/update/' + id + '">[Edit]</a></td></tr>';
+                                contactCode + '</td><td><a href="' + window.location.origin + '/contact_log/details/' + id + '">[View]</a></td><td><a href="' + window.location.origin + '/contact_log/update/' + id + '">[Edit]</a></td></tr>';
 
                 $("#contact-log-table-data").append(rowToAdd);
             });
